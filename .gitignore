@@ -20,3 +20,7 @@
 
 # Executables
 sample1_unittest
+
+#Eclipse Metadata may be ignored: 
+# https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
+.metadata
