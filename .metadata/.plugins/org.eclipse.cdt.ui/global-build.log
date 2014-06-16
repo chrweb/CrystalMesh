@@ -1,0 +1,19 @@
+
+**** Build of configuration Default for project GoogleTest ****
+
+make all 
+g++ -isystem ../include -g -Wall -Wextra -pthread -c ../samples/sample1.cc
+g++ -isystem ../include -g -Wall -Wextra -pthread -c ../samples/sample1_unittest.cc
+g++ -isystem ../include -I.. -g -Wall -Wextra -pthread -c \
+            ../src/gtest-all.cc
+In file included from ../src/gtest-all.cc:42:0:
+../src/gtest.cc:370:12: Warnung: Initialisierung für Element »testing::internal::MutexBase::owner_« fehlt [-Wmissing-field-initializers]
+g++ -isystem ../include -I.. -g -Wall -Wextra -pthread -c \
+            ../src/gtest_main.cc
+ar rv gtest_main.a gtest-all.o gtest_main.o
+ar: creating gtest_main.a
+a - gtest-all.o
+a - gtest_main.o
+g++ -isystem ../include -g -Wall -Wextra -pthread -lpthread sample1.o sample1_unittest.o gtest_main.a -o sample1_unittest
+
+**** Build Finished ****
