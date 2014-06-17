@@ -12,9 +12,11 @@ TEST(Vector3D, zero){
 
 }
 
+/*
 int main(int argc, const char* argv[]){
 
 	RUN_ALL_TESTS();
 	return EXIT_SUCCESS;
 
 }
+*/

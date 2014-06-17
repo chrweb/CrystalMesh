@@ -41,6 +41,7 @@
 								</option>
 								<option id="gnu.cpp.link.option.libs.1200239041" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="gtest_main"/>
+									<listOptionValue builtIn="false" value="pthread"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.846406020" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -114,19 +115,21 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="CrystalMeshTest.cdt.managedbuild.target.gnu.cross.exe.374283863" name="Executable" projectType="cdt.managedbuild.target.gnu.cross.exe"/>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/CrystalMeshTest"/>
+	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.19530469;cdt.managedbuild.config.gnu.cross.exe.debug.19530469.;cdt.managedbuild.tool.gnu.cross.c.compiler.57421107;cdt.managedbuild.tool.gnu.c.compiler.input.409803820">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.19530469;cdt.managedbuild.config.gnu.cross.exe.debug.19530469.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.1382124364;cdt.managedbuild.tool.gnu.cpp.compiler.input.425795167">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.479322445;cdt.managedbuild.config.gnu.cross.exe.release.479322445.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.979436511;cdt.managedbuild.tool.gnu.cpp.compiler.input.169811594">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.479322445;cdt.managedbuild.config.gnu.cross.exe.release.479322445.;cdt.managedbuild.tool.gnu.cross.c.compiler.1547794408;cdt.managedbuild.tool.gnu.c.compiler.input.1129828112">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.release.479322445;cdt.managedbuild.config.gnu.cross.exe.release.479322445.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.979436511;cdt.managedbuild.tool.gnu.cpp.compiler.input.169811594">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.cross.exe.debug.19530469;cdt.managedbuild.config.gnu.cross.exe.debug.19530469.;cdt.managedbuild.tool.gnu.cross.cpp.compiler.1382124364;cdt.managedbuild.tool.gnu.cpp.compiler.input.425795167">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
