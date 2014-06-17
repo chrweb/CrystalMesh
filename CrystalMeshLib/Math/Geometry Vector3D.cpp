@@ -7,56 +7,62 @@
 
 #include "Geometry.h"
 
-using namespace CrystalMesh::Math::Geometry;
 
-/**
- * statics
- */
+namespace CrystalMesh{
 
-// May different platforms have different descriptions fir NaN?
-#include <math.h>
-#define CM_NAN NAN
+	namespace Math{
 
-Vector3D const Vector3D::NaN = {CM_NAN, CM_NAN, CM_NAN};
-Vector3D const Vector3D::zero = { 0.0, 0.0, 0.0};
-Vector3D const Vector3D::xAxis = {1.0, 0.0, 0.0};
-Vector3D const Vector3D::yAxis = {0.0, 1.0, 0.0};
-Vector3D const Vector3D::zAxis = {0.0, 0.0, 1.0};
+		namespace Geometry{
+
+			/**
+			 * statics
+			 */
 
 
+			// May different platforms have different descriptions fir NaN?
+			#include <math.h>
+			#define CM_NAN NAN
+
+			Vector3D const Vector3D::NaN = {CM_NAN, CM_NAN, CM_NAN};
+			Vector3D const Vector3D::zero = { 0.0, 0.0, 0.0};
+			Vector3D const Vector3D::xAxis = {1.0, 0.0, 0.0};
+			Vector3D const Vector3D::yAxis = {0.0, 1.0, 0.0};
+			Vector3D const Vector3D::zAxis = {0.0, 0.0, 1.0};
+
+			Vector3D const operator+ (Vector3D const & aLeftOp, Vector3D const & aRightOp){
+
+				Vector3D result = {
+						aLeftOp.mX + aRightOp.mX,
+						aLeftOp.mY + aRightOp.mY,
+						aLeftOp.mZ + aRightOp.mZ};
+
+				return result;
+			}
 
 
+			Vector3D const operator- (Vector3D const & aLeftOp, Vector3D const & aRightOp){
 
-Vector3D const operator+ (Vector3D const & aLeftOp, Vector3D const & aRightOp){
+				Vector3D result = {
+						aLeftOp.mX - aRightOp.mX,
+						aLeftOp.mY - aRightOp.mY,
+						aLeftOp.mZ - aRightOp.mZ};
 
-	Vector3D result = {
-			aLeftOp.mX + aRightOp.mX,
-			aLeftOp.mY + aRightOp.mY,
-			aLeftOp.mZ + aRightOp.mZ};
+				return result;
+			}
 
-	return result;
-}
+			Vector3D const vectorFromXYZ( double const & aX, double const & aY, double const & aZ){
 
+				Vector3D result = {
+				aX,
+				aY,
+				aZ
+				};
 
-Vector3D const operator- (Vector3D const & aLeftOp, Vector3D const & aRightOp){
+				return result;
+			}
 
-	Vector3D result = {
-			aLeftOp.mX - aRightOp.mX,
-			aLeftOp.mY - aRightOp.mY,
-			aLeftOp.mZ - aRightOp.mZ};
-
-	return result;
-}
-
-Vector3D const vectorFromXYZ( double const & aX, double const & aY, double const & aZ){
-
-	Vector3D result = {
-			aX,
-			aY,
-			aZ
-	};
-
-	return result;
+		}
+	}
 }
 
 
