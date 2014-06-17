@@ -61,6 +61,11 @@ namespace CrystalMesh{
 				return result;
 			}
 
+
+			double const dotProductOf(Vector3D const & a0, Vector3D const & a1){
+				return a0.mX*a1.mX + a0.mY * a1.mY + a0.mZ * a1.mZ;
+			}
+
 		}
 	}
 }
