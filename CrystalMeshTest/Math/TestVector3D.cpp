@@ -79,3 +79,10 @@ TEST(Vector3D, subtraction){
 	EXPECT_EQ(res.mZ, 3.0);
 }
 
+TEST(Vector3D, xProd0){
+	auto const res = crossProductOf(Vector3D::xAxis, Vector3D::yAxis);
+	EXPECT_EQ(res.mX, 0.0);
+    EXPECT_EQ(res.mY, 0.0);
+    EXPECT_EQ(res.mZ, 1.0);
+}
+
