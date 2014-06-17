@@ -3,6 +3,7 @@
 	<name>CrystalMeshTest</name>
 	<comment></comment>
 	<projects>
+		<project>CrystalMeshLib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -80,4 +81,16 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>gtest-all.cc</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/gTest/src/gtest-all.cc</locationURI>
+		</link>
+		<link>
+			<name>gtest_main.cc</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/gTest/src/gtest_main.cc</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

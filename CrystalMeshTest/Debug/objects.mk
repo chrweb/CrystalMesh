@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lgtest_main -lpthread
+LIBS := -lpthread -lCrystalMeshLib
 

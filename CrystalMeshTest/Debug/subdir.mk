@@ -4,23 +4,30 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CC_SRCS += \
-../sample1.cc \
-../sample1_unittest.cc 
+/home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/src/gtest-all.cc \
+/home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/src/gtest_main.cc 
 
 OBJS += \
-./sample1.o \
-./sample1_unittest.o 
+./gtest-all.o \
+./gtest_main.o 
 
 CC_DEPS += \
-./sample1.d \
-./sample1_unittest.d 
+./gtest-all.d \
+./gtest_main.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-%.o: ../%.cc
+gtest-all.o: /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/src/gtest-all.cc
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross G++ Compiler'
-	g++ -I/home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -I"/home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest" -I"/home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include" -O0 -g3 -Wall -c -fmessage-length=0 -std=c++0x -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+gtest_main.o: /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/src/gtest_main.cc
+	@echo 'Building file: $<'
+	@echo 'Invoking: Cross G++ Compiler'
+	g++ -I"/home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest" -I"/home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include" -O0 -g3 -Wall -c -fmessage-length=0 -std=c++0x -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

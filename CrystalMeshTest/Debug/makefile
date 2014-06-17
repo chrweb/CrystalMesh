@@ -44,7 +44,7 @@ all: CrystalMeshTest
 CrystalMeshTest: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross G++ Linker'
-	g++ -L"/home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/make" -o "CrystalMeshTest" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L"/home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/CrystalMeshLib/Debug" -o "CrystalMeshTest" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
