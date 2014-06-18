@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include "Subdiv3ForwardDecs.h"
+
 namespace CrystalMesh{
 
 	namespace Subdiv3{

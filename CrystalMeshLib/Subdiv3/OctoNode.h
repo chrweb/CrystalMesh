@@ -6,12 +6,15 @@
  */
 #pragma once
 
+#include "FacetEdge.h"
 
 namespace CrystalMesh{
 
 	namespace Subdiv3{
 
 		struct OctoNode{
+
+			FacetEdge[8] mNodeArray;
 
 		};
 	}
