@@ -26,7 +26,7 @@ namespace CrystalMesh{
 
 		private:
 
-			std::set<Entity> mContainer;
+			std::set<Entity*> mContainer;
 		};
 
 

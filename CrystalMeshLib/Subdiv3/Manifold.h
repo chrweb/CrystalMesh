@@ -18,12 +18,17 @@ namespace CrystalMesh{
 
 		public:
 
+			Manifold();
+
+			Manifold(const Manifold & aSrc);
+
+			FacetEdge * makeFacetEdge();
+
 		private:
 
 			VertexMaintener * mpToVertexMaintener;
 			OctoNodeMaintener *  mpToOctoNodeMaintener;
-			CornerMaintener * mpToCornerMaintener;
-			FaceMaintener * mpToFaceMaintener;
+			EdgeRingMaintener * mpToEdgeRingMaintener;
 		};
 
 

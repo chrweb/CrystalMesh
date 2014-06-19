@@ -14,7 +14,7 @@ namespace CrystalMesh{
 
 		struct OctoNode{
 
-			FacetEdge[8] mNodeArray;
+			FacetEdge mNodeArray[8];
 
 		};
 	}
