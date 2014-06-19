@@ -26,6 +26,10 @@ namespace CrystalMesh{
 		    EdgeRing const & getEdgeRing() const;
 		    EdgeRing & getEdgeRing();
 
+		    /**
+		     * Other members in current OctoNode
+		     */
+
 		    FacetEdge const &	getDual() const;
 		    FacetEdge &	getDual();
 
@@ -35,6 +39,9 @@ namespace CrystalMesh{
 		    FacetEdge const & getClock() const;
 		    FacetEdge& 	getClock();
 
+		    /**
+		     * Switch to another ring member
+		     */
 		    FacetEdge const & getFnext() const;
 		    FacetEdge & getFnext();
 

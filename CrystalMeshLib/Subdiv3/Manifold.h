@@ -12,10 +12,7 @@ namespace CrystalMesh{
 
 	namespace Subdiv3{
 
-		class VertexMaintener;
-		class OctoNodeMaintener;
-		class CornerMaintener;
-		class FaceMaintener;
+
 
 		class Manifold{
 

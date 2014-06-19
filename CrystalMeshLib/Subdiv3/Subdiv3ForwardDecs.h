@@ -31,6 +31,15 @@ namespace CrystalMesh{
 		class Manifold;
 
 		/**
+		 * Declare maintener for entities
+		 */
+		class OctoNodeMaintener;
+
+		class VertexMaintener;
+
+		class EdgeRingMaintener;
+
+		/**
 		 * Define some types
 		 */
 
