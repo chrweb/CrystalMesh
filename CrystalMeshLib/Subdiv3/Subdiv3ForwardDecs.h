@@ -34,9 +34,7 @@ namespace CrystalMesh{
 		 * Define some types
 		 */
 
-		typedef uint8_t FieldIndex;
-
-
+		typedef int32_t FieldIndex;
 	}
 }
 

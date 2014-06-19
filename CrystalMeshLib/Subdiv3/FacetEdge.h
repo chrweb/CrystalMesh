@@ -49,11 +49,12 @@ namespace CrystalMesh{
 
 			Vertex* mpVertex;
 			EdgeRing* mpEdgeRing;
+			FacetEdge *mpNext;
 
 			FieldIndex mIndex;
-			FieldIndex  dualIt;
-			FieldIndex  revsIt;
-		    FieldIndex  clckIt;
+			FieldIndex  mDualIt;
+			FieldIndex  mRevsIt;
+			FieldIndex  mClckIt;
 
 		};
 
