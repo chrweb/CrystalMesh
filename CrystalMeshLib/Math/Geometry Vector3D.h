@@ -22,7 +22,7 @@ namespace CrystalMesh{
 
 			Vector3D const operator- (Vector3D const & aLeftOp, Vector3D const & aRightOp);
 
-			Vector3D const vectorBetween(Point3D const & aP0, Point3D const &T aP1);
+			Vector3D const vectorBetween(Point3D const & aP0, Point3D const & aP1);
 
 			Vector3D const vectorFromXYZ( double const & aX, double const & aY, double const & aZ);
 
