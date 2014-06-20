@@ -49,18 +49,10 @@ namespace CrystalMesh{
 
 	    	FieldIndex computeDualJump(FieldIndex aIdx){
 	    		if (aIdx%2 == 0){
-	    			return 3;
+	    			return 2;
 	    		}
 	    		else
-	    			return -3;
-	    	}
-
-	    	FieldIndex computeReverseJump(FieldIndex aIdx){
-	    		if (aIdx%2 == 0){
-	    			return 1;
-	    		}
-	    		else
-	    			return -1;
+	    			return -2;
 	    	}
 
 	    	FieldIndex computeClockIndex(FieldIndex aIdx){
@@ -80,7 +72,7 @@ namespace CrystalMesh{
 	    			ref->mIndex =idx;
 	    			ref->mDualIt = computeDualJump(idx);
 	    			ref->mClckIt = computeClockIndex(idx);
-	    			ref->mRevsIt = computeReverseJump(idx);
+//	    			ref->mRevsIt = computeReverseJump(idx);
 	    		}
 
 	    	}
@@ -93,7 +85,10 @@ namespace CrystalMesh{
 	    	OctoNode * pInst = mpToOctoNodeMaintener->mInternalMaintener.constructEntity();
 
 	    	// Initialize members in OctoNode's FacetEdges
-	    	setMemberVars(*pInst)
+	    	setMemberVars(*pInst);
+
+
+
 
 	    	return &pInst->mNodeArray[0];
 	    }
