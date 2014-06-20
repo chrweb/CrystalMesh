@@ -26,7 +26,8 @@ namespace CrystalMesh{
 
 		private:
 
-			VertexMaintener * mpToVertexMaintener;
+			VertexMaintener * mpPrimalVertexMaintener;
+			VertexMaintener * mpDualVertexMaintener;
 			OctoNodeMaintener *  mpToOctoNodeMaintener;
 			EdgeRingMaintener * mpToEdgeRingMaintener;
 		};
