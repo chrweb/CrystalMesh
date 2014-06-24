@@ -26,14 +26,14 @@ namespace CrystalMesh{
 
 		struct Face;
 
-		struct OctoNode;
+		struct QuaterNode;
 
 		class Manifold;
 
 		/**
 		 * Declare maintener for entities
 		 */
-		class OctoNodeMaintener;
+		class QuaterNodeMaintener;
 
 		class VertexMaintener;
 
@@ -44,6 +44,10 @@ namespace CrystalMesh{
 		 */
 
 		typedef int32_t FieldIndex;
+
+
+
+
 	}
 }
 

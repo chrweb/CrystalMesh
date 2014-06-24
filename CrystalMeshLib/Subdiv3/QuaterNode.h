@@ -12,7 +12,7 @@ namespace CrystalMesh{
 
 	namespace Subdiv3{
 
-		struct OctoNode{
+		struct QuaterNode{
 
 			FacetEdge mNodeArray[8];
 

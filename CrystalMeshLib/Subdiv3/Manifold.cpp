@@ -8,7 +8,7 @@
 #include "MaintenerTemplate.h"
 #include  "../Misc/Checks.h"
 #include "Vertex.h"
-#include "OctoNode.h"
+#include "QuaterNode.h"
 
 namespace CrystalMesh{
 
@@ -21,25 +21,24 @@ namespace CrystalMesh{
 		 */
 
 
-		class VertexMaintener{
-		public:
-			EntityMaintener<Vertex> mInternalMaintener;
-		};
+		class VertexMaintener
+		:public EntityMaintener<Vertex>
+		{};
 
-		class OctoNodeMaintener{
-		public:
-			EntityMaintener<OctoNode> mInternalMaintener;
-		};
+		class QuaterNodeMaintener
+		:public EntityMaintener<QuaterNode>
+		{};
 
-		class EdgeRingMaintener{
-		public:
-			EntityMaintener<EdgeRing> mInternalMaintener;
-		};
+		class EdgeRingMaintener
+		:public EntityMaintener<EdgeRing>
+		{};
 
 	    Manifold::Manifold()
-	    : mpToVertexMaintener( new VertexMaintener() )
-	    , mpToOctoNodeMaintener( new OctoNodeMaintener() )
-	    , mpToEdgeRingMaintener( new EdgeRingMaintener)
+	    : mpPrimalVertexMaintener( new VertexMaintener() )
+	    , mpDualVertexMaintener( new VertexMaintener() )
+	    , mpQuaterNodeMaintener( new QuaterNodeMaintener() )
+	    , mpPrimalEdgeRingMaintener( new EdgeRingMaintener)
+	    , mpDualEdgeRingMaintener( new EdgeRingMaintener)
 		{
 
 		}
@@ -49,22 +48,22 @@ namespace CrystalMesh{
 
 	    	FieldIndex computeDualJump(FieldIndex aIdx){
 	    		if (aIdx%2 == 0){
-	    			return 2;
+	    			return 1;
 	    		}
+	    		else
+	    			return -1;
+	    	}
+
+	    	FieldIndex computeClockIndex(FieldIndex aIdx){
+	    		if (aIdx < 2)
+	    			return 2;
 	    		else
 	    			return -2;
 	    	}
 
-	    	FieldIndex computeClockIndex(FieldIndex aIdx){
-	    		if (aIdx < 4)
-	    			return 4;
-	    		else
-	    			return -4;
-	    	}
+	    	void setMemberVars(QuaterNode & aInst){
 
-	    	void setMemberVars(OctoNode & aInst){
-
-	    		for (FieldIndex idx = 0; idx < 8; idx++)
+	    		for (FieldIndex idx = 0; idx < 4; idx++)
 	    		{
 	    			auto  ref = & aInst.mNodeArray[idx];
 	    			ref->mpNext = ref;
@@ -72,9 +71,9 @@ namespace CrystalMesh{
 	    			ref->mIndex =idx;
 	    			ref->mDualIt = computeDualJump(idx);
 	    			ref->mClckIt = computeClockIndex(idx);
-//	    			ref->mRevsIt = computeReverseJump(idx);
-	    		}
 
+	    			ref->mpNext = ref;
+	    		}
 	    	}
 
 	    }
@@ -82,15 +81,33 @@ namespace CrystalMesh{
 
 	    FacetEdge * Manifold::makeFacetEdge(){
 
-	    	OctoNode * pInst = mpToOctoNodeMaintener->mInternalMaintener.constructEntity();
+	    	QuaterNode * pInst = mpQuaterNodeMaintener->constructEntity();
 
 	    	// Initialize members in OctoNode's FacetEdges
 	    	setMemberVars(*pInst);
 
-
-
-
 	    	return &pInst->mNodeArray[0];
+	    }
+
+	    void Manifold::spliceFacets(FacetEdge& aFe0, FacetEdge& aFe1){
+
+	    	// reverence version
+	    	auto alpha0 = aFe0.getFnext();
+	    	auto alpha1 = aFe1.getFnext();
+	    	aFe0.mpNext = alpha1;
+	    	aFe1.mpNext = alpha0;
+
+	    	// clocked version
+	    	auto fe0Clock = aFe0.getClock();
+	    	auto fe1Clock = aFe1.getClock();
+
+	    	auto beta0 = fe0Clock->getFnext();
+	    	auto beta1 = fe1Clock->getFnext();
+
+	    	fe0Clock->mpNext = beta1;
+	    	fe1Clock->mpNext = beta0;
+
+	    	return;
 	    }
 
 

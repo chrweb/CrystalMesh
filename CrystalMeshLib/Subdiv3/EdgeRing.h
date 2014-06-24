@@ -17,8 +17,8 @@ namespace CrystalMesh{
 		 */
 		struct EdgeRing{
 
-			template<typename Functor>
-			void forEachRingMember(Functor const & aFunc);
+//			template<typename Functor>
+//			void forEachRingMember(Functor const & aFunc);
 
 			template<typename Functor>
 			void forEachRingMember(Functor const & aFunc) const;
