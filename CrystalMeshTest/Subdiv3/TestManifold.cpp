@@ -48,26 +48,70 @@ TEST(Manifold, EdgeAlgebra){
 	EXPECT_EQ(clockDual, clockDual->getEnext());
 }
 
-//TEST(Manifold, SpliceFacets){
-//
-//	Manifold mf;
-//
-//	auto e0 = mf.makeFacetEdge();
-//	auto e1 = mf.makeFacetEdge();
-//
-//	auto e0D = e0->getDual();
-//	auto e1D = e2->getDual();
-//
-//	mf.spliceFacets(*e0, e1);
-//
-//	EXPECT_EQ(e0->getFnext(), e1);
-//	EXPECT_EQ(e1->getFnext(), e0);
-//
-//
-//
-//
-//
-//}
+
+namespace{
+
+/**
+	 * Tests the edge algebra after spliceFacets due to spliced references immediately
+	 * after this operation
+	 */
+	void checkSpliceFacetsEdgeAlgebra(
+			FacetEdge const & aFe0,
+			FacetEdge const & aFormerFnext0,
+			FacetEdge const & aFe1,
+			FacetEdge const & aFormerFnext1)
+	{
+		EXPECT_EQ(aFe0.getFnext() , & aFormerFnext1);
+		EXPECT_EQ(aFe1.getFnext() , & aFormerFnext0);
+	}
+
+	/**
+	 * Tests the edge algebra after spliceEdges due to spliced references immediately
+	 * after this operation
+	 */
+	void checkSpliceEdgesEdgeAlgebra(
+			FacetEdge const & aFe0,
+		    FacetEdge const & aFormerEnext0,
+			FacetEdge const & aFe1,
+			FacetEdge const & aFormerEnext1)
+			{
+				EXPECT_EQ(aFe0.getEnext() , & aFormerEnext1);
+				EXPECT_EQ(aFe1.getEnext() , & aFormerEnext0);
+			}
+
+}
+
+
+TEST(Manifold, SpliceFacets){
+
+	Manifold mf;
+
+	auto e0 = mf.makeFacetEdge();
+	auto e1 = mf.makeFacetEdge();
+
+	auto fnext0 = e0->getFnext();
+	auto fnext1 = e1->getFnext();
+
+	mf.spliceFacets(*e0, *e1);
+
+	SCOPED_TRACE("Elementary spliceFacets operation");
+	checkSpliceFacetsEdgeAlgebra(*e0, *fnext0, *e1, *fnext1);
+}
+
+TEST(Manifold, SpliceEdges){
+	Manifold mf;
+
+	auto e0 = mf.makeFacetEdge();
+	auto e1 = mf.makeFacetEdge();
+
+	auto enext0 = e0->getEnext();
+	auto enext1 = e1->getEnext();
+
+	mf.spliceEdges(*e0, *e1);
+
+	SCOPED_TRACE("Elementary spliceFacets operation");
+	checkSpliceEdgesEdgeAlgebra(*e0, *enext0, *e1, *enext1);
+}
 
 
 

@@ -111,6 +111,12 @@ namespace CrystalMesh{
 	    }
 
 
+	    void Manifold::spliceEdges(FacetEdge& aFe0, FacetEdge& aFe1){
+	    	spliceFacets(*aFe0.getDual(), *aFe1.getDual());
+	    }
+
+
+
 	}
 }
 
