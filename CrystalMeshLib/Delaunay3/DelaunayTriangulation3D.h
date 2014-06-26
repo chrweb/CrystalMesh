@@ -6,13 +6,30 @@
  */
 #pragma once
 
-#include "../Math/CrystalMesh Math.h"
+#include "../Math/Geometry.h"
 
 namespace CrastalMesh{
 
+	namespace Subdiv3{
+		class Manifold;
+
+
+	}
+
 	namespace Delaunay3{
 
-		class Tetraeder;
+		class Triangle;
+		class DirectedSegment{
+		};
+		class Segment;
+		class Vertex{};
+
+
+		class Tetraeder{
+			Vertex[4] mVerts;
+		};
+
+
 
 
 
@@ -33,14 +50,32 @@ namespace CrastalMesh{
 
 			void flip3to2();
 
+			struct PointLocation{
 
-			Tetraeder const locatePoint()
+				enum struct Situation{
+					inTetraeder,
+					onFace,
+					onSegment,
+					onVertex
+				} mSituation;
+
+				union Location{
+					Tetraeder mInTet;
+					Triangle  mOnFace;
+					Segment   mOnSegment;
+					Vertex	  mOnVertex;
+				} mLocation;
+			};
 
 
-			void insertPoint();
+			PointLocation const locatePoint(Math::Geometry::Point3D const & aPoint);
+
+
+			void insertPoint(Math::Geometry::Point3D const & aPoint);
 
 		private:
 
+			Subdiv3::Manifold * mpManifold;
 		};
 
 	}
