@@ -14,4 +14,6 @@
 #include "../Src/Math/CrystalMesh Math.h"
 #include "../Src/Math/Geometry.h"
 
+#include "../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h"
+
 #endif /* TESTINCLUDE_H_ */

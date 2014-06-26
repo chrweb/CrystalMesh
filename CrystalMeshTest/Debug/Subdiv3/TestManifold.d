@@ -1,5 +1,5 @@
-Math/TestVector3D.d: ../Math/TestVector3D.cpp ../Math/../TestInclude.h \
- ../Math/../../gTest/include/gtest/gtest.h \
+Subdiv3/TestManifold.d: ../Subdiv3/TestManifold.cpp \
+ ../Subdiv3/../TestInclude.h ../Subdiv3/../../gTest/include/gtest/gtest.h \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/internal/gtest-internal.h \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/internal/gtest-port.h \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest-message.h \
@@ -17,19 +17,19 @@ Math/TestVector3D.d: ../Math/TestVector3D.cpp ../Math/../TestInclude.h \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest-test-part.h \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest-typed-test.h \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest_pred_impl.h \
- ../Math/../../Src/Math/CrystalMesh\ Math.h \
- ../Math/../../Src/Math/Geometry.h \
- ../Math/../../Src/Math/Geometry\ Vector3D.h \
- ../Math/../../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h \
- ../Math/../../CrystalMeshLib/Subdiv3/Manifold.h \
- ../Math/../../CrystalMeshLib/Subdiv3/Subdiv3ForwardDecs.h \
- ../Math/../../CrystalMeshLib/Subdiv3/FacetEdge.h \
- ../Math/../../CrystalMeshLib/Subdiv3/Vertex.h \
- ../Math/../../CrystalMeshLib/Subdiv3/EdgeRing.h
+ ../Subdiv3/../../Src/Math/CrystalMesh\ Math.h \
+ ../Subdiv3/../../Src/Math/Geometry.h \
+ ../Subdiv3/../../Src/Math/Geometry\ Vector3D.h \
+ ../Subdiv3/../../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h \
+ ../Subdiv3/../../CrystalMeshLib/Subdiv3/Manifold.h \
+ ../Subdiv3/../../CrystalMeshLib/Subdiv3/Subdiv3ForwardDecs.h \
+ ../Subdiv3/../../CrystalMeshLib/Subdiv3/FacetEdge.h \
+ ../Subdiv3/../../CrystalMeshLib/Subdiv3/Vertex.h \
+ ../Subdiv3/../../CrystalMeshLib/Subdiv3/EdgeRing.h
 
-../Math/../TestInclude.h:
+../Subdiv3/../TestInclude.h:
 
-../Math/../../gTest/include/gtest/gtest.h:
+../Subdiv3/../../gTest/include/gtest/gtest.h:
 
 /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/internal/gtest-internal.h:
 
@@ -65,20 +65,20 @@ Math/TestVector3D.d: ../Math/TestVector3D.cpp ../Math/../TestInclude.h \
 
 /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest_pred_impl.h:
 
-../Math/../../Src/Math/CrystalMesh\ Math.h:
+../Subdiv3/../../Src/Math/CrystalMesh\ Math.h:
 
-../Math/../../Src/Math/Geometry.h:
+../Subdiv3/../../Src/Math/Geometry.h:
 
-../Math/../../Src/Math/Geometry\ Vector3D.h:
+../Subdiv3/../../Src/Math/Geometry\ Vector3D.h:
 
-../Math/../../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h:
+../Subdiv3/../../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h:
 
-../Math/../../CrystalMeshLib/Subdiv3/Manifold.h:
+../Subdiv3/../../CrystalMeshLib/Subdiv3/Manifold.h:
 
-../Math/../../CrystalMeshLib/Subdiv3/Subdiv3ForwardDecs.h:
+../Subdiv3/../../CrystalMeshLib/Subdiv3/Subdiv3ForwardDecs.h:
 
-../Math/../../CrystalMeshLib/Subdiv3/FacetEdge.h:
+../Subdiv3/../../CrystalMeshLib/Subdiv3/FacetEdge.h:
 
-../Math/../../CrystalMeshLib/Subdiv3/Vertex.h:
+../Subdiv3/../../CrystalMeshLib/Subdiv3/Vertex.h:
 
-../Math/../../CrystalMeshLib/Subdiv3/EdgeRing.h:
+../Subdiv3/../../CrystalMeshLib/Subdiv3/EdgeRing.h:
