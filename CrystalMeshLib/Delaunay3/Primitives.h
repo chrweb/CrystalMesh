@@ -29,7 +29,7 @@ namespace CrystalMesh{
 
 		struct Triangle{
 
-			Subdiv3::Vertex* mpDualEdgeRing;
+			Subdiv3::EdgeRing* mpDualEdgeRing;
 		};
 
 		struct Tetraeder{

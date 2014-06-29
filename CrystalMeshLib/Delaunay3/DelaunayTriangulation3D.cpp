@@ -10,7 +10,7 @@
 namespace CrystalMesh{
 
 	class VertexDataContainer
-	:public Subdiv3::EntityMaintener
+	:public Subdiv3::EntityMaintener<VertexData>
 	 {};
 
 	namespace Delaunay3{
@@ -32,8 +32,21 @@ namespace CrystalMesh{
 		}
 
 		Triangle const DelaunayTriangulation3D::makeTriangle(){
+			auto e0 = mpManifold->makeFacetEdge();
+			auto e1 = mpManifold->makeFacetEdge();
+			auto e2 = mpManifold->makeFacetEdge();
 
+			mpManifold->spliceEdges(*e0, *e1);
+			mpManifold->spliceEdges(*e1, *e2);
 
+			auto ring = mpManifold->makeDualEdgeRing();
+
+			mpManifold->linkEdgeRingAndFacetedges(*ring, *e0->getDual());
+
+			Triangle result;
+			result.mpDualEdgeRing = ring;
+
+			return result;
 		}
 
 
