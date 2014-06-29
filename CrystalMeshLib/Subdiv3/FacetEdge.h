@@ -59,7 +59,7 @@ namespace CrystalMesh{
 		    FacetEdge * getInvEnext();
 
 			Vertex* mpVertex;
-			EdgeRing* mpEdgeRing;
+			DirectedEdgeRing* mpEdgeRing;
 			FacetEdge *mpNext;
 
 			FieldIndex mIndex;

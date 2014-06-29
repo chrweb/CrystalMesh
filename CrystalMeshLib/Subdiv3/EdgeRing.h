@@ -7,6 +7,7 @@
 #pragma once
 
 #include "Subdiv3ForwardDecs.h"
+#include "DirectedEdgeRing.h"
 
 namespace CrystalMesh{
 
@@ -17,13 +18,7 @@ namespace CrystalMesh{
 		 */
 		struct EdgeRing{
 
-//			template<typename Functor>
-//			void forEachRingMember(Functor const & aFunc);
-
-			template<typename Functor>
-			void forEachRingMember(Functor const & aFunc) const;
-
-			FacetEdge * mpRingMember;
+			DirectedEdgeRing mRings[2];
 			void * mpData;
 		};
 
