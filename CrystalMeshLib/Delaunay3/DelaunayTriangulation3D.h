@@ -7,31 +7,22 @@
 #pragma once
 
 #include "../Math/Geometry.h"
+#include "Primitives.h"
 
-namespace CrastalMesh{
+namespace CrystalMesh{
 
 	namespace Subdiv3{
 		class Manifold;
 
-
 	}
 
+	struct VertexData{
+		Math::Geometry::Point3D  mPoint;
+	};
+
+	class VertexDataContainer;
+
 	namespace Delaunay3{
-
-		class Triangle;
-		class DirectedSegment{
-		};
-		class Segment;
-		class Vertex{};
-
-
-		class Tetraeder{
-			Vertex[4] mVerts;
-		};
-
-
-
-
 
 		class DelaunayTriangulation3D{
 
@@ -44,11 +35,23 @@ namespace CrastalMesh{
 
 			DelaunayTriangulation3D( DelaunayTriangulation3D const & aSrc);
 
-			void flip1to4();
+			struct Flip1To4Result{
 
-			void flip2to3();
+			};
 
-			void flip3to2();
+			Flip1To4Result const flip1to4(Tetraeder& aTetToFlip);
+
+			struct Flip2To3Result{
+
+			};
+
+			Flip2To3Result flip2to3(Corner& aCornerToFlip);
+
+			struct Flip3To2Result{
+
+			};
+
+			Flip3To2Result flip3to2(Triangle& aTriangleToFlip);
 
 			struct PointLocation{
 
@@ -62,7 +65,7 @@ namespace CrastalMesh{
 				union Location{
 					Tetraeder mInTet;
 					Triangle  mOnFace;
-					Segment   mOnSegment;
+					Corner   mOnCorner;
 					Vertex	  mOnVertex;
 				} mLocation;
 			};
@@ -73,9 +76,17 @@ namespace CrastalMesh{
 
 			void insertPoint(Math::Geometry::Point3D const & aPoint);
 
+			Triangle const makeTriangle();
+
+			Tetraeder const makeTetraeder();
+
+
+
 		private:
 
 			Subdiv3::Manifold * mpManifold;
+
+			VertexDataContainer *mpToVetexData;
 		};
 
 	}

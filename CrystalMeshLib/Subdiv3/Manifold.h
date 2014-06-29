@@ -46,6 +46,10 @@ namespace CrystalMesh{
 
 			void spliceEdges(FacetEdge& aFe0, FacetEdge& aFe1);
 
+			void linkEdgeRingAndFacetedges(EdgeRing& aEring, FacetEdge & aRingRep);
+
+			void linkVertexEdgeRings(Vertex& aVertex, EdgeRing& aEdgeRingRep);
+
 		private:
 
 			VertexMaintener * mpPrimalVertexMaintener;
