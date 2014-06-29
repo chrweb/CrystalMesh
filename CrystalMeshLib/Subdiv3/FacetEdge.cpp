@@ -6,7 +6,7 @@
  */
 #include "FacetEdge.h"
 #include "Vertex.h"
-#include "EdgeRing.h"
+#include "DirectedEdgeRing.h"
 #include "../Misc/Checks.h"
 
 namespace CrystalMesh{
@@ -70,14 +70,14 @@ namespace CrystalMesh{
 			return getClock()->getOrg();
 		}
 
-		EdgeRing const *  FacetEdge::getEdgeRing() const{
-			checkValidPtr(mpEdgeRing);
-			return mpEdgeRing;
+		DirectedEdgeRing const *  FacetEdge::getDirectedEdgeRing() const{
+			checkValidPtr(mpDirectedEdgeRing);
+			return mpDirectedEdgeRing;
 		}
 
-		EdgeRing * FacetEdge::getEdgeRing() {
-			checkValidPtr(mpEdgeRing);
-			return mpEdgeRing;
+		DirectedEdgeRing * FacetEdge::getDirectedEdgeRing() {
+			checkValidPtr(mpDirectedEdgeRing);
+			return mpDirectedEdgeRing;
 		}
 
 

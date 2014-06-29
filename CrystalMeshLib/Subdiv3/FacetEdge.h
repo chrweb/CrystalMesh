@@ -27,8 +27,8 @@ namespace CrystalMesh{
 			Vertex const * getDest() const;
 		    Vertex * getDest();
 
-		    EdgeRing const * getEdgeRing() const;
-		    EdgeRing * getEdgeRing();
+		    DirectedEdgeRing const * getDirectedEdgeRing() const;
+		    DirectedEdgeRing * getDirectedEdgeRing();
 
 		    /**
 		     * Other members in current OctoNode
@@ -59,7 +59,7 @@ namespace CrystalMesh{
 		    FacetEdge * getInvEnext();
 
 			Vertex* mpVertex;
-			DirectedEdgeRing* mpEdgeRing;
+			DirectedEdgeRing* mpDirectedEdgeRing;
 			FacetEdge *mpNext;
 
 			FieldIndex mIndex;

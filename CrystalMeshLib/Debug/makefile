@@ -11,6 +11,7 @@ RM := rm -rf
 -include Subdiv3/subdir.mk
 -include Misc/subdir.mk
 -include Math/subdir.mk
+-include Delaunay3/subdir.mk
 -include subdir.mk
 -include objects.mk
 

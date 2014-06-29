@@ -13,9 +13,7 @@ namespace CrystalMesh{
 
 	namespace Subdiv3{
 
-		/**
-		 * An equivalence class for a ring of FacetEdges, forming a ring,
-		 */
+
 		struct EdgeRing{
 
 			DirectedEdgeRing mRings[2];
