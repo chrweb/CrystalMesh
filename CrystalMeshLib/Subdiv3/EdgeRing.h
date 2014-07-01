@@ -20,6 +20,8 @@ namespace CrystalMesh{
 
 			bool const isPrimal() const;
 
+			Counter const computeEdgeRingSize() const;
+
 			DirectedEdgeRing mRings[2];
 			void * mpData;
 		};

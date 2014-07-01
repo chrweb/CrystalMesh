@@ -20,6 +20,7 @@ Math/TestVector3D.d: ../Math/TestVector3D.cpp ../Math/../TestInclude.h \
  ../Math/../../Src/Math/CrystalMesh\ Math.h \
  ../Math/../../Src/Math/Geometry.h \
  ../Math/../../Src/Math/Geometry\ Vector3D.h \
+ ../Math/../../CrystalMeshLib/Misc/Checks.h \
  ../Math/../../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h \
  ../Math/../../CrystalMeshLib/Subdiv3/Manifold.h \
  ../Math/../../CrystalMeshLib/Subdiv3/Subdiv3ForwardDecs.h \
@@ -27,6 +28,7 @@ Math/TestVector3D.d: ../Math/TestVector3D.cpp ../Math/../TestInclude.h \
  ../Math/../../CrystalMeshLib/Subdiv3/Vertex.h \
  ../Math/../../CrystalMeshLib/Subdiv3/EdgeRing.h \
  ../Math/../../CrystalMeshLib/Subdiv3/DirectedEdgeRing.h \
+ ../Math/../../CrystalMeshLib/Subdiv3/QuaterNode.h \
  ../Math/../../CrystalMeshLib/Delaunay3/DelaunayTriangulation3DPrototypes.h \
  ../Math/../../CrystalMeshLib/Delaunay3/DelaunayTriangulation3D.h \
  ../Math/../../CrystalMeshLib/Delaunay3/../Math/Geometry.h \
@@ -76,6 +78,8 @@ Math/TestVector3D.d: ../Math/TestVector3D.cpp ../Math/../TestInclude.h \
 
 ../Math/../../Src/Math/Geometry\ Vector3D.h:
 
+../Math/../../CrystalMeshLib/Misc/Checks.h:
+
 ../Math/../../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h:
 
 ../Math/../../CrystalMeshLib/Subdiv3/Manifold.h:
@@ -89,6 +93,8 @@ Math/TestVector3D.d: ../Math/TestVector3D.cpp ../Math/../TestInclude.h \
 ../Math/../../CrystalMeshLib/Subdiv3/EdgeRing.h:
 
 ../Math/../../CrystalMeshLib/Subdiv3/DirectedEdgeRing.h:
+
+../Math/../../CrystalMeshLib/Subdiv3/QuaterNode.h:
 
 ../Math/../../CrystalMeshLib/Delaunay3/DelaunayTriangulation3DPrototypes.h:
 

@@ -14,7 +14,7 @@ namespace CrystalMesh{
 
 		struct QuaterNode{
 
-			FacetEdge mNodeArray[8];
+			FacetEdge mNodeArray[4];
 
 		};
 	}

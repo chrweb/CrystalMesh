@@ -47,6 +47,8 @@ namespace CrystalMesh{
 
 		typedef int32_t FieldIndex;
 
+		typedef uint32_t Counter;
+
 
 
 

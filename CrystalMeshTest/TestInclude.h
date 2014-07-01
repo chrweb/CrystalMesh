@@ -14,6 +14,11 @@
 #include "../Src/Math/CrystalMesh Math.h"
 #include "../Src/Math/Geometry.h"
 
+#include "../CrystalMeshLib/Misc/Checks.h"
+
 #include "../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h"
+#include "../CrystalMeshLib/Subdiv3/QuaterNode.h"
+
 #include "../CrystalMeshLib/Delaunay3/DelaunayTriangulation3DPrototypes.h"
+
 #endif /* TESTINCLUDE_H_ */

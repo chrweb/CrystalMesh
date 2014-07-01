@@ -19,8 +19,7 @@ namespace CrystalMesh{
 
 			FacetEdge * mpRingMember;
 
-			template<typename Functor>
-			void forEachRingMember(Functor const & aFunc) const;
+			Counter const computeEdgeRingSize() const;
 		};
 	}
 }

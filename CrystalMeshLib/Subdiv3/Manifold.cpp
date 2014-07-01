@@ -82,6 +82,9 @@ namespace CrystalMesh{
 	    			ref->mClckIt = computeClockIndex(idx);
 
 	    			ref->mpNext = ref;
+
+	    			ref->mpDirectedEdgeRing = nullptr;
+	    			ref->mpVertex = nullptr;
 	    		}
 	    	}
 
@@ -124,9 +127,25 @@ namespace CrystalMesh{
 	    	spliceFacets(*aFe0.getDual(), *aFe1.getDual());
 	    }
 
+	    namespace{
+	    	void setEdgeRingLinks(EdgeRing & aRing){
+	    		aRing.mRings[0].mpRingMember = nullptr;
+	    		aRing.mRings[1].mpRingMember = nullptr;
+	    	}
+
+	    }
+
+	    EdgeRing * Manifold::makePrimalEdgeRing()
+	   	    {
+	   	    	auto pInst = mpPrimalEdgeRingMaintener->constructEntity();
+	   	    	setEdgeRingLinks(*pInst);
+	   	    	return pInst;
+	   	    }
+
 	    EdgeRing * Manifold::makeDualEdgeRing()
 	    {
 	    	auto pInst = mpDualEdgeRingMaintener->constructEntity();
+	    	setEdgeRingLinks(*pInst);
 	    	return pInst;
 	    }
 
@@ -166,9 +185,11 @@ namespace CrystalMesh{
 	    	// All FacetEdges are unassociated
 	    	bool unAssociated = true;
 
-	    	auto checkUnAssociated = [&unAssociated](FacetEdge const aArg ){
+	    	auto checkUnAssociated = [&unAssociated](FacetEdge const & aArg ){
 	    		if (notNullptr(aArg.mpDirectedEdgeRing))
 	    			unAssociated = false;
+
+	    		auto const pClock = aArg.getClock();
 
 	    		if (notNullptr(aArg.getClock()->mpDirectedEdgeRing))
 	    			unAssociated = false;

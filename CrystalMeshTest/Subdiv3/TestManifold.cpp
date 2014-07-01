@@ -48,6 +48,22 @@ TEST(Manifold, EdgeAlgebra){
 	EXPECT_EQ(clockDual, clockDual->getEnext());
 }
 
+TEST(Manifold, Quaternode){
+	Manifold mf;
+	auto const  eRef =  mf.makeFacetEdge();
+
+	auto const pQn = eRef->getQuaterNode();
+
+	for (int i = 0; i<3; i++){
+		auto const & current = pQn->mNodeArray[i];
+		EXPECT_TRUE(isNullptr(current.mpVertex));
+		EXPECT_TRUE(isNullptr(current.mpDirectedEdgeRing));
+		EXPECT_TRUE(notNullptr(current.mpNext));
+
+	}
+
+}
+
 
 namespace{
 
@@ -111,6 +127,30 @@ TEST(Manifold, SpliceEdges){
 
 	SCOPED_TRACE("Elementary spliceFacets operation");
 	checkSpliceEdgesEdgeAlgebra(*e0, *enext0, *e1, *enext1);
+}
+
+TEST(Manifold, EdgeRingLinking){
+
+	Manifold mf;
+
+	auto e0 = mf.makeFacetEdge();
+	auto e1 = mf.makeFacetEdge();
+	auto e2 = mf.makeFacetEdge();
+
+	mf.spliceFacets(*e0, *e1);
+	mf.spliceFacets(*e1, *e2);
+	mf.spliceFacets(*e2, *e0);
+
+	auto ring = mf.makePrimalEdgeRing();
+
+	mf.linkEdgeRingAndFacetEdges(*ring, *e0);
+
+	EXPECT_EQ(ring->computeEdgeRingSize(), 3);
+
+
+
+
+
 }
 
 

@@ -4,14 +4,20 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../Subdiv3/DirectedEdgeRing.cpp \
+../Subdiv3/EdgeRing.cpp \
 ../Subdiv3/FacetEdge.cpp \
 ../Subdiv3/Manifold.cpp 
 
 OBJS += \
+./Subdiv3/DirectedEdgeRing.o \
+./Subdiv3/EdgeRing.o \
 ./Subdiv3/FacetEdge.o \
 ./Subdiv3/Manifold.o 
 
 CPP_DEPS += \
+./Subdiv3/DirectedEdgeRing.d \
+./Subdiv3/EdgeRing.d \
 ./Subdiv3/FacetEdge.d \
 ./Subdiv3/Manifold.d 
 
