@@ -16,6 +16,10 @@ namespace CrystalMesh{
 
 		struct EdgeRing{
 
+			bool const isDual() const;
+
+			bool const isPrimal() const;
+
 			DirectedEdgeRing mRings[2];
 			void * mpData;
 		};

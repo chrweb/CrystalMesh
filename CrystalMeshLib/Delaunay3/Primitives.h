@@ -10,7 +10,7 @@ namespace CrystalMesh{
 
 	namespace Subdiv3{
 
-		struct EdgeRing;
+		struct DirectedEdgeRing;
 
 		struct Vertex;
 
@@ -27,9 +27,9 @@ namespace CrystalMesh{
 
 		};
 
-		struct Triangle{
-
-			Subdiv3::EdgeRing* mpDualEdgeRing;
+		struct Triangle
+		{
+			Subdiv3::DirectedEdgeRing* mpDualEdgeRing;
 		};
 
 		struct Tetraeder{

@@ -9,7 +9,8 @@
 #include  "../Misc/Checks.h"
 #include "Vertex.h"
 #include "QuaterNode.h"
-
+#include "EdgeRing.h"
+#include <assert.h>
 namespace CrystalMesh{
 
 	namespace Subdiv3{
@@ -42,6 +43,14 @@ namespace CrystalMesh{
 		{
 
 		}
+
+	    Manifold::~Manifold(){
+	    	delete mpPrimalVertexMaintener;
+	    	delete mpDualVertexMaintener;
+	    	delete mpQuaterNodeMaintener;
+	    	delete mpPrimalEdgeRingMaintener;
+	    	delete mpDualEdgeRingMaintener;
+	    }
 
 
 	    namespace{
@@ -114,6 +123,95 @@ namespace CrystalMesh{
 	    void Manifold::spliceEdges(FacetEdge& aFe0, FacetEdge& aFe1){
 	    	spliceFacets(*aFe0.getDual(), *aFe1.getDual());
 	    }
+
+	    EdgeRing * Manifold::makeDualEdgeRing()
+	    {
+	    	auto pInst = mpDualEdgeRingMaintener->constructEntity();
+	    	return pInst;
+	    }
+
+	    void Manifold::linkEdgeRingAndFacetEdges(EdgeRing& aEring, FacetEdge & aRingRep){
+
+	    	// preconditions:
+	    	// preconditions are verified in only in debug
+	    	// fail should cause termination
+	    	#ifndef NDEBUG
+
+	    	// EdgeRing's flavor
+	    	bool isDualEdgeRing = isMyDualEdgeRing(aEring);
+
+	    	bool isPrimalEdgeRing = isMyPrimalEdgeRing(aEring);
+
+	    	// EdgeRing must be element of this
+	    	MUST_BE(isDualEdgeRing ^ isPrimalEdgeRing);
+
+	    	// FacetEdge's flavor
+	    	bool isDualFacetEdge = aRingRep.isDual();
+
+	    	// FacetEdge is part of this
+	    	bool isMyFe= isMyFacetEdge(aRingRep);
+
+	    	MUST_BE(isMyFe);
+
+	    	// FacetEdge must be same flavor as EdgeRing
+	    	if (isDualEdgeRing)
+	    		MUST_BE(isDualFacetEdge);
+	    	else
+	    		MUST_BE(!isDualFacetEdge);
+
+	    	// Edge ring is unassociated
+	    	MUST_BE(isNullptr(aEring.mRings[0].mpRingMember));
+	    	MUST_BE(isNullptr(aEring.mRings[1].mpRingMember));
+
+	    	// All FacetEdges are unassociated
+	    	bool unAssociated = true;
+
+	    	auto checkUnAssociated = [&unAssociated](FacetEdge const aArg ){
+	    		if (notNullptr(aArg.mpDirectedEdgeRing))
+	    			unAssociated = false;
+
+	    		if (notNullptr(aArg.getClock()->mpDirectedEdgeRing))
+	    			unAssociated = false;
+	    	};
+
+	    	forEachElementInFnextRing(aRingRep, checkUnAssociated);
+
+	    	MUST_BE(unAssociated);
+
+			#endif
+
+	    	// link EdgeRing to FacetEdge
+	    	aEring.mRings[0].mpRingMember = &aRingRep;
+	    	aEring.mRings[1].mpRingMember = aRingRep.getClock();
+
+	    	auto  & ringRef = aEring;
+
+	    	// link FacetEdges to Ring:
+	    	auto ringLinker = [&ringRef](FacetEdge & aRef){
+	    		aRef.mpDirectedEdgeRing = &ringRef.mRings[0];
+	    		aRef.getClock()->mpDirectedEdgeRing = &ringRef.mRings[1];
+	    	};
+
+	    	forEachElementInFnextRing(aRingRep, ringLinker);
+
+	    	return;
+
+	    }
+
+		bool const Manifold::isMyFacetEdge(FacetEdge const & aFe) const{
+			auto const qn = aFe.getQuaterNode();
+			return mpQuaterNodeMaintener->isMyEntity(*qn);
+		}
+
+		bool const Manifold::isMyPrimalEdgeRing(EdgeRing const & aRing) const{
+			return mpPrimalEdgeRingMaintener->isMyEntity(aRing);
+		}
+
+		bool const Manifold::isMyDualEdgeRing(EdgeRing const & aRing) const{
+			return mpDualEdgeRingMaintener->isMyEntity(aRing);
+		}
+
+
 
 
 

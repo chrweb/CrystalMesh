@@ -20,7 +20,6 @@ namespace CrystalMesh{
 			/**
 			 * Access to origin/ destination
 			 */
-
 			Vertex const * getOrg() const;
 			Vertex * getOrg();
 
@@ -58,6 +57,13 @@ namespace CrystalMesh{
 		    FacetEdge const * getInvEnext() const;
 		    FacetEdge * getInvEnext();
 
+		    /**
+		     *  Access to QuaterNode
+		     */
+		    QuaterNode const * getQuaterNode() const;
+		    QuaterNode * getQuaterNode();
+
+
 			Vertex* mpVertex;
 			DirectedEdgeRing* mpDirectedEdgeRing;
 			FacetEdge *mpNext;
@@ -69,6 +75,25 @@ namespace CrystalMesh{
 
 		};
 
-	}
+		template<typename Functor>
+		void forEachElementInFnextRing(FacetEdge  & aStart, Functor const &aFunct){
+			auto  pCurrent = &aStart;
+			auto  pEnd = pCurrent;
+			do{
+				aFunct.operator()(*pCurrent);
+				pCurrent = pCurrent->getFnext();
+			}while(pCurrent != pEnd);
+
+			return;
+		}
+
+		template<typename Functor>
+		void forEachElementInFnextRing(FacetEdge const  & aStart, Functor const &aFunct){
+			auto & nonConstRef = const_cast<FacetEdge&>(aStart);
+			forEachElementInFnextRing(nonConstRef, aFunct);
+		}
+
+
+		}
 }
 

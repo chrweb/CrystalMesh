@@ -20,8 +20,6 @@ namespace CrystalMesh{
 			__builtin_trap();
 
 	}
-
-
 }
 
 

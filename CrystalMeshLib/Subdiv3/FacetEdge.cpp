@@ -141,6 +141,23 @@ namespace CrystalMesh{
 			  return getClock()->getEnext()->getClock();
 		  }
 
+		  QuaterNode const * FacetEdge::getQuaterNode() const{
+			  return reinterpret_cast<QuaterNode const *>( this-mIndex);
+		  }
+
+		  QuaterNode * FacetEdge::getQuaterNode(){
+			  return reinterpret_cast<QuaterNode *>( this-mIndex);
+		  }
+
+		  bool FacetEdge::isPrimal() const{
+			  return (mIndex == 0 || mIndex ==2);
+		  }
+
+		  bool FacetEdge::isDual() const{
+			  return !isPrimal();
+		  }
+
+
 
 
 

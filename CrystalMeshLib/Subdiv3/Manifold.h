@@ -22,6 +22,8 @@ namespace CrystalMesh{
 
 			Manifold(const Manifold & aSrc);
 
+			~Manifold();
+
 			FacetEdge * makeFacetEdge();
 
 			Vertex * makePrimalVertex();
@@ -46,9 +48,21 @@ namespace CrystalMesh{
 
 			void spliceEdges(FacetEdge& aFe0, FacetEdge& aFe1);
 
-			void linkEdgeRingAndFacetedges(EdgeRing& aEring, FacetEdge & aRingRep);
+			void linkEdgeRingAndFacetEdges(EdgeRing& aEring, FacetEdge & aRingRep);
 
 			void linkVertexEdgeRings(Vertex& aVertex, EdgeRing& aEdgeRingRep);
+
+			bool const isMyPrimalVertex(Vertex const & aVert) const;
+
+			bool const isMyDualVertex(Vertex const & aVert) const;
+
+			bool const isMyFacetEdge(FacetEdge const & aFe) const;
+
+			bool const isMyPrimalEdgeRing(EdgeRing const & aRing) const;
+
+			bool const isMyDualEdgeRing(EdgeRing const & aRing) const;
+
+
 
 		private:
 
@@ -57,6 +71,9 @@ namespace CrystalMesh{
 			QuaterNodeMaintener * mpQuaterNodeMaintener;
 			EdgeRingMaintener * mpPrimalEdgeRingMaintener;
 			EdgeRingMaintener * mpDualEdgeRingMaintener;
+
+
+
 		};
 
 

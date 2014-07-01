@@ -23,9 +23,9 @@ namespace CrystalMesh{
 		}
 
 		namespace{
-			Triangle const triangleOf(Subdiv3::EdgeRing * apEdgeRing){
+			Triangle const triangleOf(Subdiv3::DirectedEdgeRing * apRing){
 				Triangle result;
-				result.mpDualEdgeRing = apEdgeRing;
+				result.mpDualEdgeRing = apRing;
 				return result;
 			}
 
@@ -38,13 +38,14 @@ namespace CrystalMesh{
 
 			mpManifold->spliceEdges(*e0, *e1);
 			mpManifold->spliceEdges(*e1, *e2);
+			mpManifold->spliceEdges(*e2, *e0);
 
 			auto ring = mpManifold->makeDualEdgeRing();
 
-			mpManifold->linkEdgeRingAndFacetedges(*ring, *e0->getDual());
+			mpManifold->linkEdgeRingAndFacetEdges(*ring, *e0->getDual());
 
 			Triangle result;
-			result.mpDualEdgeRing = ring;
+			result.mpDualEdgeRing = e0->getDual()->getDirectedEdgeRing();
 
 			return result;
 		}
