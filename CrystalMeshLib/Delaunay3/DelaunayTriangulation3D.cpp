@@ -38,7 +38,6 @@ namespace CrystalMesh{
 
 			mpManifold->spliceEdges(*e0, *e1);
 			mpManifold->spliceEdges(*e1, *e2);
-			mpManifold->spliceEdges(*e2, *e0);
 
 			auto ring = mpManifold->makeDualEdgeRing();
 

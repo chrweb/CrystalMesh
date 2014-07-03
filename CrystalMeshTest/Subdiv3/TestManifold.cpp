@@ -139,7 +139,7 @@ TEST(Manifold, EdgeRingLinking){
 
 	mf.spliceFacets(*e0, *e1);
 	mf.spliceFacets(*e1, *e2);
-	mf.spliceFacets(*e2, *e0);
+	//mf.spliceFacets(*e2, *e0);
 
 	auto ring = mf.makePrimalEdgeRing();
 
