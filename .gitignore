@@ -20,6 +20,8 @@
 
 # Executables
 sample1_unittest
+CrystalMeshTest
+
 
 #Eclipse Metadata may be ignored: 
 https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore

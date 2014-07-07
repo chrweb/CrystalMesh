@@ -61,6 +61,22 @@ namespace CrystalMesh{
 				return result;
 			}
 
+			Vector3D const VectorFromXY0(Vector2D const & aVec){
+
+				Vector3D result = { aVec.mX, aVec.mY, 0.0 };
+				return result;
+			}
+
+			Vector3D const crossProductOf(Vector3D const & a0, Vector3D const & a1){
+				Vector3D result = {
+						a0.mY*a1.mZ - a0.mZ * a1.mY,
+						a0.mZ*a1.mX - a0.mX * a1.mZ,
+						a0.mX*a1.mY - a0.mY * a1.mX,
+				};
+
+				return result;
+			}
+
 
 			double const dotProductOf(Vector3D const & a0, Vector3D const & a1){
 				return a0.mX*a1.mX + a0.mY * a1.mY + a0.mZ * a1.mZ;
