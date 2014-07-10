@@ -62,7 +62,7 @@ namespace CrystalMesh{
 				EdgeArray result;
 				int counter = 0;
 
-				auto collector = [&result, &counter](FacetEdge const & aInst){
+				auto collector = [&result, &counter](FacetEdge  & aInst){
 					MUST_BE(counter < 3);
 					result.mArray[counter] = aInst.getDual();
 					counter++;
@@ -99,7 +99,7 @@ namespace CrystalMesh{
 			EdgeArray ea2 = edgeArrayOf(tri2);
 			EdgeArray ea3 = edgeArrayOf(tri3);
 
-			mpManifold->spliceFacets(ea0.mArray[0], ea1.mArray[0])
+			mpManifold->spliceFacets(*ea0.mArray[0], *ea1.mArray[0]);
 
 
 
