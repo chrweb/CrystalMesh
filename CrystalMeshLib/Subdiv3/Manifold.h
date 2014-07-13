@@ -52,6 +52,8 @@ namespace CrystalMesh{
 
 			void linkVertexEdgeRings(Vertex& aVertex, EdgeRing& aEdgeRingRep);
 
+			void linkVertexDirectedEdgeRings(Vertex& aVertex, EdgeRing& aEdgeRingRep);
+
 			bool const isMyPrimalVertex(Vertex const & aVert) const;
 
 			bool const isMyDualVertex(Vertex const & aVert) const;

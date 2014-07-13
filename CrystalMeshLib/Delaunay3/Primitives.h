@@ -34,6 +34,7 @@ namespace CrystalMesh{
 
 		struct Tetraeder{
 			Triangle mBounds[4];
+			Vertex mVerts[4];
 		};
 
 	}

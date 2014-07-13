@@ -73,6 +73,14 @@ namespace CrystalMesh{
 				return result;
 			}
 
+			Triangle const clockedTriangle(Triangle const & aTri){
+				Triangle result;
+				result.mpDualEdgeRing = aTri.mpDualEdgeRing->mpRingMember->getClock()->getDirectedEdgeRing();
+				return result;
+			}
+
+			typedef uint32_t Counter;
+
 
 
 		}
@@ -99,15 +107,38 @@ namespace CrystalMesh{
 			EdgeArray ea2 = edgeArrayOf(tri2);
 			EdgeArray ea3 = edgeArrayOf(tri3);
 
-			mpManifold->spliceFacets(*ea0.mArray[0], *ea1.mArray[0]);
+			mpManifold->spliceFacets(*ea0.mArray[0], *ea1.mArray[0]->getClock());
+			mpManifold->spliceFacets(*ea0.mArray[1], *ea1.mArray[0]->getClock());
+			mpManifold->spliceFacets(*ea0.mArray[2], *ea1.mArray[0]->getClock());
+
+			mpManifold->spliceFacets(*ea1.mArray[2], *ea2.mArray[1]->getClock());
+			mpManifold->spliceFacets(*ea2.mArray[2], *ea3.mArray[1]->getClock());
+			mpManifold->spliceFacets(*ea3.mArray[2], *ea1.mArray[1]->getClock());
+
+			// constructing edge rings for tet's corner:
+			Subdiv3::EdgeRing* ring[6];
+			for (Counter c = 0; c < 6; c++){
+				ring[c] = mpManifold->makePrimalEdgeRing();
+			}
+
+			// links them..
+			mpManifold->linkEdgeRingAndFacetEdges(*ring[0], *ea0[0]);
+			mpManifold->linkEdgeRingAndFacetEdges(*ring[1], *ea0[1]);
+			mpManifold->linkEdgeRingAndFacetEdges(*ring[2], *ea0[2]);
+
+			mpManifold->linkEdgeRingAndFacetEdges(*ring[3], *ea1[2]);
+			mpManifold->linkEdgeRingAndFacetEdges(*ring[4], *ea2[2]);
+			mpManifold->linkEdgeRingAndFacetEdges(*ring[5], *ea3[2]);
+
+			// linking the primal vertices:
+			//mpManifold->linkVertexEdgeRings()
 
 
 
 
 
 
-
-
+			return result;
 		}
 
 
