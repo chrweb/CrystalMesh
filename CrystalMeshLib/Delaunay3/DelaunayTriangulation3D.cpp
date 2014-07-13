@@ -53,8 +53,14 @@ namespace CrystalMesh{
 
 		namespace {
 
+		typedef uint32_t Counter;
+
 			struct EdgeArray{
 				Subdiv3::FacetEdge * mArray[3];
+
+				Subdiv3::FacetEdge * operator[](Counter i){
+					return mArray[i];
+				}
 			};
 
 			EdgeArray const edgeArrayOf(Triangle const & aTri){
@@ -79,7 +85,9 @@ namespace CrystalMesh{
 				return result;
 			}
 
-			typedef uint32_t Counter;
+			Vertex const vertexOf(Subdiv3::Vertex const * aVert);
+
+
 
 
 
@@ -89,23 +97,26 @@ namespace CrystalMesh{
 
 			Tetraeder result;
 
-			auto tri0 = makeTriangle();
-			auto tri1 = makeTriangle();
-			auto tri2 = makeTriangle();
-			auto tri3 = makeTriangle();
+			Triangle tri[4];
 
-			auto vert0 = mpManifold->makePrimalVertex();
-			auto vert1 = mpManifold->makePrimalVertex();
-			auto vert2 = mpManifold->makePrimalVertex();
-			auto vert3 = mpManifold->makePrimalVertex();
+			for (Counter i = 0; i<4; i++){
+				tri[i] = makeTriangle();
+			}
 
+			Subdiv3::Vertex* verts[4];
+			// four primal vertices
+			for (Counter c = 0; c < 4; c++){
+				 verts[c] = mpManifold->makePrimalVertex();
+			}
+
+			// two dual verts
 			auto extr = mpManifold->makeDualVertex();
 			auto intr = mpManifold->makeDualVertex();
 
-			EdgeArray ea0 = edgeArrayOf(tri0);
-			EdgeArray ea1 = edgeArrayOf(tri1);
-			EdgeArray ea2 = edgeArrayOf(tri2);
-			EdgeArray ea3 = edgeArrayOf(tri3);
+			EdgeArray ea0 = edgeArrayOf(tri[0]);
+			EdgeArray ea1 = edgeArrayOf(tri[1]);
+			EdgeArray ea2 = edgeArrayOf(tri[2]);
+			EdgeArray ea3 = edgeArrayOf(tri[3]);
 
 			mpManifold->spliceFacets(*ea0.mArray[0], *ea1.mArray[0]->getClock());
 			mpManifold->spliceFacets(*ea0.mArray[1], *ea1.mArray[0]->getClock());
@@ -121,7 +132,7 @@ namespace CrystalMesh{
 				ring[c] = mpManifold->makePrimalEdgeRing();
 			}
 
-			// links them..
+			// link them..
 			mpManifold->linkEdgeRingAndFacetEdges(*ring[0], *ea0[0]);
 			mpManifold->linkEdgeRingAndFacetEdges(*ring[1], *ea0[1]);
 			mpManifold->linkEdgeRingAndFacetEdges(*ring[2], *ea0[2]);
@@ -131,12 +142,28 @@ namespace CrystalMesh{
 			mpManifold->linkEdgeRingAndFacetEdges(*ring[5], *ea3[2]);
 
 			// linking the primal vertices:
-			//mpManifold->linkVertexEdgeRings()
+			mpManifold->linkVertexDirectedEdgeRings(*verts[0], *ea3[2]);
+			mpManifold->linkVertexDirectedEdgeRings(*verts[1], *ring[2]);
+			mpManifold->linkVertexDirectedEdgeRings(*verts[2], *ring[0]);
+			mpManifold->linkVertexDirectedEdgeRings(*verts[3], *ring[1]);
+
+			// prepare result:
+			result.mBounds[0] = clockedTriangle(tri0);
+			result.mBounds[1] = clockedTriangle(tri1);
+			result.mBounds[2] = clockedTriangle(tri2);
+			result.mBounds[3] = clockedTriangle(tri3);
+
+			for (Counter i = 0; i < 4; i++){
+				result.mVerts =  vertexOf(verts[i]);
+			}
+
+			// link dual  verts:
+			Subdiv3::DirectedEdgeRing * pToOuter = result.mBounds[0].mpDualEdgeRing;
+			Subdiv3::DirectedEdgeRing * pToInner = pToOuter->getSym();
 
 
-
-
-
+			mpManifold->linkVertexEdgeRings(*extr, *pToInner);
+			mpManifold->linkVertexEdgeRings(*intr, *pToOuter);
 
 			return result;
 		}

@@ -19,6 +19,9 @@ namespace CrystalMesh{
 
 			FacetEdge * mpRingMember;
 
+			DirectedEdgeRing const *getSym() const;
+			DirectedEdgeRing * getSym();
+
 			Counter const computeEdgeRingSize() const;
 		};
 	}
