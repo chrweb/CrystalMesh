@@ -21,6 +21,15 @@ namespace CrystalMesh {
 		return c0;
 	}
 
+	DirectedEdgeRing const & EdgeRing::operator [](FieldIndex aIndex) const{
+		MUST_BE(aIndex < 2);
+		return mRings[aIndex];
+	}
+
+	DirectedEdgeRing & EdgeRing::operator [](FieldIndex aIndex){
+		return const_cast<DirectedEdgeRing&>(operator [](aIndex));
+	}
+
 
 
 }  // namespace CrystalMesh;

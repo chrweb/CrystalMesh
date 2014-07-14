@@ -11,6 +11,8 @@
 #include "QuaterNode.h"
 #include "EdgeRing.h"
 #include <assert.h>
+#include <set>
+#include <vector>
 namespace CrystalMesh{
 
 	namespace Subdiv3{
@@ -149,6 +151,27 @@ namespace CrystalMesh{
 	    	return pInst;
 	    }
 
+	    namespace{
+	    	void setVertexLinks(Vertex & aVert){
+	    		aVert.mpData =  nullptr;
+	    		aVert.mpOut = nullptr;
+	    		return;
+	    	}
+
+	    }
+
+	    Vertex * Manifold::makePrimalVertex(){
+	    	auto pInst = mpPrimalVertexMaintener->constructEntity();
+	    	setVertexLinks(*pInst);
+	    	return pInst;
+	    }
+
+	    Vertex * Manifold::makeDualVertex(){
+	    	auto pInst = mpDualVertexMaintener->constructEntity();
+	    	setVertexLinks(*pInst);
+	    	return pInst;
+	    }
+
 	    void Manifold::linkEdgeRingAndFacetEdges(EdgeRing& aEring, FacetEdge & aRingRep){
 
 	    	// preconditions:
@@ -191,7 +214,7 @@ namespace CrystalMesh{
 
 	    		auto const pClock = aArg.getClock();
 
-	    		if (notNullptr(aArg.getClock()->mpDirectedEdgeRing))
+	    		if (notNullptr(pClock->mpDirectedEdgeRing))
 	    			unAssociated = false;
 	    	};
 
@@ -216,6 +239,19 @@ namespace CrystalMesh{
 	    	forEachElementInFnextRing(aRingRep, ringLinker);
 
 	    	return;
+
+	    }
+
+	    namespace{
+
+	    	typedef std::vector<DirectedEdgeRing*> IncidentEdgeRings;
+
+	    	IncidentEdgeRings const incidentRingsOf(Vertex const& aVert);
+
+
+	    }
+
+	    void Manifold::linkVertexDirectedEdgeRings(Vertex & aVert, DirectedEdgeRing & aDring){
 
 	    }
 

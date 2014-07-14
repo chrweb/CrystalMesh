@@ -78,7 +78,7 @@ namespace CrystalMesh{
 
 			Triangle const makeTriangle();
 
-			Tetraeder const makeTetraeder();
+			Tetraeder const makeTetrahedron();
 
 
 

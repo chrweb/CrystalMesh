@@ -22,6 +22,15 @@ namespace CrystalMesh{
 			return result;
 		}
 
+		DirectedEdgeRing const * DirectedEdgeRing::getSym() const{
+			MUST_BE(notNullptr(mpRingMember));
+			return mpRingMember->getClock()->getDirectedEdgeRing();
+		}
+		DirectedEdgeRing * DirectedEdgeRing::getSym(){
+			return const_cast<DirectedEdgeRing *>(getSym());
+		}
+
+
 
 
 

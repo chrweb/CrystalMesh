@@ -50,9 +50,7 @@ namespace CrystalMesh{
 
 			void linkEdgeRingAndFacetEdges(EdgeRing& aEring, FacetEdge & aRingRep);
 
-			void linkVertexEdgeRings(Vertex& aVertex, EdgeRing& aEdgeRingRep);
-
-			void linkVertexDirectedEdgeRings(Vertex& aVertex, EdgeRing& aEdgeRingRep);
+			void linkVertexDirectedEdgeRings(Vertex& aVertex, DirectedEdgeRing& aRingRep);
 
 			bool const isMyPrimalVertex(Vertex const & aVert) const;
 

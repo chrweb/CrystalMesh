@@ -22,6 +22,10 @@ namespace CrystalMesh{
 
 			Counter const computeEdgeRingSize() const;
 
+			DirectedEdgeRing & operator[](FieldIndex aIndex);
+
+			DirectedEdgeRing const & operator[](FieldIndex aIndex) const;
+
 			DirectedEdgeRing mRings[2];
 			void * mpData;
 		};
