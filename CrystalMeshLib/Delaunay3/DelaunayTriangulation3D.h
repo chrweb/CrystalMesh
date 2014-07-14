@@ -35,6 +35,8 @@ namespace CrystalMesh{
 
 			DelaunayTriangulation3D( DelaunayTriangulation3D const & aSrc);
 
+			~DelaunayTriangulation();
+
 			struct Flip1To4Result{
 
 			};

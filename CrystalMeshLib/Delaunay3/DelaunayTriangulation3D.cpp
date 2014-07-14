@@ -24,6 +24,11 @@ namespace CrystalMesh{
 
 		}
 
+		DelaunayTriangulation3D::~DelaunayTriangulation(){
+			delete mpManifold;
+			delete mpToVetexData;
+		}
+
 		namespace{
 			Triangle const triangleOf(Subdiv3::DirectedEdgeRing * apRing){
 				Triangle result;
