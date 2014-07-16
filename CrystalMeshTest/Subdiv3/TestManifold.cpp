@@ -16,13 +16,85 @@ using namespace CrystalMesh;
 using namespace Subdiv3;
 
 
+
+
 namespace{
-
-//	void basicEdgeArithmTest(FacetEdge const & aRef){
-//
-//	}
-
+	void testVertexProperties(Vertex const & aVert){
+		EXPECT_EQ(aVert.mpOut, nullptr);
+		EXPECT_EQ(aVert.mpData, nullptr);
+	}
 }
+
+// Test some properties of a primal vertex, constructed in a manifold:
+TEST(Manifold, PrimalVertex){
+	Manifold mf;
+	// Primal vertex is here in context of the manifold:
+	auto const primVert = mf.makePrimalVertex();
+
+	//this will cause an abortion..
+	//EXPECT_TRUE(primVert->isPrimal();
+
+	// But we can ask the manifold about this property...
+	EXPECT_TRUE(mf.isMyPrimalVertex(*primVert));
+	//... and verify, its members are as expected:
+	SCOPED_TRACE("Primal vertex properties");
+	testVertexProperties(*primVert);
+}
+
+// same with dual vertex
+TEST(Manifold, DualVertex){
+	Manifold mf;
+	auto const vert = mf.makeDualVertex();
+	EXPECT_TRUE(mf.isMyDualVertex(*vert));
+	//... and verify, its members are as expected:
+	SCOPED_TRACE("Dual  vertex properties");
+	testVertexProperties(*vert);
+}
+
+namespace{
+	void testEdgeRingProps(EdgeRing const & aRing){
+		for (FieldIndex i = 0; i<2; i++){
+			auto const & currentDirectedRing = aRing.mRings[i];
+			EXPECT_EQ(currentDirectedRing.mIndex, i);
+			EXPECT_EQ(currentDirectedRing.mpOrg, nullptr);
+			EXPECT_EQ(currentDirectedRing.mpRingMember, nullptr);
+		}
+	}
+}
+
+// Test EdgeRing construction
+TEST(Manifold, PrimalEdgeRing){
+	Manifold mf;
+	auto const ring = mf.makePrimalEdgeRing();
+	EXPECT_TRUE(mf.isMyPrimalEdgeRing(*ring));
+	SCOPED_TRACE("Primal edge ring");
+	testEdgeRingProps(*ring);
+}
+
+// And Dual
+TEST(Manifold, DualEdgeRing){
+	Manifold mf;
+	auto const ring = mf.makeDualEdgeRing();
+	EXPECT_TRUE(mf.isMyDualEdgeRing(*ring));
+	SCOPED_TRACE("Dual edge ring");
+	testEdgeRingProps(*ring);
+}
+
+
+TEST(Manifold, FacetEdgePrimalDual){
+	Manifold mf;
+
+	auto const  eRef =  mf.makeFacetEdge();
+	auto const  clock = eRef->getClock();
+	auto const  dual = eRef->getDual();
+	auto const  clockDual = eRef->getClock()->getDual();
+
+	EXPECT_TRUE(eRef->isPrimal());
+	EXPECT_TRUE(clock->isPrimal());
+	EXPECT_TRUE(dual->isDual());
+	EXPECT_TRUE(clockDual->isDual());
+}
+
 
 
 TEST(Manifold, EdgeAlgebra){
@@ -37,6 +109,8 @@ TEST(Manifold, EdgeAlgebra){
 
 	auto const  clockDual = eRef->getClock()->getDual();
 
+	auto const dualClock = eRef->getDual()->getClock();
+
 	EXPECT_EQ(eRef, eRef->getFnext());
 	EXPECT_EQ(clock, clock->getFnext());
 	EXPECT_EQ(dual, dual->getFnext());
@@ -46,6 +120,9 @@ TEST(Manifold, EdgeAlgebra){
 	EXPECT_EQ(clock, clock->getEnext());
 	EXPECT_EQ(dual, dual->getEnext());
 	EXPECT_EQ(clockDual, clockDual->getEnext());
+
+	EXPECT_EQ(clockDual, dualClock);
+
 }
 
 TEST(Manifold, Quaternode){
@@ -56,7 +133,7 @@ TEST(Manifold, Quaternode){
 
 	for (int i = 0; i<3; i++){
 		auto const & current = pQn->mNodeArray[i];
-		EXPECT_TRUE(isNullptr(current.mpVertex));
+		//EXPECT_TRUE(isNullptr(current.mpVertex));
 		EXPECT_TRUE(isNullptr(current.mpDirectedEdgeRing));
 		EXPECT_TRUE(notNullptr(current.mpNext));
 
@@ -145,11 +222,7 @@ TEST(Manifold, EdgeRingLinking){
 
 	mf.linkEdgeRingAndFacetEdges(*ring, *e0);
 
-	EXPECT_EQ(ring->computeEdgeRingSize(), 3);
-
-
-
-
+	EXPECT_EQ(ring->computeEdgeRingSize(), 3u);
 
 }
 

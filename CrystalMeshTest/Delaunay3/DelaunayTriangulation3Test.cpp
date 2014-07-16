@@ -20,13 +20,13 @@ TEST(Delaunay3, TriangleTopology){
 	auto triangle = dt.makeTriangle();
 }
 
-TEST(Delaunay3, TetTopology){
-	using namespace Delaunay3;
-
-	DelaunayTriangulation3D dt;
-
-	auto tet = dt.makeTetrahedron();
-
-}
+//TEST(Delaunay3, TetTopology){
+//	using namespace Delaunay3;
+//
+//	DelaunayTriangulation3D dt;
+//
+//	auto tet = dt.makeTetrahedron();
+//
+//}
 
 

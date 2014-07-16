@@ -24,10 +24,6 @@ namespace CrystalMesh{
 				return aFe.mClckIt == 2  || aFe.mClckIt== -2;
 			}
 
-//			bool checkReverseIteration(FacetEdge const & aFe){
-//				return aFe.mRevsIt == 1  || aFe.mRevsIt == -1;
-//			}
-
 			bool checkDualIteration(FacetEdge const & aFe){
 				return aFe.mDualIt == 1  || aFe.mDualIt == -1;
 			}
@@ -89,15 +85,6 @@ namespace CrystalMesh{
 			  return jumpTo(*this, mDualIt);
 		  }
 
-//	      FacetEdge const &	FacetEdge::getRev() const{
-//	    	  MUST_BE(checkReverseIteration(*this));
-//	    	  return jumpTo(*this, mRevsIt);
-//	      }
-//
-//		  FacetEdge &	FacetEdge::getRev(){
-//	    	  MUST_BE(checkReverseIteration(*this));
-//	    	  return jumpTo(*this, mRevsIt);
-//		  }
 
 		  FacetEdge const * FacetEdge::getClock() const{
 	    	  MUST_BE(checkClockIteration(*this));
