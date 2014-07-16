@@ -30,14 +30,12 @@ namespace CrystalMesh{
 		    DirectedEdgeRing * getDirectedEdgeRing();
 
 		    /**
-		     * Other members in current OctoNode
+		     * Other members in current QuaterNode
 		     */
 
 		    FacetEdge const *	getDual() const;
 		    FacetEdge * getDual();
 
-		    //FacetEdge const &	getRev() const;
-		    //FacetEdge &	getRev();
 
 		    FacetEdge const * getClock() const;
 		    FacetEdge* 	getClock();
@@ -64,13 +62,11 @@ namespace CrystalMesh{
 		    QuaterNode * getQuaterNode();
 
 
-			Vertex* mpVertex;
 			DirectedEdgeRing* mpDirectedEdgeRing;
 			FacetEdge *mpNext;
 
 			FieldIndex mIndex;
 			FieldIndex  mDualIt;
-			//FieldIndex  mRevsIt;
 			FieldIndex  mClckIt;
 
 		};

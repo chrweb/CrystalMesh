@@ -53,13 +53,12 @@ namespace CrystalMesh{
 		}
 
 		Vertex const * FacetEdge::getOrg() const{
-			checkValidPtr(mpVertex);
-			return mpVertex;
+			checkValidPtr(mpDirectedEdgeRing);
+			return getDirectedEdgeRing()->getOrg();
 		}
 
 		Vertex * FacetEdge::getOrg(){
-			checkValidPtr(mpVertex);
-			return mpVertex;
+			return const_cast<Vertex*>(getOrg());
 		};
 
 		Vertex const * FacetEdge::getDest() const{

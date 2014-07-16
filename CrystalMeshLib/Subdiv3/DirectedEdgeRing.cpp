@@ -30,8 +30,36 @@ namespace CrystalMesh{
 			return const_cast<DirectedEdgeRing *>(getSym());
 		}
 
+		bool const DirectedEdgeRing::isDual() const{
+			return mpRingMember->isDual();
+		}
 
+		bool const DirectedEdgeRing::isPrimal() const{
+			return !isDual();
+		}
 
+		Vertex const * DirectedEdgeRing::getOrg() const{
+			return mpOrg;
+		}
+
+		Vertex * DirectedEdgeRing::getOrg()
+		{
+			return mpOrg;
+		}
+
+		EdgeRing const * DirectedEdgeRing::getEdgeRing() const{
+			MUST_BE(mIndex == 0 || mIndex ==1);
+			if (mIndex == 1){
+				DirectedEdgeRing const* other = this;
+				--other;
+				return reinterpret_cast<EdgeRing const*>(other);
+			}
+
+			return reinterpret_cast<EdgeRing const*>(this);
+		}
+		EdgeRing * DirectedEdgeRing::getEdgeRing(){
+			return const_cast<EdgeRing*>(getEdgeRing());
+		}
 
 
 	}  // namespace  Subdiv3

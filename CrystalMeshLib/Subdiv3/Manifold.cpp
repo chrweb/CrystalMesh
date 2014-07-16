@@ -88,7 +88,6 @@ namespace CrystalMesh{
 	    			ref->mpNext = ref;
 
 	    			ref->mpDirectedEdgeRing = nullptr;
-	    			ref->mpVertex = nullptr;
 	    		}
 	    	}
 
@@ -132,9 +131,14 @@ namespace CrystalMesh{
 	    }
 
 	    namespace{
-	    	void setEdgeRingLinks(EdgeRing & aRing){
-	    		aRing.mRings[0].mpRingMember = nullptr;
-	    		aRing.mRings[1].mpRingMember = nullptr;
+	    	void setEdgeRingMemberVars(EdgeRing & aRing){
+
+	    		for (FieldIndex i = 0; i<2; i++){
+	    			aRing.mRings[i].mpRingMember = nullptr;
+	    			aRing.mRings[i].mpOrg = nullptr;
+	    			aRing.mRings[i].mIndex = i;
+	    		}
+
 	    	}
 
 	    }
@@ -142,14 +146,14 @@ namespace CrystalMesh{
 	    EdgeRing * Manifold::makePrimalEdgeRing()
 	   	    {
 	   	    	auto pInst = mpPrimalEdgeRingMaintener->constructEntity();
-	   	    	setEdgeRingLinks(*pInst);
+	   	    	setEdgeRingMemberVars(*pInst);
 	   	    	return pInst;
 	   	    }
 
 	    EdgeRing * Manifold::makeDualEdgeRing()
 	    {
 	    	auto pInst = mpDualEdgeRingMaintener->constructEntity();
-	    	setEdgeRingLinks(*pInst);
+	    	setEdgeRingMemberVars(*pInst);
 	    	return pInst;
 	    }
 
@@ -262,7 +266,7 @@ namespace CrystalMesh{
 
 	    	// All incident rings to a vertex may be extracted by a BFS:
 	    	// http://en.wikipedia.org/wiki/Breadth-first_search
-	    	IncidentEdgeRings const incidentRingsOf(Vertex const& aVert){
+	    	IncidentEdgeRings const incidentRingsOf(Vertex & aVert){
 
 	    		typedef std::queue<DirectedEdgeRing*> NodeQueue;
 	    		std::set<DirectedEdgeRing*> visitedNodes;
@@ -270,7 +274,7 @@ namespace CrystalMesh{
 	    		NodeQueue nodeQueue;
 
 	    		// initial node:
-	    		auto initialNode = aVert.mpOut->getDirectedEdgeRing();
+	    		DirectedEdgeRing * initialNode = aVert.getDirectedEdgeRing();
 	    		nodeQueue.push(initialNode);
 	    		visitedNodes.insert(initialNode);
 
@@ -292,9 +296,16 @@ namespace CrystalMesh{
 	    		return result;
 	    	}
 
-	    	void linkVertexToDirectedEdgeRing(Vertex * apVert, DirectedEdgeRing & aDring);
+	    	void linkVertexToDirectedEdgeRing(Vertex * apVert, DirectedEdgeRing & aDring){
+	    		// TODO: check nullptr'ness here..?
+	    		aDring.mpOrg = apVert;
 
-	    	void linkDirectedEdgeRingToVertex(DirectedEdgeRing * apDring, Vertex& aVert);
+	    	}
+
+	    	void linkDirectedEdgeRingToVertex(DirectedEdgeRing * apDring, Vertex& aVert){
+	    		// TODO: check nullptr'ness here..?
+	    		aVert.mpOut = apDring;
+	    	}
 
 
 	    }
@@ -350,6 +361,15 @@ namespace CrystalMesh{
 		bool const Manifold::isMyDualEdgeRing(EdgeRing const & aRing) const{
 			return mpDualEdgeRingMaintener->isMyEntity(aRing);
 		}
+
+		bool const Manifold::isMyPrimalVertex(Vertex const & aVert) const{
+			return mpPrimalVertexMaintener->isMyEntity(aVert);
+		}
+
+		bool const Manifold::isMyDualVertex(Vertex const & aVert) const{
+			return mpDualVertexMaintener->isMyEntity(aVert);
+		}
+
 
 
 
