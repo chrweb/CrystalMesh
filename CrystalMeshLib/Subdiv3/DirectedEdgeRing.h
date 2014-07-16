@@ -19,8 +19,19 @@ namespace CrystalMesh{
 
 			FacetEdge * mpRingMember;
 
+			bool const isDual() const;
+
+			bool const isPrimal() const;
+
+
 			DirectedEdgeRing const *getSym() const;
 			DirectedEdgeRing * getSym();
+
+			Vertex const * getOrg() const;
+			Vertex * getOrg();
+
+			EdgeRing const * getEdgeRing() const;
+			EdgeRing * getEdgeRing();
 
 			Counter const computeEdgeRingSize() const;
 		};

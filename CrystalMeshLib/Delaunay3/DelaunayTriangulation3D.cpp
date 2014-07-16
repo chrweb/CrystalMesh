@@ -24,7 +24,7 @@ namespace CrystalMesh{
 
 		}
 
-		DelaunayTriangulation3D::~DelaunayTriangulation(){
+		DelaunayTriangulation3D::~DelaunayTriangulation3D(){
 			delete mpManifold;
 			delete mpToVetexData;
 		}

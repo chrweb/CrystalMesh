@@ -13,6 +13,8 @@
 #include <assert.h>
 #include <set>
 #include <vector>
+#include <queue>
+
 namespace CrystalMesh{
 
 	namespace Subdiv3{
@@ -246,13 +248,94 @@ namespace CrystalMesh{
 
 	    	typedef std::vector<DirectedEdgeRing*> IncidentEdgeRings;
 
-	    	IncidentEdgeRings const incidentRingsOf(Vertex const& aVert);
+	    	IncidentEdgeRings const incidentEdgeRingsFrom(DirectedEdgeRing * apRing){
+	    		IncidentEdgeRings result;
+
+	    		auto collector = [&result](FacetEdge & aFe){
+	    			result.push_back(aFe.getInvEnext()->getClock()->getDirectedEdgeRing());
+	    		};
+
+	    		forEachElementInFnextRing(*apRing->mpRingMember, collector);
+	    		return result;
+	    	}
+
+
+	    	// All incident rings to a vertex may be extracted by a BFS:
+	    	// http://en.wikipedia.org/wiki/Breadth-first_search
+	    	IncidentEdgeRings const incidentRingsOf(Vertex const& aVert){
+
+	    		typedef std::queue<DirectedEdgeRing*> NodeQueue;
+	    		std::set<DirectedEdgeRing*> visitedNodes;
+
+	    		NodeQueue nodeQueue;
+
+	    		// initial node:
+	    		auto initialNode = aVert.mpOut->getDirectedEdgeRing();
+	    		nodeQueue.push(initialNode);
+	    		visitedNodes.insert(initialNode);
+
+	    		while(!nodeQueue.empty()){
+	    			auto current = nodeQueue.front();
+
+	    			auto const nextNodes = incidentEdgeRingsFrom(current);
+
+	    			for(auto current: nextNodes){
+	    				// the node was not visited yet:
+	    				if (visitedNodes.insert(current).second){
+	    					// add this node into queue to get neighbored nodes:
+	    					nodeQueue.push(current);
+	    				}
+	    			}
+	    		}
+
+	    		IncidentEdgeRings result(visitedNodes.begin(), visitedNodes.end());
+	    		return result;
+	    	}
+
+	    	void linkVertexToDirectedEdgeRing(Vertex * apVert, DirectedEdgeRing & aDring);
+
+	    	void linkDirectedEdgeRingToVertex(DirectedEdgeRing * apDring, Vertex& aVert);
 
 
 	    }
 
 	    void Manifold::linkVertexDirectedEdgeRings(Vertex & aVert, DirectedEdgeRing & aDring){
 
+	    	// Edge rings is instance of this
+	    	if (aDring.isDual())
+	    		MUST_BE(isMyDualEdgeRing(*aDring.getEdgeRing()));
+	    	else
+	    		MUST_BE(isMyPrimalEdgeRing(*aDring.getEdgeRing()));
+
+	    	// Vertex is instance of this
+	    	if (aVert.isDual())
+	    		MUST_BE(isMyDualVertex(aVert));
+	    	else
+	    		MUST_BE(isMyPrimalVertex(aVert));
+
+	    	// Must link dual to dual or primal to primal:
+	    	MUST_BE((aDring.isDual() && aVert.isDual()) ^ (aDring.isPrimal() && aVert.isPrimal()));
+
+	    	// get every incident edge ring
+	    	auto incEdgeRings = incidentRingsOf(aVert);
+
+	    	// TODO: Check, check every item is unassociated ...?
+
+	    	// vertex not associated
+	    	MUST_BE(isNullptr(aVert.mpOut));
+
+	    	for (auto const item: incEdgeRings){
+	    		isNullptr(item->getOrg());
+	    	}
+
+	    	linkDirectedEdgeRingToVertex(&aDring, aVert);
+
+	    	for(auto const imtem: incEdgeRings){
+	    		linkVertexToDirectedEdgeRing(&aVert, aDring);
+	    	}
+
+	    	// done
+	    	return;
 	    }
 
 		bool const Manifold::isMyFacetEdge(FacetEdge const & aFe) const{
