@@ -48,7 +48,9 @@ namespace CrystalMesh{
 
 			void spliceEdges(FacetEdge& aFe0, FacetEdge& aFe1);
 
-			void linkEdgeRingAndFacetEdges(EdgeRing& aEring, FacetEdge & aRingRep);
+			void linkEdgeRingAndFacetEdges(EdgeRing& aEring, FacetEdge & aRingRep) const;
+
+			void dislinkEdgeRing(EdgeRing & aEring) const;
 
 			void linkVertexDirectedEdgeRings(Vertex& aVertex, DirectedEdgeRing& aRingRep);
 

@@ -4,13 +4,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../Subdiv3/TestManifold.cpp 
+../Subdiv3/TestManifold.cpp \
+../Subdiv3/TestTopologicalOperations.cpp 
 
 OBJS += \
-./Subdiv3/TestManifold.o 
+./Subdiv3/TestManifold.o \
+./Subdiv3/TestTopologicalOperations.o 
 
 CPP_DEPS += \
-./Subdiv3/TestManifold.d 
+./Subdiv3/TestManifold.d \
+./Subdiv3/TestTopologicalOperations.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

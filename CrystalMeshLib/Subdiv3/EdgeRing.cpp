@@ -11,17 +11,22 @@ namespace CrystalMesh {
 
 	using namespace Subdiv3;
 
-	Counter const EdgeRing::computeEdgeRingSize() const{
+const Counter EdgeRing::computeEdgeRingSize() const {
+	const auto c0 = mRings[0].computeEdgeRingSize();
+	const auto c1 = mRings[1].computeEdgeRingSize();
+	MUST_BE(c0 == c1);
+	return c0;
+}
 
-		auto const c0 = mRings[0].computeEdgeRingSize();
-		auto const c1 = mRings[1].computeEdgeRingSize();
+const bool Subdiv3::EdgeRing::isDual() const {
+	return mRings[0].isDual();
+}
 
-		MUST_BE(c0 == c1);
+const bool Subdiv3::EdgeRing::isPrimal() const {
+	return !isDual();
+}
 
-		return c0;
-	}
-
-	DirectedEdgeRing const & EdgeRing::operator [](FieldIndex aIndex) const{
+const DirectedEdgeRing& EdgeRing::operator [](FieldIndex aIndex) const{
 		MUST_BE(aIndex < 2);
 		return mRings[aIndex];
 	}

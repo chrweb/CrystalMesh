@@ -178,7 +178,7 @@ namespace CrystalMesh{
 	    	return pInst;
 	    }
 
-	    void Manifold::linkEdgeRingAndFacetEdges(EdgeRing& aEring, FacetEdge & aRingRep){
+	    void Manifold::linkEdgeRingAndFacetEdges(EdgeRing& aEring, FacetEdge & aRingRep) const {
 
 	    	// preconditions:
 	    	// preconditions are verified in only in debug
@@ -246,6 +246,19 @@ namespace CrystalMesh{
 
 	    	return;
 
+	    }
+
+	    void dislinkEdgeRing(EdgeRing & aEring) const{
+
+	    	auto disLinker = [](FacetEdge& aRef){
+	    		aRef.mpDirectedEdgeRing = nullptr;
+	    		aRef.getClock()->mpDirectedEdgeRing = nullptr;
+	    	};
+
+	    	aEring[0].mpRingMember = nullptr;
+	    	aEring[1].mpRingMember = nullptr;
+
+	    	return;
 	    }
 
 	    namespace{

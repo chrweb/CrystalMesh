@@ -223,7 +223,6 @@ TEST(Manifold, EdgeRingLinking){
 	mf.linkEdgeRingAndFacetEdges(*ring, *e0);
 
 	EXPECT_EQ(ring->computeEdgeRingSize(), 3u);
-
 }
 
 
