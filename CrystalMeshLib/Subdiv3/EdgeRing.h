@@ -27,7 +27,6 @@ namespace CrystalMesh{
 			DirectedEdgeRing const & operator[](FieldIndex aIndex) const;
 
 			DirectedEdgeRing mRings[2];
-			void * mpData;
 		};
 
 
