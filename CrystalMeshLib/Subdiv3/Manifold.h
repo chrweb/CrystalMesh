@@ -50,9 +50,19 @@ namespace CrystalMesh{
 
 			void linkEdgeRingAndFacetEdges(EdgeRing& aEring, FacetEdge & aRingRep) const;
 
+			/**
+			 * All ring members directed edge ring set to nullptr,
+			 * all aEring's directed edge rings's facet edges set to nullptr
+			 */
 			void dislinkEdgeRing(EdgeRing & aEring) const;
 
 			void linkVertexDirectedEdgeRings(Vertex& aVertex, DirectedEdgeRing& aRingRep);
+
+			/**
+			 * aVertex's DirectedEdgeRing is set to nullptr,
+			 * all vertex-adjacent DirectedEdgeRing's Vertex set to nullptr
+			 */
+			void dislinkVertexDirectedEdgeRings(Vertex & aVertex);
 
 			bool const isMyPrimalVertex(Vertex const & aVert) const;
 

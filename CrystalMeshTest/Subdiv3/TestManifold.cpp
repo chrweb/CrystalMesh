@@ -206,24 +206,7 @@ TEST(Manifold, SpliceEdges){
 	checkSpliceEdgesEdgeAlgebra(*e0, *enext0, *e1, *enext1);
 }
 
-TEST(Manifold, EdgeRingLinking){
 
-	Manifold mf;
-
-	auto e0 = mf.makeFacetEdge();
-	auto e1 = mf.makeFacetEdge();
-	auto e2 = mf.makeFacetEdge();
-
-	mf.spliceFacets(*e0, *e1);
-	mf.spliceFacets(*e1, *e2);
-	//mf.spliceFacets(*e2, *e0);
-
-	auto ring = mf.makePrimalEdgeRing();
-
-	mf.linkEdgeRingAndFacetEdges(*ring, *e0);
-
-	EXPECT_EQ(ring->computeEdgeRingSize(), 3u);
-}
 
 
 

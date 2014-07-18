@@ -4,7 +4,6 @@
  *  Created on: 19.06.2014
  *      Author: christoph
 */
-#include "Manifold.h"
 #include "MaintenerTemplate.h"
 #include  "../Misc/Checks.h"
 #include "Vertex.h"
@@ -14,6 +13,7 @@
 #include <set>
 #include <vector>
 #include <queue>
+#include "Manifold.h"
 
 namespace CrystalMesh{
 
@@ -248,12 +248,17 @@ namespace CrystalMesh{
 
 	    }
 
-	    void dislinkEdgeRing(EdgeRing & aEring) const{
+	    void Manifold::dislinkEdgeRing(EdgeRing & aEring) const{
+
+	    	MUST_BE(notNullptr(aEring[0].mpRingMember));
+	    	MUST_BE(notNullptr(aEring[1].mpRingMember));
 
 	    	auto disLinker = [](FacetEdge& aRef){
 	    		aRef.mpDirectedEdgeRing = nullptr;
 	    		aRef.getClock()->mpDirectedEdgeRing = nullptr;
 	    	};
+
+	    	forEachElementInFnextRing(*aEring[0].mpRingMember , disLinker);
 
 	    	aEring[0].mpRingMember = nullptr;
 	    	aEring[1].mpRingMember = nullptr;

@@ -26,14 +26,16 @@ const bool Subdiv3::EdgeRing::isPrimal() const {
 	return !isDual();
 }
 
-const DirectedEdgeRing& EdgeRing::operator [](FieldIndex aIndex) const{
-		MUST_BE(aIndex < 2);
-		return mRings[aIndex];
-	}
 
-	DirectedEdgeRing & EdgeRing::operator [](FieldIndex aIndex){
-		return const_cast<DirectedEdgeRing&>(operator [](aIndex));
-	}
+const DirectedEdgeRing& EdgeRing::operator [](FieldIndex aIndex) const{
+	MUST_BE(aIndex < 2);
+	return mRings[aIndex];
+}
+
+DirectedEdgeRing & EdgeRing::operator [](FieldIndex aIndex){
+	MUST_BE(aIndex < 2);
+	return mRings[aIndex];
+}
 
 
 
