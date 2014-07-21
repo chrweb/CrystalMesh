@@ -61,6 +61,20 @@ namespace CrystalMesh{
 		    QuaterNode const * getQuaterNode() const;
 		    QuaterNode * getQuaterNode();
 
+		    /**
+		     * Navigation on Surface
+		     */
+
+		    /**
+		     * Returns the Onext FacetEdge, that is, in ccw-Direction the next FacetEdge with the same body 'under' it and the same origin  vertex
+		     * than this instance.
+		     */
+		    FacetEdge const * getOnext() const;
+		    FacetEdge * getOnext();
+
+		    FacetEdge const * getInvOnext() const;
+		    FacetEdge * getInvOnext();
+
 
 			DirectedEdgeRing* mpDirectedEdgeRing;
 			FacetEdge *mpNext;

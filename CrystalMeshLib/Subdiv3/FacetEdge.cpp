@@ -143,6 +143,22 @@ namespace CrystalMesh{
 			  return !isPrimal();
 		  }
 
+		  const FacetEdge* FacetEdge::getOnext() const {
+			  return getInvEnext()->getInvFnext()->getClock();
+		  }
+
+		  FacetEdge* FacetEdge::getOnext() {
+			  return getInvEnext()->getInvFnext()->getClock();
+		  }
+
+		  const FacetEdge* FacetEdge::getInvOnext() const {
+			  return getInvFnext()->getInvEnext()->getClock();
+		  }
+
+		  FacetEdge* FacetEdge::getInvOnext() {
+			  return getInvFnext()->getInvEnext()->getClock();
+		  }
+
 
 
 
