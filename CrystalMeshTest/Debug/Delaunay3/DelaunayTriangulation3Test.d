@@ -31,6 +31,7 @@ Delaunay3/DelaunayTriangulation3Test.d: \
  ../Delaunay3/../../CrystalMeshLib/Subdiv3/EdgeRing.h \
  ../Delaunay3/../../CrystalMeshLib/Subdiv3/DirectedEdgeRing.h \
  ../Delaunay3/../../CrystalMeshLib/Subdiv3/QuaterNode.h \
+ ../Delaunay3/../../CrystalMeshLib/Subdiv3/AdjacentDirectedEdgeRings.h \
  ../Delaunay3/../../CrystalMeshLib/Delaunay3/DelaunayTriangulation3DPrototypes.h \
  ../Delaunay3/../../CrystalMeshLib/Delaunay3/DelaunayTriangulation3D.h \
  ../Delaunay3/../../CrystalMeshLib/Delaunay3/../Math/Geometry.h \
@@ -97,6 +98,8 @@ Delaunay3/DelaunayTriangulation3Test.d: \
 ../Delaunay3/../../CrystalMeshLib/Subdiv3/DirectedEdgeRing.h:
 
 ../Delaunay3/../../CrystalMeshLib/Subdiv3/QuaterNode.h:
+
+../Delaunay3/../../CrystalMeshLib/Subdiv3/AdjacentDirectedEdgeRings.h:
 
 ../Delaunay3/../../CrystalMeshLib/Delaunay3/DelaunayTriangulation3DPrototypes.h:
 

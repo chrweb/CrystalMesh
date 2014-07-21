@@ -29,6 +29,7 @@ Math/TestVector3D.d: ../Math/TestVector3D.cpp ../Math/../TestInclude.h \
  ../Math/../../CrystalMeshLib/Subdiv3/EdgeRing.h \
  ../Math/../../CrystalMeshLib/Subdiv3/DirectedEdgeRing.h \
  ../Math/../../CrystalMeshLib/Subdiv3/QuaterNode.h \
+ ../Math/../../CrystalMeshLib/Subdiv3/AdjacentDirectedEdgeRings.h \
  ../Math/../../CrystalMeshLib/Delaunay3/DelaunayTriangulation3DPrototypes.h \
  ../Math/../../CrystalMeshLib/Delaunay3/DelaunayTriangulation3D.h \
  ../Math/../../CrystalMeshLib/Delaunay3/../Math/Geometry.h \
@@ -95,6 +96,8 @@ Math/TestVector3D.d: ../Math/TestVector3D.cpp ../Math/../TestInclude.h \
 ../Math/../../CrystalMeshLib/Subdiv3/DirectedEdgeRing.h:
 
 ../Math/../../CrystalMeshLib/Subdiv3/QuaterNode.h:
+
+../Math/../../CrystalMeshLib/Subdiv3/AdjacentDirectedEdgeRings.h:
 
 ../Math/../../CrystalMeshLib/Delaunay3/DelaunayTriangulation3DPrototypes.h:
 
