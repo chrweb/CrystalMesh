@@ -9,53 +9,59 @@
 #include "../Misc/Checks.h"
 namespace CrystalMesh{
 	namespace  Subdiv3 {
-		Counter const DirectedEdgeRing::computeEdgeRingSize() const{
-			Counter result = 0;
-			MUST_BE(notNullptr(mpRingMember));
 
-			auto functor =  [&result](FacetEdge const & ){
-				result++;
-			};
+const FacetEdge* DirectedEdgeRing::getRingMember() const {
+	return mpRingMember;
+}
 
-			forEachElementInFnextRing(*mpRingMember,functor);
+FacetEdge* DirectedEdgeRing::getRingMember() {
+	return mpRingMember;
+}
 
-			return result;
-		}
+const Counter DirectedEdgeRing::computeEdgeRingSize() const {
+	Counter result = 0;
+	MUST_BE (notNullptr(mpRingMember));auto
+	functor = [&result](const FacetEdge&) {
+		result++;
+	};
+	forEachElementInFnextRing(*mpRingMember, functor);
+	return result;
+}
 
-		DirectedEdgeRing const * DirectedEdgeRing::getSym() const{
-			MUST_BE(notNullptr(mpRingMember));
-			return mpRingMember->getClock()->getDirectedEdgeRing();
-		}
-		DirectedEdgeRing * DirectedEdgeRing::getSym(){
-			return const_cast<DirectedEdgeRing *>(getSym());
-		}
+const DirectedEdgeRing* DirectedEdgeRing::getSym() const {
+	MUST_BE (notNullptr(mpRingMember));
+	return mpRingMember->getClock()->getDirectedEdgeRing();
+}
 
-		bool const DirectedEdgeRing::isDual() const{
-			return mpRingMember->isDual();
-		}
+DirectedEdgeRing* DirectedEdgeRing::getSym() {
+	MUST_BE (notNullptr(mpRingMember));
+	return mpRingMember->getClock()->getDirectedEdgeRing();
+}
 
-		bool const DirectedEdgeRing::isPrimal() const{
-			return !isDual();
-		}
+const bool DirectedEdgeRing::isDual() const {
+	return mpRingMember->isDual();
+}
 
-		Vertex const * DirectedEdgeRing::getOrg() const{
-			return mpOrg;
-		}
+const bool DirectedEdgeRing::isPrimal() const {
+	return !isDual();
+}
 
-		Vertex * DirectedEdgeRing::getOrg()
-		{
-			return mpOrg;
-		}
+const Vertex* DirectedEdgeRing::getOrg() const {
+	return mpOrg;
+}
 
-		EdgeRing const * DirectedEdgeRing::getEdgeRing() const{
-			MUST_BE(mIndex == 0 || mIndex ==1);
-			if (mIndex == 1){
-				DirectedEdgeRing const* other = this;
-				--other;
-				return reinterpret_cast<EdgeRing const*>(other);
-			}
+Vertex* DirectedEdgeRing::getOrg() {
+	return mpOrg;
+}
 
-			return reinterpret_cast<EdgeRing const*>(this);
+const EdgeRing* DirectedEdgeRing::getEdgeRing() const {
+	MUST_BE(mIndex == 0 || mIndex == 1);
+	if (mIndex == 1) {
+		const DirectedEdgeRing* other = this;
+		--other;
+		return reinterpret_cast<const EdgeRing*>(other);
+	}
+	return reinterpret_cast<const EdgeRing*>(this);
 		}
 		EdgeRing * DirectedEdgeRing::getEdgeRing(){
 			return const_cast<EdgeRing*>(getEdgeRing());

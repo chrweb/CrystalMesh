@@ -35,6 +35,10 @@ namespace CrystalMesh{
 			EdgeRing const * getEdgeRing() const;
 			EdgeRing * getEdgeRing();
 
+			FacetEdge const * getRingMember() const;
+			FacetEdge * getRingMember();
+
+
 			Counter const computeEdgeRingSize() const;
 		};
 	}
