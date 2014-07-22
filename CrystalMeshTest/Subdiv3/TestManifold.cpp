@@ -123,6 +123,13 @@ TEST(Manifold, EdgeAlgebra){
 
 	EXPECT_EQ(clockDual, dualClock);
 
+	// arg->clock->clock leads to arg
+	EXPECT_EQ(clock->getClock(), eRef);
+	EXPECT_EQ(dualClock->getClock(), dual);
+
+	// arg->dual->dual lead to arg
+	EXPECT_EQ(dual->getDual(), eRef);
+	EXPECT_EQ(dualClock->getDual(), clock);
 }
 
 TEST(Manifold, Quaternode){
@@ -204,6 +211,47 @@ TEST(Manifold, SpliceEdges){
 
 	SCOPED_TRACE("Elementary spliceFacets operation");
 	checkSpliceEdgesEdgeAlgebra(*e0, *enext0, *e1, *enext1);
+}
+
+TEST(Manifold, EdgeRingLinking){
+
+	Manifold mf;
+
+	FacetEdge* fes[2];
+	EdgeRing* rings[2];
+
+	for (int i = 0; i < 2; i++){
+		fes[i] = mf.makeFacetEdge();
+		rings[i] = mf.makePrimalEdgeRing();
+	}
+
+	mf.spliceEdges(*fes[0], *fes[1]);
+
+	for (int i = 0; i<2; i++){
+		auto fe = fes[i];
+		auto clocked = fe->getClock();
+
+		auto ring = rings[i];
+
+		mf.linkEdgeRingAndFacetEdges(*ring, *fe);
+
+		//annotations as expected?
+		auto const dirRing0 = &ring->operator[](0);
+		auto const dirRing1 = &ring->operator[](1);
+
+		EXPECT_EQ(dirRing0->getRingMember(), fe);
+		EXPECT_EQ(dirRing1->getRingMember(), clocked);
+
+		// annotations removed correctly?
+		mf.dislinkEdgeRing(*ring);
+
+		EXPECT_TRUE(isNullptr(dirRing0->mpRingMember));
+		EXPECT_TRUE(isNullptr(dirRing1->mpRingMember));
+
+		EXPECT_TRUE(isNullptr(fe->mpDirectedEdgeRing));
+		EXPECT_TRUE(isNullptr(clocked->mpDirectedEdgeRing));
+	}
+
 }
 
 
