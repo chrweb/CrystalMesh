@@ -14,8 +14,10 @@ namespace CrystalMesh {
 
 		typedef std::vector<DirectedEdgeRing*> AdjacentRings;
 
+		/**
+		 * Returns all DirectedEdgeRings, adjacent the the specified vertex
+		 */
 		AdjacentRings const getAdjacentRingsOf( Vertex const & aVert);
-
 
 	}  // namespace Subdiv3
 

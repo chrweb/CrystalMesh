@@ -60,7 +60,7 @@ namespace CrystalMesh{
 
 			/**
 			 * aVertex's DirectedEdgeRing is set to nullptr,
-			 * all vertex-adjacent DirectedEdgeRing's Vertex set to nullptr
+			 * all vertex-adjacent DirectedEdgeRing's vertex pointer set to nullptr
 			 */
 			void dislinkVertexDirectedEdgeRings(Vertex & aVertex);
 

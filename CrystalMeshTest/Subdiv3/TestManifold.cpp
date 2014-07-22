@@ -213,6 +213,30 @@ TEST(Manifold, SpliceEdges){
 	checkSpliceEdgesEdgeAlgebra(*e0, *enext0, *e1, *enext1);
 }
 
+TEST(Manifold, triangleEdgeAlgebra){
+
+	Manifold mf;
+
+	auto e0 = mf.makeFacetEdge();
+	auto e1 = mf.makeFacetEdge();
+	auto e2 = mf.makeFacetEdge();
+
+	mf.spliceEdges(*e0, *e1);
+	mf.spliceEdges(*e1, *e2);
+
+	EXPECT_EQ(e0->getInvEnext(), e2);
+	EXPECT_EQ(e0->getInvEnext()->getInvEnext(), e1);
+	EXPECT_EQ(e0->getInvEnext()->getInvEnext()->getInvEnext(), e0);
+
+	EXPECT_EQ(e0->getEnext(), e2);
+	EXPECT_EQ(e0->getEnext()->getEnext(), e1);
+	EXPECT_EQ(e0->getEnext()->getEnext()->getEnext(), e0);
+
+	EXPECT_EQ(e0->getEnext()->getClock(), e0->getClock()->getInvEnext());
+	EXPECT_EQ(e0->getInvEnext()->getClock(), e0->getClock()->getEnext());
+
+}
+
 TEST(Manifold, EdgeRingLinking){
 
 	Manifold mf;

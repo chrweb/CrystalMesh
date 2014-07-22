@@ -167,6 +167,62 @@ namespace CrystalMesh{
 
 	    }
 
+	    /**
+	     * Implementation of functions to collect adjacent directed edge rings
+	     */
+	    namespace{
+
+	    	typedef std::vector<DirectedEdgeRing*> IncidentEdgeRings;
+
+	    	IncidentEdgeRings const incidentEdgeRingsFrom(DirectedEdgeRing * apRing){
+	    		IncidentEdgeRings result;
+
+	    		auto collector = [&result](FacetEdge & aFe){
+	    			FacetEdge * transition = aFe.getInvEnext()->getClock();
+	    			result.push_back(transition->getDirectedEdgeRing());
+	    		};
+
+	    		forEachElementInFnextRing(*apRing->mpRingMember, collector);
+	    		return result;
+	    	}
+
+
+	    	// All incident rings to a vertex may be extracted by a BFS:
+	    	// http://en.wikipedia.org/wiki/Breadth-first_search
+	    	AdjacentRings const getAdjacentRingsOf( DirectedEdgeRing const & aDring){
+
+	    		typedef std::queue<DirectedEdgeRing*> NodeQueue;
+	    		std::set<DirectedEdgeRing*> visitedNodes;
+
+
+	    		NodeQueue nodeQueue;
+
+	    		// initial node:
+	    		DirectedEdgeRing * initialNode = const_cast<DirectedEdgeRing*>(&aDring);
+	    		nodeQueue.push(initialNode);
+	    		visitedNodes.insert(initialNode);
+
+	    		while(!nodeQueue.empty()){
+					auto current = nodeQueue.front();
+					nodeQueue.pop();
+
+					auto const nextNodes = incidentEdgeRingsFrom(current);
+
+					for(auto current: nextNodes){
+						// the node was not visited yet:
+						if (visitedNodes.insert(current).second){
+							// add this node into queue to get neighbored nodes:
+							nodeQueue.push(current);
+						}
+					}
+	    		}
+
+	    		AdjacentRings result(visitedNodes.begin(), visitedNodes.end());
+	    		return result;
+	    	}
+	    }
+
+
 	    Vertex * Manifold::makePrimalVertex(){
 	    	auto pInst = mpPrimalVertexMaintener->constructEntity();
 	    	setVertexLinks(*pInst);
@@ -283,30 +339,28 @@ namespace CrystalMesh{
 	    void Manifold::linkVertexDirectedEdgeRings(Vertex & aVert, DirectedEdgeRing & aDring){
 
 	    	// Edge rings is instance of this
+	    	// Directed edge ring is dual?
 	    	if (aDring.isDual())
+	    	{
+	    		// must be a part of my dual edge ring...
 	    		MUST_BE(isMyDualEdgeRing(*aDring.getEdgeRing()));
-	    	else
-	    		MUST_BE(isMyPrimalEdgeRing(*aDring.getEdgeRing()));
-
-	    	// Vertex is instance of this
-	    	if (aVert.isDual())
+	    		// vertex must be my part of my duals either..
 	    		MUST_BE(isMyDualVertex(aVert));
-	    	else
+	    	}
+	    	// primals analogous
+	    	else{
+	    		MUST_BE(isMyPrimalEdgeRing(*aDring.getEdgeRing()));
 	    		MUST_BE(isMyPrimalVertex(aVert));
-
-	    	// Must link dual to dual or primal to primal:
-	    	MUST_BE((aDring.isDual() && aVert.isDual()) ^ (aDring.isPrimal() && aVert.isPrimal()));
+	    	}
 
 	    	// get every incident edge ring
-	    	auto incEdgeRings = getAdjacentRingsOf(aVert);
-
-	    	// TODO: Check, check every item is unassociated ...?
+	    	auto incEdgeRings = getAdjacentRingsOf(aDring);
 
 	    	// vertex not associated
 	    	MUST_BE(isNullptr(aVert.mpOut));
 
 	    	for (auto const item: incEdgeRings){
-	    		isNullptr(item->getOrg());
+	    		MUST_BE(isNullptr(item->getOrg()));
 	    	}
 
 	    	linkDirectedEdgeRingToVertex(&aDring, aVert);
@@ -340,87 +394,21 @@ namespace CrystalMesh{
 			return mpDualVertexMaintener->isMyEntity(aVert);
 		}
 
-	    namespace{
+		void Manifold::dislinkVertexDirectedEdgeRings(Vertex & aVertex){
 
-	    	typedef std::vector<DirectedEdgeRing*> IncidentEdgeRings;
+			auto const adjEdgeRings = getAdjacentRingsOf(aVertex);
+			aVertex.mpOut = nullptr;
+			for (auto pCurrent: adjEdgeRings){
+				pCurrent->mpOrg = nullptr;
+			}
 
-	    	IncidentEdgeRings const incidentEdgeRingsFrom(DirectedEdgeRing * apRing){
-	    		IncidentEdgeRings result;
+			return;
+		}
 
-	    		auto collector = [&result](FacetEdge & aFe){
-	    			result.push_back(aFe.getInvEnext()->getClock()->getDirectedEdgeRing());
-	    		};
-
-	    		forEachElementInFnextRing(*apRing->mpRingMember, collector);
-	    		return result;
-	    	}
-
-
-//	    	// All incident rings to a vertex may be extracted by a BFS:
-//	    	// http://en.wikipedia.org/wiki/Breadth-first_search
-//	    	IncidentEdgeRings const incidentRingsOf(Vertex & aVert){
-//
-//	    		typedef std::queue<DirectedEdgeRing*> NodeQueue;
-//	    		std::set<DirectedEdgeRing*> visitedNodes;
-//
-//	    		NodeQueue nodeQueue;
-//
-//	    		// initial node:
-//	    		DirectedEdgeRing * initialNode = aVert.getDirectedEdgeRing();
-//	    		nodeQueue.push(initialNode);
-//	    		visitedNodes.insert(initialNode);
-//
-//	    		while(!nodeQueue.empty()){
-//	    			auto current = nodeQueue.front();
-//
-//	    			auto const nextNodes = incidentEdgeRingsFrom(current);
-//
-//	    			for(auto current: nextNodes){
-//	    				// the node was not visited yet:
-//	    				if (visitedNodes.insert(current).second){
-//	    					// add this node into queue to get neighbored nodes:
-//	    					nodeQueue.push(current);
-//	    				}
-//	    			}
-//	    		}
-//
-//	    		IncidentEdgeRings result(visitedNodes.begin(), visitedNodes.end());
-//	    		return result;
-//	    	}
-	    }
-
-
-
-
+		// public function to collect adjacent directed edge rings.
 	    AdjacentRings const getAdjacentRingsOf( Vertex const & aVert){
-	    	typedef std::queue<DirectedEdgeRing*> NodeQueue;
-	    	std::set<DirectedEdgeRing*> visitedNodes;
-
-	    	NodeQueue nodeQueue;
-
-	    	// initial node:
-	    	DirectedEdgeRing * initialNode = const_cast<DirectedEdgeRing*>(aVert.getDirectedEdgeRing());
-	    	nodeQueue.push(initialNode);
-	    	visitedNodes.insert(initialNode);
-
-	    	while(!nodeQueue.empty()){
-	    		auto current = nodeQueue.front();
-
-	    		auto const nextNodes = incidentEdgeRingsFrom(current);
-
-	    		for(auto current: nextNodes){
-	    			// the node was not visited yet:
-	    			if (visitedNodes.insert(current).second){
-	    				// add this node into queue to get neighbored nodes:
-	    				nodeQueue.push(current);
-	    			}
-	    		}
-	    	}
-
-	    	AdjacentRings result(visitedNodes.begin(), visitedNodes.end());
-	    	return result;
+	    	return getAdjacentRingsOf(*aVert.getDirectedEdgeRing());
 	    }
-
 
 
 
