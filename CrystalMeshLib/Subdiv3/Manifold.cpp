@@ -10,9 +10,7 @@
 #include "QuaterNode.h"
 #include "EdgeRing.h"
 #include <assert.h>
-#include <set>
 #include <vector>
-#include <queue>
 #include "Manifold.h"
 #include "AdjacentDirectedEdgeRings.h"
 
@@ -171,60 +169,6 @@ namespace CrystalMesh{
 
 	    }
 
-	    /**
-	     * Implementation of functions to collect adjacent directed edge rings
-	     */
-	    namespace{
-
-	    	typedef std::vector<DirectedEdgeRing*> IncidentEdgeRings;
-
-	    	IncidentEdgeRings const incidentEdgeRingsFrom(DirectedEdgeRing * apRing){
-	    		IncidentEdgeRings result;
-
-	    		auto collector = [&result](FacetEdge & aFe){
-	    			FacetEdge * transition = aFe.getInvEnext()->getClock();
-	    			result.push_back(transition->getDirectedEdgeRing());
-	    		};
-
-	    		forEachElementInFnextRing(*apRing->mpRingMember, collector);
-	    		return result;
-	    	}
-
-
-	    	// All incident rings to a vertex may be extracted by a BFS:
-	    	// http://en.wikipedia.org/wiki/Breadth-first_search
-	    	AdjacentRings const getAdjacentRingsOf( DirectedEdgeRing const & aDring){
-
-	    		typedef std::queue<DirectedEdgeRing*> NodeQueue;
-	    		std::set<DirectedEdgeRing*> visitedNodes;
-
-
-	    		NodeQueue nodeQueue;
-
-	    		// initial node:
-	    		DirectedEdgeRing * initialNode = const_cast<DirectedEdgeRing*>(&aDring);
-	    		nodeQueue.push(initialNode);
-	    		visitedNodes.insert(initialNode);
-
-	    		while(!nodeQueue.empty()){
-					auto current = nodeQueue.front();
-					nodeQueue.pop();
-
-					auto const nextNodes = incidentEdgeRingsFrom(current);
-
-					for(auto current: nextNodes){
-						// the node was not visited yet:
-						if (visitedNodes.insert(current).second){
-							// add this node into queue to get neighbored nodes:
-							nodeQueue.push(current);
-						}
-					}
-	    		}
-
-	    		AdjacentRings result(visitedNodes.begin(), visitedNodes.end());
-	    		return result;
-	    	}
-	    }
 
 
 	    Vertex * Manifold::makePrimalVertex(){
@@ -409,10 +353,6 @@ namespace CrystalMesh{
 			return;
 		}
 
-		// public function to collect adjacent directed edge rings.
-	    AdjacentRings const getAdjacentRingsOf( Vertex const & aVert){
-	    	return getAdjacentRingsOf(*aVert.getDirectedEdgeRing());
-	    }
 
 
 
