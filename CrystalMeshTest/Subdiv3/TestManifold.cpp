@@ -228,8 +228,8 @@ TEST(Manifold, triangleEdgeAlgebra){
 	EXPECT_EQ(e0->getInvEnext()->getInvEnext(), e1);
 	EXPECT_EQ(e0->getInvEnext()->getInvEnext()->getInvEnext(), e0);
 
-	EXPECT_EQ(e0->getEnext(), e2);
-	EXPECT_EQ(e0->getEnext()->getEnext(), e1);
+	EXPECT_EQ(e0->getEnext(), e1);
+	EXPECT_EQ(e0->getEnext()->getEnext(), e2);
 	EXPECT_EQ(e0->getEnext()->getEnext()->getEnext(), e0);
 
 	EXPECT_EQ(e0->getEnext()->getClock(), e0->getClock()->getInvEnext());

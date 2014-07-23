@@ -107,21 +107,25 @@ namespace CrystalMesh{
 
 	    void Manifold::spliceFacets(FacetEdge& aFe0, FacetEdge& aFe1){
 
-	    	// reverence version
-	    	auto alpha0 = aFe0.getFnext();
-	    	auto alpha1 = aFe1.getFnext();
-	    	aFe0.mpNext = alpha1;
-	    	aFe1.mpNext = alpha0;
+	    	// reverence version fnext
+	    	auto fe0Fnext = aFe0.getFnext();
+	    	auto fe1Fnext = aFe1.getFnext();
 
-	    	// clocked version
-	    	auto fe0Clock = aFe0.getClock();
-	    	auto fe1Clock = aFe1.getClock();
+	    	// clocked versions
+	    	auto fe0FnextClock = aFe1.getFnext()->getClock();
+	    	auto fe1FnextClock = aFe0.getFnext()->getClock();
 
-	    	auto beta0 = fe0Clock->getFnext();
-	    	auto beta1 = fe1Clock->getFnext();
+	    	// clocked fnext fields
+	    	auto fe0FnextClockFnext = fe0FnextClock->getFnext();
+	    	auto fe1FnextClockFnext = fe1FnextClock->getFnext();
 
-	    	fe0Clock->mpNext = beta1;
-	    	fe1Clock->mpNext = beta0;
+	    	// reverence version's fnext fields
+	    	aFe0.mpNext =fe1Fnext;
+	    	aFe1.mpNext = fe0Fnext;
+
+	    	// clocked version's fnext fields
+	    	fe0FnextClock->mpNext = fe1FnextClockFnext;
+	    	fe1FnextClock->mpNext = fe0FnextClockFnext;
 
 	    	return;
 	    }
