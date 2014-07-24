@@ -37,6 +37,14 @@ DirectedEdgeRing & EdgeRing::operator [](FieldIndex aIndex){
 	return mRings[aIndex];
 }
 
+DirectedEdgeRing const & EdgeRing::getItem(FieldIndex aIndex) const{
+	return this->operator[](aIndex);
+}
+
+DirectedEdgeRing & EdgeRing::getItem(FieldIndex aIndex){
+	return this->operator[](aIndex);
+}
+
 
 
 }  // namespace CrystalMesh;

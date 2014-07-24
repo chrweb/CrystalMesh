@@ -8,6 +8,7 @@
 #include "AdjacentDirectedEdgeRings.h"
 #include "DirectedEdgeRing.h"
 #include "FacetEdge.h"
+#include "Vertex.h"
 #include <queue>
 #include <set>
 
@@ -61,16 +62,16 @@ namespace CrystalMesh {
 		    	visitedNodes.insert(initialNode);
 
 		    	while(!nodeQueue.empty()){
-					auto current = nodeQueue.front();
+					auto currentEdgeRing = nodeQueue.front();
 					nodeQueue.pop();
 
-					auto const nextNodes = incidentEdgeRingsFrom(current);
+					auto const transistions = incidentEdgeRingsFrom(currentEdgeRing);
 
-					for(auto current: nextNodes){
+					for(auto currentTransition: transistions){
 						// the node was not visited yet:
-						if (visitedNodes.insert(current).second){
+						if (visitedNodes.insert(currentTransition).second){
 							// add this node into queue to get neighbored nodes:
-							nodeQueue.push(current);
+							nodeQueue.push(currentTransition);
 						}
 					}
 		    	}
@@ -87,35 +88,67 @@ namespace CrystalMesh {
 		    AdjacentFacetEdges const getAdjacentFacetEdges( FacetEdge const & aStart){
 
 		    	typedef std::queue<FacetEdge*> Fifo;
-		    	std::set<FacetEdge*> visitedNodes;
+		    	std::set<FacetEdge*> collected;
 
 		    	Fifo fifo;
 
 		    	// initial node:
 		    	FacetEdge* initialNode = const_cast<FacetEdge*>(&aStart);
 		    	fifo.push(initialNode);
-		    	visitedNodes.insert(initialNode);
+		    	collected.insert(initialNode);
 
 		    	while(!fifo.empty()){
-					auto current = fifo.front();
+					auto currentBorder = fifo.front();
 					fifo.pop();
 
-					auto const nextNodes = otherIncidentFnextRingsOf(current);
+					// get adjancent fnext rings
+					auto const transistions = otherIncidentFnextRingsOf(currentBorder);
 
-					for(auto current: nextNodes){
-						// the node was not visited yet:
-						if (visitedNodes.insert(current).second){
-							// add this node into queue to get ne
-							nodeQueue.push(current);
+					for(auto currentTransistion: transistions){
+
+						// extract all ring members:
+						auto const currentRing = getFnextRingMembersOf(*currentTransistion);
+
+						for (auto currentRingMember: currentRing){
+							// the fnext ring was not visited yet:
+							if (collected.insert(currentRingMember).second){
+								// add this node into queue
+								fifo.push(currentRingMember);
+							}
 						}
 					}
 		    	}
 
-		    	AdjacentRings result(visitedNodes.begin(), visite
+		    	AdjacentFacetEdges result(collected.begin(), collected.end());
 		    	return result;
-
-
 		    }
+
+			RingMembers const getFnextRingMembersOf(FacetEdge const & aRef){
+				RingMembers result;
+				auto collector = [&result](FacetEdge const & aArg){
+					result.push_back(const_cast<FacetEdge*>(&aArg));
+				};
+				forEachElementInFnextRing(aRef, collector);
+				return result;
+			}
+
+			RingMembers const getFnextRingMembersOf(DirectedEdgeRing const & aRef){
+				return getFnextRingMembersOf(*aRef.getRingMember());
+			}
+
+
+			RingMembers const getEnextRingMembersOf(FacetEdge const & aRef){
+				RingMembers result;
+				auto const dual = aRef.getDual();
+
+				auto collector = [&result](FacetEdge const & aArg){
+					result.push_back(const_cast<FacetEdge*>(aArg.getDual()));
+				};
+
+				forEachElementInFnextRing(*dual, collector);
+				return result;
+			}
+
 
 
 

@@ -26,6 +26,10 @@ namespace CrystalMesh{
 
 			DirectedEdgeRing const & operator[](FieldIndex aIndex) const;
 
+			DirectedEdgeRing const & getItem(FieldIndex aIndex) const;
+
+			DirectedEdgeRing & getItem(FieldIndex aIndex);
+
 			DirectedEdgeRing mRings[2];
 		};
 
