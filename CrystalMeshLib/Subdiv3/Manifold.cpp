@@ -105,6 +105,12 @@ namespace CrystalMesh{
 
 	    void Manifold::spliceFacets(FacetEdge& aFe0, FacetEdge& aFe1){
 
+	    	/**
+	    	 * see
+	    	 * https://github.com/chrweb/CrystalMesh/wiki/Topological-operations-on-a-3D-cell-complex#splicefacets
+	    	 * for detailed explanation.
+	    	 */
+
 	    	// reverence version fnext
 	    	auto fe0Fnext = aFe0.getFnext();
 	    	auto fe1Fnext = aFe1.getFnext();

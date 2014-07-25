@@ -18,6 +18,7 @@ namespace CrystalMesh{
 
 	struct VertexData{
 		Math::Geometry::Point3D  mPoint;
+		void const * mpPropPtr;
 	};
 
 	class VertexDataContainer;
