@@ -5,6 +5,7 @@
  *      Author: christoph
  */
 #pragma once
+#include <stdint.h>
 
 /**
  * Forward-declared types, often used in Delaunay3:
@@ -30,6 +31,11 @@ namespace CrystalMesh {
 
 			struct Point3D;
 		}  // namespace Geometry
+	}
+
+	namespace Delaunay3{
+
+		typedef uint32_t Index;
 	}
 
 }  // namespace CrystalMesh

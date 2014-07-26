@@ -86,16 +86,24 @@ namespace CrystalMesh {
 
 
 		FacetEdgeThreeTuple const Fan::getBlossomAdapter() const{
-			std::vector<FacetEdge*> colleted;
+			std::vector<FacetEdge*> collected;
 
 			auto collector = [&collected](Subdiv3::FacetEdge & arg){
-				colleted.push_back(arg.getInvEnext());
+				collected.push_back(arg.getInvEnext());
 			};
 
-			Subdiv3::forEachElementInFnextRing*(mpCorner->getRingMember(), collector);
+			Subdiv3::forEachElementInFnextRing(*mpCorner->getRingMember(), collector);
 
 			return toThreeTuple(collected);
+		}
 
+		namespace{
+
+		}
+
+		FacetEdgeThreeTuple const Blossom::getFanAdapter() const{
+
+			return mTuple;
 		}
 
 
