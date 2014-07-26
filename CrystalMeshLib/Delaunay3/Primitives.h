@@ -5,17 +5,9 @@
  *      Author: christoph
  */
 #pragma once
+#include "ForwardDecs.h"
 
 namespace CrystalMesh{
-
-	namespace Subdiv3{
-
-		struct DirectedEdgeRing;
-
-		struct Vertex;
-
-
-	}
 
 	namespace Delaunay3{
 
@@ -27,35 +19,43 @@ namespace CrystalMesh{
 			void setPoint(Math::Geometry::Point3D const & aPoint);
 		};
 
+
+
 		struct Corner{
 
 		};
 
 		struct FacetEdgeThreeTuple{
-			Subdiv3::FacetEdge * mTuple[3];
+			Subdiv3::FacetEdge * f0, *f1, *f2;
 		};
+
+		FacetEdgeThreeTuple const facetEdgeThreeTupleOf(Subdiv3::FacetEdge const & a0, Subdiv3::FacetEdge const & a1, Subdiv3::FacetEdge const & a2);
 
 		struct PointThreeTuple{
-			Math::Geometry::Point3D mTuple[3];
+			Math::Geometry::Point3D p0, p1, p2;
 		};
 
-		struct Fan{
+		PointThreeTuple const pointTreeTupleOf(Math::Geometry::Point3D const & a0, Math::Geometry::Point3D const & a1, Math::Geometry::Point3D const & a2);
 
-			Triangle mTri[3];
-			Corner mCorner;
-
-			FacetEdgeThreeTuple const getBlossomAdapter() const;
-		};
 
 		struct Triangle
 		{
-			Triangle const getCounterOriented() const;
-
 			FacetEdgeThreeTuple const getBoundary() const;
 
 			PointThreeTuple const getPoints() const;
 
 			Subdiv3::DirectedEdgeRing* mpDualEdgeRing;
+		};
+
+		Triangle const getCounterOrientedOf();
+
+
+		struct Fan{
+
+			Triangle mTri[3];
+			Subdiv3::DirectedEdgeRing * mpCorner;
+
+			FacetEdgeThreeTuple const getBlossomAdapter() const;
 		};
 
 

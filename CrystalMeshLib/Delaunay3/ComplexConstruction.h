@@ -9,14 +9,10 @@
  */
 #pragma once
 #include "Primitives.h"
+#include "ForwardDecs.h"
 
 namespace CrystalMesh {
 
-	namespace Subdiv3{
-		class Manifold;
-
-		struct FacetEdge;
-	}
 
 	namespace Delaunay3 {
 
