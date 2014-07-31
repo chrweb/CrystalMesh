@@ -53,7 +53,7 @@ namespace CrystalMesh{
 			Subdiv3::DirectedEdgeRing* mpDualEdgeRing;
 		};
 
-		Triangle const getCounterOrientedOf();
+		Triangle const getCounterOrientedOf(Triangle const aTri);
 
 
 		struct Fan{

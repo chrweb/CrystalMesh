@@ -106,6 +106,12 @@ namespace CrystalMesh {
 			return mTuple;
 		}
 
+		Triangle const getCounterOrientedOf(Triangle const aTri){
+			Triangle result;
+			result.mpDualEdgeRing = aTri.mpDualEdgeRing->getSym();
+			return result;
+		}
+
 
 
 

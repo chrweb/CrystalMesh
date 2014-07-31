@@ -21,6 +21,7 @@
 #include "../CrystalMeshLib/Subdiv3/AdjacentDirectedEdgeRings.h"
 
 #include "../CrystalMeshLib/Delaunay3/DelaunayTriangulation3DPrototypes.h"
+#include "../CrystalMeshLib/Delaunay3/ComplexConstruction.h"
 
 
 

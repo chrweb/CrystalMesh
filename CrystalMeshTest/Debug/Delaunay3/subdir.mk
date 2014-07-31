@@ -4,13 +4,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../Delaunay3/DelaunayTriangulation3Test.cpp 
+../Delaunay3/DelaunayTriangulation3Test.cpp \
+../Delaunay3/TestComplexConstruction.cpp 
 
 OBJS += \
-./Delaunay3/DelaunayTriangulation3Test.o 
+./Delaunay3/DelaunayTriangulation3Test.o \
+./Delaunay3/TestComplexConstruction.o 
 
 CPP_DEPS += \
-./Delaunay3/DelaunayTriangulation3Test.d 
+./Delaunay3/DelaunayTriangulation3Test.d \
+./Delaunay3/TestComplexConstruction.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

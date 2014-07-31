@@ -8,7 +8,8 @@
 #include "../Subdiv3/Manifold.h"
 #include "../Math/Geometry.h"
 #include "../Subdiv3/FacetEdge.h"
-
+#include "../Subdiv3/DirectedEdgeRing.h"
+#include "../Subdiv3/EdgeRing.h"
 #include "ComplexConstruction.h"
 
 namespace CrystalMesh {
@@ -40,8 +41,8 @@ namespace CrystalMesh {
 		namespace {
 
 			struct FePair{
-				FacetEdge &f0;
-				FacetEdge &f1;
+				FacetEdge *f0;
+				FacetEdge *f1;
 			};
 
 			FacetEdge * anyBoundInTriangle(Triangle const & aTri){
@@ -51,7 +52,7 @@ namespace CrystalMesh {
 
 			FePair fromTriangle(Triangle const& aTri){
 				FacetEdge * fe = anyBoundInTriangle(aTri);
-				FePair result = {*fe, *fe->getClock()->getEnext()};
+				FePair result = {fe, fe->getClock()->getEnext()};
 				return result;
 			}
 
@@ -70,15 +71,15 @@ namespace CrystalMesh {
 				fep[i] = fromTriangle(tri[i]);
 			}
 
-			fep[4] = fep[0];
+			fep[3] = fep[0];
 
 			Blossom result;
 
 			for (Index i = 0; i<3; i++){
-				auto a = fep[i];
-				auto b = fep[1+1];
+				auto & a = fep[i];
+				auto & b = fep[i+1];
 
-				aComplex.spliceFacets(a.f1, b.f0);
+				aComplex.spliceFacets(*a.f1, *b.f0);
 			}
 
 			result.mTuple.f0 = fep[0].f0;
@@ -107,7 +108,7 @@ namespace CrystalMesh {
 			aComplex.linkEdgeRingAndFacetEdges(*corner, *fe[0]);
 
 			Fan result;
-			result.mpCorner = corner->getItem(0);
+			result.mpCorner = &corner->getItem(0);
 
 			return result;
 		}
