@@ -10,6 +10,7 @@
 #include "../Subdiv3/FacetEdge.h"
 #include "../Subdiv3/DirectedEdgeRing.h"
 #include "../Subdiv3/EdgeRing.h"
+#include "../Subdiv3/AdjacentDirectedEdgeRings.h"
 #include "ComplexConstruction.h"
 
 namespace CrystalMesh {
@@ -91,16 +92,15 @@ namespace CrystalMesh {
 
 		Fan const constructFanInComplex(Subdiv3::Manifold & aComplex){
 			Triangle tri[3];
-			FacetEdge* fe[4];
+			FacetEdge* fe[3];
 
 			for (Index i = 0; i<3; i++){
 				tri[i] = constructTriangleInComplex(aComplex);
 				fe[i] = anyBoundInTriangle(tri[i]);
 			}
 
-			fe[4] = fe[0];
 
-			for (Index i = 0; i<3; i++){
+			for (Index i = 0; i<2; i++){
 				aComplex.spliceFacets(*fe[i], *fe[i+1]);
 			}
 
@@ -114,6 +114,10 @@ namespace CrystalMesh {
 		}
 
 		TetInteriour const constructTetInteriourInComplex(Subdiv3::Manifold & aComplex){
+
+			// see https://github.com/chrweb/CrystalMesh/wiki/Cell-complexes-in-Delaunay3#tetrahedron-interior
+			// for a sketch..
+
 			Fan fan = constructFanInComplex(aComplex);
 			Blossom blos = constructBlossomInComplex(aComplex);
 
@@ -124,20 +128,36 @@ namespace CrystalMesh {
 			aComplex.spliceFacets(*fanTuple.f1, *blosTuple.f1);
 			aComplex.spliceFacets(*fanTuple.f2, *blosTuple.f2);
 
-			//TODO: Continue
-			//construct corners
+			Subdiv3::EdgeRing * ring[3];
+
+			// construct corners
 			for (Index i = 0; i<3; i++){
-
+				ring[i] = aComplex.makePrimalEdgeRing();
 			}
 
-			//construct vertices
-			for (Index i = 0; i<4; i++){
-
-			}
+			//construct vertex:
+			auto pVertex = aComplex.makePrimalVertex();
 
 			//link corners
+			aComplex.linkEdgeRingAndFacetEdges(*ring[0], *fanTuple.f0);
+			aComplex.linkEdgeRingAndFacetEdges(*ring[1], *fanTuple.f1);
+			aComplex.linkEdgeRingAndFacetEdges(*ring[2], *fanTuple.f2);
+
+			// link vertex:
+			aComplex.linkVertexDirectedEdgeRings(*pVertex, *fanTuple.f0->getDirectedEdgeRing());
+
 
 			TetInteriour result;
+
+			result.mpVertex = pVertex;
+
+			// collect all adjacent edge rings:
+			auto const adjRings = getAdjacentRingsOf(*pVertex);
+
+			// return their syms, whose origins are not linked yet
+			for (Index i = 0; i<4; i++){
+				result.mpDring[i]= adjRings[i]->getSym();
+			}
 
 			return result;
 		}
