@@ -113,6 +113,22 @@ namespace CrystalMesh {
 			return result;
 		}
 
+		namespace{
+
+			struct FeArray3{
+				FacetEdge * array[3];
+			};
+
+			FeArray3 const fromThreeTuble(FacetEdgeThreeTuple const aTuble){
+				FeArray3 result;
+				result.array[0] = aTuble.f0;
+				result.array[1] = aTuble.f1;
+				result.array[2] = aTuble.f2;
+
+				return result;
+			}
+		}
+
 		TetInteriour const constructTetInteriourInComplex(Subdiv3::Manifold & aComplex){
 
 			// see https://github.com/chrweb/CrystalMesh/wiki/Cell-complexes-in-Delaunay3#tetrahedron-interior
@@ -121,44 +137,62 @@ namespace CrystalMesh {
 			Fan fan = constructFanInComplex(aComplex);
 			Blossom blos = constructBlossomInComplex(aComplex);
 
-			auto fanTuple = fan.getBlossomAdapter();
-			auto blosTuple = blos.getFanAdapter();
+			auto fanArray = fromThreeTuble(fan.getBlossomAdapter());
+			auto blosArray = fromThreeTuble(blos.getFanAdapter());
 
-			aComplex.spliceFacets(*fanTuple.f0, *blosTuple.f0);
-			aComplex.spliceFacets(*fanTuple.f1, *blosTuple.f1);
-			aComplex.spliceFacets(*fanTuple.f2, *blosTuple.f2);
-
-			Subdiv3::EdgeRing * ring[3];
-
-			// construct corners
 			for (Index i = 0; i<3; i++){
-				ring[i] = aComplex.makePrimalEdgeRing();
+				aComplex.spliceFacets(*fanArray.array[i], *blosArray.array[i]);
 			}
 
-			//construct vertex:
-			auto pVertex = aComplex.makePrimalVertex();
+			/**
+			 * to make flipping easier, construct well-linked entities..
+			 */
+			//construct and link interior corners (edge ring size 3)
+			Subdiv3::EdgeRing * innerRing[3];
 
-			//link corners
-			aComplex.linkEdgeRingAndFacetEdges(*ring[0], *fanTuple.f0);
-			aComplex.linkEdgeRingAndFacetEdges(*ring[1], *fanTuple.f1);
-			aComplex.linkEdgeRingAndFacetEdges(*ring[2], *fanTuple.f2);
-
-			// link vertex:
-			aComplex.linkVertexDirectedEdgeRings(*pVertex, *fanTuple.f0->getDirectedEdgeRing());
+			for(Index i = 0; i<3; i++){
+				innerRing[i] = aComplex.makePrimalEdgeRing();
+				aComplex.linkEdgeRingAndFacetEdges(*innerRing[i], *fanArray.array[i]);
+			}
 
 
 			TetInteriour result;
 
-			result.mpVertex = pVertex;
+			//construct and link corners with edge ring size 1 (outer ones)
+			// these can be reached by fan tuple
+			Subdiv3::FacetEdge * outerEdges[6];
+			auto & outerRing = result.mpOuterEdgeRing;
 
-			// collect all adjacent edge rings:
-			auto const adjRings = getAdjacentRingsOf(*pVertex);
-
-			// return their syms, whose origins are not linked yet
-			for (Index i = 0; i<4; i++){
-				result.mpDring[i]= adjRings[i]->getSym();
+			// get linking pairs
+			for (Index i = 0; i<3; i++){
+				outerEdges[i] =   fanArray.array[i]->getEnext();
+				outerEdges[i+3] =   fanArray.array[i]->getFnext()->getEnext();
 			}
 
+			// construct and link
+			for (Index i = 0; i<6; i++){
+				outerRing[i] = aComplex.makePrimalEdgeRing();
+				aComplex.linkEdgeRingAndFacetEdges(*outerRing[i], *outerEdges[i]);
+			}
+
+			//construct vertices
+			auto &  vert = result.mpVertex;
+			for(Index i = 0; i<5; i++){
+				vert[i] = aComplex.makePrimalVertex();
+			}
+
+			// link interiour vertex:
+			aComplex.linkVertexDirectedEdgeRings(*vert[0], *fanArray.array[0]->getDirectedEdgeRing());
+
+			// collect all adjacent edge rings:
+			auto const adjRings = getAdjacentRingsOf(*vert[0]);
+
+			// link their syms with vertex 1 to 4
+			for (Index i = 1; i<5; i++){
+				aComplex.linkVertexDirectedEdgeRings(*vert[i], *adjRings[i-1]->getSym());
+			}
+
+			// prepare result:
 			return result;
 		}
 

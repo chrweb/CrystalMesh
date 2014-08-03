@@ -110,6 +110,47 @@ namespace CrystalMesh {
 		}
 
 
+		namespace  {
+
+			Math::Geometry::Point3D const pointOf(Subdiv3::Vertex const * apVertex){
+
+			}
+
+
+
+		}  // namespace
+
+		FacetEdgeThreeTuple const TetInteriour::getTetAdapterOf(
+				Math::Geometry::Point3D const &a0,
+				Math::Geometry::Point3D const &a1,
+				Math::Geometry::Point3D const &a2) const{
+
+			Math::Geometry::Point3D const point[3] = {a0, a1, a2};
+			Subdiv3::DirectedEdgeRing const * dring[12];
+
+			// Extract all directed edge ring
+			for (Index i = 0; i<6; i++){
+
+				dring[i] = &mpOuterEdgeRing[i]->getItem(0);
+				dring[i+6] = &mpOuterEdgeRing[i]->getItem(1);
+
+			}
+
+			//ToDo: continue
+
+			// find those with spec point
+			for (auto const & currentPoint: point)){
+				Subdiv3::FacetEdge * found = std::find
+			}
+
+
+
+
+
+
+		}
+
+
 
 
 

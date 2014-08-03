@@ -22,6 +22,8 @@ namespace CrystalMesh {
 
 		struct DirectedEdgeRing;
 
+		struct EdgeRing;
+
 		struct Vertex;
 	}
 

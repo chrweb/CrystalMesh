@@ -74,10 +74,13 @@ namespace CrystalMesh{
 
 		struct TetInteriour{
 
-			Subdiv3::Vertex *mpVertex;
-			Subdiv3::DirectedEdgeRing* mpDring[4];
+			Subdiv3::EdgeRing * mpOuterEdgeRing[6];
+			Subdiv3::Vertex * mVertex[5];
 
-			FacetEdgeThreeTuple const getTetAdaptersAt(Index aIdx) const;
+			FacetEdgeThreeTuple const getTetAdapterOf(
+					Math::Geometry::Point3D const &a0,
+					Math::Geometry::Point3D const &a1,
+					Math::Geometry::Point3D const &a2) const;
 		};
 
 		struct Tet{
