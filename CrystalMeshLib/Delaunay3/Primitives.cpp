@@ -9,10 +9,12 @@
 #include "../Subdiv3/Vertex.h"
 #include "../Subdiv3/FacetEdge.h"
 #include "../Subdiv3/DirectedEdgeRing.h"
+#include "../Subdiv3/EdgeRing.h"
 #include "../Math/Geometry.h"
 #include "Primitives.h"
 #include <vector>
 #include "../Misc/Checks.h"
+#include <algorithm>
 
 namespace CrystalMesh {
 
@@ -112,8 +114,8 @@ namespace CrystalMesh {
 
 		namespace  {
 
-			Math::Geometry::Point3D const pointOf(Subdiv3::Vertex const * apVertex){
-
+			Math::Geometry::Point3D const originPointOf(Subdiv3::DirectedEdgeRing const * apRing){
+				return pointFromSub3Vertex(apRing->getOrg());
 			}
 
 
@@ -126,7 +128,7 @@ namespace CrystalMesh {
 				Math::Geometry::Point3D const &a2) const{
 
 			Math::Geometry::Point3D const point[3] = {a0, a1, a2};
-			Subdiv3::DirectedEdgeRing const * dring[12];
+			Subdiv3::DirectedEdgeRing  * dring[12];
 
 			// Extract all directed edge ring
 			for (Index i = 0; i<6; i++){
@@ -139,8 +141,24 @@ namespace CrystalMesh {
 			//ToDo: continue
 
 			// find those with spec point
-			for (auto const & currentPoint: point)){
-				Subdiv3::FacetEdge * found = std::find
+			for (Math::Geometry::Point3D const & currentPoint: point){
+
+				//auto const &pntRef = currentPoint;
+
+//				{
+//					using  namespace Math::Geometry;
+//					return exactEqual(currentPoint, originPointOf(apRing));
+//
+//				};
+
+				Subdiv3::DirectedEdgeRing * toBegin = dring[0];
+				Subdiv3::DirectedEdgeRing * toEnd = toBegin+6;
+
+				auto condition = [](Subdiv3::DirectedEdgeRing  * apRing) -> bool{
+									return true;
+				};
+
+				Subdiv3::DirectedEdgeRing const* found = std::find_if(toBegin, toEnd, condition);
 			}
 
 

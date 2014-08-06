@@ -14,6 +14,18 @@ using namespace Geometry;
 
 
 
+TEST(Vector3D, equality){
+	Vector3D v00 = Vector3D::zero;
+	Vector3D v01 = Vector3D::zero;
+
+	Vector3D v10 = Vector3D::xAxis;
+
+	EXPECT_TRUE(exactEqual(v00, v01));
+	EXPECT_FALSE(exactEqual(v00, v10));
+
+}
+
+
 TEST(Vector3D, zero){
 	Vector3D const & ref = Vector3D::zero;
 	EXPECT_EQ(ref.mX, 0.0);

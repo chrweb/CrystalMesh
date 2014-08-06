@@ -11,8 +11,8 @@
 // include the gTest header,
 // I'll try to give relative paths at most
 #include "../gTest/include/gtest/gtest.h"
-#include "../Src/Math/CrystalMesh Math.h"
-#include "../Src/Math/Geometry.h"
+#include "../CrystalMeshLib/Math/CrystalMesh Math.h"
+#include "../CrystalMeshLib/Math/Geometry.h"
 
 #include "../CrystalMeshLib/Misc/Checks.h"
 

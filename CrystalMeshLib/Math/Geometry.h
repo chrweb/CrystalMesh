@@ -95,17 +95,15 @@ namespace CrystalMesh{
 				double mV;
 			};
 
-
-
-
-
 		}
 
 	}
 
 }
 
-
+#include "Geometry Point3D.h"
 #include "Geometry Vector3D.h"
+
+
 
 #endif /* GEOMETRY_H_ */
