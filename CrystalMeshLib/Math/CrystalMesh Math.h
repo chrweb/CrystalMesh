@@ -19,6 +19,9 @@ namespace CrystalMesh{
 
 		bool const isFiniteNumber( double aNumber);
 
+		double const squared(double const aSkalar);
+
+		double const squareRootOf( double const aSkalar);
 
 	}
 

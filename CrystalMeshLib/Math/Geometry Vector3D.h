@@ -22,6 +22,17 @@ namespace CrystalMesh{
 
 			Vector3D const operator- (Vector3D const & aLeftOp, Vector3D const & aRightOp);
 
+			/**
+			 * all components bitwise identical
+			 */
+			bool const exactEqual(Vector3D const & a0, Vector3D const & a1);
+
+
+			/**
+			 * length may differ by length DeltaL
+			 */
+			bool const almostEqual(Vector3D const & a0, Vector3D const & a1, double const aDeltaL);
+
 			Vector3D const vectorBetween(Point3D const & aP0, Point3D const & aP1);
 
 			Vector3D const vectorFromXYZ( double const & aX, double const & aY, double const & aZ);
