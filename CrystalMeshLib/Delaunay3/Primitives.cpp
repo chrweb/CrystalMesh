@@ -15,6 +15,7 @@
 #include <vector>
 #include "../Misc/Checks.h"
 #include <algorithm>
+#include <array>
 
 namespace CrystalMesh {
 
@@ -118,8 +119,6 @@ namespace CrystalMesh {
 				return pointFromSub3Vertex(apRing->getOrg());
 			}
 
-
-
 		}  // namespace
 
 		FacetEdgeThreeTuple const TetInteriour::getTetAdapterOf(
@@ -135,37 +134,32 @@ namespace CrystalMesh {
 
 				dring[i] = &mpOuterEdgeRing[i]->getItem(0);
 				dring[i+6] = &mpOuterEdgeRing[i]->getItem(1);
-
 			}
 
-			//ToDo: continue
+
+			std::vector<FacetEdge*> result;
 
 			// find those with spec point
 			for (Math::Geometry::Point3D const & currentPoint: point){
 
-				//auto const &pntRef = currentPoint;
-
-//				{
-//					using  namespace Math::Geometry;
-//					return exactEqual(currentPoint, originPointOf(apRing));
-//
-//				};
-
-				Subdiv3::DirectedEdgeRing * toBegin = dring[0];
-				Subdiv3::DirectedEdgeRing * toEnd = toBegin+6;
-
-				auto condition = [](Subdiv3::DirectedEdgeRing  * apRing) -> bool{
-									return true;
+				auto condition = [&currentPoint](Subdiv3::DirectedEdgeRing  * apRing) -> bool{
+					using  namespace Math::Geometry;
+					return exactEqual(currentPoint, originPointOf(apRing));
 				};
 
-				Subdiv3::DirectedEdgeRing const* found = std::find_if(toBegin, toEnd, condition);
+				auto  beg = std::begin(dring);
+				auto  end = std::end(dring);
+
+				auto  found = std::find_if(beg, end, condition);
+
+				// must be found
+				MUST_BE(found != end);
+
+				result.push_back((*found)->getRingMember());
 			}
 
-
-
-
-
-
+			// expect a tree, return them!
+			return toThreeTuple(result);
 		}
 
 
