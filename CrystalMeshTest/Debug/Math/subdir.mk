@@ -4,12 +4,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../Math/TestPoint3D.cpp \
 ../Math/TestVector3D.cpp 
 
 OBJS += \
+./Math/TestPoint3D.o \
 ./Math/TestVector3D.o 
 
 CPP_DEPS += \
+./Math/TestPoint3D.d \
 ./Math/TestVector3D.d 
 
 

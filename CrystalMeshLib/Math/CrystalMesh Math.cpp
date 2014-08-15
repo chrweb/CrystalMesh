@@ -18,15 +18,6 @@ namespace CrystalMesh{
 		 double const PositivInf = INFINITY;
 		 double const NegativInf = -INFINITY;
 
-		 /*
-		  * Define NaNs of Geometrical Objets
-		  */
-		 namespace Geometry{
-
-
-		 	 Point3D const Point3D::NaN = {NAN, NAN, NAN};
-
-		 }
 	}
 
 

@@ -97,73 +97,73 @@ namespace CrystalMesh{
 			}
 		}
 
-		Tetraeder const DelaunayTriangulation3D::makeTetrahedron(){
-
-			Tetraeder result;
-
-			Triangle tri[4];
-			Subdiv3::Vertex* verts[4];
-
-			// four primal vertices,
-			// four tris
-			for (Counter i = 0; i<4; i++){
-				tri[i] = makeTriangle();
-				verts[i] = mpManifold->makePrimalVertex();
-			}
-
-			// two dual verts
-			auto extr = mpManifold->makeDualVertex();
-			auto intr = mpManifold->makeDualVertex();
-
-			EdgeArray ea0 = edgeArrayOf(tri[0]);
-			EdgeArray ea1 = edgeArrayOf(tri[1]);
-			EdgeArray ea2 = edgeArrayOf(tri[2]);
-			EdgeArray ea3 = edgeArrayOf(tri[3]);
-
-			mpManifold->spliceFacets(*ea0.mArray[0], *ea1.mArray[0]->getClock());
-			mpManifold->spliceFacets(*ea0.mArray[1], *ea1.mArray[0]->getClock());
-			mpManifold->spliceFacets(*ea0.mArray[2], *ea1.mArray[0]->getClock());
-
-			mpManifold->spliceFacets(*ea1.mArray[2], *ea2.mArray[1]->getClock());
-			mpManifold->spliceFacets(*ea2.mArray[2], *ea3.mArray[1]->getClock());
-			mpManifold->spliceFacets(*ea3.mArray[2], *ea1.mArray[1]->getClock());
-
-			// constructing edge rings for tet's corner:
-			Subdiv3::EdgeRing* ring[6];
-			for (Counter c = 0; c < 6; c++){
-				ring[c] = mpManifold->makePrimalEdgeRing();
-			}
-			// link them..
-			mpManifold->linkEdgeRingAndFacetEdges(*ring[0], *ea0[0]);
-			mpManifold->linkEdgeRingAndFacetEdges(*ring[1], *ea0[1]);
-			mpManifold->linkEdgeRingAndFacetEdges(*ring[2], *ea0[2]);
-
-			mpManifold->linkEdgeRingAndFacetEdges(*ring[3], *ea1[2]);
-			mpManifold->linkEdgeRingAndFacetEdges(*ring[4], *ea2[2]);
-			mpManifold->linkEdgeRingAndFacetEdges(*ring[5], *ea3[2]);
-
-			// linking the primal vertices:
-			mpManifold->linkVertexDirectedEdgeRings(*verts[0], ring[3]->operator [](0));
-			mpManifold->linkVertexDirectedEdgeRings(*verts[1], ring[2]->operator [](0));
-			mpManifold->linkVertexDirectedEdgeRings(*verts[2], ring[0]->operator [](0));
-			mpManifold->linkVertexDirectedEdgeRings(*verts[3], ring[1]->operator [](0));
-
-			// prepare result:
-			for (Counter i = 0; i < 4; i++){
-				result.mVerts[i] =  vertexOf(verts[i]);
-				result.mBounds[i] = clockedTriangle(tri[i]);
-			}
-
-			// link dual  verts:
-			Subdiv3::DirectedEdgeRing * pToOuter = result.mBounds[0].mpDualEdgeRing;
-			Subdiv3::DirectedEdgeRing * pToInner = pToOuter->getSym();
-
-
-			mpManifold->linkVertexDirectedEdgeRings(*extr, *pToInner);
-			mpManifold->linkVertexDirectedEdgeRings(*intr, *pToOuter);
-
-			return result;
-		}
+//		Tetraeder const DelaunayTriangulation3D::makeTetrahedron(){
+//
+//			Tetraeder result;
+//
+//			Triangle tri[4];
+//			Subdiv3::Vertex* verts[4];
+//
+//			// four primal vertices,
+//			// four tris
+//			for (Counter i = 0; i<4; i++){
+//				tri[i] = makeTriangle();
+//				verts[i] = mpManifold->makePrimalVertex();
+//			}
+//
+//			// two dual verts
+//			auto extr = mpManifold->makeDualVertex();
+//			auto intr = mpManifold->makeDualVertex();
+//
+//			EdgeArray ea0 = edgeArrayOf(tri[0]);
+//			EdgeArray ea1 = edgeArrayOf(tri[1]);
+//			EdgeArray ea2 = edgeArrayOf(tri[2]);
+//			EdgeArray ea3 = edgeArrayOf(tri[3]);
+//
+//			mpManifold->spliceFacets(*ea0.mArray[0], *ea1.mArray[0]->getClock());
+//			mpManifold->spliceFacets(*ea0.mArray[1], *ea1.mArray[0]->getClock());
+//			mpManifold->spliceFacets(*ea0.mArray[2], *ea1.mArray[0]->getClock());
+//
+//			mpManifold->spliceFacets(*ea1.mArray[2], *ea2.mArray[1]->getClock());
+//			mpManifold->spliceFacets(*ea2.mArray[2], *ea3.mArray[1]->getClock());
+//			mpManifold->spliceFacets(*ea3.mArray[2], *ea1.mArray[1]->getClock());
+//
+//			// constructing edge rings for tet's corner:
+//			Subdiv3::EdgeRing* ring[6];
+//			for (Counter c = 0; c < 6; c++){
+//				ring[c] = mpManifold->makePrimalEdgeRing();
+//			}
+//			// link them..
+//			mpManifold->linkEdgeRingAndFacetEdges(*ring[0], *ea0[0]);
+//			mpManifold->linkEdgeRingAndFacetEdges(*ring[1], *ea0[1]);
+//			mpManifold->linkEdgeRingAndFacetEdges(*ring[2], *ea0[2]);
+//
+//			mpManifold->linkEdgeRingAndFacetEdges(*ring[3], *ea1[2]);
+//			mpManifold->linkEdgeRingAndFacetEdges(*ring[4], *ea2[2]);
+//			mpManifold->linkEdgeRingAndFacetEdges(*ring[5], *ea3[2]);
+//
+//			// linking the primal vertices:
+//			mpManifold->linkVertexDirectedEdgeRings(*verts[0], ring[3]->operator [](0));
+//			mpManifold->linkVertexDirectedEdgeRings(*verts[1], ring[2]->operator [](0));
+//			mpManifold->linkVertexDirectedEdgeRings(*verts[2], ring[0]->operator [](0));
+//			mpManifold->linkVertexDirectedEdgeRings(*verts[3], ring[1]->operator [](0));
+//
+//			// prepare result:
+//			for (Counter i = 0; i < 4; i++){
+//				result.mVerts[i] =  vertexOf(verts[i]);
+//				result.mBounds[i] = clockedTriangle(tri[i]);
+//			}
+//
+//			// link dual  verts:
+//			Subdiv3::DirectedEdgeRing * pToOuter = result.mBounds[0].mpDualEdgeRing;
+//			Subdiv3::DirectedEdgeRing * pToInner = pToOuter->getSym();
+//
+//
+//			mpManifold->linkVertexDirectedEdgeRings(*extr, *pToInner);
+//			mpManifold->linkVertexDirectedEdgeRings(*intr, *pToOuter);
+//
+//			return result;
+//		}
 
 
 	}

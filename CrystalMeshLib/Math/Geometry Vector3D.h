@@ -31,7 +31,9 @@ namespace CrystalMesh{
 			/**
 			 * length may differ by length DeltaL
 			 */
-			bool const almostEqual(Vector3D const & a0, Vector3D const & a1, double const aDeltaL);
+			//bool const almostEqual(Vector3D const & a0, Vector3D const & a1, double const aDeltaL);
+
+			Vector3D const vectorTo(Point3D const & aPoint);
 
 			Vector3D const vectorBetween(Point3D const & aP0, Point3D const & aP1);
 

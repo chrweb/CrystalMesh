@@ -75,7 +75,7 @@ namespace CrystalMesh{
 		struct TetInteriour{
 
 			Subdiv3::EdgeRing * mpOuterEdgeRing[6];
-			Subdiv3::Vertex * mVertex[5];
+			Subdiv3::Vertex * mpVertex[5];
 
 			FacetEdgeThreeTuple const getTetAdapterOf(
 					Math::Geometry::Point3D const &a0,

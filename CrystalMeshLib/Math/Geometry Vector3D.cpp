@@ -82,6 +82,15 @@ namespace CrystalMesh{
 				return a0.mX*a1.mX + a0.mY * a1.mY + a0.mZ * a1.mZ;
 			}
 
+			bool const exactEqual(Vector3D const & a0, Vector3D const & a1){
+				return a0.mX == a1.mX && a0.mY == a1.mY && a0.mZ == a1.mZ;
+			}
+
+			Vector3D const vectorTo(Point3D const & aPoint){
+				return reinterpret_cast<Vector3D  const &>(aPoint);
+			}
+
+
 		}
 	}
 }

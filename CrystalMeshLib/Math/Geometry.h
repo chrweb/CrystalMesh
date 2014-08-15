@@ -102,7 +102,7 @@ namespace CrystalMesh{
 }
 
 #include "Geometry Point3D.h"
-//#include "Geometry Vector3D.h"
+#include "Geometry Vector3D.h"
 
 
 
