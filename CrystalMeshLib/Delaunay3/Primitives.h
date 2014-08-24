@@ -81,6 +81,15 @@ namespace CrystalMesh{
 					Math::Geometry::Point3D const &a0,
 					Math::Geometry::Point3D const &a1,
 					Math::Geometry::Point3D const &a2) const;
+
+			struct Vertices{
+
+				Subdiv3::Vertex * mAtCorners[4];
+				Subdiv3::Vertex * mInTet;
+			};
+
+			Vertices const getVertices();
+
 		};
 
 		struct Tet{

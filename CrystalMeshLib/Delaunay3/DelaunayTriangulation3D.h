@@ -16,14 +16,18 @@ namespace CrystalMesh{
 
 	}
 
-	struct VertexData{
-		Math::Geometry::Point3D  mPoint;
-		void const * mpPropPtr;
-	};
 
-	class VertexDataContainer;
+
+
 
 	namespace Delaunay3{
+
+		struct VertexData{
+			Math::Geometry::Point3D  mPoint;
+			void const * mpPropPtr;
+		};
+
+		class VertexDataContainer;
 
 		class DelaunayTriangulation3D{
 
@@ -82,6 +86,15 @@ namespace CrystalMesh{
 			Triangle const makeTriangle();
 
 			Tetraeder const makeTetrahedron();
+
+			/**
+			 * Creates the interior of execute a 1-4 Flip
+			 */
+			TetInteriour const makeTetInterior(
+					Math::Geometry::Point3D const & aInteriourPoint,
+					Math::Geometry::Point3D const & aTetPoints[4]);
+
+			VertexData * makeVertexData();
 
 
 

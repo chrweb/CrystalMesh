@@ -8,6 +8,7 @@
 #include "../Subdiv3/Subdiv3Prototypes.h"
 #include "../Subdiv3/MaintenerTemplate.h"
 #include "../Subdiv3/FacetEdge.h"
+#include "ComplexConstruction.h"
 
 namespace CrystalMesh{
 
@@ -96,6 +97,34 @@ namespace CrystalMesh{
 				return result;
 			}
 		}
+
+		namespace{
+
+			VertexData const vertexDataOf(Math:Geometry::Point const & aPoint, void * apPropPtr){
+				VertexData result{ aPoint, aPropPtr};
+				return result;
+			}
+
+			VertexData const vertexDataOf(Math:Geometry::Point const & aPoint){
+				VertexData result{ aPoint, nullptr};
+				return result;
+			}
+		}
+
+		// TODO continue..
+		TetInteriour const DelaunayTriangulation3D::makeTetInterior(
+				Math::Geometry::Point3D const & aInteriourPoint,
+				Math::Geometry::Point3D const & aTetPoints[4])
+		{
+
+			auto interior = constructTetInteriourInComplex(*this->mpManifold);
+
+
+
+
+
+		}
+
 
 //		Tetraeder const DelaunayTriangulation3D::makeTetrahedron(){
 //
