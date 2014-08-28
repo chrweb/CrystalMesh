@@ -144,7 +144,7 @@ namespace CrystalMesh {
 
 				auto condition = [&currentPoint](Subdiv3::DirectedEdgeRing  * apRing) -> bool{
 					using  namespace Math::Geometry;
-
+					return exactEqual(currentPoint, originPointOf(apRing));
 				};
 
 				auto  beg = std::begin(dring);
@@ -160,6 +160,17 @@ namespace CrystalMesh {
 
 			// expect a tree, return them!
 			return toThreeTuple(result);
+		}
+
+		TetInteriour::Vertices const TetInteriour::getVertices(){
+			Vertices result;
+			result.mInTet = mpVertex[0];
+
+			for (Index i = 1; i < 4; i++ ){
+				result.mAtCorners[i] = mpVertex[i];
+			}
+
+			return result;
 		}
 
 
