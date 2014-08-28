@@ -19,9 +19,10 @@ Delaunay3/DelaunayTriangulation3Test.d: \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest-test-part.h \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest-typed-test.h \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest_pred_impl.h \
- ../Delaunay3/../../Src/Math/CrystalMesh\ Math.h \
- ../Delaunay3/../../Src/Math/Geometry.h \
- ../Delaunay3/../../Src/Math/Geometry\ Vector3D.h \
+ ../Delaunay3/../../CrystalMeshLib/Math/CrystalMesh\ Math.h \
+ ../Delaunay3/../../CrystalMeshLib/Math/Geometry.h \
+ ../Delaunay3/../../CrystalMeshLib/Math/Geometry\ Point3D.h \
+ ../Delaunay3/../../CrystalMeshLib/Math/Geometry\ Vector3D.h \
  ../Delaunay3/../../CrystalMeshLib/Misc/Checks.h \
  ../Delaunay3/../../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h \
  ../Delaunay3/../../CrystalMeshLib/Subdiv3/Manifold.h \
@@ -35,7 +36,9 @@ Delaunay3/DelaunayTriangulation3Test.d: \
  ../Delaunay3/../../CrystalMeshLib/Delaunay3/DelaunayTriangulation3DPrototypes.h \
  ../Delaunay3/../../CrystalMeshLib/Delaunay3/DelaunayTriangulation3D.h \
  ../Delaunay3/../../CrystalMeshLib/Delaunay3/../Math/Geometry.h \
- ../Delaunay3/../../CrystalMeshLib/Delaunay3/Primitives.h
+ ../Delaunay3/../../CrystalMeshLib/Delaunay3/Primitives.h \
+ ../Delaunay3/../../CrystalMeshLib/Delaunay3/ForwardDecs.h \
+ ../Delaunay3/../../CrystalMeshLib/Delaunay3/ComplexConstruction.h
 
 ../Delaunay3/../TestInclude.h:
 
@@ -75,11 +78,13 @@ Delaunay3/DelaunayTriangulation3Test.d: \
 
 /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest_pred_impl.h:
 
-../Delaunay3/../../Src/Math/CrystalMesh\ Math.h:
+../Delaunay3/../../CrystalMeshLib/Math/CrystalMesh\ Math.h:
 
-../Delaunay3/../../Src/Math/Geometry.h:
+../Delaunay3/../../CrystalMeshLib/Math/Geometry.h:
 
-../Delaunay3/../../Src/Math/Geometry\ Vector3D.h:
+../Delaunay3/../../CrystalMeshLib/Math/Geometry\ Point3D.h:
+
+../Delaunay3/../../CrystalMeshLib/Math/Geometry\ Vector3D.h:
 
 ../Delaunay3/../../CrystalMeshLib/Misc/Checks.h:
 
@@ -108,3 +113,7 @@ Delaunay3/DelaunayTriangulation3Test.d: \
 ../Delaunay3/../../CrystalMeshLib/Delaunay3/../Math/Geometry.h:
 
 ../Delaunay3/../../CrystalMeshLib/Delaunay3/Primitives.h:
+
+../Delaunay3/../../CrystalMeshLib/Delaunay3/ForwardDecs.h:
+
+../Delaunay3/../../CrystalMeshLib/Delaunay3/ComplexConstruction.h:

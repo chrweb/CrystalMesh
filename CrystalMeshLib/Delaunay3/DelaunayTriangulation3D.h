@@ -46,7 +46,7 @@ namespace CrystalMesh{
 
 			};
 
-			Flip1To4Result const flip1to4(Tetraeder& aTetToFlip);
+			Flip1To4Result const flip1to4(Tet& aTetToFlip);
 
 			struct Flip2To3Result{
 
@@ -70,7 +70,7 @@ namespace CrystalMesh{
 				} mSituation;
 
 				union Location{
-					Tetraeder mInTet;
+					Tet mInTet;
 					Triangle  mOnFace;
 					Corner   mOnCorner;
 					Vertex	  mOnVertex;
@@ -83,18 +83,17 @@ namespace CrystalMesh{
 
 			void insertPoint(Math::Geometry::Point3D const & aPoint);
 
-			Triangle const makeTriangle();
-
-			Tetraeder const makeTetrahedron();
+			// constructs a tet of the given 4 points
+			Tet const makeTetrahedron(Math::Geometry::Point3D const aTetPoint[4]);
 
 			/**
-			 * Creates the interior of execute a 1-4 Flip
+			 * Creates the interior of execute a 1-4 Flip,
+			 * Points [0-3]: tet bunds
+			 * Point [4]: in-tet point
 			 */
-			TetInteriour const makeTetInterior(
-					Math::Geometry::Point3D const & aInteriourPoint,
-					Math::Geometry::Point3D const & aTetPoints[4]);
+			TetInteriour const makeTetInterior( Math::Geometry::Point3D const (aTetPoints)[5]);
 
-			VertexData * makeVertexData();
+			VertexData * makeVertexData(Math::Geometry::Point3D const & aPoint, void * apPropPtr);
 
 
 

@@ -10,7 +10,8 @@ Delaunay3/DelaunayTriangulation3D.d: \
  ../Delaunay3/../Subdiv3/EdgeRing.h \
  ../Delaunay3/../Subdiv3/DirectedEdgeRing.h \
  ../Delaunay3/../Subdiv3/MaintenerTemplate.h \
- ../Delaunay3/../Subdiv3/../Misc/Checks.h
+ ../Delaunay3/../Subdiv3/../Misc/Checks.h \
+ ../Delaunay3/ComplexConstruction.h
 
 ../Delaunay3/DelaunayTriangulation3D.h:
 
@@ -41,3 +42,5 @@ Delaunay3/DelaunayTriangulation3D.d: \
 ../Delaunay3/../Subdiv3/MaintenerTemplate.h:
 
 ../Delaunay3/../Subdiv3/../Misc/Checks.h:
+
+../Delaunay3/ComplexConstruction.h:

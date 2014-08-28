@@ -96,20 +96,18 @@ namespace CrystalMesh{
 
 			Subdiv3::Vertex* mpDualVertex;
 			Triangle tri[4];
-			Vertex vert[4];
+			struct Vertices{
+				Subdiv3::Vertex * mpVert[4];
+			};
 
 			Triangle const getTriangleAt(Index aIndex);
 
 			Vertex const getVertexAt(Index aIndex);
+
+			Vertices const getVertices() const;
 		};
 
-		struct Tetraeder{
-			Subdiv3::Vertex* mpDualVertex;
 
-			Triangle const getTriangleAt(Index aIndex);
-
-			Vertex const getVertexAt(Index aIndex);
-		};
 
 
 

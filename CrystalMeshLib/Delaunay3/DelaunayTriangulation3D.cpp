@@ -9,14 +9,17 @@
 #include "../Subdiv3/MaintenerTemplate.h"
 #include "../Subdiv3/FacetEdge.h"
 #include "ComplexConstruction.h"
+#include "../Math/Geometry.h"
 
 namespace CrystalMesh{
 
-	class VertexDataContainer
-	:public Subdiv3::EntityMaintener<VertexData>
-	 {};
 
 	namespace Delaunay3{
+
+		class VertexDataContainer
+		:public Subdiv3::EntityMaintener<VertexData>
+		 {};
+
 
 		DelaunayTriangulation3D::DelaunayTriangulation3D()
 		: mpManifold(new Subdiv3::Manifold)
@@ -39,23 +42,23 @@ namespace CrystalMesh{
 
 		}
 
-		Triangle const DelaunayTriangulation3D::makeTriangle(){
-			auto e0 = mpManifold->makeFacetEdge();
-			auto e1 = mpManifold->makeFacetEdge();
-			auto e2 = mpManifold->makeFacetEdge();
-
-			mpManifold->spliceEdges(*e0, *e1);
-			mpManifold->spliceEdges(*e1, *e2);
-
-			auto ring = mpManifold->makeDualEdgeRing();
-
-			mpManifold->linkEdgeRingAndFacetEdges(*ring, *e0->getDual());
-
-			Triangle result;
-			result.mpDualEdgeRing = e0->getDual()->getDirectedEdgeRing();
-
-			return result;
-		}
+//		Triangle const DelaunayTriangulation3D::makeTriangle(){
+//			auto e0 = mpManifold->makeFacetEdge();
+//			auto e1 = mpManifold->makeFacetEdge();
+//			auto e2 = mpManifold->makeFacetEdge();
+//
+//			mpManifold->spliceEdges(*e0, *e1);
+//			mpManifold->spliceEdges(*e1, *e2);
+//
+//			auto ring = mpManifold->makeDualEdgeRing();
+//
+//			mpManifold->linkEdgeRingAndFacetEdges(*ring, *e0->getDual());
+//
+//			Triangle result;
+//			result.mpDualEdgeRing = e0->getDual()->getDirectedEdgeRing();
+//
+//			return result;
+//		}
 
 		namespace {
 
@@ -100,28 +103,70 @@ namespace CrystalMesh{
 
 		namespace{
 
-			VertexData const vertexDataOf(Math:Geometry::Point const & aPoint, void * apPropPtr){
-				VertexData result{ aPoint, aPropPtr};
+			VertexData const vertexDataOf(Math::Geometry::Point3D const & aPoint, void * apPropPtr){
+				VertexData result{ aPoint, apPropPtr};
 				return result;
 			}
 
-			VertexData const vertexDataOf(Math:Geometry::Point const & aPoint){
+			VertexData const vertexDataOf(Math::Geometry::Point3D const & aPoint){
 				VertexData result{ aPoint, nullptr};
 				return result;
 			}
+
+			void linkVertexDataVertex(VertexData * apData, Subdiv3::Vertex * apVertex){
+				MUST_BE(notNullptr(apVertex));
+				MUST_BE(notNullptr(apData));
+				MUST_BE(isNullptr(apVertex->mpData));
+
+				apVertex->mpData = reinterpret_cast<void*>(apData);
+
+				return;
+			}
 		}
 
-		// TODO continue..
-		TetInteriour const DelaunayTriangulation3D::makeTetInterior(
-				Math::Geometry::Point3D const & aInteriourPoint,
-				Math::Geometry::Point3D const & aTetPoints[4])
+
+		TetInteriour const DelaunayTriangulation3D::makeTetInterior( Math::Geometry::Point3D const  (aTetPoints)[5] )
 		{
+			// construct interior, given five Points: [0]...[3] tetBounds
+			//										  [4] in-tet-point
 
-			auto interior = constructTetInteriourInComplex(*this->mpManifold);
+			// construct the topological structure
+			TetInteriour tetInterior = constructTetInteriourInComplex(*this->mpManifold);
+			TetInteriour::Vertices itsVerts = tetInterior.getVertices();
 
+			// for tet bounds...
+			for (Index i = 0; i < 4; i++)
+			{
+				auto vertexData= makeVertexData(aTetPoints[i], nullptr);
+				linkVertexDataVertex(vertexData, itsVerts.mAtCorners[i]);
+			}
 
+			// in-tet-vertex
+			auto inTetData = makeVertexData(aTetPoints[4], nullptr);
+			linkVertexDataVertex(inTetData, itsVerts.mInTet);
 
+			return tetInterior;
+		}
 
+		VertexData * DelaunayTriangulation3D::makeVertexData(Math::Geometry::Point3D const & aPoint, void * apPropPtr)
+		{
+			auto result = mpToVetexData->constructEntity();
+			result->mPoint = aPoint;
+			result->mpPropPtr = apPropPtr;
+			return result;
+		}
+
+		Tet const DelaunayTriangulation3D::makeTetrahedron(Math::Geometry::Point3D const aTetPoint[4]){
+
+			auto tet = constructTetInComplex(*this->mpManifold);
+			auto itsVerts = tet.getVertices();
+
+			for (Index i = 0 ; i<4; i++){
+				auto vd = makeVertexData(aTetPoint[i], nullptr);
+				linkVertexDataVertex(vd, itsVerts.mpVert[i]);
+			}
+
+			return tet;
 
 		}
 

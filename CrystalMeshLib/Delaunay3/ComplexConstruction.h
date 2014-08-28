@@ -22,7 +22,6 @@ namespace CrystalMesh {
 
 		Fan const constructFanInComplex(Subdiv3::Manifold & aComplex);
 
-
 		TetInteriour const constructTetInteriourInComplex( Subdiv3::Manifold & aComplex );
 
 		Blossom const constructBlossomInComplex(Subdiv3::Manifold & aComplex);
