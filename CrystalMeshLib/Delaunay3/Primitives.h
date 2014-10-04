@@ -95,7 +95,7 @@ namespace CrystalMesh{
 		struct Tet{
 
 			Subdiv3::Vertex* mpDualVertex;
-			Triangle tri[4];
+			Triangle mTri[4];
 
 			struct Vertices{
 				Subdiv3::Vertex * mpVert[4];
@@ -105,9 +105,9 @@ namespace CrystalMesh{
 				Triangle mTri[4];
 			};
 
-			Triangle const getTriangleAt(Index aIndex);
+			Triangle const getTriangleAt(Index aIndex) const ;
 
-			Vertex const getVertexAt(Index aIndex);
+			//Subdiv3::Vertex const  * getVertexAt(Index aIndex) const;
 
 			Vertices const getVertices() const;
 

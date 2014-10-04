@@ -145,8 +145,51 @@ TEST_F(ComplexTester, TetInterior){
 }
 
 
-// TODO Test Tet construction. result types, ...
+TEST_F(ComplexTester, Tet){
+	using namespace Delaunay3;
 
+	// tet
+	auto const tet = constructTetInComplex(mf);
+	auto const verts = tet.getVertices();
+
+	// visit each vertex
+	for (auto const pVert: verts.mpVert){
+		// incident directed edge rings
+		auto const incRings = getAdjacentRingsOf(*pVert);
+
+		EXPECT_EQ(incRings.size(), 3u);
+
+		// check for well def props
+		for (auto const pDirEdge: incRings){
+			EXPECT_EQ(pDirEdge->computeEdgeRingSize(), 2u);
+		}
+	}
+
+	// dual:
+	auto const incDualDirRings = getAdjacentRingsOf(*tet.mpDualVertex);
+
+	// 4 incindent rings
+	EXPECT_EQ(incDualDirRings.size(), 4u);
+
+	for (auto const pDirEdge: incDualDirRings){
+		// each represents a tri..
+		EXPECT_EQ(pDirEdge->computeEdgeRingSize(), 3u);
+	}
+
+	// other (outside):
+	auto const pDualVertex = incDualDirRings.front()->getSym()->getOrg();
+	auto const itsIncRings = getAdjacentRingsOf(*pDualVertex);
+
+	// 4 incident rings
+	EXPECT_EQ(itsIncRings.size(), 4u);
+
+	for (auto const pCurrentRing: itsIncRings){
+		// each one represents a triangle
+		EXPECT_EQ(pCurrentRing->computeEdgeRingSize(), 3u);
+	}
+
+
+}
 // TODO Test 1-4-Flip
 
 

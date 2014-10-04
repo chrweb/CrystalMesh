@@ -54,7 +54,8 @@ namespace CrystalMesh{
 		}
 
 		Vertex * FacetEdge::getOrg(){
-			return const_cast<Vertex*>(getOrg());
+			checkValidPtr(mpDirectedEdgeRing);
+			return getDirectedEdgeRing()->getOrg();
 		};
 
 		Vertex const * FacetEdge::getDest() const{

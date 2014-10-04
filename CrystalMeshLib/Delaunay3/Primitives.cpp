@@ -162,6 +162,7 @@ namespace CrystalMesh {
 			return toThreeTuple(result);
 		}
 
+
 		TetInteriour::Vertices const TetInteriour::getVertices(){
 			Vertices result;
 			result.mInTet = mpVertex[0];
@@ -172,6 +173,43 @@ namespace CrystalMesh {
 
 			return result;
 		}
+
+		namespace{
+
+			struct VertexThreeTuple{
+				Subdiv3::Vertex* mpVerts[3];
+			};
+
+			VertexThreeTuple collectVerts(Triangle const & aTri){
+				auto const bnd = aTri.getBoundary();
+				VertexThreeTuple result;
+				auto & array = result.mpVerts;
+				array[0]= bnd.f0->getOrg();
+				array[1]= bnd.f1->getOrg();
+				array[2]= bnd.f2->getOrg();
+				return result;
+			}
+
+		}
+
+		Tet::Vertices const Tet::getVertices() const{
+			Tet::Vertices result;
+			// two triangles hold all vertices:
+			auto tuple0 = collectVerts(mTri[0]);
+			auto tuple1= collectVerts(mTri[1]);
+
+			std::vector<Subdiv3::Vertex*> all(std::begin(tuple0.mpVerts), std::end(tuple0.mpVerts));
+			all.insert(all.end(), std::begin(tuple1.mpVerts), std::end(tuple1.mpVerts));
+
+			std::sort(all.begin(), all.end());
+			auto un = std::unique(all.begin(), all.end());
+
+			std::copy(all.begin(), un, std::begin(result.mpVert));
+
+			return result;
+		}
+
+
 
 
 

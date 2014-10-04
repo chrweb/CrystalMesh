@@ -205,15 +205,18 @@ namespace CrystalMesh {
 			// four primal vertices,
 			// four tris
 			for (Index i = 0; i<4; i++){
-				result.tri[i] = constructTriangleInComplex(aComplex);
+				result.mTri[i] = constructTriangleInComplex(aComplex);
 				verts[i] = aComplex.makePrimalVertex();
 			}
 
-			auto & tri = result.tri;
+			auto & tri = result.mTri;
 
 			// two dual verts
 			auto extr = aComplex.makeDualVertex();
 			auto intr = aComplex.makeDualVertex();
+
+			//interiour is needed for result:
+			result.mpDualVertex = intr;
 
 			// ea => edgeArray
 			auto ea0 = tri[0].getBoundary();
@@ -221,9 +224,10 @@ namespace CrystalMesh {
 			auto ea2 = tri[2].getBoundary();
 			auto ea3 = tri[3].getBoundary();
 
+			// do splice operations
 			aComplex.spliceFacets(*ea0.f0, *ea1.f0->getClock());
-			aComplex.spliceFacets(*ea0.f1, *ea1.f0->getClock());
-			aComplex.spliceFacets(*ea0.f2, *ea1.f0->getClock());
+			aComplex.spliceFacets(*ea0.f1, *ea2.f0->getClock());
+			aComplex.spliceFacets(*ea0.f2, *ea3.f0->getClock());
 
 			aComplex.spliceFacets(*ea1.f2, *ea2.f1->getClock());
 			aComplex.spliceFacets(*ea2.f2, *ea3.f1->getClock());
@@ -251,7 +255,7 @@ namespace CrystalMesh {
 			aComplex.linkVertexDirectedEdgeRings(*verts[3], ring[1]->operator [](0));
 
 			// link dual  verts:
-			Subdiv3::DirectedEdgeRing * pToOuter = result.tri[0].mpDualEdgeRing;
+			Subdiv3::DirectedEdgeRing * pToOuter = result.mTri[0].mpDualEdgeRing;
 			Subdiv3::DirectedEdgeRing * pToInner = pToOuter->getSym();
 
 			aComplex.linkVertexDirectedEdgeRings(*extr, *pToInner);

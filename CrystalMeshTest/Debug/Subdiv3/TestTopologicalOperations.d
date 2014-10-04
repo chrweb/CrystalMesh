@@ -18,9 +18,10 @@ Subdiv3/TestTopologicalOperations.d: \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest-test-part.h \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest-typed-test.h \
  /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest_pred_impl.h \
- ../Subdiv3/../../Src/Math/CrystalMesh\ Math.h \
- ../Subdiv3/../../Src/Math/Geometry.h \
- ../Subdiv3/../../Src/Math/Geometry\ Vector3D.h \
+ ../Subdiv3/../../CrystalMeshLib/Math/CrystalMesh\ Math.h \
+ ../Subdiv3/../../CrystalMeshLib/Math/Geometry.h \
+ ../Subdiv3/../../CrystalMeshLib/Math/Geometry\ Point3D.h \
+ ../Subdiv3/../../CrystalMeshLib/Math/Geometry\ Vector3D.h \
  ../Subdiv3/../../CrystalMeshLib/Misc/Checks.h \
  ../Subdiv3/../../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h \
  ../Subdiv3/../../CrystalMeshLib/Subdiv3/Manifold.h \
@@ -76,11 +77,13 @@ Subdiv3/TestTopologicalOperations.d: \
 
 /home/christoph/EclipseTestWorkspace0/C++/CrystalMesh/gTest/include/gtest/gtest_pred_impl.h:
 
-../Subdiv3/../../Src/Math/CrystalMesh\ Math.h:
+../Subdiv3/../../CrystalMeshLib/Math/CrystalMesh\ Math.h:
 
-../Subdiv3/../../Src/Math/Geometry.h:
+../Subdiv3/../../CrystalMeshLib/Math/Geometry.h:
 
-../Subdiv3/../../Src/Math/Geometry\ Vector3D.h:
+../Subdiv3/../../CrystalMeshLib/Math/Geometry\ Point3D.h:
+
+../Subdiv3/../../CrystalMeshLib/Math/Geometry\ Vector3D.h:
 
 ../Subdiv3/../../CrystalMeshLib/Misc/Checks.h:
 
