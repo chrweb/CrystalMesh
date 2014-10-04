@@ -17,21 +17,34 @@ namespace CrystalMesh{
 			struct Vector3D;
 			struct Point3D;
 			struct Vector2D;
+			struct Matrix4x3;
+
+			/**
+			* all components bitwise identical
+			*/
+			bool const exactEqual(Vector3D const & a0, Vector3D const & a1);
+
+			double const absoluteOf(Vector3D const & aVec);
+
+			double const squaredOf(Vector3D const & aVec);
 
 			Vector3D const operator+ (Vector3D const & aLeftOp, Vector3D const & aRightOp);
 
 			Vector3D const operator- (Vector3D const & aLeftOp, Vector3D const & aRightOp);
 
-			/**
-			 * all components bitwise identical
-			 */
-			bool const exactEqual(Vector3D const & a0, Vector3D const & a1);
+			Vector3D const operator* (double const aScalar, Vector3D const & aVec);
+
+			Vector3D const operator* (Vector3D const & aVec, double const aScalar);
+
+
 
 
 			/**
 			 * length may differ by length DeltaL
 			 */
 			//bool const almostEqual(Vector3D const & a0, Vector3D const & a1, double const aDeltaL);
+
+			Vector3D const normalized(Vector3D const & aVec);
 
 			Vector3D const vectorTo(Point3D const & aPoint);
 
@@ -46,6 +59,11 @@ namespace CrystalMesh{
 			Vector3D const crossProductOf(Vector3D const & a0, Vector3D const & a1);
 
 			double const dotProductOf(Vector3D const & a0, Vector3D const & a1);
+
+			Vector3D const transformed(Matrix4x3 const & aTrafo, Vector3D const & aVec);
+
+
+
 
 		}
 

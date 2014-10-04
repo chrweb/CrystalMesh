@@ -6,6 +6,7 @@
  */
 
 #include "Geometry.h"
+#include "CrystalMesh Math.h"
 
 
 namespace CrystalMesh{
@@ -89,6 +90,21 @@ namespace CrystalMesh{
 			Vector3D const vectorTo(Point3D const & aPoint){
 				return reinterpret_cast<Vector3D  const &>(aPoint);
 			}
+
+			Vector3D const normalized(Vector3D const & aVec){
+				auto const abs = absoluteOf(aVec);
+				return Math::reciprocalOf(abs)*aVec;
+			}
+
+			double const absoluteOf(Vector3D const & aVec){
+				return squareRootOf(squaredOf(aVec));
+			}
+
+
+			double const squaredOf(Vector3D const & aVec){
+				return dotProductOf(aVec, aVec);
+			}
+
 
 
 		}

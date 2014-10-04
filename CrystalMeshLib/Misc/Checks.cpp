@@ -20,6 +20,9 @@ namespace CrystalMesh{
 			__builtin_trap();
 
 	}
+
+	//void proceedOnViolation(char const * apFilenName, int aLineNumber, char const * aExpression);
+
 }
 
 

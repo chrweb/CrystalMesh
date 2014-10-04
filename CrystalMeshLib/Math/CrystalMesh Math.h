@@ -23,6 +23,8 @@ namespace CrystalMesh{
 
 		double const squareRootOf( double const aSkalar);
 
+		double const reciprocalOf(double const aScalar);
+
 	}
 
 

@@ -66,6 +66,14 @@ namespace CrystalMesh{
 				static Point2D const zero;
 			};
 
+			// Column major matrix for homogenous coords.
+			struct Matrix4x3{
+				Vector3D mX;
+				Vector3D mY;
+				Vector3D mZ;
+				Vector3D mT;
+			};
+
 
 			struct LineSegment3D{
 				Point3D mStartpoint;
@@ -79,14 +87,14 @@ namespace CrystalMesh{
 
 
 			struct Plane3D{
-				Point3D mPointOnPlane;
+				double mOrgToPoint;
 				Vector3D mOrtho;
 			};
 
 			struct OrientedPlane3D{
 				Point3D mOrigin;
-				Point3D mUdir;
-				Point3D mVdir;
+				Vector3D mUdir;
+				Vector3D mVdir;
 			};
 
 

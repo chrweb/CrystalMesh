@@ -18,6 +18,20 @@ namespace CrystalMesh{
 		 double const PositivInf = INFINITY;
 		 double const NegativInf = -INFINITY;
 
+		 double const squareRootOf( double const aSkalar){
+			 return sqrt(aSkalar);
+		 }
+
+		 double const reciprocalOf(double const aScalar){
+			 return 1/aScalar;
+		 }
+
+		double const squared(double const aSkalar){
+			return aSkalar*aSkalar;
+		}
+
+
+
 	}
 
 
