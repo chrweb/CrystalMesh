@@ -19,6 +19,11 @@ namespace CrystalMesh{
 		 double const PositivInf = INFINITY;
 		 double const NegativInf = -INFINITY;
 
+		 bool const almostEqual(double a0, double a1, double eps){
+			 SHOULD_BE(eps>=0);
+			 return absoluteOf(a0-a1)<=eps;
+		 }
+
 		 double const squareRootOf( double const aScalar){
 			 SHOULD_BE(aScalar>=0.0);
 			 return sqrt(aScalar);
@@ -38,6 +43,9 @@ namespace CrystalMesh{
 			return NegativInf	 < aScalar && aScalar < PositivInf;
 		}
 
+		double const absoluteOf(double const aScalar){
+			return fabs(aScalar);
+		}
 
 
 

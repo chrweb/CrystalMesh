@@ -17,6 +17,8 @@ namespace CrystalMesh{
 		extern double const NegativInf;
 		extern double const NaN;
 
+		bool const almostEqual(double a0, double a1, double eps);
+
 		bool const isFiniteNumber( double aNumber);
 
 		double const squared(double const aScalar);
@@ -24,6 +26,8 @@ namespace CrystalMesh{
 		double const squareRootOf( double const aScalar);
 
 		double const reciprocalOf(double const aScalar);
+
+		double const absoluteOf(double const aScalar);
 
 
 	}

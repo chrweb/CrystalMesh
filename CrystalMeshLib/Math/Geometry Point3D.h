@@ -26,12 +26,12 @@ namespace CrystalMesh{
 				bool const exactEqual(Point3D const & a0, Point3D const & a1);
 
 				/**
-				* length may differ by distance aDeltaD
+				* distance may differ by distance aDeltaD
 				*/
 				bool const almostEqual(Point3D const & a0, Point3D const & a1, double const aDeltaD);
 
 
-				Point3D const point3DFromXYZ( double aX, double aY, double aZ);
+				Point3D const pointFromXYZ( double aX, double aY, double aZ);
 
 				Point3D const pointAt(Vector3D const & aVec);
 

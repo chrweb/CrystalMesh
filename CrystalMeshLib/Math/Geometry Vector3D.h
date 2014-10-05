@@ -24,6 +24,11 @@ namespace CrystalMesh{
 			*/
 			bool const exactEqual(Vector3D const & a0, Vector3D const & a1);
 
+			/**
+			 * Vector my differ by delta componentwise
+			 */
+			bool const almostEqual(Vector3D const & a0, Vector3D const & a1, double const aDelta);
+
 			double const absoluteOf(Vector3D const & aVec);
 
 			double const squaredOf(Vector3D const & aVec);

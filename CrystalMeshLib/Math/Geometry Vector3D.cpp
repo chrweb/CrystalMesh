@@ -125,6 +125,14 @@ namespace CrystalMesh{
 			}
 
 
+			bool const almostEqual(Vector3D const & a0, Vector3D const & a1, double const aDelta){
+				return
+						CrystalMesh::Math::almostEqual(a0.mX, a1.mX, aDelta) &&
+						CrystalMesh::Math::almostEqual(a0.mY, a1.mY, aDelta) &&
+						CrystalMesh::Math::almostEqual(a0.mZ, a1.mZ, aDelta);
+			}
+
+
 
 
 

@@ -29,8 +29,8 @@ namespace{
 
 		virtual void SetUp(){
 
-			p0 = point3DFromXYZ(0.0, 0.0, 0.0);
-			p1 = point3DFromXYZ(0.3, -1.7, 2.1);
+			p0 = pointFromXYZ(0.0, 0.0, 0.0);
+			p1 = pointFromXYZ(0.3, -1.7, 2.1);
 			v1 = vectorFromXYZ(0.3, -1.7, 2.1);
 			delta = 0.1;
 
@@ -57,10 +57,10 @@ TEST_F(PointTester, toVector){
 
 TEST(Point, distance){
 
-	auto const q0 = point3DFromXYZ(1.0, 1.0, 1.0);
+	auto const q0 = pointFromXYZ(1.0, 1.0, 1.0);
 	auto const p0 = Point3D::zero;
-	auto const p1 = point3DFromXYZ(1.0, 0.0, 0.0);
-	auto const p2 = point3DFromXYZ(-1.0, 1.0, 1.0);
+	auto const p1 = pointFromXYZ(1.0, 0.0, 0.0);
+	auto const p2 = pointFromXYZ(-1.0, 1.0, 1.0);
 
 	EXPECT_DOUBLE_EQ(squareRootOf(3) ,distanceBetween(q0, p0));
 	EXPECT_DOUBLE_EQ(squareRootOf(2) ,distanceBetween(q0, p1));
@@ -70,9 +70,9 @@ TEST(Point, distance){
 
 TEST(POINT, vectorBetween){
 
-	auto const p0 = point3DFromXYZ(1.0, 1.0, 1.0);
-	auto const p1 = point3DFromXYZ(1.0, 0.0, 0.0);
-	auto const p2 = point3DFromXYZ(-1.0, 1.0, 1.0);
+	auto const p0 = pointFromXYZ(1.0, 1.0, 1.0);
+	auto const p1 = pointFromXYZ(1.0, 0.0, 0.0);
+	auto const p2 = pointFromXYZ(-1.0, 1.0, 1.0);
 
 	auto const vec0 = vectorBetween(p1, p0);
 
