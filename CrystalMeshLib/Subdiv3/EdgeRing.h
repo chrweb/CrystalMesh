@@ -7,24 +7,30 @@
 #pragma once
 
 #include "Subdiv3ForwardDecs.h"
+#include "DirectedEdgeRing.h"
 
 namespace CrystalMesh{
 
 	namespace Subdiv3{
 
-		/**
-		 * An equivalence class for a ring of FacetEdges, forming a ring,
-		 */
+
 		struct EdgeRing{
 
-//			template<typename Functor>
-//			void forEachRingMember(Functor const & aFunc);
+			bool const isDual() const;
 
-			template<typename Functor>
-			void forEachRingMember(Functor const & aFunc) const;
+			bool const isPrimal() const;
 
-			FacetEdge * mpRingMember;
-			void * mpData;
+			Counter const computeEdgeRingSize() const;
+
+			DirectedEdgeRing & operator[](FieldIndex aIndex);
+
+			DirectedEdgeRing const & operator[](FieldIndex aIndex) const;
+
+			DirectedEdgeRing const & getItem(FieldIndex aIndex) const;
+
+			DirectedEdgeRing & getItem(FieldIndex aIndex);
+
+			DirectedEdgeRing mRings[2];
 		};
 
 

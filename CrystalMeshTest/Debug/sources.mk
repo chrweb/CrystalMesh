@@ -26,4 +26,5 @@ SUBDIRS := \
 . \
 Subdiv3 \
 Math \
+Delaunay3 \
 

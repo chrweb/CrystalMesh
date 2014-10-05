@@ -14,12 +14,16 @@ namespace CrystalMesh{
 
 		struct Vertex{
 
-			bool isPrimal() const;
+			bool const isPrimal() const;
 
-			bool isDual() const;
+			bool const isDual() const;
+
+			DirectedEdgeRing * getDirectedEdgeRing();
+
+			DirectedEdgeRing const * getDirectedEdgeRing() const;
 
 
-			FacetEdge * mpOut;
+			DirectedEdgeRing * mpOut;
 			void * mpData;
 
 

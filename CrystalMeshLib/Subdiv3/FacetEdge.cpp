@@ -6,7 +6,7 @@
  */
 #include "FacetEdge.h"
 #include "Vertex.h"
-#include "EdgeRing.h"
+#include "DirectedEdgeRing.h"
 #include "../Misc/Checks.h"
 
 namespace CrystalMesh{
@@ -23,10 +23,6 @@ namespace CrystalMesh{
 			bool checkClockIteration(FacetEdge const & aFe){
 				return aFe.mClckIt == 2  || aFe.mClckIt== -2;
 			}
-
-//			bool checkReverseIteration(FacetEdge const & aFe){
-//				return aFe.mRevsIt == 1  || aFe.mRevsIt == -1;
-//			}
 
 			bool checkDualIteration(FacetEdge const & aFe){
 				return aFe.mDualIt == 1  || aFe.mDualIt == -1;
@@ -53,13 +49,13 @@ namespace CrystalMesh{
 		}
 
 		Vertex const * FacetEdge::getOrg() const{
-			checkValidPtr(mpVertex);
-			return mpVertex;
+			checkValidPtr(mpDirectedEdgeRing);
+			return getDirectedEdgeRing()->getOrg();
 		}
 
 		Vertex * FacetEdge::getOrg(){
-			checkValidPtr(mpVertex);
-			return mpVertex;
+			checkValidPtr(mpDirectedEdgeRing);
+			return getDirectedEdgeRing()->getOrg();
 		};
 
 		Vertex const * FacetEdge::getDest() const{
@@ -70,14 +66,14 @@ namespace CrystalMesh{
 			return getClock()->getOrg();
 		}
 
-		EdgeRing const *  FacetEdge::getEdgeRing() const{
-			checkValidPtr(mpEdgeRing);
-			return mpEdgeRing;
+		DirectedEdgeRing const *  FacetEdge::getDirectedEdgeRing() const{
+			checkValidPtr(mpDirectedEdgeRing);
+			return mpDirectedEdgeRing;
 		}
 
-		EdgeRing * FacetEdge::getEdgeRing() {
-			checkValidPtr(mpEdgeRing);
-			return mpEdgeRing;
+		DirectedEdgeRing * FacetEdge::getDirectedEdgeRing() {
+			checkValidPtr(mpDirectedEdgeRing);
+			return mpDirectedEdgeRing;
 		}
 
 
@@ -90,15 +86,6 @@ namespace CrystalMesh{
 			  return jumpTo(*this, mDualIt);
 		  }
 
-//	      FacetEdge const &	FacetEdge::getRev() const{
-//	    	  MUST_BE(checkReverseIteration(*this));
-//	    	  return jumpTo(*this, mRevsIt);
-//	      }
-//
-//		  FacetEdge &	FacetEdge::getRev(){
-//	    	  MUST_BE(checkReverseIteration(*this));
-//	    	  return jumpTo(*this, mRevsIt);
-//		  }
 
 		  FacetEdge const * FacetEdge::getClock() const{
 	    	  MUST_BE(checkClockIteration(*this));
@@ -140,6 +127,39 @@ namespace CrystalMesh{
 		  FacetEdge * FacetEdge::getInvEnext(){
 			  return getClock()->getEnext()->getClock();
 		  }
+
+		  QuaterNode const * FacetEdge::getQuaterNode() const{
+			  return reinterpret_cast<QuaterNode const *>( this-mIndex);
+		  }
+
+		  QuaterNode * FacetEdge::getQuaterNode(){
+			  return reinterpret_cast<QuaterNode *>( this-mIndex);
+		  }
+
+		  bool FacetEdge::isPrimal() const{
+			  return (mIndex == 0 || mIndex ==2);
+		  }
+
+		  bool FacetEdge::isDual() const{
+			  return !isPrimal();
+		  }
+
+		  const FacetEdge* FacetEdge::getOnext() const {
+			  return getInvEnext()->getInvFnext()->getClock();
+		  }
+
+		  FacetEdge* FacetEdge::getOnext() {
+			  return getInvEnext()->getInvFnext()->getClock();
+		  }
+
+		  const FacetEdge* FacetEdge::getInvOnext() const {
+			  return getInvFnext()->getInvEnext()->getClock();
+		  }
+
+		  FacetEdge* FacetEdge::getInvOnext() {
+			  return getInvFnext()->getInvEnext()->getClock();
+		  }
+
 
 
 

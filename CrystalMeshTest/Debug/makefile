@@ -10,6 +10,7 @@ RM := rm -rf
 -include sources.mk
 -include Subdiv3/subdir.mk
 -include Math/subdir.mk
+-include Delaunay3/subdir.mk
 -include subdir.mk
 -include objects.mk
 

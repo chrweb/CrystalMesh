@@ -22,6 +22,8 @@ namespace CrystalMesh{
 
 		struct FacetEdge;
 
+		struct DirectedEdgeRing;
+
 		struct EdgeRing;
 
 		struct Face;
@@ -44,6 +46,8 @@ namespace CrystalMesh{
 		 */
 
 		typedef int32_t FieldIndex;
+
+		typedef uint32_t Counter;
 
 
 

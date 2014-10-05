@@ -6,15 +6,29 @@
  */
 #pragma once
 
-#include "../Math/CrystalMesh Math.h"
+#include "../Math/Geometry.h"
+#include "Primitives.h"
+#include <array>
 
-namespace CrastalMesh{
+namespace CrystalMesh{
+
+	namespace Subdiv3{
+		class Manifold;
+
+	}
+
+
+
+
 
 	namespace Delaunay3{
 
-		class Tetraeder;
+		struct VertexData{
+			Math::Geometry::Point3D  mPoint;
+			void const * mpPropPtr;
+		};
 
-
+		class VertexDataContainer;
 
 		class DelaunayTriangulation3D{
 
@@ -27,20 +41,70 @@ namespace CrastalMesh{
 
 			DelaunayTriangulation3D( DelaunayTriangulation3D const & aSrc);
 
-			void flip1to4();
+			~DelaunayTriangulation3D();
 
-			void flip2to3();
+			struct Flip1To4Result{
 
-			void flip3to2();
+			};
+
+			Flip1To4Result const flip1to4(Tet& aTetToFlip);
+
+			struct Flip2To3Result{
+
+			};
+
+			Flip2To3Result flip2to3(Corner& aCornerToFlip);
+
+			struct Flip3To2Result{
+
+			};
+
+			Flip3To2Result flip3to2(Triangle& aTriangleToFlip);
+
+			struct PointLocation{
+
+				enum struct Situation{
+					inTetraeder,
+					onFace,
+					onSegment,
+					onVertex
+				} mSituation;
+
+				union Location{
+					Tet mInTet;
+					Triangle  mOnFace;
+					Corner   mOnCorner;
+					Vertex	  mOnVertex;
+				} mLocation;
+			};
 
 
-			Tetraeder const locatePoint()
+			PointLocation const locatePoint(Math::Geometry::Point3D const & aPoint);
 
 
-			void insertPoint();
+			void insertPoint(Math::Geometry::Point3D const & aPoint);
+
+			typedef std::array<Math::Geometry::Point3D,4 > TetPoints;
+
+			// constructs a tet of the given 4 points
+			Tet const makeTetrahedron(TetPoints const & aTetPoints);
+
+			/**
+			 * Creates the interior of execute a 1-4 Flip,
+			 * Points [0-3]: tet bunds
+			 * Point [4]: in-tet point
+			 */
+			TetInteriour const makeTetInterior( Math::Geometry::Point3D const (aTetPoints)[5]);
+
+			VertexData * makeVertexData(Math::Geometry::Point3D const & aPoint, void * apPropPtr = nullptr);
+
+
 
 		private:
 
+			Subdiv3::Manifold * mpManifold;
+
+			VertexDataContainer *mpToVetexData;
 		};
 
 	}

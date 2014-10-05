@@ -6,6 +6,7 @@
  */
 
 #include "Geometry.h"
+#include "CrystalMesh Math.h"
 
 
 namespace CrystalMesh{
@@ -81,6 +82,59 @@ namespace CrystalMesh{
 			double const dotProductOf(Vector3D const & a0, Vector3D const & a1){
 				return a0.mX*a1.mX + a0.mY * a1.mY + a0.mZ * a1.mZ;
 			}
+
+			bool const exactEqual(Vector3D const & a0, Vector3D const & a1){
+				return a0.mX == a1.mX && a0.mY == a1.mY && a0.mZ == a1.mZ;
+			}
+
+			Vector3D const vectorTo(Point3D const & aPoint){
+				return reinterpret_cast<Vector3D  const &>(aPoint);
+			}
+
+			Vector3D const normalized(Vector3D const & aVec){
+				auto const abs = absoluteOf(aVec);
+				return Math::reciprocalOf(abs)*aVec;
+			}
+
+			double const absoluteOf(Vector3D const & aVec){
+				return squareRootOf(squaredOf(aVec));
+			}
+
+
+			double const squaredOf(Vector3D const & aVec){
+				return dotProductOf(aVec, aVec);
+			}
+
+			Vector3D const operator* (double const aScalar, Vector3D const & aVec){
+				return vectorFromXYZ(
+						aScalar*aVec.mX,
+						aScalar*aVec.mY,
+						aScalar*aVec.mZ);
+			}
+
+			Vector3D const operator* (Vector3D const & aVec, double const aScalar){
+				return aScalar*aVec;
+			}
+
+			Vector3D const vectorBetween(Point3D const & aPdest, Point3D const & aPorg){
+				return vectorFromXYZ(
+						aPdest.mX- aPorg.mX,
+						aPdest.mY- aPorg.mY,
+						aPdest.mZ- aPorg.mZ
+						);
+			}
+
+
+			bool const almostEqual(Vector3D const & a0, Vector3D const & a1, double const aDelta){
+				return
+						CrystalMesh::Math::almostEqual(a0.mX, a1.mX, aDelta) &&
+						CrystalMesh::Math::almostEqual(a0.mY, a1.mY, aDelta) &&
+						CrystalMesh::Math::almostEqual(a0.mZ, a1.mZ, aDelta);
+			}
+
+
+
+
 
 		}
 	}

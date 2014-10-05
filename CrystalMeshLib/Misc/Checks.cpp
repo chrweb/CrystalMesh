@@ -8,6 +8,7 @@
 #include "Checks.h"
 
 //#include  <verify.h>
+#include <iostream>
 
 namespace CrystalMesh{
 
@@ -21,6 +22,9 @@ namespace CrystalMesh{
 
 	}
 
+	void proceedOnViolation(char const * apFilenName, int aLineNumber, char const * aExpression){
+		std::cout << "Violation " << apFilenName << "\t Line " << aLineNumber << "\t Expression" << aExpression <<std::endl;
+	}
 
 }
 

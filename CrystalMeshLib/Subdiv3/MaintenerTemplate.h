@@ -20,7 +20,11 @@ namespace CrystalMesh{
 
 			EntityMaintener();
 
+			~EntityMaintener();
+
 			Entity * constructEntity();
+
+			bool const isMyEntity( Entity const & aRef) const;
 
 			void deleteEntity (Entity *apInstance);
 
@@ -49,6 +53,22 @@ namespace CrystalMesh{
 			delete *found;
 			mContainer.erase(found);
 			return;
+		}
+
+		template<typename Entity>
+		bool const EntityMaintener<Entity>::isMyEntity( Entity const & aRef) const{
+			Entity * pInst = const_cast<Entity*>(&aRef);
+			auto found = mContainer.find(pInst);
+			return found != mContainer.end();
+		}
+
+		template<typename Entity>
+		EntityMaintener<Entity>::~EntityMaintener(){
+			for (auto current: mContainer){
+				delete current;
+			}
+
+			mContainer.clear();
 		}
 	}
 

@@ -20,25 +20,22 @@ namespace CrystalMesh{
 			/**
 			 * Access to origin/ destination
 			 */
-
 			Vertex const * getOrg() const;
 			Vertex * getOrg();
 
 			Vertex const * getDest() const;
 		    Vertex * getDest();
 
-		    EdgeRing const * getEdgeRing() const;
-		    EdgeRing * getEdgeRing();
+		    DirectedEdgeRing const * getDirectedEdgeRing() const;
+		    DirectedEdgeRing * getDirectedEdgeRing();
 
 		    /**
-		     * Other members in current OctoNode
+		     * Other members in current QuaterNode
 		     */
 
 		    FacetEdge const *	getDual() const;
 		    FacetEdge * getDual();
 
-		    //FacetEdge const &	getRev() const;
-		    //FacetEdge &	getRev();
 
 		    FacetEdge const * getClock() const;
 		    FacetEdge* 	getClock();
@@ -58,17 +55,55 @@ namespace CrystalMesh{
 		    FacetEdge const * getInvEnext() const;
 		    FacetEdge * getInvEnext();
 
-			Vertex* mpVertex;
-			EdgeRing* mpEdgeRing;
+		    /**
+		     *  Access to QuaterNode
+		     */
+		    QuaterNode const * getQuaterNode() const;
+		    QuaterNode * getQuaterNode();
+
+		    /**
+		     * Navigation on Surface
+		     */
+
+		    /**
+		     * Returns the Onext FacetEdge, that is, in ccw-Direction the next FacetEdge with the same body 'under' it and the same origin  vertex
+		     * than this instance.
+		     */
+		    FacetEdge const * getOnext() const;
+		    FacetEdge * getOnext();
+
+		    FacetEdge const * getInvOnext() const;
+		    FacetEdge * getInvOnext();
+
+
+			DirectedEdgeRing* mpDirectedEdgeRing;
 			FacetEdge *mpNext;
 
 			FieldIndex mIndex;
 			FieldIndex  mDualIt;
-			//FieldIndex  mRevsIt;
 			FieldIndex  mClckIt;
 
 		};
 
-	}
+		template<typename Functor>
+		void forEachElementInFnextRing(FacetEdge  & aStart, Functor const &aFunct){
+			auto  pCurrent = &aStart;
+			auto  pEnd = pCurrent;
+			do{
+				aFunct.operator()(*pCurrent);
+				pCurrent = pCurrent->getFnext();
+			}while(pCurrent != pEnd);
+
+			return;
+		}
+
+		template<typename Functor>
+		void forEachElementInFnextRing(FacetEdge const  & aStart, Functor const &aFunct){
+			auto & nonConstRef = const_cast<FacetEdge&>(aStart);
+			forEachElementInFnextRing(nonConstRef, aFunct);
+		}
+
+
+		}
 }
 

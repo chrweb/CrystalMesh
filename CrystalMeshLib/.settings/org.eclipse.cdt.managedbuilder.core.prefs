@@ -7,3 +7,11 @@ environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.debug.
 environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.debug.710070754/C_INCLUDE_PATH/operation=remove
 environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.debug.710070754/append=true
 environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.debug.710070754/appendContributed=true
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.release.65731540/CPATH/delimiter=\:
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.release.65731540/CPATH/operation=remove
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.release.65731540/CPLUS_INCLUDE_PATH/delimiter=\:
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.release.65731540/CPLUS_INCLUDE_PATH/operation=remove
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.release.65731540/C_INCLUDE_PATH/delimiter=\:
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.release.65731540/C_INCLUDE_PATH/operation=remove
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.release.65731540/append=true
+environment/buildEnvironmentInclude/cdt.managedbuild.config.gnu.cross.lib.release.65731540/appendContributed=true
