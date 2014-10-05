@@ -105,6 +105,18 @@ namespace CrystalMesh{
 				return dotProductOf(aVec, aVec);
 			}
 
+			Vector3D const operator* (double const aScalar, Vector3D const & aVec){
+				return vectorFromXYZ(
+						aScalar*aVec.mX,
+						aScalar*aVec.mY,
+						aScalar*aVec.mZ);
+			}
+
+			Vector3D const operator* (Vector3D const & aVec, double const aScalar){
+				return aScalar*aVec;
+			}
+
+
 
 
 		}

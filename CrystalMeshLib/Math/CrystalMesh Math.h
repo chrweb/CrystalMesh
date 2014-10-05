@@ -19,11 +19,12 @@ namespace CrystalMesh{
 
 		bool const isFiniteNumber( double aNumber);
 
-		double const squared(double const aSkalar);
+		double const squared(double const aScalar);
 
-		double const squareRootOf( double const aSkalar);
+		double const squareRootOf( double const aScalar);
 
 		double const reciprocalOf(double const aScalar);
+
 
 	}
 

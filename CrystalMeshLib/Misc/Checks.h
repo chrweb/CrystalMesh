@@ -28,21 +28,24 @@ namespace CrystalMesh{
 }
 
 
-#define SHOULD_BE(Expression)	SHOULD_BE_INTERNAL(Expression)
 
 
 
 #ifdef DEBUG
-	#define  SHOULD_BE_INTERNAL(Expression) \
-	if (!Expression) \
+	#define  SHOULD_BE_INTERNAL(Expression)\
+	if (!(Expression)) \
 	{ \
-		CrystalMesh::proceedOnViolation(__FILE, __LINE, #Expression); \
-	} \
+		CrystalMesh::proceedOnViolation(__FILE__, __LINE__, #Expression); \
+	}
+
 #else
 	// empty
 	#define SHOULD_BE_INTERNAL(Expression)
 #endif
 
+
+//#define SHOULD_BE_INTERNAL(Expression)
+#define SHOULD_BE(Expression)	SHOULD_BE_INTERNAL(Expression)
 
 
 

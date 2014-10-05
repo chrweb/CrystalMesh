@@ -8,6 +8,7 @@
 #include "CrystalMesh Math.h"
 #include "Geometry.h"
 #include <math.h>
+#include "../Misc/Checks.h"
 
 namespace CrystalMesh{
 
@@ -18,8 +19,9 @@ namespace CrystalMesh{
 		 double const PositivInf = INFINITY;
 		 double const NegativInf = -INFINITY;
 
-		 double const squareRootOf( double const aSkalar){
-			 return sqrt(aSkalar);
+		 double const squareRootOf( double const aScalar){
+			 SHOULD_BE(aScalar>=0.0);
+			 return sqrt(aScalar);
 		 }
 
 		 double const reciprocalOf(double const aScalar){
@@ -29,6 +31,13 @@ namespace CrystalMesh{
 		double const squared(double const aSkalar){
 			return aSkalar*aSkalar;
 		}
+
+
+		bool const isFiniteNumber(double const aScalar)
+		{
+			return NegativInf	 < aScalar && aScalar < PositivInf;
+		}
+
 
 
 
