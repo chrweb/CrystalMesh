@@ -116,6 +116,15 @@ namespace CrystalMesh{
 				return aScalar*aVec;
 			}
 
+			Vector3D const vectorBetween(Point3D const & aPdest, Point3D const & aPorg){
+				return vectorFromXYZ(
+						aPdest.mX- aPorg.mX,
+						aPdest.mY- aPorg.mY,
+						aPdest.mZ- aPorg.mZ
+						);
+			}
+
+
 
 
 

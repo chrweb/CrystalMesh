@@ -87,7 +87,14 @@ namespace CrystalMesh{
 
 
 			struct Plane3D{
+				/**
+				 * Distance from (0,0,0) to point on plane
+				 */
 				double mOrgToPoint;
+
+				/**
+				 * Direction to move
+				 */
 				Vector3D mOrtho;
 			};
 
@@ -111,6 +118,7 @@ namespace CrystalMesh{
 
 #include "Geometry Point3D.h"
 #include "Geometry Vector3D.h"
+#include "Geometry Plane3D.h"
 
 
 

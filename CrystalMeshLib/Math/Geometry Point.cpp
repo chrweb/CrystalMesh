@@ -34,6 +34,15 @@ namespace CrystalMesh {
 				return result;
 			}
 
+			double const distanceBetween(Point3D const & a0, Point3D const & a1){
+				return absoluteOf(vectorBetween(a0, a1));
+			}
+
+			double const squaredDistanceBetween(Point3D const & a0, Point3D const & a1){
+				return squaredOf(vectorBetween(a0, a1));
+			}
+
+
 
 
 

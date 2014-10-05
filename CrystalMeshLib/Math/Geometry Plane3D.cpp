@@ -6,7 +6,7 @@
  */
 
 #include "CrystalMesh Math.h"
-
+#include "Geometry.h"
 namespace CrystalMesh{
 
 	namespace Math{

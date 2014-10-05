@@ -21,6 +21,7 @@ Math/TestPoint3D.d: ../Math/TestPoint3D.cpp ../Math/../TestInclude.h \
  ../Math/../../CrystalMeshLib/Math/Geometry.h \
  ../Math/../../CrystalMeshLib/Math/Geometry\ Point3D.h \
  ../Math/../../CrystalMeshLib/Math/Geometry\ Vector3D.h \
+ ../Math/../../CrystalMeshLib/Math/Geometry\ Plane3D.h \
  ../Math/../../CrystalMeshLib/Misc/Checks.h \
  ../Math/../../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h \
  ../Math/../../CrystalMeshLib/Subdiv3/Manifold.h \
@@ -83,6 +84,8 @@ Math/TestPoint3D.d: ../Math/TestPoint3D.cpp ../Math/../TestInclude.h \
 ../Math/../../CrystalMeshLib/Math/Geometry\ Point3D.h:
 
 ../Math/../../CrystalMeshLib/Math/Geometry\ Vector3D.h:
+
+../Math/../../CrystalMeshLib/Math/Geometry\ Plane3D.h:
 
 ../Math/../../CrystalMeshLib/Misc/Checks.h:
 
