@@ -10,6 +10,8 @@
 #include "../Subdiv3/FacetEdge.h"
 #include "ComplexConstruction.h"
 #include "../Math/Geometry.h"
+#include <algorithm>
+#include <iterator>
 
 namespace CrystalMesh{
 
@@ -96,15 +98,22 @@ namespace CrystalMesh{
 				return result;
 			}
 
+			bool noData(Subdiv3::Vertex const * apVertex){
+							MUST_BE(notNullptr(apVertex));
+							return isNullptr(apVertex->mpData);
+			}
+
 			void linkVertexDataVertex(VertexData * apData, Subdiv3::Vertex * apVertex){
 				MUST_BE(notNullptr(apVertex));
 				MUST_BE(notNullptr(apData));
-				MUST_BE(isNullptr(apVertex->mpData));
+				MUST_BE(noData(apVertex));
 
 				apVertex->mpData = reinterpret_cast<void*>(apData);
 
 				return;
 			}
+
+
 		}
 
 
@@ -139,18 +148,72 @@ namespace CrystalMesh{
 			return result;
 		}
 
-		Tet const DelaunayTriangulation3D::makeTetrahedron(Math::Geometry::Point3D const aTetPoint[4]){
+		Tet const DelaunayTriangulation3D::makeTetrahedron(TetPoints const & aTetPoints){
+			using namespace CrystalMesh;
+			using namespace Math;
+			using namespace Geometry;
 
-			auto tet = constructTetInComplex(*this->mpManifold);
-			auto itsVerts = tet.getVertices();
 
-			for (Index i = 0 ; i<4; i++){
-				auto vd = makeVertexData(aTetPoint[i], nullptr);
-				linkVertexDataVertex(vd, itsVerts.mpVert[i]);
+			auto const eps = 1e-6;
+
+			// [0]-[2]: basic trianlge
+			Point3D points[4];
+			std::copy(aTetPoints.begin(), aTetPoints.end(), std::begin(points));
+			// plane of basic triangle
+			auto const plane = planeFromThreePoints(points[0], points[1], points[2]);
+
+			// last point above?
+			switch (pointPlaneProjection(plane, aTetPoints[4],eps)){
+			case PointToPlaneProjection::overPlane:
+				// swap
+				std::swap(points[0], points[1]);
+				break;
+
+			case PointToPlaneProjection::underPlane:
+				// fine
+				break;
+
+			default:
+				// very bad
+				UNREACHABLE();
 			}
 
-			return tet;
 
+			VertexData * vertexData[4];
+			// construct vertex data:
+			for(Index i = 0 ; i < 4; i++){
+				vertexData[i] = makeVertexData(points[i]);
+			}
+
+			// construct tet
+			auto tet = constructTetInComplex(*this->mpManifold);
+
+			// get a bounding tri
+			auto bound = tet.getTriangleAt(0).getBoundaryArray();
+
+			//link first three vertex data:
+			for (Index i = 0; i<3; i++){
+				linkVertexDataVertex(vertexData[i], bound[i]->getOrg() );
+			}
+
+			// get another triangle
+			bound = tet.getTriangleAt(1).getBoundaryArray();
+
+			// look for vertex with no data,
+			// give him the remaining point
+			Index count(0);
+			for (Index i = 0; i <=3; i++){
+				if (noData(bound[i]->getOrg())){
+					linkVertexDataVertex(vertexData[4], bound[i]->getOrg());
+					count++;
+				}
+			}
+
+			// very bad error?
+			MUST_BE(count == 1);
+
+			//done
+			return tet;
 		}
 
 	}

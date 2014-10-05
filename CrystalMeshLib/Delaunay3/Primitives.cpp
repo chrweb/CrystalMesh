@@ -67,6 +67,18 @@ namespace CrystalMesh {
 			return result;
 		}
 
+		Triangle::Boundary const Triangle::getBoundaryArray() const{
+			auto pBnd = mpDualEdgeRing->getRingMember()->getDual();
+
+			Triangle::Boundary result;
+
+			result[0] = pBnd;
+			result[1] = result[0]->getEnext();
+			result[2] = result[1]->getEnext();
+
+			return result;
+		}
+
 		PointThreeTuple const Triangle::getPoints() const{
 
 			auto const bnd = getBoundary();

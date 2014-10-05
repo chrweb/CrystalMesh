@@ -107,15 +107,16 @@ TEST_F(PlaneProjection, PointPlaneRelation){
 	// over plane
 	auto const q0 = pointFromXYZ(1.2, 2.7, 3.14 );
 
-	//under plane
-	auto const q1 = pointFromXYZ(0.0, 2.7, 3.14);
-
 	//on plane
-	auto const q2 = pointFromXYZ(1.0, 2.0, 4.0);
+	auto const q1 = pointFromXYZ(1.0, 2.0, 4.0);
+
+	//under plane
+	auto const q2 = pointFromXYZ(0.0, 2.7, 3.14);
+
 
 	// signed dists:
 	auto const posDist0 = signedDistanceBetween(plane0, q0);
-	auto const negDist0 = signedDistanceBetween(plane0, q1);
+	auto const negDist0 = signedDistanceBetween(plane0, q2);
 
 	// expect
 	double const exPosDist0 = 0.2;
@@ -126,7 +127,7 @@ TEST_F(PlaneProjection, PointPlaneRelation){
 
 	// up side down:
 	// signed dists:
-	auto const posDist1 = signedDistanceBetween(plane1, q1);
+	auto const posDist1 = signedDistanceBetween(plane1, q2);
 	auto const negDist1 = signedDistanceBetween(plane1, q0);
 
 	// expect

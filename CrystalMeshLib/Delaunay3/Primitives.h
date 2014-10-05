@@ -6,6 +6,7 @@
  */
 #pragma once
 #include "ForwardDecs.h"
+#include <array>
 
 namespace CrystalMesh{
 
@@ -46,6 +47,10 @@ namespace CrystalMesh{
 
 		struct Triangle
 		{
+			typedef std::array<Subdiv3::FacetEdge*, 3> Boundary;
+
+			Boundary const getBoundaryArray() const;
+
 			FacetEdgeThreeTuple const getBoundary() const;
 
 			PointThreeTuple const getPoints() const;

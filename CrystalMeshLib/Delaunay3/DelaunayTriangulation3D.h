@@ -8,6 +8,7 @@
 
 #include "../Math/Geometry.h"
 #include "Primitives.h"
+#include <array>
 
 namespace CrystalMesh{
 
@@ -83,8 +84,10 @@ namespace CrystalMesh{
 
 			void insertPoint(Math::Geometry::Point3D const & aPoint);
 
+			typedef std::array<Math::Geometry::Point3D,4 > TetPoints;
+
 			// constructs a tet of the given 4 points
-			Tet const makeTetrahedron(Math::Geometry::Point3D const aTetPoint[4]);
+			Tet const makeTetrahedron(TetPoints const & aTetPoints);
 
 			/**
 			 * Creates the interior of execute a 1-4 Flip,
@@ -93,7 +96,7 @@ namespace CrystalMesh{
 			 */
 			TetInteriour const makeTetInterior( Math::Geometry::Point3D const (aTetPoints)[5]);
 
-			VertexData * makeVertexData(Math::Geometry::Point3D const & aPoint, void * apPropPtr);
+			VertexData * makeVertexData(Math::Geometry::Point3D const & aPoint, void * apPropPtr = nullptr);
 
 
 

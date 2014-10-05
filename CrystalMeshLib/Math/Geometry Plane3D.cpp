@@ -36,8 +36,7 @@ namespace CrystalMesh{
 			}
 
 			Point3D const closestPoint(Plane3D const & aPlane, Point3D const & aPoint){
-				auto const scalar =signedDistanceBetween(aPlane, aPoint);
-				return aPoint + scalar*aPlane.mNormal;
+				return aPoint- signedDistanceBetween(aPlane, aPoint)*aPlane.mNormal;
 			}
 
 			// Determines, if Point above, under or on plane.
@@ -54,7 +53,7 @@ namespace CrystalMesh{
 			}
 
 			double const signedDistanceBetween(Plane3D const & aPlane, Point3D const & aPoint){
-				return dotProductOf(vectorBetween(aPlane.mPoint, aPoint), aPlane.mNormal);
+				return dotProductOf(vectorBetween(aPoint, aPlane.mPoint), aPlane.mNormal);
 			}
 
 			double const distanceBetween(Plane3D const & aPlane, Point3D const & aPoint){
