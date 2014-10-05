@@ -90,12 +90,12 @@ namespace CrystalMesh{
 				/**
 				 * Distance from (0,0,0) to point on plane
 				 */
-				double mOrgToPoint;
+				Point3D mPoint;
 
 				/**
 				 * Direction to move
 				 */
-				Vector3D mOrtho;
+				Vector3D mNormal;
 			};
 
 			struct OrientedPlane3D{

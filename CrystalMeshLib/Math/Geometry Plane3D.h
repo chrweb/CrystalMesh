@@ -17,6 +17,19 @@ namespace CrystalMesh{
 			struct Point3D;
 			struct Vector3D;
 
+			enum struct PointToPlaneProjection{
+							onPlane,
+							overPlane,
+							underPlane
+						};
+
+			// Determines, if Point above, under or on plane. Eps defines a distance delta to evaluate on-plane-situation
+			PointToPlaneProjection const pointPlaneProjection(Plane3D const & aPlane, Point3D const & aPoint, double const aEps);
+
+			double const signedDistanceBetween(Plane3D const & aPlane, Point3D const & aPoint);
+
+			double const distanceBetween(Plane3D const & aPlane, Point3D const & aPoint);
+
 			Plane3D const planeFromPointAndNormal(Point3D const & aPoint, Vector3D const & aNormal);
 
 			Plane3D const planeFromThreePoints(Point3D const & a0, Point3D const & a1, Point3D const a2);

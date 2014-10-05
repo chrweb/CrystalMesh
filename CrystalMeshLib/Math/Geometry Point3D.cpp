@@ -48,6 +48,22 @@ namespace CrystalMesh {
 				return squaredOf(vectorBetween(a0, a1));
 			}
 
+			Point3D const operator + (Point3D const & aPoint, Vector3D const & aVec){
+				return pointFromXYZ(
+						aPoint.mX + aVec.mX,
+						aPoint.mY + aVec.mY,
+						aPoint.mZ + aVec.mZ);
+			}
+
+
+			Point3D const operator - (Point3D const & aPoint, Vector3D const & aVec){
+				return pointFromXYZ(
+										aPoint.mX - aVec.mX,
+										aPoint.mY - aVec.mY,
+										aPoint.mZ - aVec.mZ);
+			}
+
+
 
 
 

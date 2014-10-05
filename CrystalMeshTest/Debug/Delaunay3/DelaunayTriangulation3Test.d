@@ -23,6 +23,7 @@ Delaunay3/DelaunayTriangulation3Test.d: \
  ../Delaunay3/../../CrystalMeshLib/Math/Geometry.h \
  ../Delaunay3/../../CrystalMeshLib/Math/Geometry\ Point3D.h \
  ../Delaunay3/../../CrystalMeshLib/Math/Geometry\ Vector3D.h \
+ ../Delaunay3/../../CrystalMeshLib/Math/Geometry\ Plane3D.h \
  ../Delaunay3/../../CrystalMeshLib/Misc/Checks.h \
  ../Delaunay3/../../CrystalMeshLib/Subdiv3/Subdiv3Prototypes.h \
  ../Delaunay3/../../CrystalMeshLib/Subdiv3/Manifold.h \
@@ -85,6 +86,8 @@ Delaunay3/DelaunayTriangulation3Test.d: \
 ../Delaunay3/../../CrystalMeshLib/Math/Geometry\ Point3D.h:
 
 ../Delaunay3/../../CrystalMeshLib/Math/Geometry\ Vector3D.h:
+
+../Delaunay3/../../CrystalMeshLib/Math/Geometry\ Plane3D.h:
 
 ../Delaunay3/../../CrystalMeshLib/Misc/Checks.h:
 

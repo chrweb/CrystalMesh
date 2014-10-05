@@ -12,21 +12,4 @@ using namespace CrystalMesh;
 using namespace Math;
 using namespace Geometry;
 
-//TEST(Delaunay3, TriangleTopology){
-//	using namespace Delaunay3;
-//
-//	DelaunayTriangulation3D dt;
-//
-//	auto triangle = dt.makeTriangle();
-//}
-
-//TEST(Delaunay3, TetTopology){
-//	using namespace Delaunay3;
-//
-//	DelaunayTriangulation3D dt;
-//
-//	auto tet = dt.makeTetrahedron();
-//
-//}
-
 

@@ -15,8 +15,8 @@ namespace CrystalMesh{
 
 			Plane3D const planeFromPointAndNormal(Point3D const & aPoint, Vector3D const & aNormal){
 				Plane3D result;
-				result.mOrgToPoint = distanceBetween(aPoint, Point3D::zero);
-				result.mOrtho = normalized(aNormal);
+				result.mPoint = aPoint;
+				result.mNormal = normalized(aNormal);
 				return result;
 			}
 
@@ -28,12 +28,39 @@ namespace CrystalMesh{
 			}
 
 			Point3D const pointOnPlaneOf(Plane3D const & aPlane){
-				return pointAt(aPlane.mOrgToPoint  * aPlane.mOrtho);
+				return aPlane.mPoint;
 			}
 
 			Vector3D const normalOf(Plane3D const & aPlane){
-				return aPlane.mOrtho;
+				return aPlane.mNormal;
 			}
+
+			Point3D const closestPoint(Plane3D const & aPlane, Point3D const & aPoint){
+				auto const scalar =signedDistanceBetween(aPlane, aPoint);
+				return aPoint + scalar*aPlane.mNormal;
+			}
+
+			// Determines, if Point above, under or on plane.
+			PointToPlaneProjection const pointPlaneProjection(Plane3D const & aPlane, Point3D const & aPoint, double const aEps){
+				auto const dist = signedDistanceBetween(aPlane, aPoint);
+				if (CrystalMesh::Math::almostEqual(0.0, dist, aEps)){
+					return PointToPlaneProjection::onPlane;
+				}
+
+				if (dist>0)
+					return PointToPlaneProjection::overPlane;
+
+				return PointToPlaneProjection::underPlane;
+			}
+
+			double const signedDistanceBetween(Plane3D const & aPlane, Point3D const & aPoint){
+				return dotProductOf(vectorBetween(aPlane.mPoint, aPoint), aPlane.mNormal);
+			}
+
+			double const distanceBetween(Plane3D const & aPlane, Point3D const & aPoint){
+				return CrystalMesh::Math::absoluteOf(signedDistanceBetween(aPlane, aPoint));
+			}
+
 
 
 
