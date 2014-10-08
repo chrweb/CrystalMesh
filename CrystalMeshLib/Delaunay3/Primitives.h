@@ -48,12 +48,17 @@ namespace CrystalMesh{
 		struct Triangle
 		{
 			typedef std::array<Subdiv3::FacetEdge*, 3> Boundary;
+			typedef std::array<Math::Geometry::Point3D, 3> BoundaryPoints;
 
 			Boundary const getBoundaryArray() const;
+
+			BoundaryPoints const getBoundaryPoints() const;
 
 			FacetEdgeThreeTuple const getBoundary() const;
 
 			PointThreeTuple const getPoints() const;
+
+			Math::Geometry::OrientedPlane3D const getOrientedPlane() const;
 
 			Subdiv3::DirectedEdgeRing* mpDualEdgeRing;
 		};
@@ -106,17 +111,15 @@ namespace CrystalMesh{
 				Subdiv3::Vertex * mpVert[4];
 			};
 
-			struct Trinangles{
-				Triangle mTri[4];
-			};
-
 			Triangle const getTriangleAt(Index aIndex) const ;
 
 			//Subdiv3::Vertex const  * getVertexAt(Index aIndex) const;
 
 			Vertices const getVertices() const;
 
-			Trinangles const getTriangles() const;
+			typedef std::array<Triangle,5> Triangles;
+
+			Triangles const getTriangles() const;
 		};
 
 

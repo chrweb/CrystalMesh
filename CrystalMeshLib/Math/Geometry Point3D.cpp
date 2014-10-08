@@ -64,7 +64,9 @@ namespace CrystalMesh {
 			}
 
 
-
+			Point3D const pointFromXY0(double aX, double aY){
+				return pointFromXYZ(aX, aY, 0.0);
+			}
 
 
 

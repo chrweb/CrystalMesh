@@ -31,7 +31,9 @@ namespace CrystalMesh{
 				bool const almostEqual(Point3D const & a0, Point3D const & a1, double const aDeltaD);
 
 
-				Point3D const pointFromXYZ( double aX, double aY, double aZ);
+				Point3D const pointFromXYZ(double aX, double aY, double aZ);
+
+				Point3D const pointFromXY0(double aX, double aY);
 
 				Point3D const pointAt(Vector3D const & aVec);
 
