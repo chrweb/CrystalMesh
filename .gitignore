@@ -27,3 +27,5 @@ CrystalMeshTest/CrystalMeshTest.orig
 https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
 .metadata
 /googletest/nbproject/private/
+/CrystalMesh/nbproject/private/
+/Mathbox/nbproject/private/
