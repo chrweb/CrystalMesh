@@ -22,6 +22,7 @@ AS=as
 
 # Macros
 CND_PLATFORM=GNU-Linux-x86
+CND_DLIB_EXT=so
 CND_CONF=Debug
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -34,7 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/1668771551/gtest.o \
+	${OBJECTDIR}/_ext/1668771551/gtest-all.o \
 	${OBJECTDIR}/_ext/1668771551/gtest_main.o
 
 
@@ -64,15 +65,15 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libgoogletest.a: ${OBJECTFILES}
 	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libgoogletest.a ${OBJECTFILES} 
 	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libgoogletest.a
 
-${OBJECTDIR}/_ext/1668771551/gtest.o: ../gTest/src/gtest.cc 
+${OBJECTDIR}/_ext/1668771551/gtest-all.o: ../gTest/src/gtest-all.cc 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1668771551
-	${RM} $@.d
-	$(COMPILE.cc) -g -I../gTest -I../gTest/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1668771551/gtest.o ../gTest/src/gtest.cc
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1668771551/gtest-all.o ../gTest/src/gtest-all.cc
 
 ${OBJECTDIR}/_ext/1668771551/gtest_main.o: ../gTest/src/gtest_main.cc 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1668771551
-	${RM} $@.d
-	$(COMPILE.cc) -g -I../gTest -I../gTest/include -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1668771551/gtest_main.o ../gTest/src/gtest_main.cc
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1668771551/gtest_main.o ../gTest/src/gtest_main.cc
 
 # Subprojects
 .build-subprojects:

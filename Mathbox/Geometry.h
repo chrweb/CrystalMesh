@@ -12,113 +12,103 @@
 #define GEOMETRY_H_
 
 
-namespace CrystalMesh{
+namespace Mathbox{
 
-	namespace Math{
+	namespace Geometry{
 
+		struct Vector3D{
+			double mX, mY, mZ;
 
+			static Vector3D  const NaN;
 
-		namespace Geometry{
+			static Vector3D const zero;
 
+			static Vector3D const xAxis;
 
+			static Vector3D const yAxis;
 
+			static Vector3D const zAxis;
+		};
 
-			struct Vector3D{
-				double mX, mY, mZ;
+		struct Point3D{
+			double mX, mY, mZ;
 
-				static Vector3D  const NaN;
+			 static Point3D const NaN;
 
-				static Vector3D const zero;
-
-				static Vector3D const xAxis;
-
-				static Vector3D const yAxis;
-
-				static Vector3D const zAxis;
-			};
-
-			struct Point3D{
-				double mX, mY, mZ;
-
-				 static Point3D const NaN;
-
-				 static Point3D const zero;
-			};
+			 static Point3D const zero;
+		};
 
 
-			struct Vector2D{
-				double mX, mY;
+		struct Vector2D{
+			double mX, mY;
 
-				static Vector2D const NaN;
+			static Vector2D const NaN;
 
-				static Vector2D const zero;
+			static Vector2D const zero;
 
-				static Vector2D const xAxis;
+			static Vector2D const xAxis;
 
-				static Vector2D const yAxis;
-			};
+			static Vector2D const yAxis;
+		};
 
-			struct Point2D{
-				double mX, mY;
+		struct Point2D{
+			double mX, mY;
 
-				static Point2D const NAN;
+			static Point2D const NAN;
 
-				static Point2D const zero;
-			};
+			static Point2D const zero;
+		};
 
-			// Column major matrix for homogenous coords.
-			struct Matrix4x3{
-				Vector3D mX;
-				Vector3D mY;
-				Vector3D mZ;
-				Vector3D mT;
-			};
-
-
-			struct LineSegment3D{
-				Point3D mStartpoint;
-				Point3D mEndpoint;
-			};
-
-			struct Line3D{
-				Point3D mAnyPointOnLine;
-				Point3D mDirection;
-			};
+		// Column major matrix for homogenous coords.
+		struct Matrix4x3{
+			Vector3D mX;
+			Vector3D mY;
+			Vector3D mZ;
+			Vector3D mT;
+		};
 
 
-			struct Plane3D{
-				/**
-				 * Distance from (0,0,0) to point on plane
-				 */
-				Point3D mPoint;
+		struct LineSegment3D{
+			Point3D mStartpoint;
+			Point3D mEndpoint;
+		};
 
-				/**
-				 * Direction to move
-				 */
-				Vector3D mNormal;
-			};
-
-			struct OrientedPlane3D{
-				Point3D mOrigin;
-				Vector3D mUdir;
-				Vector3D mVdir;
-			};
+		struct Line3D{
+			Point3D mAnyPointOnLine;
+			Point3D mDirection;
+		};
 
 
-			struct UvCoords{
-				double mU;
-				double mV;
-			};
+		struct Plane3D{
+			/**
+			 * Distance from (0,0,0) to point on plane
+			 */
+			Point3D mPoint;
 
-		}
+			/**
+			 * Direction to move
+			 */
+			Vector3D mNormal;
+		};
+
+		struct OrientedPlane3D{
+			Point3D mOrigin;
+			Vector3D mUdir;
+			Vector3D mVdir;
+		};
+
+
+		struct UvCoords{
+			double mU;
+			double mV;
+		};
 
 	}
-
 }
 
-#include "Geometry Point3D.h"
-#include "Geometry Vector3D.h"
-#include "Geometry Plane3D.h"
+#include "Geometry_Point3D.h"
+#include "Geometry_Vector3D.h"
+#include "Geometry_Plane3D.h"
 
 
 

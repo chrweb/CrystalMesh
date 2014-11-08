@@ -12,7 +12,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>../gTest/src/gtest.cc</itemPath>
+      <itemPath>../gTest/src/gtest-all.cc</itemPath>
       <itemPath>../gTest/src/gtest_main.cc</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"

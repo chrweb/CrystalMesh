@@ -6,7 +6,7 @@
  */
 #pragma once
 
-namespace CrystalMesh {
+namespace Mathbox {
 
 	namespace Math {
 

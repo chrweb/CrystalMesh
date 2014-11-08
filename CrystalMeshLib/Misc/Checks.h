@@ -7,7 +7,7 @@
 #pragma once
 
 
-namespace CrystalMesh{
+namespace Mathbox{
 
 	void UNREACHABLE(void);
 
@@ -35,7 +35,7 @@ namespace CrystalMesh{
 	#define  SHOULD_BE_INTERNAL(Expression)\
 	if (!(Expression)) \
 	{ \
-		CrystalMesh::proceedOnViolation(__FILE__, __LINE__, #Expression); \
+		Mathbox::proceedOnViolation(__FILE__, __LINE__, #Expression); \
 	}
 
 #else

@@ -8,10 +8,9 @@
  */
 
 
-#include "../TestInclude.h"
+#include "../TestIncludes.h"
 
-using namespace CrystalMesh;
-using namespace Math;
+using namespace Mathbox;
 
 
 TEST(Math, SquareRoot){

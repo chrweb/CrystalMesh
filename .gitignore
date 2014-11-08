@@ -29,3 +29,5 @@ https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
 /googletest/nbproject/private/
 /CrystalMesh/nbproject/private/
 /Mathbox/nbproject/private/
+/Mathbox/build/Debug/
+/googletest/build/Debug/

@@ -5,10 +5,9 @@
  *      Author: christoph
  */
 
-#include "../TestInclude.h"
+#include "../TestIncludes.h"
 
-using namespace CrystalMesh;
-using namespace Math;
+using namespace Mathbox;
 using namespace Geometry;
 
 
