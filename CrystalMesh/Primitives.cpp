@@ -6,14 +6,14 @@
  */
 
 #include "DelaunayTriangulation3D.h"
-#include "../Subdiv3/Vertex.h"
-#include "../Subdiv3/FacetEdge.h"
-#include "../Subdiv3/DirectedEdgeRing.h"
-#include "../Subdiv3/EdgeRing.h"
-#include "../Math/Geometry.h"
+#include "Vertex.h"
+#include "FacetEdge.h"
+#include "DirectedEdgeRing.h"
+#include "EdgeRing.h"
+#include "../Mathbox/Mathbox.h"
 #include "Primitives.h"
 #include <vector>
-#include "../Misc/Checks.h"
+#include "../Toolbox/Checks.h"
 #include <algorithm>
 #include <array>
 
@@ -21,7 +21,7 @@ namespace CrystalMesh {
 
 	namespace Delaunay3 {
 
-		using namespace Math::Geometry;
+		using namespace Mathbox::Geometry;
 
 		typedef Subdiv3::FacetEdge FacetEdge;
 
@@ -55,7 +55,7 @@ namespace CrystalMesh {
 			return result;
 		}
 
-		PointThreeTuple const pointTreeTupleOf(Math::Geometry::Point3D const & a0, Math::Geometry::Point3D const & a1, Math::Geometry::Point3D const & a2){
+		PointThreeTuple const pointTreeTupleOf(Mathbox::Geometry::Point3D const & a0, Mathbox::Geometry::Point3D const & a1, Mathbox::Geometry::Point3D const & a2){
 			PointThreeTuple result = { a0, a1, a2};
 			return result;
 		}
@@ -127,18 +127,18 @@ namespace CrystalMesh {
 
 		namespace  {
 
-			Math::Geometry::Point3D const originPointOf(Subdiv3::DirectedEdgeRing const * apRing){
+			Mathbox::Geometry::Point3D const originPointOf(Subdiv3::DirectedEdgeRing const * apRing){
 				return pointFromSub3Vertex(apRing->getOrg());
 			}
 
 		}  // namespace
 
 		FacetEdgeThreeTuple const TetInteriour::getTetAdapterOf(
-				Math::Geometry::Point3D const &a0,
-				Math::Geometry::Point3D const &a1,
-				Math::Geometry::Point3D const &a2) const{
+				Mathbox::Geometry::Point3D const &a0,
+				Mathbox::Geometry::Point3D const &a1,
+				Mathbox::Geometry::Point3D const &a2) const{
 
-			Math::Geometry::Point3D const point[3] = {a0, a1, a2};
+			Mathbox::Geometry::Point3D const point[3] = {a0, a1, a2};
 			Subdiv3::DirectedEdgeRing  * dring[12];
 
 			// Extract all directed edge ring
@@ -152,10 +152,10 @@ namespace CrystalMesh {
 			std::vector<FacetEdge*> result;
 
 			// find those with spec point
-			for (Math::Geometry::Point3D const & currentPoint: point){
+			for (Mathbox::Geometry::Point3D const & currentPoint: point){
 
 				auto condition = [&currentPoint](Subdiv3::DirectedEdgeRing  * apRing) -> bool{
-					using  namespace Math::Geometry;
+					using  namespace Mathbox::Geometry;
 					return exactEqual(currentPoint, originPointOf(apRing));
 				};
 
@@ -203,8 +203,12 @@ namespace CrystalMesh {
 			}
 
 		}
-
-		Tet::Vertices const Tet::getVertices() const{
+                Triangle const Tet::getTriangleAt(Index ) const{
+                    //ToDo: Implement
+                    UNREACHABLE;
+                }
+		
+                Tet::Vertices const Tet::getVertices() const{
 			Tet::Vertices result;
 			// two triangles hold all vertices:
 			auto tuple0 = collectVerts(mTri[0]);

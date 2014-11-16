@@ -7,14 +7,14 @@
  *      I'll test some extensive topological operation here.
  */
 
-#include "../TestInclude.h"
+#include "TestInclude.h"
 #include <cstdlib>
 #include <algorithm>
 
 
 using namespace CrystalMesh;
 using namespace Subdiv3;
-
+using namespace Toolbox;
 
 namespace{
 	typedef std::vector<FacetEdge*> AdjancentFacetEdges;

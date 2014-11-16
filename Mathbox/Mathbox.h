@@ -44,6 +44,7 @@ namespace Mathbox{
 	double const absoluteOf(double const aScalar);
 }
 
+#include "Geometry.h"
 
 
 #endif /* CRYSTALMESH_MATH_H_ */

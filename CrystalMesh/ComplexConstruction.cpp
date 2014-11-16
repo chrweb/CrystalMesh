@@ -5,12 +5,12 @@
  *      Author: christoph
  */
 
-#include "../Subdiv3/Manifold.h"
-#include "../Math/Geometry.h"
-#include "../Subdiv3/FacetEdge.h"
-#include "../Subdiv3/DirectedEdgeRing.h"
-#include "../Subdiv3/EdgeRing.h"
-#include "../Subdiv3/AdjacentDirectedEdgeRings.h"
+#include "Manifold.h"
+#include "../Mathbox/Mathbox.h"
+#include "FacetEdge.h"
+#include "DirectedEdgeRing.h"
+#include "EdgeRing.h"
+#include "AdjacentDirectedEdgeRings.h"
 #include "ComplexConstruction.h"
 
 namespace CrystalMesh {

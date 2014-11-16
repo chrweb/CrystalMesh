@@ -5,7 +5,7 @@
  *      Author: christoph
  */
 
-#include "../TestInclude.h"
+#include "TestInclude.h"
 #include <cstdlib>
 #include <algorithm>
 

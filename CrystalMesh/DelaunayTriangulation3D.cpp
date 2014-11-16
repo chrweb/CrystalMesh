@@ -5,18 +5,21 @@
  *      Author: christoph
  */
 #include "DelaunayTriangulation3D.h"
-#include "../Subdiv3/Subdiv3Prototypes.h"
-#include "../Subdiv3/MaintenerTemplate.h"
-#include "../Subdiv3/FacetEdge.h"
+#include "Subdiv3Prototypes.h"
+#include "MaintenerTemplate.h"
+#include "FacetEdge.h"
 #include "ComplexConstruction.h"
-#include "../Math/Geometry.h"
+#include "../Mathbox/Mathbox.h"
 #include <algorithm>
 #include <iterator>
+
 
 namespace CrystalMesh{
 
 
 	namespace Delaunay3{
+            
+            using namespace Toolbox;
 
 		class VertexDataContainer
 		:public Subdiv3::EntityMaintener<VertexData>
@@ -88,12 +91,12 @@ namespace CrystalMesh{
 
 		namespace{
 
-			VertexData const vertexDataOf(Math::Geometry::Point3D const & aPoint, void * apPropPtr){
+			VertexData const vertexDataOf(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr){
 				VertexData result{ aPoint, apPropPtr};
 				return result;
 			}
 
-			VertexData const vertexDataOf(Math::Geometry::Point3D const & aPoint){
+			VertexData const vertexDataOf(Mathbox::Geometry::Point3D const & aPoint){
 				VertexData result{ aPoint, nullptr};
 				return result;
 			}
@@ -117,7 +120,7 @@ namespace CrystalMesh{
 		}
 
 
-		TetInteriour const DelaunayTriangulation3D::makeTetInterior( Math::Geometry::Point3D const  (aTetPoints)[5] )
+		TetInteriour const DelaunayTriangulation3D::makeTetInterior( Mathbox::Geometry::Point3D const  (aTetPoints)[5] )
 		{
 			// construct interior, given five Points: [0]...[3] tetBounds
 			//										  [4] in-tet-point
@@ -140,7 +143,7 @@ namespace CrystalMesh{
 			return tetInterior;
 		}
 
-		VertexData * DelaunayTriangulation3D::makeVertexData(Math::Geometry::Point3D const & aPoint, void * apPropPtr)
+		VertexData * DelaunayTriangulation3D::makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr)
 		{
 			auto result = mpToVetexData->constructEntity();
 			result->mPoint = aPoint;
@@ -150,11 +153,12 @@ namespace CrystalMesh{
 
 		Tet const DelaunayTriangulation3D::makeTetrahedron(TetPoints const & aTetPoints){
 			using namespace CrystalMesh;
-			using namespace Math;
+			using namespace Mathbox;
 			using namespace Geometry;
 
 
-			auto const eps = 1e-6;
+                        //FIXME: eps issue in Point projection
+			//auto const eps = 1e-6;
 
 			// [0]-[2]: basic trianlge
 			Point3D points[4];
@@ -163,7 +167,7 @@ namespace CrystalMesh{
 			auto const plane = planeFromThreePoints(points[0], points[1], points[2]);
 
 			// last point above?
-			switch (pointPlaneProjection(plane, aTetPoints[4],eps)){
+			switch (pointPlaneProjection(plane, aTetPoints[4])){
 			case PointToPlaneProjection::overPlane:
 				// swap
 				std::swap(points[0], points[1]);
@@ -175,7 +179,7 @@ namespace CrystalMesh{
 
 			default:
 				// very bad
-				UNREACHABLE();
+				UNREACHABLE;
 			}
 
 

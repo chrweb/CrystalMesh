@@ -50,6 +50,10 @@
                      displayName="ComplexTests"
                      projectFiles="true"
                      kind="TEST">
+        <itemPath>ComplexTest/TestEdgeRings.cpp</itemPath>
+        <itemPath>ComplexTest/TestInclude.h</itemPath>
+        <itemPath>ComplexTest/TestManifold.cpp</itemPath>
+        <itemPath>ComplexTest/TestTopologicalOperations.cpp</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -81,6 +85,17 @@
       <item path="ComplexConstruction.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="ComplexConstruction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestEdgeRings.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestInclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestManifold.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestTopologicalOperations.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="DelaunayTriangulation3D.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -136,7 +151,10 @@
         <ccTool>
           <incDir>
             <pElem>.</pElem>
+            <pElem>../gTest</pElem>
+            <pElem>../gTest/include</pElem>
           </incDir>
+          <commandLine>-pthread</commandLine>
         </ccTool>
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f1</output>
@@ -153,7 +171,32 @@
                             OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libgoogletest.a">
               </makeArtifact>
             </linkerLibProjectItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../Mathbox"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../Mathbox"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmathbox.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../Toolbox"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../Toolbox"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtoolbox.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
           </linkerLibItems>
+          <commandLine>-pthread</commandLine>
         </linkerTool>
       </folder>
     </conf>
@@ -188,6 +231,17 @@
       </item>
       <item path="ComplexConstruction.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="ComplexTest/TestEdgeRings.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestInclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestManifold.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestTopologicalOperations.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="DelaunayTriangulation3D.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTriangulation3D.h" ex="false" tool="3" flavor2="0">
@@ -242,7 +296,10 @@
         <ccTool>
           <incDir>
             <pElem>.</pElem>
+            <pElem>../gTest</pElem>
+            <pElem>../gTest/include</pElem>
           </incDir>
+          <commandLine>-pthread</commandLine>
         </ccTool>
         <linkerTool>
           <output>${TESTDIR}/TestFiles/f1</output>

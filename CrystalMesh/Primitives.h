@@ -15,9 +15,9 @@ namespace CrystalMesh{
 		struct Vertex{
 			Subdiv3::Vertex* mpPrimalVertex;
 
-			Math::Geometry::Point3D const getPoint() const;
+			Mathbox::Geometry::Point3D const getPoint() const;
 
-			void setPoint(Math::Geometry::Point3D const & aPoint);
+			void setPoint(Mathbox::Geometry::Point3D const & aPoint);
 		};
 
 
@@ -36,19 +36,19 @@ namespace CrystalMesh{
 				Subdiv3::FacetEdge const & a2);
 
 		struct PointThreeTuple{
-			Math::Geometry::Point3D p0, p1, p2;
+			Mathbox::Geometry::Point3D p0, p1, p2;
 		};
 
 		PointThreeTuple const pointTreeTupleOf(
-				Math::Geometry::Point3D const & a0,
-				Math::Geometry::Point3D const & a1,
-				Math::Geometry::Point3D const & a2);
+				Mathbox::Geometry::Point3D const & a0,
+				Mathbox::Geometry::Point3D const & a1,
+				Mathbox::Geometry::Point3D const & a2);
 
 
 		struct Triangle
 		{
 			typedef std::array<Subdiv3::FacetEdge*, 3> Boundary;
-			typedef std::array<Math::Geometry::Point3D, 3> BoundaryPoints;
+			typedef std::array<Mathbox::Geometry::Point3D, 3> BoundaryPoints;
 
 			Boundary const getBoundaryArray() const;
 
@@ -58,7 +58,7 @@ namespace CrystalMesh{
 
 			PointThreeTuple const getPoints() const;
 
-			Math::Geometry::OrientedPlane3D const getOrientedPlane() const;
+			Mathbox::Geometry::OrientedPlane3D const getOrientedPlane() const;
 
 			Subdiv3::DirectedEdgeRing* mpDualEdgeRing;
 		};
@@ -88,9 +88,9 @@ namespace CrystalMesh{
 			Subdiv3::Vertex * mpVertex[5];
 
 			FacetEdgeThreeTuple const getTetAdapterOf(
-					Math::Geometry::Point3D const &a0,
-					Math::Geometry::Point3D const &a1,
-					Math::Geometry::Point3D const &a2) const;
+					Mathbox::Geometry::Point3D const &a0,
+					Mathbox::Geometry::Point3D const &a1,
+					Mathbox::Geometry::Point3D const &a2) const;
 
 			struct Vertices{
 

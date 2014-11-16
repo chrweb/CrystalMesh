@@ -213,10 +213,12 @@ namespace CrystalMesh{
 	    	MUST_BE(isMyFe);
 
 	    	// FacetEdge must be same flavor as EdgeRing
-	    	if (isDualEdgeRing)
-	    		MUST_BE(isDualFacetEdge);
-	    	else
-	    		MUST_BE(!isDualFacetEdge);
+	    	if (isDualEdgeRing){
+                MUST_BE(isDualFacetEdge);    
+                }
+	    	else{
+                    MUST_BE(!isDualFacetEdge);
+                }
 
 	    	// Edge ring is unassociated
 	    	MUST_BE(isNullptr(aEring.mRings[0].mpRingMember));

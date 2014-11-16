@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "../Math/Geometry.h"
+#include "../Mathbox/Mathbox.h"
 #include "Primitives.h"
 #include <array>
 
@@ -24,7 +24,7 @@ namespace CrystalMesh{
 	namespace Delaunay3{
 
 		struct VertexData{
-			Math::Geometry::Point3D  mPoint;
+			Mathbox::Geometry::Point3D  mPoint;
 			void const * mpPropPtr;
 		};
 
@@ -79,12 +79,12 @@ namespace CrystalMesh{
 			};
 
 
-			PointLocation const locatePoint(Math::Geometry::Point3D const & aPoint);
+			PointLocation const locatePoint(Mathbox::Geometry::Point3D const & aPoint);
 
 
-			void insertPoint(Math::Geometry::Point3D const & aPoint);
+			void insertPoint(Mathbox::Geometry::Point3D const & aPoint);
 
-			typedef std::array<Math::Geometry::Point3D,4 > TetPoints;
+			typedef std::array<Mathbox::Geometry::Point3D,4 > TetPoints;
 
 			// constructs a tet of the given 4 points
 			Tet const makeTetrahedron(TetPoints const & aTetPoints);
@@ -94,9 +94,9 @@ namespace CrystalMesh{
 			 * Points [0-3]: tet bunds
 			 * Point [4]: in-tet point
 			 */
-			TetInteriour const makeTetInterior( Math::Geometry::Point3D const (aTetPoints)[5]);
+			TetInteriour const makeTetInterior( Mathbox::Geometry::Point3D const (aTetPoints)[5]);
 
-			VertexData * makeVertexData(Math::Geometry::Point3D const & aPoint, void * apPropPtr = nullptr);
+			VertexData * makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr = nullptr);
 
 
 

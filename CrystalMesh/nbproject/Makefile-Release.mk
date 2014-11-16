@@ -128,9 +128,27 @@ ${OBJECTDIR}/Vertex.o: Vertex.cpp
 
 # Build Test Targets
 .build-tests-conf: .build-conf ${TESTFILES}
-${TESTDIR}/TestFiles/f1: ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f1: ${TESTDIR}/ComplexTest/TestEdgeRings.o ${TESTDIR}/ComplexTest/TestManifold.o ${TESTDIR}/ComplexTest/TestTopologicalOperations.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} 
+
+
+${TESTDIR}/ComplexTest/TestEdgeRings.o: ComplexTest/TestEdgeRings.cpp 
+	${MKDIR} -p ${TESTDIR}/ComplexTest
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestEdgeRings.o ComplexTest/TestEdgeRings.cpp
+
+
+${TESTDIR}/ComplexTest/TestManifold.o: ComplexTest/TestManifold.cpp 
+	${MKDIR} -p ${TESTDIR}/ComplexTest
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestManifold.o ComplexTest/TestManifold.cpp
+
+
+${TESTDIR}/ComplexTest/TestTopologicalOperations.o: ComplexTest/TestTopologicalOperations.cpp 
+	${MKDIR} -p ${TESTDIR}/ComplexTest
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestTopologicalOperations.o ComplexTest/TestTopologicalOperations.cpp
 
 
 ${OBJECTDIR}/AdjacentDirectedEdgeRings_nomain.o: ${OBJECTDIR}/AdjacentDirectedEdgeRings.o AdjacentDirectedEdgeRings.cpp 

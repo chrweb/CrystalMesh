@@ -35,7 +35,7 @@ namespace CrystalMesh {
 }  // namespace CrystalMesh
 
 
-namespace Math{
+namespace Mathbox{
     namespace Geometry {
         struct Point3D;
     }  // namespace Geometry

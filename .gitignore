@@ -34,3 +34,4 @@ https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
 /Toolbox/build/
 /Toolbox/dist/
 /CrystalMesh/build/
+/CrystalMesh/dist/
