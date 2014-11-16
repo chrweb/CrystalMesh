@@ -25,7 +25,7 @@ namespace Mathbox{
 		/**
 		 * Vector my differ by delta componentwise
 		 */
-		bool const almostEqual(Vector3D const & a0, Vector3D const & a1, double const aDelta);
+		bool const almostEqual(Vector3D const & a0, Vector3D const & a1, uint64_t aDiffInUlp);
 
 		double const absoluteOf(Vector3D const & aVec);
 

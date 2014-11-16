@@ -11,7 +11,7 @@
       <itemPath>Geometry_Point3D.h</itemPath>
       <itemPath>Geometry_Vector2D.h</itemPath>
       <itemPath>Geometry_Vector3D.h</itemPath>
-      <itemPath>Mathbox.h.h</itemPath>
+      <itemPath>Mathbox.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -20,11 +20,11 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>CrystalMesh_Math.cpp</itemPath>
       <itemPath>Geometry_Plane3D.cpp</itemPath>
       <itemPath>Geometry_Point3D.cpp</itemPath>
       <itemPath>Geometry_Vector2D.cpp</itemPath>
       <itemPath>Geometry_Vector3D.cpp</itemPath>
+      <itemPath>Mathbox.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -35,6 +35,7 @@
         <itemPath>Tests/TestMath.cpp</itemPath>
         <itemPath>Tests/TestPlane3D.cpp</itemPath>
         <itemPath>Tests/TestPoint3D.cpp</itemPath>
+        <itemPath>Tests/TestUPL.cpp</itemPath>
         <itemPath>Tests/TestVector3D.cpp</itemPath>
       </logicalFolder>
     </logicalFolder>
@@ -65,8 +66,6 @@
         <archiverTool>
         </archiverTool>
       </compileType>
-      <item path="CrystalMesh_Math.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="Geometry.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Geometry_Matrix4x3.h" ex="false" tool="3" flavor2="0">
@@ -89,17 +88,13 @@
       </item>
       <item path="Geometry_Vector3D.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Mathbox.h.h" ex="false" tool="3" flavor2="0">
+      <item path="Mathbox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mathbox.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="TestIncludes.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Tests/TestMath.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Tests/TestPlane3D.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Tests/TestPoint3D.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Tests/TestVector3D.cpp" ex="false" tool="1" flavor2="0">
+      <item path="Tests/TestUPL.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>
@@ -133,6 +128,18 @@
                             OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libgoogletest.a">
               </makeArtifact>
             </linkerLibProjectItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../Toolbox"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../Toolbox"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtoolbox.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
           </linkerLibItems>
           <commandLine>-pthread</commandLine>
         </linkerTool>
@@ -160,8 +167,6 @@
         <archiverTool>
         </archiverTool>
       </compileType>
-      <item path="CrystalMesh_Math.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="Geometry.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Geometry_Matrix4x3.h" ex="false" tool="3" flavor2="0">
@@ -184,7 +189,9 @@
       </item>
       <item path="Geometry_Vector3D.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Mathbox.h.h" ex="false" tool="3" flavor2="0">
+      <item path="Mathbox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mathbox.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="TestIncludes.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -193,6 +200,8 @@
       <item path="Tests/TestPlane3D.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Tests/TestPoint3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Tests/TestUPL.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Tests/TestVector3D.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -6,7 +6,7 @@
  */
 
 #include "Geometry.h"
-#include "Mathbox.h.h"
+#include "Mathbox.h"
 
 
 namespace Mathbox{
@@ -124,11 +124,11 @@ namespace Mathbox{
 		}
 
 
-		bool const almostEqual(Vector3D const & a0, Vector3D const & a1, double const aDelta){
+		bool const almostEqual(Vector3D const & a0, Vector3D const & a1, uint64_t aDiffInUlp){
 			return
-					Mathbox::almostEqual(a0.mX, a1.mX, aDelta) &&
-					Mathbox::almostEqual(a0.mY, a1.mY, aDelta) &&
-					Mathbox::almostEqual(a0.mZ, a1.mZ, aDelta);
+					Mathbox::almostEqual(a0.mX, a1.mX, aDiffInUlp) &&
+					Mathbox::almostEqual(a0.mY, a1.mY, aDiffInUlp) &&
+					Mathbox::almostEqual(a0.mZ, a1.mZ, aDiffInUlp);
 		}
 
 	}

@@ -14,7 +14,7 @@ using namespace Geometry;
 
 // construction by point and normal
 TEST(Plane3D, construction0){
-	double const eps = 1e-9;
+	uint64_t const ulp = 100;
 	auto const point = pointFromXYZ(0.0, 0.0, 3.0);
 	auto const normal = vectorFromXYZ(3.0, 0.0, 0.0);
 
@@ -23,13 +23,13 @@ TEST(Plane3D, construction0){
 	Point3D exPoint = pointFromXYZ(0.0, 0.0, 3.0);
 	Vector3D exNormal = vectorFromXYZ(1.0, 0.0, 0.0);
 
-	EXPECT_TRUE(almostEqual(exPoint, pointOnPlaneOf(plane), eps));
-	EXPECT_TRUE(almostEqual(exNormal, normalOf(plane), eps));
+	EXPECT_TRUE(almostEqual(exPoint, pointOnPlaneOf(plane), ulp));
+	EXPECT_TRUE(almostEqual(exNormal, normalOf(plane), ulp));
 }
 
 // Define a plane by three points:
 TEST(Plane3D, construction1){
-	double const eps = 1e-6;
+	uint64_t const ulp = 100;
 	auto const p0 = pointFromXYZ(1.0, 0.0, 0.0);
 	auto const p1 = pointFromXYZ(1.0, 1.0, 0.0);
 	auto const p2 = pointFromXYZ(1.0, 0.0, 1.0);
@@ -37,13 +37,13 @@ TEST(Plane3D, construction1){
 	auto const plane0 = planeFromThreePoints(p0, p1, p2);
 	auto const exNormal = vectorFromXYZ(1.0, 0.0, 0.0);
 
-	EXPECT_TRUE(almostEqual(exNormal, normalOf(plane0), eps));
+	EXPECT_TRUE(almostEqual(exNormal, normalOf(plane0), ulp));
 
 	// opposide:
-	EXPECT_TRUE(almostEqual(exNormal, normalOf(plane0), eps));
+	EXPECT_TRUE(almostEqual(exNormal, normalOf(plane0), ulp));
 	auto const plane1 = planeFromThreePoints(p0, p2, p1);
 
-	EXPECT_TRUE(almostEqual(-1*exNormal, normalOf(plane1), eps));
+	EXPECT_TRUE(almostEqual(-1*exNormal, normalOf(plane1), ulp));
 }
 
 
@@ -75,7 +75,7 @@ namespace{
 
 
 TEST_F(PlaneProjection, closestPoint){
-	double const eps = 1e-6;
+	uint64_t const ulp = 100;
 
 	// over plane
 	auto const q0 = pointFromXYZ(1.2, 2.7, 3.14 );
@@ -95,13 +95,13 @@ TEST_F(PlaneProjection, closestPoint){
 	auto const ex1 = ex0;
 	auto const ex2 = q2;
 
-	EXPECT_TRUE(almostEqual(ex0, c0, eps));
-	EXPECT_TRUE(almostEqual(ex1, c1, eps));
-	EXPECT_TRUE(almostEqual(ex2, c2, eps));
+	EXPECT_TRUE(almostEqual(ex0, c0, ulp));
+	EXPECT_TRUE(almostEqual(ex1, c1, ulp));
+	EXPECT_TRUE(almostEqual(ex2, c2, ulp));
 }
 
 TEST_F(PlaneProjection, PointPlaneRelation){
-	double const eps = 1e-6;
+	uint64_t const ulp = 100;
 
 	// over plane
 	auto const q0 = pointFromXYZ(1.2, 2.7, 3.14 );
@@ -121,8 +121,8 @@ TEST_F(PlaneProjection, PointPlaneRelation){
 	double const exPosDist0 = 0.2;
 	double const exNegDist0 = -1.0;
 
-	EXPECT_TRUE(almostEqual(exPosDist0, posDist0, eps));
-	EXPECT_TRUE(almostEqual(exNegDist0, negDist0, eps));
+	EXPECT_TRUE(almostEqual(exPosDist0, posDist0, ulp));
+	EXPECT_TRUE(almostEqual(exNegDist0, negDist0, ulp));
 
 	// up side down:
 	// signed dists:
@@ -133,13 +133,13 @@ TEST_F(PlaneProjection, PointPlaneRelation){
 	double const exPosDist1 = 1.0;
 	double const exNegDist1 = -0.2;
 
-	EXPECT_TRUE(almostEqual(exPosDist1, posDist1, eps));
-	EXPECT_TRUE(almostEqual(exNegDist1, negDist1, eps));
+	EXPECT_TRUE(almostEqual(exPosDist1, posDist1, ulp));
+	EXPECT_TRUE(almostEqual(exNegDist1, negDist1, ulp));
 
 	//Predicates:
-	auto const overPlane = pointPlaneProjection(plane0, q0, eps);
-	auto const onPlane = pointPlaneProjection(plane0, q1, eps);
-	auto const underPlane = pointPlaneProjection(plane0, q2, eps);
+	auto const overPlane = pointPlaneProjection(plane0, q0);
+	auto const onPlane = pointPlaneProjection(plane0, q1);
+	auto const underPlane = pointPlaneProjection(plane0, q2);
 
 	EXPECT_EQ(PointToPlaneProjection::overPlane, overPlane);
 	EXPECT_EQ(PointToPlaneProjection::onPlane, onPlane);

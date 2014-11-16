@@ -5,7 +5,7 @@
  *      Author: christoph
  */
 
-#include "Mathbox.h.h"
+#include "Mathbox.h"
 #include "Geometry.h"
 namespace Mathbox{
 
@@ -38,14 +38,20 @@ namespace Mathbox{
 		}
 
 		// Determines, if Point above, under or on plane.
-		PointToPlaneProjection const pointPlaneProjection(Plane3D const & aPlane, Point3D const & aPoint, double const aEps){
+		PointToPlaneProjection const pointPlaneProjection(Plane3D const & aPlane, Point3D const & aPoint){
 			auto const dist = signedDistanceBetween(aPlane, aPoint);
-			if (Mathbox::almostEqual(0.0, dist, aEps)){
-				return PointToPlaneProjection::onPlane;
-			}
-
+                        
+                        // Evaluate as on plane, if distance can not be distinguished from zero
+                        if (diffInUlps(dist, 0.0) == 0ul)
+                        {
+                            return PointToPlaneProjection::onPlane;
+                        }
+			
 			if (dist>0)
-				return PointToPlaneProjection::overPlane;
+                        {
+                          return PointToPlaneProjection::overPlane;
+                        }
+				
 
 			return PointToPlaneProjection::underPlane;
 		}

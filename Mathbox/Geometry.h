@@ -11,6 +11,8 @@
 #ifndef GEOMETRY_H_
 #define GEOMETRY_H_
 
+#include <stdint.h>
+
 
 namespace Mathbox{
 

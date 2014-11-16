@@ -6,7 +6,7 @@
  */
 
 #include  "Geometry.h"
-#include  "Mathbox.h.h"
+#include  "Mathbox.h"
 
 namespace Mathbox {
 
@@ -24,8 +24,8 @@ namespace Mathbox {
 			return exactEqual(vectorTo(a0), vectorTo(a1));
 		}
 
-		bool const almostEqual(Point3D const & a0, Point3D const & a1, double const aDeltaD){
-			return Mathbox::almostEqual(distanceBetween(a0, a1), 0, aDeltaD);
+		bool const almostEqual(Point3D const & a0, Point3D const & a1, uint64_t aDiffFromZeroInULP){
+			return Mathbox::almostEqual(distanceBetween(a0, a1), 0.0, aDiffFromZeroInULP);
 		}
 
 

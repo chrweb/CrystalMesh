@@ -7,17 +7,14 @@
 #pragma once
 
 
-namespace Mathbox{
+namespace Toolbox{
 
-	void UNREACHABLE(void);
-
-	// a condition validated in DEBUG and RELEASE
-	void MUST_BE(bool const condition);
-
+	
 	void terminateOnViolation(char const * apFilenName, int aLineNumber, char const * aExpression);
 
 	void proceedOnViolation(char const * apFilenName, int aLineNumber, char const * aExpression);
 
+        void terminate(char const * apFilenName, int aLineNumber);
 
 	template<typename T>
 	bool const notNullptr(T const * aPtr) { return aPtr != nullptr; };
@@ -35,7 +32,7 @@ namespace Mathbox{
 	#define  SHOULD_BE_INTERNAL(Expression)\
 	if (!(Expression)) \
 	{ \
-		Mathbox::proceedOnViolation(__FILE__, __LINE__, #Expression); \
+		Toolbox::proceedOnViolation(__FILE__, __LINE__, #Expression); \
 	}
 
 #else
@@ -43,11 +40,13 @@ namespace Mathbox{
 	#define SHOULD_BE_INTERNAL(Expression)
 #endif
 
-
-//#define SHOULD_BE_INTERNAL(Expression)
 #define SHOULD_BE(Expression)	SHOULD_BE_INTERNAL(Expression)
 
+#define MUST_BE(Expression)\
+if(!(Expression))\
+{\
+    Toolbox::terminateOnViolation(__FILE__, __LINE__, #Expression); \
+}
 
 
-
-
+#define UNREACHABLE Toolbox::terminate(__FILE__, __LINE__);

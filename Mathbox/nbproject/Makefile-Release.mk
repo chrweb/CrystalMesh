@@ -35,11 +35,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/CrystalMesh_Math.o \
 	${OBJECTDIR}/Geometry_Plane3D.o \
 	${OBJECTDIR}/Geometry_Point3D.o \
 	${OBJECTDIR}/Geometry_Vector2D.o \
-	${OBJECTDIR}/Geometry_Vector3D.o
+	${OBJECTDIR}/Geometry_Vector3D.o \
+	${OBJECTDIR}/Mathbox.o
 
 # Test Directory
 TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
@@ -74,11 +74,6 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmathbox.a: ${OBJECTFILES}
 	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmathbox.a ${OBJECTFILES} 
 	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmathbox.a
 
-${OBJECTDIR}/CrystalMesh_Math.o: CrystalMesh_Math.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CrystalMesh_Math.o CrystalMesh_Math.cpp
-
 ${OBJECTDIR}/Geometry_Plane3D.o: Geometry_Plane3D.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -99,12 +94,17 @@ ${OBJECTDIR}/Geometry_Vector3D.o: Geometry_Vector3D.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Vector3D.o Geometry_Vector3D.cpp
 
+${OBJECTDIR}/Mathbox.o: Mathbox.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mathbox.o Mathbox.cpp
+
 # Subprojects
 .build-subprojects:
 
 # Build Test Targets
 .build-tests-conf: .build-conf ${TESTFILES}
-${TESTDIR}/TestFiles/f1: ${TESTDIR}/Tests/TestMath.o ${TESTDIR}/Tests/TestPlane3D.o ${TESTDIR}/Tests/TestPoint3D.o ${TESTDIR}/Tests/TestVector3D.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f1: ${TESTDIR}/Tests/TestMath.o ${TESTDIR}/Tests/TestPlane3D.o ${TESTDIR}/Tests/TestPoint3D.o ${TESTDIR}/Tests/TestUPL.o ${TESTDIR}/Tests/TestVector3D.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} ../googletest/dist/Release/GNU-Linux-x86/libgoogletest.a 
 
@@ -127,24 +127,17 @@ ${TESTDIR}/Tests/TestPoint3D.o: Tests/TestPoint3D.cpp
 	$(COMPILE.cc) -O2 -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestPoint3D.o Tests/TestPoint3D.cpp
 
 
+${TESTDIR}/Tests/TestUPL.o: Tests/TestUPL.cpp 
+	${MKDIR} -p ${TESTDIR}/Tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestUPL.o Tests/TestUPL.cpp
+
+
 ${TESTDIR}/Tests/TestVector3D.o: Tests/TestVector3D.cpp 
 	${MKDIR} -p ${TESTDIR}/Tests
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestVector3D.o Tests/TestVector3D.cpp
 
-
-${OBJECTDIR}/CrystalMesh_Math_nomain.o: ${OBJECTDIR}/CrystalMesh_Math.o CrystalMesh_Math.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/CrystalMesh_Math.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CrystalMesh_Math_nomain.o CrystalMesh_Math.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/CrystalMesh_Math.o ${OBJECTDIR}/CrystalMesh_Math_nomain.o;\
-	fi
 
 ${OBJECTDIR}/Geometry_Plane3D_nomain.o: ${OBJECTDIR}/Geometry_Plane3D.o Geometry_Plane3D.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -196,6 +189,19 @@ ${OBJECTDIR}/Geometry_Vector3D_nomain.o: ${OBJECTDIR}/Geometry_Vector3D.o Geomet
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Vector3D_nomain.o Geometry_Vector3D.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Geometry_Vector3D.o ${OBJECTDIR}/Geometry_Vector3D_nomain.o;\
+	fi
+
+${OBJECTDIR}/Mathbox_nomain.o: ${OBJECTDIR}/Mathbox.o Mathbox.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Mathbox.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mathbox_nomain.o Mathbox.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Mathbox.o ${OBJECTDIR}/Mathbox_nomain.o;\
 	fi
 
 # Run Test Targets

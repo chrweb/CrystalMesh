@@ -23,12 +23,22 @@ namespace Mathbox{
 			*/
 			bool const exactEqual(Point3D const & a0, Point3D const & a1);
 
-			/**
-			* distance may differ by distance aDeltaD
-			*/
-			bool const almostEqual(Point3D const & a0, Point3D const & a1, double const aDeltaD);
+                        /**
+                         * Compares two Points. Distance may differ from zero by aDiffFromZeroInULP 
+                         * @param a0
+                         * @param a1
+                         * @param aDiffFromZeroInULP
+                         * @return 
+                         */
+			bool const almostEqual(Point3D const & a0, Point3D const & a1, uint64_t aDiffFromZeroInULP);
 
-
+                        /**
+                         * Construct a point by given components
+                         * @param aX
+                         * @param aY
+                         * @param aZ
+                         * @return 
+                         */
 			Point3D const pointFromXYZ(double aX, double aY, double aZ);
 
 			Point3D const pointFromXY0(double aX, double aY);

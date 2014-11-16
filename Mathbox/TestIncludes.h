@@ -10,7 +10,7 @@
 
 #include <gtest/gtest.h>
 #include "Geometry.h"
-#include "Mathbox.h.h"
+#include "Mathbox.h"
 
 #endif	/* TESTINCLUDES_H */
 

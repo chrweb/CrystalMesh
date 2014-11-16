@@ -31,3 +31,5 @@ https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
 /Mathbox/nbproject/private/
 /Mathbox/build/Debug/
 /googletest/build/Debug/
+/Toolbox/build/
+/Toolbox/dist/

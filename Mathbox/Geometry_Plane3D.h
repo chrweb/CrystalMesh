@@ -21,8 +21,8 @@ namespace Mathbox{
 						underPlane
 					};
 
-		// Determines, if Point above, under or on plane. Eps defines a distance delta to evaluate on-plane-situation
-		PointToPlaneProjection const pointPlaneProjection(Plane3D const & aPlane, Point3D const & aPoint, double const aEps);
+		// Determines, if Point above, under or on plane. 
+		PointToPlaneProjection const pointPlaneProjection(Plane3D const & aPlane, Point3D const & aPoint);
 
 		double const signedDistanceBetween(Plane3D const & aPlane, Point3D const & aPoint);
 
