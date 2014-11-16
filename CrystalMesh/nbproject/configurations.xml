@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="f2" displayName="Complex" projectFiles="true">
+        <itemPath>AdjacentDirectedEdgeRings.cpp</itemPath>
+        <itemPath>AdjacentDirectedEdgeRings.h</itemPath>
+        <itemPath>DirectedEdgeRing.cpp</itemPath>
+        <itemPath>DirectedEdgeRing.h</itemPath>
+        <itemPath>EdgeRing.cpp</itemPath>
+        <itemPath>EdgeRing.h</itemPath>
+        <itemPath>FacetEdge.cpp</itemPath>
+        <itemPath>FacetEdge.h</itemPath>
+        <itemPath>MaintenerTemplate.h</itemPath>
+        <itemPath>Manifold.cpp</itemPath>
+        <itemPath>Manifold.h</itemPath>
+        <itemPath>MiscTypes.h</itemPath>
+        <itemPath>QuaterNode.h</itemPath>
+        <itemPath>Subdiv3ForwardDecs.h</itemPath>
+        <itemPath>Subdiv3Prototypes.h</itemPath>
+        <itemPath>Vertex.cpp</itemPath>
+        <itemPath>Vertex.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f1" displayName="Delaunay" projectFiles="true">
+        <itemPath>ComplexConstruction.cpp</itemPath>
+        <itemPath>ComplexConstruction.h</itemPath>
+        <itemPath>DelaunayTriangulation3D.cpp</itemPath>
+        <itemPath>DelaunayTriangulation3D.h</itemPath>
+        <itemPath>DelaunayTriangulation3DPrototypes.h</itemPath>
+        <itemPath>ForwardDecs.h</itemPath>
+        <itemPath>Primitives.cpp</itemPath>
+        <itemPath>Primitives.h</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f1"
+                     displayName="ComplexTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>ComplexTest/TestEdgeRings.cpp</itemPath>
+        <itemPath>ComplexTest/TestInclude.h</itemPath>
+        <itemPath>ComplexTest/TestManifold.cpp</itemPath>
+        <itemPath>ComplexTest/TestTopologicalOperations.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2"
+                     displayName="DelaunayTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>DelaunayTest/DelaunayTriangulation3Test.cpp</itemPath>
+        <itemPath>DelaunayTest/TestComplexConstruction.cpp</itemPath>
+        <itemPath>DelaunayTest/TestInclude.h</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="3">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <commandLine>-std=c++11</commandLine>
+        </ccTool>
+        <archiverTool>
+        </archiverTool>
+      </compileType>
+      <item path="AdjacentDirectedEdgeRings.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AdjacentDirectedEdgeRings.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ComplexConstruction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexConstruction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestEdgeRings.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestInclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestManifold.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestTopologicalOperations.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="DelaunayTest/DelaunayTriangulation3Test.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="DelaunayTest/TestComplexConstruction.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="DelaunayTest/TestInclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3DPrototypes.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="DirectedEdgeRing.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DirectedEdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EdgeRing.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="EdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FacetEdge.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="FacetEdge.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ForwardDecs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MaintenerTemplate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Manifold.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Manifold.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MiscTypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Primitives.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Primitives.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="QuaterNode.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Subdiv3ForwardDecs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Subdiv3Prototypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Vertex.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Vertex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>../gTest</pElem>
+            <pElem>../gTest/include</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../googletest"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../googletest"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libgoogletest.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../Mathbox"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../Mathbox"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmathbox.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../Toolbox"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../Toolbox"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtoolbox.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+          </linkerLibItems>
+          <commandLine>-pthread</commandLine>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>../gTest</pElem>
+            <pElem>../gTest/include</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+          <linkerLibItems>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../googletest"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../googletest"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libgoogletest.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../Toolbox"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../Toolbox"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtoolbox.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../Mathbox"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../Mathbox"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmathbox.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+          </linkerLibItems>
+          <commandLine>-pthread</commandLine>
+        </linkerTool>
+      </folder>
+    </conf>
+    <conf name="Release" type="3">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <commandLine>-std=c++11</commandLine>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+        <archiverTool>
+        </archiverTool>
+      </compileType>
+      <item path="AdjacentDirectedEdgeRings.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AdjacentDirectedEdgeRings.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ComplexConstruction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexConstruction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestEdgeRings.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestInclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestManifold.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexTest/TestTopologicalOperations.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="DelaunayTest/DelaunayTriangulation3Test.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="DelaunayTest/TestComplexConstruction.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="DelaunayTest/TestInclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3DPrototypes.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="DirectedEdgeRing.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DirectedEdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EdgeRing.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="EdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FacetEdge.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="FacetEdge.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ForwardDecs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MaintenerTemplate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Manifold.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Manifold.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MiscTypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Primitives.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Primitives.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="QuaterNode.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Subdiv3ForwardDecs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Subdiv3Prototypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Vertex.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Vertex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>../gTest</pElem>
+            <pElem>../gTest/include</pElem>
+          </incDir>
+          <commandLine>-pthread</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>../gTest</pElem>
+            <pElem>../gTest/include</pElem>
+          </incDir>
+          <commandLine>-pthread</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+        </linkerTool>
+      </folder>
+    </conf>
+  </confs>
+</configurationDescriptor>

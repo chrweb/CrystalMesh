@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>Geometry.h</itemPath>
+      <itemPath>Geometry_Matrix4x3.h</itemPath>
+      <itemPath>Geometry_OrientedPlane3D.h</itemPath>
+      <itemPath>Geometry_Plane3D.h</itemPath>
+      <itemPath>Geometry_Point3D.h</itemPath>
+      <itemPath>Geometry_Vector2D.h</itemPath>
+      <itemPath>Geometry_Vector3D.h</itemPath>
+      <itemPath>Mathbox.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>Geometry_Plane3D.cpp</itemPath>
+      <itemPath>Geometry_Point3D.cpp</itemPath>
+      <itemPath>Geometry_Vector2D.cpp</itemPath>
+      <itemPath>Geometry_Vector3D.cpp</itemPath>
+      <itemPath>Mathbox.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f1" displayName="MathTest" projectFiles="true" kind="TEST">
+        <itemPath>TestIncludes.h</itemPath>
+        <itemPath>Tests/TestMath.cpp</itemPath>
+        <itemPath>Tests/TestPlane3D.cpp</itemPath>
+        <itemPath>Tests/TestPoint3D.cpp</itemPath>
+        <itemPath>Tests/TestUPL.cpp</itemPath>
+        <itemPath>Tests/TestVector3D.cpp</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="3">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <architecture>2</architecture>
+          <commandLine>-std=c++11</commandLine>
+          <warningLevel>3</warningLevel>
+        </ccTool>
+        <archiverTool>
+        </archiverTool>
+      </compileType>
+      <item path="Geometry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_Matrix4x3.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_OrientedPlane3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_Plane3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Geometry_Plane3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_Point3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Geometry_Point3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_Vector2D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Geometry_Vector2D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_Vector3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Geometry_Vector3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mathbox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mathbox.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TestIncludes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Tests/TestUPL.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+            <pElem>../gTest</pElem>
+            <pElem>../gTest/include</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../googletest"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../googletest"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libgoogletest.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../Toolbox"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../Toolbox"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtoolbox.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+          </linkerLibItems>
+          <commandLine>-pthread</commandLine>
+        </linkerTool>
+      </folder>
+    </conf>
+    <conf name="Release" type="3">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+        <archiverTool>
+        </archiverTool>
+      </compileType>
+      <item path="Geometry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_Matrix4x3.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_OrientedPlane3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_Plane3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Geometry_Plane3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_Point3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Geometry_Point3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_Vector2D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Geometry_Vector2D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_Vector3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Geometry_Vector3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Mathbox.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Mathbox.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TestIncludes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Tests/TestMath.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Tests/TestPlane3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Tests/TestPoint3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Tests/TestUPL.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Tests/TestVector3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../googletest"
+                            CT="3"
+                            CN="Release"
+                            AC="false"
+                            BL="true"
+                            WD="../googletest"
+                            BC="${MAKE}  -f Makefile CONF=Release"
+                            CC="${MAKE}  -f Makefile CONF=Release clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libgoogletest.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+    </conf>
+  </confs>
+</configurationDescriptor>

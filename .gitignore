@@ -26,3 +26,12 @@ CrystalMeshTest/CrystalMeshTest.orig
 #Eclipse Metadata may be ignored: 
 https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
 .metadata
+/googletest/nbproject/private/
+/CrystalMesh/nbproject/private/
+/Mathbox/nbproject/private/
+/Mathbox/build/Debug/
+/googletest/build/Debug/
+/Toolbox/build/
+/Toolbox/dist/
+/CrystalMesh/build/
+/CrystalMesh/dist/
