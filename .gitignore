@@ -33,3 +33,4 @@ https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
 /googletest/build/Debug/
 /Toolbox/build/
 /Toolbox/dist/
+/CrystalMesh/build/

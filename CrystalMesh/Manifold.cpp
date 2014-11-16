@@ -5,7 +5,7 @@
  *      Author: christoph
 */
 #include "MaintenerTemplate.h"
-#include  "../Misc/Checks.h"
+#include  "../Toolbox/Checks.h"
 #include "Vertex.h"
 #include "QuaterNode.h"
 #include "EdgeRing.h"
@@ -17,25 +17,25 @@
 namespace CrystalMesh{
 
 	namespace Subdiv3{
+            
+                
+            using namespace Toolbox;
+            
+            //Inherit from Mainteer template..
+		
+            class VertexMaintener
+            :public EntityMaintener<Vertex>
+            {};
 
-		/**
-		 * Why can't I write something like:
-		 * 	typedef EntityMaintener<OctoNode> OctoNodeMaintener;
-		 * 	for class definition?
-		 */
+            class QuaterNodeMaintener
+            :public EntityMaintener<QuaterNode>
+            {};
 
-
-		class VertexMaintener
-		:public EntityMaintener<Vertex>
-		{};
-
-		class QuaterNodeMaintener
-		:public EntityMaintener<QuaterNode>
-		{};
-
-		class EdgeRingMaintener
-		:public EntityMaintener<EdgeRing>
-		{};
+            class EdgeRingMaintener
+            :public EntityMaintener<EdgeRing>
+            {};
+            
+            
 
 	    Manifold::Manifold()
 	    : mpPrimalVertexMaintener( new VertexMaintener() )

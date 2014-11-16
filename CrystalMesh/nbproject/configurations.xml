@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="80">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -12,11 +12,45 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="f2" displayName="Complex" projectFiles="true">
+        <itemPath>AdjacentDirectedEdgeRings.cpp</itemPath>
+        <itemPath>AdjacentDirectedEdgeRings.h</itemPath>
+        <itemPath>DirectedEdgeRing.cpp</itemPath>
+        <itemPath>DirectedEdgeRing.h</itemPath>
+        <itemPath>EdgeRing.cpp</itemPath>
+        <itemPath>EdgeRing.h</itemPath>
+        <itemPath>FacetEdge.cpp</itemPath>
+        <itemPath>FacetEdge.h</itemPath>
+        <itemPath>MaintenerTemplate.h</itemPath>
+        <itemPath>Manifold.cpp</itemPath>
+        <itemPath>Manifold.h</itemPath>
+        <itemPath>MiscTypes.h</itemPath>
+        <itemPath>QuaterNode.h</itemPath>
+        <itemPath>Subdiv3ForwardDecs.h</itemPath>
+        <itemPath>Subdiv3Prototypes.h</itemPath>
+        <itemPath>Vertex.cpp</itemPath>
+        <itemPath>Vertex.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f1" displayName="Delaunay" projectFiles="true">
+        <itemPath>ComplexConstruction.cpp</itemPath>
+        <itemPath>ComplexConstruction.h</itemPath>
+        <itemPath>DelaunayTriangulation3D.cpp</itemPath>
+        <itemPath>DelaunayTriangulation3D.h</itemPath>
+        <itemPath>DelaunayTriangulation3DPrototypes.h</itemPath>
+        <itemPath>ForwardDecs.h</itemPath>
+        <itemPath>Primitives.cpp</itemPath>
+        <itemPath>Primitives.h</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f1"
+                     displayName="ComplexTests"
+                     projectFiles="true"
+                     kind="TEST">
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -29,18 +63,105 @@
   <confs>
     <conf name="Debug" type="3">
       <toolsSet>
-        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <commandLine>-std=c++11</commandLine>
+        </ccTool>
         <archiverTool>
         </archiverTool>
       </compileType>
+      <item path="AdjacentDirectedEdgeRings.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AdjacentDirectedEdgeRings.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ComplexConstruction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexConstruction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3DPrototypes.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="DirectedEdgeRing.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DirectedEdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EdgeRing.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="EdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FacetEdge.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="FacetEdge.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ForwardDecs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MaintenerTemplate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Manifold.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Manifold.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MiscTypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Primitives.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Primitives.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="QuaterNode.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Subdiv3ForwardDecs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Subdiv3Prototypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Vertex.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Vertex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../googletest"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../googletest"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libgoogletest.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
     </conf>
     <conf name="Release" type="3">
       <toolsSet>
-        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
         <cTool>
@@ -48,6 +169,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <commandLine>-std=c++11</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -58,6 +180,74 @@
         <archiverTool>
         </archiverTool>
       </compileType>
+      <item path="AdjacentDirectedEdgeRings.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="AdjacentDirectedEdgeRings.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ComplexConstruction.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ComplexConstruction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTriangulation3DPrototypes.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="DirectedEdgeRing.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DirectedEdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="EdgeRing.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="EdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FacetEdge.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="FacetEdge.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ForwardDecs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MaintenerTemplate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Manifold.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Manifold.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MiscTypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Primitives.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Primitives.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="QuaterNode.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Subdiv3ForwardDecs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Subdiv3Prototypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Vertex.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Vertex.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <folder path="TestFiles/f1">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+        </linkerTool>
+      </folder>
     </conf>
   </confs>
 </configurationDescriptor>

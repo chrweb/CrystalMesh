@@ -7,11 +7,13 @@
 #include "FacetEdge.h"
 #include "Vertex.h"
 #include "DirectedEdgeRing.h"
-#include "../Misc/Checks.h"
+#include "../Toolbox/Checks.h"
 
 namespace CrystalMesh{
 
 	namespace Subdiv3{
+            
+                using namespace Toolbox;
 
 		namespace{
 

@@ -7,7 +7,7 @@
 #pragma once
 
 #include <set>
-#include "../Misc/Checks.h"
+#include "../Toolbox/Checks.h"
 
 namespace CrystalMesh{
 

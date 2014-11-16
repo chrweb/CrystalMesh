@@ -26,6 +26,9 @@ namespace Mathbox{
         
         uint64_t diffInUlps(double const & a, double const & b);
         
+        /*Todo; implement as 
+         http://web.mit.edu/hyperbook/Patrikalakis-Maekawa-Cho/node46.html
+         */
         int diffInUlps(float A, float B);
         
         int diffInUlpsD(double A, double B);

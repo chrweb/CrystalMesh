@@ -5,7 +5,7 @@
  *      Author: christoph
  */
 #include "EdgeRing.h"
-#include  "../Misc/Checks.h"
+#include  "../Toolbox/Checks.h"
 
 namespace CrystalMesh {
 

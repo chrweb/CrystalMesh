@@ -6,9 +6,11 @@
  */
 #include "DirectedEdgeRing.h"
 #include "FacetEdge.h"
-#include "../Misc/Checks.h"
+#include "../Toolbox/Checks.h"
 namespace CrystalMesh{
 	namespace  Subdiv3 {
+            
+            using namespace Toolbox;
 
 		const FacetEdge* DirectedEdgeRing::getRingMember() const {
 			return mpRingMember;

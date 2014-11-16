@@ -27,14 +27,6 @@ namespace CrystalMesh {
 		struct Vertex;
 	}
 
-	namespace Math{
-
-		namespace Geometry {
-
-			struct Point3D;
-		}  // namespace Geometry
-	}
-
 	namespace Delaunay3{
 
 		typedef uint32_t Index;
@@ -43,4 +35,8 @@ namespace CrystalMesh {
 }  // namespace CrystalMesh
 
 
-
+namespace Math{
+    namespace Geometry {
+        struct Point3D;
+    }  // namespace Geometry
+}
