@@ -6,12 +6,13 @@
  */
 
 
-#include "../TestInclude.h"
+#include "TestInclude.h"
 #include <cstdlib>
 
 using namespace CrystalMesh;
-using namespace Math;
+using namespace Mathbox;
 using namespace Geometry;
+using namespace Toolbox;
 
 namespace{
 

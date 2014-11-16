@@ -50,7 +50,8 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 
 # Test Files
 TESTFILES= \
-	${TESTDIR}/TestFiles/f1
+	${TESTDIR}/TestFiles/f1 \
+	${TESTDIR}/TestFiles/f2
 
 # C Compiler Flags
 CFLAGS=
@@ -132,23 +133,39 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/ComplexTest/TestEdgeRings.o ${TESTDIR}/Compl
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} ../googletest/dist/Debug/GNU-Linux-x86/libgoogletest.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a 
 
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} ../googletest/dist/Debug/GNU-Linux-x86/libgoogletest.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a 
+
 
 ${TESTDIR}/ComplexTest/TestEdgeRings.o: ComplexTest/TestEdgeRings.cpp 
 	${MKDIR} -p ${TESTDIR}/ComplexTest
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestEdgeRings.o ComplexTest/TestEdgeRings.cpp
+	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestEdgeRings.o ComplexTest/TestEdgeRings.cpp
 
 
 ${TESTDIR}/ComplexTest/TestManifold.o: ComplexTest/TestManifold.cpp 
 	${MKDIR} -p ${TESTDIR}/ComplexTest
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestManifold.o ComplexTest/TestManifold.cpp
+	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestManifold.o ComplexTest/TestManifold.cpp
 
 
 ${TESTDIR}/ComplexTest/TestTopologicalOperations.o: ComplexTest/TestTopologicalOperations.cpp 
 	${MKDIR} -p ${TESTDIR}/ComplexTest
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestTopologicalOperations.o ComplexTest/TestTopologicalOperations.cpp
+	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestTopologicalOperations.o ComplexTest/TestTopologicalOperations.cpp
+
+
+${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o: DelaunayTest/DelaunayTriangulation3Test.cpp 
+	${MKDIR} -p ${TESTDIR}/DelaunayTest
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o DelaunayTest/DelaunayTriangulation3Test.cpp
+
+
+${TESTDIR}/DelaunayTest/TestComplexConstruction.o: DelaunayTest/TestComplexConstruction.cpp 
+	${MKDIR} -p ${TESTDIR}/DelaunayTest
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o DelaunayTest/TestComplexConstruction.cpp
 
 
 ${OBJECTDIR}/AdjacentDirectedEdgeRings_nomain.o: ${OBJECTDIR}/AdjacentDirectedEdgeRings.o AdjacentDirectedEdgeRings.cpp 
@@ -273,6 +290,7 @@ ${OBJECTDIR}/Vertex_nomain.o: ${OBJECTDIR}/Vertex.o Vertex.cpp
 	@if [ "${TEST}" = "" ]; \
 	then  \
 	    ${TESTDIR}/TestFiles/f1 || true; \
+	    ${TESTDIR}/TestFiles/f2 || true; \
 	else  \
 	    ./${TEST} || true; \
 	fi
