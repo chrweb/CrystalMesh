@@ -104,15 +104,39 @@ ${OBJECTDIR}/Mathbox.o: Mathbox.cpp
 
 # Build Test Targets
 .build-tests-conf: .build-conf ${TESTFILES}
-${TESTDIR}/TestFiles/f1: ${TESTDIR}/Tests/TestUPL.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f1: ${TESTDIR}/Tests/TestMath.o ${TESTDIR}/Tests/TestPlane3D.o ${TESTDIR}/Tests/TestPoint3D.o ${TESTDIR}/Tests/TestUPL.o ${TESTDIR}/Tests/TestVector3D.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} ../googletest/dist/Debug/GNU-Linux-x86/libgoogletest.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a 
+
+
+${TESTDIR}/Tests/TestMath.o: Tests/TestMath.cpp 
+	${MKDIR} -p ${TESTDIR}/Tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -I. -I. -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestMath.o Tests/TestMath.cpp
+
+
+${TESTDIR}/Tests/TestPlane3D.o: Tests/TestPlane3D.cpp 
+	${MKDIR} -p ${TESTDIR}/Tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -I. -I. -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestPlane3D.o Tests/TestPlane3D.cpp
+
+
+${TESTDIR}/Tests/TestPoint3D.o: Tests/TestPoint3D.cpp 
+	${MKDIR} -p ${TESTDIR}/Tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -I. -I. -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestPoint3D.o Tests/TestPoint3D.cpp
 
 
 ${TESTDIR}/Tests/TestUPL.o: Tests/TestUPL.cpp 
 	${MKDIR} -p ${TESTDIR}/Tests
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Werror -I. -I. -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestUPL.o Tests/TestUPL.cpp
+
+
+${TESTDIR}/Tests/TestVector3D.o: Tests/TestVector3D.cpp 
+	${MKDIR} -p ${TESTDIR}/Tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Werror -I. -I. -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestVector3D.o Tests/TestVector3D.cpp
 
 
 ${OBJECTDIR}/Geometry_Plane3D_nomain.o: ${OBJECTDIR}/Geometry_Plane3D.o Geometry_Plane3D.cpp 

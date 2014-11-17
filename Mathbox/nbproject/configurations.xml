@@ -94,7 +94,15 @@
       </item>
       <item path="TestIncludes.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Tests/TestMath.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Tests/TestPlane3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Tests/TestPoint3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="Tests/TestUPL.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Tests/TestVector3D.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>
