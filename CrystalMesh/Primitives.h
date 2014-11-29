@@ -93,8 +93,9 @@ namespace CrystalMesh{
 					Mathbox::Geometry::Point3D const &a2) const;
 
 			struct Vertices{
-
+                                //Boundary Vertices
 				Subdiv3::Vertex * mAtCorners[4];
+                                //Inner Vertex
 				Subdiv3::Vertex * mInTet;
 			};
 
@@ -103,21 +104,20 @@ namespace CrystalMesh{
 		};
 
 		struct Tet{
+                        typedef std::array<Triangle,4> Triangles;   
+                        typedef std::array<Subdiv3::Vertex*, 4> Vertices;
+			
+                        Subdiv3::Vertex* mpDualVertex;
+			Triangles mTri;
 
-			Subdiv3::Vertex* mpDualVertex;
-			Triangle mTri[4];
-
-			struct Vertices{
-				Subdiv3::Vertex * mpVert[4];
-			};
-
+			
 			Triangle const getTriangleAt(Index aIndex) const ;
 
 			//Subdiv3::Vertex const  * getVertexAt(Index aIndex) const;
 
 			Vertices const getVertices() const;
 
-			typedef std::array<Triangle,5> Triangles;
+			
 
 			Triangles const getTriangles() const;
 		};

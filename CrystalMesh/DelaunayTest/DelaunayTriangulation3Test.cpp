@@ -9,6 +9,7 @@
 #include <cstdlib>
 
 using namespace CrystalMesh;
+using namespace Delaunay3;
 using namespace Mathbox;
 using namespace Geometry;
 
@@ -98,11 +99,7 @@ namespace{
 
 	private:
 
-
 	public:
-
-
-
 
 		CrystalMesh::Delaunay3::DelaunayTriangulation3D mDt;
 	};
@@ -110,13 +107,13 @@ namespace{
 
 TEST_F(DelaunayTester, Tet){
         //TODO: implment
-	// create a tet
-//	auto tet = mDt.makeTetrahedron(tp);
-//
-//	// its triangles:
-//	auto tris = tet.getTriangles();
-//
-//	auto checker = createBndPointChecker();
+	// create a tet with triangle points:
+	auto tet = mDt.makeTetrahedron(tp);
+
+	// its triangles:
+	auto tris = tet.getTriangles();
+
+	auto checker = createBndPointChecker();
 //
 //	// all triangles ccw?
 //	for (auto const & currentTri: tris){

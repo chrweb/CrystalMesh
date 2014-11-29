@@ -203,14 +203,19 @@ namespace CrystalMesh {
 			}
 
 		}
-                Triangle const Tet::getTriangleAt(Index ) const{
-                    //ToDo: Implement
-                    UNREACHABLE;
+                
+                Triangle const Tet::getTriangleAt(Index aIndex) const{
+                    SHOULD_BE(aIndex < 4);
+                    return mTri[aIndex];
+                }
+                
+                Tet::Triangles const Tet::getTriangles() const{
+                    return mTri;                    
                 }
 		
                 Tet::Vertices const Tet::getVertices() const{
 			Tet::Vertices result;
-			// two triangles hold all vertices:
+			// two triangles hold ]all vertices:
 			auto tuple0 = collectVerts(mTri[0]);
 			auto tuple1= collectVerts(mTri[1]);
 
@@ -220,7 +225,7 @@ namespace CrystalMesh {
 			std::sort(all.begin(), all.end());
 			auto un = std::unique(all.begin(), all.end());
 
-			std::copy(all.begin(), un, std::begin(result.mpVert));
+			std::copy(all.begin(), un, result.begin());
 
 			return result;
 		}

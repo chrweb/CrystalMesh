@@ -150,43 +150,54 @@ namespace CrystalMesh{
 			result->mpPropPtr = apPropPtr;
 			return result;
 		}
+                
+                namespace{
+                    
+                    DelaunayTriangulation3D::TetPoints  permutate(DelaunayTriangulation3D::TetPoints const & aPoints){
+                        
+                        using namespace Mathbox;
+			using namespace Geometry;
+                        
+                        auto const plane = planeFromThreePoints(aPoints[0], aPoints[1], aPoints[2]);
+                        
+                        auto permutation = aPoints;
+                        
+                                   //FIXME: eps issue in Point projection
+			//auto const eps = 1e-6;
+                        
+                        PointToPlaneProjection projection = pointPlaneProjection(plane, aPoints[3]);
+                        
+                        switch (projection){
+                            case PointToPlaneProjection::overPlane:
+                                // swap
+                                std::swap(permutation[0], permutation[1]);
+                                return permutation;
+
+                            case PointToPlaneProjection::underPlane:
+                                return permutation;
+
+			default:
+				// very bad
+				UNREACHABLE;
+			}    
+                    }
+                                
+                }
+        
 
 		Tet const DelaunayTriangulation3D::makeTetrahedron(TetPoints const & aTetPoints){
 			using namespace CrystalMesh;
 			using namespace Mathbox;
 			using namespace Geometry;
 
-
-                        //FIXME: eps issue in Point projection
-			//auto const eps = 1e-6;
-
-			// [0]-[2]: basic trianlge
-			Point3D points[4];
-			std::copy(aTetPoints.begin(), aTetPoints.end(), std::begin(points));
-			// plane of basic triangle
-			auto const plane = planeFromThreePoints(points[0], points[1], points[2]);
-
-			// last point above?
-			switch (pointPlaneProjection(plane, aTetPoints[4])){
-			case PointToPlaneProjection::overPlane:
-				// swap
-				std::swap(points[0], points[1]);
-				break;
-
-			case PointToPlaneProjection::underPlane:
-				// fine
-				break;
-
-			default:
-				// very bad
-				UNREACHABLE;
-			}
+                        //Bring points into correct order:
+                        TetPoints permutation = permutate(aTetPoints);
 
 
 			VertexData * vertexData[4];
 			// construct vertex data:
 			for(Index i = 0 ; i < 4; i++){
-				vertexData[i] = makeVertexData(points[i]);
+				vertexData[i] = makeVertexData(permutation[i]);
 			}
 
 			// construct tet
@@ -206,14 +217,14 @@ namespace CrystalMesh{
 			// look for vertex with no data,
 			// give him the remaining point
 			Index count(0);
-			for (Index i = 0; i <=3; i++){
+			for (Index i = 0; i <3; i++){
 				if (noData(bound[i]->getOrg())){
-					linkVertexDataVertex(vertexData[4], bound[i]->getOrg());
+					linkVertexDataVertex(vertexData[3], bound[i]->getOrg());
 					count++;
 				}
 			}
 
-			// very bad error?
+			// very bad error!
 			MUST_BE(count == 1);
 
 			//done
