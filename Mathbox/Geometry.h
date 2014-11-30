@@ -56,7 +56,7 @@ namespace Mathbox{
 		struct Point2D{
 			double mX, mY;
 
-			static Point2D const NAN;
+			static Point2D const NaN;
 
 			static Point2D const zero;
 		};

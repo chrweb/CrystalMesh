@@ -82,11 +82,11 @@ namespace CrystalMesh{
 				return result;
 			}
 
-			Vertex const vertexOf(Subdiv3::Vertex  * aVert){
-				Vertex result;
-				result.mpPrimalVertex = aVert;
-				return result;
-			}
+//			Vertex const vertexOf(Subdiv3::Vertex  * aVert){
+//				Vertex result;
+//				result.mpPrimalVertex = aVert;
+//				return result;
+//			}
 		}
 
 		namespace{

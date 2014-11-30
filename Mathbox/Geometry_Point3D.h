@@ -1,3 +1,6 @@
+
+#include "Geometry.h"
+
 /*
  * Geometry Point3D.h
  *
@@ -31,6 +34,8 @@ namespace Mathbox{
                          * @return 
                          */
 			bool const almostEqual(Point3D const & a0, Point3D const & a1, uint64_t aDiffFromZeroInULP);
+                        
+                        bool const inLexicographicalOrder(Point3D const & aPoint0, Point3D const & aPoint1);
 
                         /**
                          * Construct a point by given components

@@ -34,15 +34,15 @@ namespace CrystalMesh {
 			}
 		}
 
-		Point3D const Vertex::getPoint() const{
-			return pointFromSub3Vertex(mpPrimalVertex);
-		}
-
-		void Vertex::setPoint(Point3D const & aPoint){
-			VertexData & data = *reinterpret_cast<VertexData *>(mpPrimalVertex->mpData);
-			data.mPoint = aPoint;
-			return;
-		}
+//		Point3D const Vertex::getPoint() const{
+//			return pointFromSub3Vertex(mpPrimalVertex);
+//		}
+//
+//		void Vertex::setPoint(Point3D const & aPoint){
+//			VertexData & data = *reinterpret_cast<VertexData *>(mpPrimalVertex->mpData);
+//			data.mPoint = aPoint;
+//			return;
+//		}
 
 		namespace{
 			Subdiv3::FacetEdge * toPointer(Subdiv3::FacetEdge const & aRef){
@@ -78,7 +78,16 @@ namespace CrystalMesh {
 
 			return result;
 		}
-
+                
+                Triangle::BoundaryPoints const Triangle::getBoundaryPoints() const{
+                    auto const bndEdges = getBoundaryArray();
+                    BoundaryPoints result;
+                    for (Index i = 0; i<3; i++){
+                        result[i] = pointFromSub3Vertex(bndEdges[i]->getOrg());
+                    }
+                    return result;
+                }
+                
 		PointThreeTuple const Triangle::getPoints() const{
 
 			auto const bnd = getBoundary();
@@ -215,7 +224,7 @@ namespace CrystalMesh {
 		
                 Tet::Vertices const Tet::getVertices() const{
 			Tet::Vertices result;
-			// two triangles hold ]all vertices:
+			// two triangles hold all vertices:
 			auto tuple0 = collectVerts(mTri[0]);
 			auto tuple1= collectVerts(mTri[1]);
 

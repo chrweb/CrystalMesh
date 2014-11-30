@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "../TestIncludes.h"
 
 using namespace Mathbox;
@@ -108,3 +110,26 @@ TEST(Point, addition){
 	EXPECT_TRUE(almostEqual(ex2, result2, eps));
 }
 
+
+TEST(Point, lexicographical){
+    Point3D p0 = pointFromXYZ(1.0, 1.0, 1.0);
+    Point3D p1 = pointFromXYZ(1.0, 1.0, 1.1);
+    Point3D p2 = pointFromXYZ(1.0, 1.1, 1.1);
+    Point3D p3 = pointFromXYZ(1.1, 1.0, 1.0);
+  
+    EXPECT_TRUE(inLexicographicalOrder(p0, p1));
+    EXPECT_TRUE(inLexicographicalOrder(p1, p2));
+    EXPECT_TRUE(inLexicographicalOrder(p2, p3));
+    
+    std::array<Point3D, 5> pointlist = {p3, p2, p0, p1, p2};
+    
+    std::sort(pointlist.begin(), pointlist.end(), inLexicographicalOrder);
+    
+    EXPECT_TRUE(exactEqual(pointlist[0], p0));
+    EXPECT_TRUE(exactEqual(pointlist[1], p1));
+    EXPECT_TRUE(exactEqual(pointlist[2], p2));
+    EXPECT_TRUE(exactEqual(pointlist[3], p2));
+    EXPECT_TRUE(exactEqual(pointlist[4], p3));
+    return;
+}
+        

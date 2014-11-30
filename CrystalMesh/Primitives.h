@@ -12,13 +12,13 @@ namespace CrystalMesh{
 
 	namespace Delaunay3{
 
-		struct Vertex{
-			Subdiv3::Vertex* mpPrimalVertex;
-
-			Mathbox::Geometry::Point3D const getPoint() const;
-
-			void setPoint(Mathbox::Geometry::Point3D const & aPoint);
-		};
+//		struct Vertex{
+//			Subdiv3::Vertex* mpPrimalVertex;
+//
+//			Mathbox::Geometry::Point3D const getPoint() const;
+//
+//			void setPoint(Mathbox::Geometry::Point3D const & aPoint);
+//		};
 
 
 

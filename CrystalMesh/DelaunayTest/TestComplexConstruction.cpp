@@ -154,7 +154,7 @@ TEST_F(ComplexTester, Tet){
 	auto const verts = tet.getVertices();
 
 	// visit each vertex
-	for (auto const pVert: verts.mpVert){
+	for (auto const pVert: verts){
 		// incident directed edge rings
 		auto const incRings = getAdjacentRingsOf(*pVert);
 

@@ -7,6 +7,7 @@
 
 #include "TestInclude.h"
 #include <cstdlib>
+#include <algorithm>
 
 using namespace CrystalMesh;
 using namespace Delaunay3;
@@ -14,7 +15,6 @@ using namespace Mathbox;
 using namespace Geometry;
 
 
-//TODO Test  with Points
 namespace{
 
 	typedef CrystalMesh::Delaunay3::DelaunayTriangulation3D::TetPoints TetPoints;
@@ -37,62 +37,38 @@ namespace{
 	BoundaryPoints const bnd3 = BoundaryPoints{ p0, p1, p2};
 
 	// struct for checking results:
-	struct BndPointChecker{
-		typedef std::array<BoundaryPoints,4> Bnds;
-		typedef std::array<bool, 3> Visited;
-
-		Bnds mBnds;
-		Visited mVst;
-	};
-
-	// Factory
-	BndPointChecker const createBndPointChecker(){
-		BndPointChecker result;
-		result.mBnds = {bnd0, bnd1, bnd2, bnd3};
-		result.mVst = {false, false, false};
-		return result;
-	}
-
-
-	// Criteria, 2 BoundaryPoints are equal:
-	bool const allContained(BoundaryPoints const & a0, BoundaryPoints const & a1){
-            //ToDo: Implment
-            UNREACHABLE;
-//		for (auto const & currentPoint: a0){
-//			auto found = std::find(a1.begin() a1.end());
-//			if (found == a1.end())
-//				return false;
-//		}
-//
-//		return true;
-	}
-
-	// both contain the same points, correct cyclic permutation
-	bool const operator == (BoundaryPoints const & a0, BoundaryPoints const & a1){
-            //TODO: implement
-            UNREACHABLE;
-//		auto const & point0 = a0[0];
-//
-//		// copy, because we're doing maipulations:
-//		BoundaryPoints other;
-//		std::copy(a1.begin(), a1.end(), other.begin());
-//
-//		auto found = std::find(other.begin(), other.end());
-//		//not found? false
-//		if (found == other.end())
-//			return false;
-//
-//		// rotate to front
-//		std::rotate(other.begin(), found, other.end());
-//
-//		//compare
-//		for (Index i = 0; i<3; i++){
-//			if (a0[i]!= other[i])
-//				return false;
-//		}
-//
-//		return true;
-	}
+        std::array<BoundaryPoints,4> expectedBounds = {bnd0, bnd1, bnd2, bnd3};
+        
+	// Criteria: both BoundaryPoints hold the same set of points:
+	bool const allContained(BoundaryPoints const & bnds, Triangle::BoundaryPoints const & triBnd){
+            
+            auto pred = [](Point3D const & p0, Point3D const & p1) -> bool{
+                return exactEqual(p0, p1);
+            };
+            
+            return std::is_permutation(bnds.begin(), bnds.end(), triBnd.begin(), pred);            
+        }
+        
+        bool const sameCyclicOrder(BoundaryPoints const & aBnds, Triangle::BoundaryPoints & aTriBnds){
+            const Point3D first = aBnds.front();
+            auto finder = [&first](Point3D const & aPoint) -> bool{
+                return exactEqual(first, aPoint);
+            };
+            
+            auto position = std::find_if(aTriBnds.begin(), aTriBnds.end(), finder);
+            MUST_BE(position != aTriBnds.end());
+            //position to front, preseve orientation:
+            Triangle::BoundaryPoints rotated;
+            
+            std::rotate_copy(aTriBnds.begin(), position, aTriBnds.end(), rotated.begin());
+            //all points are exact equal:
+            for (Index i = 0; i<3; i++){
+                if (!exactEqual(aBnds[i], rotated[i]))
+                    return false;
+            }
+            
+            return true;
+        }
 
 	class DelaunayTester
 	: public ::testing::Test{
@@ -112,15 +88,41 @@ TEST_F(DelaunayTester, Tet){
 
 	// its triangles:
 	auto tris = tet.getTriangles();
-
-	auto checker = createBndPointChecker();
-//
-//	// all triangles ccw?
-//	for (auto const & currentTri: tris){
-//		auto const itsBndPoints = currentTri.getBoundaryPoints();
-//		if ()
-//	}
-
-
+        // its boundary points:
+        std::array<Triangle::BoundaryPoints, 4> trisBnds = {
+            tris[0].getBoundaryPoints(), 
+            tris[1].getBoundaryPoints(), 
+            tris[2].getBoundaryPoints(), 
+            tris[3].getBoundaryPoints()};
+        
+        // a stack with all expected bnds:
+        std::vector<BoundaryPoints> stack(expectedBounds.begin(), expectedBounds.end());
+        
+        while(! stack.empty()){
+        
+            auto currentBound = stack.back();
+            stack.pop_back();
+            
+             //find this currentBound points in tet's triangle
+            auto equal = [&currentBound](Triangle::BoundaryPoints const & aTriangleBnds) ->bool{
+                return allContained(currentBound, aTriangleBnds);
+            };
+           
+            //currentbound exists once 
+            EXPECT_EQ(1 , std::count_if(trisBnds.begin(), trisBnds.end(), equal));
+            
+            //This bound must be found
+            auto result = std::find_if(trisBnds.begin(), trisBnds.end(), equal);
+            
+            //if not, breakup:
+            if (result == trisBnds.end())
+                return;
+            
+            //check for expected cyclic permututation
+            EXPECT_TRUE(sameCyclicOrder(currentBound, *result));
+            
+        }
+           
+        return;
 
 }

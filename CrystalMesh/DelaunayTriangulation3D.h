@@ -61,25 +61,25 @@ namespace CrystalMesh{
 
 			Flip3To2Result flip3to2(Triangle& aTriangleToFlip);
 
-			struct PointLocation{
-
-				enum struct Situation{
-					inTetraeder,
-					onFace,
-					onSegment,
-					onVertex
-				} mSituation;
-
-				union Location{
-					Tet mInTet;
-					Triangle  mOnFace;
-					Corner   mOnCorner;
-					Vertex	  mOnVertex;
-				} mLocation;
-			};
-
-
-			PointLocation const locatePoint(Mathbox::Geometry::Point3D const & aPoint);
+//			struct PointLocation{
+//
+//				enum struct Situation{
+//					inTetraeder,
+//					onFace,
+//					onSegment,
+//					onVertex
+//				} mSituation;
+//
+//				union Location{
+//					Tet mInTet;
+//					Triangle  mOnFace;
+//					Corner   mOnCorner;
+//					Vertex	  mOnVertex;
+//				} mLocation;
+//			};
+//
+//
+//			PointLocation const locatePoint(Mathbox::Geometry::Point3D const & aPoint);
 
 
 			void insertPoint(Mathbox::Geometry::Point3D const & aPoint);
