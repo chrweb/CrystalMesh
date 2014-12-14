@@ -192,6 +192,9 @@ namespace CrystalMesh{
 
                         //Bring points into correct order:
                         TetPoints permutation = permutate(aTetPoints);
+                        
+                        //permutation holds in [0] to [2] a points forming a plane,
+                        //[3] appears below this face.
 
 
 			VertexData * vertexData[4];
