@@ -8,6 +8,7 @@
 
 #include "TestInclude.h"
 #include <cstdlib>
+#include <algorithm>
 
 using namespace CrystalMesh;
 using namespace Mathbox;
@@ -143,6 +144,45 @@ TEST_F(ComplexTester, TetInterior){
 		auto incEdgeRings = getAdjacentRingsOf(*currentVertex);
 		EXPECT_EQ(incEdgeRings.size(), 4u);
 	}
+        
+        //have a closer look to the vertices:
+        TetInteriour::Vertices const vertices = tetint.getVertices();
+        
+        //outer ones:
+        auto const & outer = vertices.mAtCorners;
+        
+        for (Vertex* currentVertex: outer){
+            //adjancent Edgerings
+            auto const adjRings = getAdjacentRingsOf(*currentVertex);
+            
+            MUST_BE(adjRings.size() == 4);
+           
+             //get their edge ring size:
+            auto getSize = [](DirectedEdgeRing* ring) -> Counter{
+                return ring->computeEdgeRingSize();
+            };
+            
+            std::array<Counter,4>  sizes;
+            
+            std::transform(adjRings.begin(), adjRings.end(), sizes.begin(), getSize);
+            
+            //expected pattern
+            std::array<Counter,4> pattern = {1, 1, 1, 3}; 
+           
+            
+            EXPECT_TRUE(std::is_permutation(sizes.begin(), sizes.end(), pattern.begin()));
+        }
+        
+        //inner one:
+        auto const innerAdjRings = getAdjacentRingsOf(*vertices.mInTet);
+        
+        MUST_BE(innerAdjRings.size() == 4);
+        
+        for (auto currentRing: innerAdjRings){
+            EXPECT_EQ(3u, currentRing->computeEdgeRingSize());
+        }
+        
+        
 }
 
 
@@ -191,7 +231,7 @@ TEST_F(ComplexTester, Tet){
 
 
 }
-// TODO Test 1-4-Flip
+
 
 
 

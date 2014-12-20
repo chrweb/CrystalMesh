@@ -120,27 +120,28 @@ namespace CrystalMesh{
 		}
 
 
-		TetInteriour const DelaunayTriangulation3D::makeTetInterior( Mathbox::Geometry::Point3D const  (aTetPoints)[5] )
+		TetInteriour const DelaunayTriangulation3D::makeTetInterior( TetIntPoints const & aTetIntPoints)
 		{
-			// construct interior, given five Points: [0]...[3] tetBounds
-			//										  [4] in-tet-point
+                    // construct interior, given five Points: [0]...[3] tetBounds
+                    // [4] in-tet-point
 
-			// construct the topological structure
-			TetInteriour tetInterior = constructTetInteriourInComplex(*this->mpManifold);
-			TetInteriour::Vertices itsVerts = tetInterior.getVertices();
+                    // construct the topological structure
+                    TetInteriour tetInterior = constructTetInteriourInComplex(*this->mpManifold);
+                    
+                    TetInteriour::Vertices itsVerts = tetInterior.getVertices();
 
-			// for tet bounds...
-			for (Index i = 0; i < 4; i++)
-			{
-				auto vertexData= makeVertexData(aTetPoints[i], nullptr);
-				linkVertexDataVertex(vertexData, itsVerts.mAtCorners[i]);
-			}
+                    // for tet bounds...
+                    for (Index i = 0; i < 4; i++)
+                    {
+                            auto vertexData= makeVertexData(aTetIntPoints[i], nullptr);
+                            linkVertexDataVertex(vertexData, itsVerts.mAtCorners[i]);
+                    }
 
-			// in-tet-vertex
-			auto inTetData = makeVertexData(aTetPoints[4], nullptr);
-			linkVertexDataVertex(inTetData, itsVerts.mInTet);
+                    // in-tet-vertex
+                    auto inTetData = makeVertexData(aTetIntPoints[4], nullptr);
+                    linkVertexDataVertex(inTetData, itsVerts.mInTet);
 
-			return tetInterior;
+                    return tetInterior;
 		}
 
 		VertexData * DelaunayTriangulation3D::makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr)

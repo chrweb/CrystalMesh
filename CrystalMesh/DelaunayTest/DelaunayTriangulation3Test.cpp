@@ -18,12 +18,13 @@ using namespace Geometry;
 namespace{
 
 	typedef CrystalMesh::Delaunay3::DelaunayTriangulation3D::TetPoints TetPoints;
-
+        typedef CrystalMesh::Delaunay3::DelaunayTriangulation3D::TetIntPoints TetIntPoints;
+        
 	Point3D const p0 = pointFromXY0(0.0, 0.0);
 	Point3D const p1 = pointFromXY0(1.0, 0.0);
 	Point3D const p2 = pointFromXY0(0.5, 1.0);
 	Point3D const p3 = pointFromXYZ(0.5, 0.5, 1.0);
-
+        Point3D const p4 = pointFromXYZ(0.5, 0.5, 0.25);
 	
 
 
@@ -143,4 +144,44 @@ TEST_F(DelaunayTester, Tet2){
     auto tet = mDt.makeTetrahedron(tp);
     SCOPED_TRACE("DelaunayTester, Tet2");
     testTetConstruction(tet);
+}
+
+
+namespace{
+    void verifyAdapter(TetInteriour::TetAdapter const & aAdapter, BoundaryPoints const & aBnd){
+        for (Index i = 0; i<3; i++){
+            auto const current = pointFromSubdiv3Vertex(aAdapter[i]->getOrg());
+            auto const expected = aBnd[i];
+            EXPECT_TRUE(exactEqual(current, expected));
+        }
+        return;
+    }
+}
+
+//Test Tet Interiour and adapter
+TEST_F(DelaunayTester, TetAdapter){
+    TetIntPoints const tip = {p0, p1, p2, p3, p4};
+    auto const tetInt = mDt.makeTetInterior(tip);
+    
+    //look for adapter, defined by boundary points:
+    
+    auto const adp0 = tetInt.getTetAdapterOf(bnd0[0], bnd0[1], bnd0[2]);
+    auto const adp1 = tetInt.getTetAdapterOf(bnd1[0], bnd1[1], bnd1[2]);
+    auto const adp2 = tetInt.getTetAdapterOf(bnd2[0], bnd2[1], bnd2[2]);
+    auto const adp3 = tetInt.getTetAdapterOf(bnd3[0], bnd3[1], bnd3[2]);
+    
+    SCOPED_TRACE("DelaunayTester, Adapter0");
+    verifyAdapter(adp0, bnd0);
+    
+    SCOPED_TRACE("DelaunayTester, Adapter1");
+    verifyAdapter(adp1, bnd1);
+    
+    SCOPED_TRACE("DelaunayTester, Adapter2");
+    verifyAdapter(adp2, bnd2);
+    
+    SCOPED_TRACE("DelaunayTester, Adapter3");
+    verifyAdapter(adp3, bnd3);
+    
+    return;
+
 }

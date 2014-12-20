@@ -26,13 +26,13 @@ namespace CrystalMesh {
 		typedef Subdiv3::FacetEdge FacetEdge;
 
 
-		namespace{
+		
 
-			Point3D const pointFromSub3Vertex(Subdiv3::Vertex const *pVertex){
-				VertexData const & data = *reinterpret_cast<VertexData const *>(pVertex->mpData);
-				return data.mPoint;
-			}
+		Point3D const pointFromSubdiv3Vertex(Subdiv3::Vertex const *pVertex){
+			VertexData const & data = *reinterpret_cast<VertexData const *>(pVertex->mpData);
+			return data.mPoint;
 		}
+		
 
 //		Point3D const Vertex::getPoint() const{
 //			return pointFromSub3Vertex(mpPrimalVertex);
@@ -83,21 +83,21 @@ namespace CrystalMesh {
                     auto const bndEdges = getBoundaryArray();
                     BoundaryPoints result;
                     for (Index i = 0; i<3; i++){
-                        result[i] = pointFromSub3Vertex(bndEdges[i]->getOrg());
+                        result[i] = pointFromSubdiv3Vertex(bndEdges[i]->getOrg());
                     }
                     return result;
                 }
                 
-		PointThreeTuple const Triangle::getPoints() const{
-
-			auto const bnd = getBoundary();
-			PointThreeTuple result;
-			result.p0 = pointFromSub3Vertex(bnd.f0->getOrg());
-			result.p1 = pointFromSub3Vertex(bnd.f1->getOrg());
-			result.p2 = pointFromSub3Vertex(bnd.f2->getOrg());
-
-			return result;
-		}
+//		PointThreeTuple const Triangle::getPoints() const{
+//
+//			auto const bnd = getBoundary();
+//			PointThreeTuple result;
+//			result.p0 = pointFromSub3Vertex(bnd.f0->getOrg());
+//			result.p1 = pointFromSub3Vertex(bnd.f1->getOrg());
+//			result.p2 = pointFromSub3Vertex(bnd.f2->getOrg());
+//
+//			return result;
+//		}
 
 		namespace{
 
@@ -137,12 +137,12 @@ namespace CrystalMesh {
 		namespace  {
 
 			Mathbox::Geometry::Point3D const originPointOf(Subdiv3::DirectedEdgeRing const * apRing){
-				return pointFromSub3Vertex(apRing->getOrg());
+				return pointFromSubdiv3Vertex(apRing->getOrg());
 			}
 
 		}  // namespace
 
-		FacetEdgeThreeTuple const TetInteriour::getTetAdapterOf(
+		TetInteriour::TetAdapter const TetInteriour::getTetAdapterOf(
 				Mathbox::Geometry::Point3D const &a0,
 				Mathbox::Geometry::Point3D const &a1,
 				Mathbox::Geometry::Point3D const &a2) const{
@@ -158,38 +158,43 @@ namespace CrystalMesh {
 			}
 
 
-			std::vector<FacetEdge*> result;
+			std::vector<FacetEdge*> resultVec;
 
-			// find those with spec point
+			// find those with specified point
 			for (Mathbox::Geometry::Point3D const & currentPoint: point){
 
-				auto condition = [&currentPoint](Subdiv3::DirectedEdgeRing  * apRing) -> bool{
-					using  namespace Mathbox::Geometry;
-					return exactEqual(currentPoint, originPointOf(apRing));
-				};
+                            auto condition = [&currentPoint](Subdiv3::DirectedEdgeRing  * apRing) -> bool{
+                                    using  namespace Mathbox::Geometry;
+                                    return exactEqual(currentPoint, originPointOf(apRing));
+                            };
 
-				auto  beg = std::begin(dring);
-				auto  end = std::end(dring);
+                            auto  beg = std::begin(dring);
+                            auto  end = std::end(dring);
 
-				auto  found = std::find_if(beg, end, condition);
+                            auto  found = std::find_if(beg, end, condition);
 
-				// must be found
-				MUST_BE(found != end);
+                            // must be found
+                            MUST_BE(found != end);
 
-				result.push_back((*found)->getRingMember());
+                            resultVec.push_back((*found)->getRingMember());
 			}
-
-			// expect a tree, return them!
-			return toThreeTuple(result);
+                        
+                        MUST_BE(resultVec.size() == 3);
+                        
+                        TetInteriour::TetAdapter result;
+                        
+                        std::copy(resultVec.begin(), resultVec.end(), result.begin());
+                        
+                        return result;
 		}
 
 
-		TetInteriour::Vertices const TetInteriour::getVertices(){
+		TetInteriour::Vertices const TetInteriour::getVertices() const{
 			Vertices result;
 			result.mInTet = mpVertex[0];
-
-			for (Index i = 1; i < 4; i++ ){
-				result.mAtCorners[i] = mpVertex[i];
+                        
+			for (Index i = 0; i < 4; i++ ){
+				result.mAtCorners[i] = mpVertex[i+1];
 			}
 
 			return result;
@@ -197,17 +202,22 @@ namespace CrystalMesh {
 
 		namespace{
 
-			struct VertexThreeTuple{
-				Subdiv3::Vertex* mpVerts[3];
-			};
+//			struct VertexThreeTuple{
+//				Subdiv3::Vertex* mpVerts[3];
+//			};
+                        
+                        typedef std::array<Subdiv3::Vertex*,3> VertexThreeTuple;
 
 			VertexThreeTuple collectVerts(Triangle const & aTri){
-				auto const bnd = aTri.getBoundary();
+				auto const bnd = aTri.getBoundaryArray();
 				VertexThreeTuple result;
-				auto & array = result.mpVerts;
-				array[0]= bnd.f0->getOrg();
-				array[1]= bnd.f1->getOrg();
-				array[2]= bnd.f2->getOrg();
+				
+                                auto getOrg = [](Subdiv3::FacetEdge * e){
+                                    return e->getOrg();
+                                };
+                                
+                                std::transform(bnd.begin(), bnd.end(), result.begin(), getOrg);
+				
 				return result;
 			}
 
@@ -228,8 +238,8 @@ namespace CrystalMesh {
 			auto tuple0 = collectVerts(mTri[0]);
 			auto tuple1= collectVerts(mTri[1]);
 
-			std::vector<Subdiv3::Vertex*> all(std::begin(tuple0.mpVerts), std::end(tuple0.mpVerts));
-			all.insert(all.end(), std::begin(tuple1.mpVerts), std::end(tuple1.mpVerts));
+			std::vector<Subdiv3::Vertex*> all(tuple0.begin(), tuple0.end());
+			all.insert(all.end(), tuple1.begin(), tuple1.end());
 
 			std::sort(all.begin(), all.end());
 			auto un = std::unique(all.begin(), all.end());
@@ -238,13 +248,6 @@ namespace CrystalMesh {
 
 			return result;
 		}
-
-
-
-
-
-
-
 
 	}  // namespace Delaunay
 

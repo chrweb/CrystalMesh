@@ -11,34 +11,31 @@
 namespace CrystalMesh{
 
 	namespace Delaunay3{
+            
+                Mathbox::Geometry::Point3D const pointFromSubdiv3Vertex(Subdiv3::Vertex const *pVertex);
+                
 
-//		struct Vertex{
-//			Subdiv3::Vertex* mpPrimalVertex;
-//
-//			Mathbox::Geometry::Point3D const getPoint() const;
-//
-//			void setPoint(Mathbox::Geometry::Point3D const & aPoint);
-//		};
-
-
-
-		struct Corner{
+                struct Corner{
 
 		};
 
+                //TODO: Remove
 		struct FacetEdgeThreeTuple{
 			Subdiv3::FacetEdge * f0, *f1, *f2;
 		};
 
+                //TODO: Remove
 		FacetEdgeThreeTuple const facetEdgeThreeTupleOf(
 				Subdiv3::FacetEdge const & a0,
 				Subdiv3::FacetEdge const & a1,
 				Subdiv3::FacetEdge const & a2);
 
+                //TODO: Remove
 		struct PointThreeTuple{
 			Mathbox::Geometry::Point3D p0, p1, p2;
 		};
 
+                //TODO: Remove
 		PointThreeTuple const pointTreeTupleOf(
 				Mathbox::Geometry::Point3D const & a0,
 				Mathbox::Geometry::Point3D const & a1,
@@ -54,9 +51,8 @@ namespace CrystalMesh{
 
 			BoundaryPoints const getBoundaryPoints() const;
 
+                        //TODO: remove
 			FacetEdgeThreeTuple const getBoundary() const;
-
-			PointThreeTuple const getPoints() const;
 
 			Mathbox::Geometry::OrientedPlane3D const getOrientedPlane() const;
 
@@ -86,8 +82,11 @@ namespace CrystalMesh{
 
 			Subdiv3::EdgeRing * mpOuterEdgeRing[6];
 			Subdiv3::Vertex * mpVertex[5];
+                        
+                        typedef std::array<Subdiv3::FacetEdge*,3> TetAdapter;
 
-			FacetEdgeThreeTuple const getTetAdapterOf(
+                        
+			TetAdapter const getTetAdapterOf(
 					Mathbox::Geometry::Point3D const &a0,
 					Mathbox::Geometry::Point3D const &a1,
 					Mathbox::Geometry::Point3D const &a2) const;
@@ -99,7 +98,7 @@ namespace CrystalMesh{
 				Subdiv3::Vertex * mInTet;
 			};
 
-			Vertices const getVertices();
+			Vertices const getVertices() const;
 
 		};
 
@@ -109,15 +108,10 @@ namespace CrystalMesh{
 			
                         Subdiv3::Vertex* mpDualVertex;
 			Triangles mTri;
-
 			
 			Triangle const getTriangleAt(Index aIndex) const ;
 
-			//Subdiv3::Vertex const  * getVertexAt(Index aIndex) const;
-
 			Vertices const getVertices() const;
-
-			
 
 			Triangles const getTriangles() const;
 		};

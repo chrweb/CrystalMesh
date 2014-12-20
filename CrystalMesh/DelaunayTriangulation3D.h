@@ -47,6 +47,7 @@ namespace CrystalMesh{
 
 			};
 
+                        //TODO: implment
 			Flip1To4Result const flip1to4(Tet& aTetToFlip);
 
 			struct Flip2To3Result{
@@ -89,12 +90,13 @@ namespace CrystalMesh{
 			// constructs a tet of the given 4 points
 			Tet const makeTetrahedron(TetPoints const & aTetPoints);
 
+                        typedef std::array<Mathbox::Geometry::Point3D, 5> TetIntPoints;
 			/**
 			 * Creates the interior of execute a 1-4 Flip,
 			 * Points [0-3]: tet bunds
 			 * Point [4]: in-tet point
 			 */
-			TetInteriour const makeTetInterior( Mathbox::Geometry::Point3D const (aTetPoints)[5]);
+			TetInteriour const makeTetInterior( TetIntPoints const & aTetIntPoints);
 
 			VertexData * makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr = nullptr);
 
