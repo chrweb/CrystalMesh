@@ -8,6 +8,8 @@
 
 #include "../Mathbox/Mathbox.h"
 #include "Primitives.h"
+#include "Vertex.h"
+#include "DirectedEdgeRing.h"
 #include <array>
 
 namespace CrystalMesh{
@@ -43,12 +45,16 @@ namespace CrystalMesh{
 
 			~DelaunayTriangulation3D();
 
-			struct Flip1To4Result{
+			struct Flip1To4{
 
 			};
+                        
+                        struct Insertion{
+                            Mathbox::Geometry::Point3D mPoint;
+                        };
 
                         //TODO: implment
-			Flip1To4Result const flip1to4(Tet& aTetToFlip);
+			Flip1To4 const flip1to4(Tet& aTetToFlip, Insertion const aIns);
 
 			struct Flip2To3Result{
 
@@ -103,10 +109,18 @@ namespace CrystalMesh{
 
 
 		private:
+                    
+                    void unifyVertices(Subdiv3::Vertex * apVert0, Subdiv3::Vertex * apVert1);
+                    
+                    void unifyEdgeRings(Subdiv3::DirectedEdgeRing* apDring0 ,Subdiv3::DirectedEdgeRing* apDring1);
+                    
+                    void destroyTet(Tet & aTet);
+                    
+                    Subdiv3::Vertex * makeBody();
+                    
+                    Subdiv3::Manifold * mpManifold;
 
-			Subdiv3::Manifold * mpManifold;
-
-			VertexDataContainer *mpToVetexData;
+                    VertexDataContainer *mpToVetexData;
 		};
 
 	}

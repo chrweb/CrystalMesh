@@ -10,6 +10,7 @@
 #include "FacetEdge.h"
 #include "ComplexConstruction.h"
 #include "../Mathbox/Mathbox.h"
+#include "AdjacentDirectedEdgeRings.h"
 #include <algorithm>
 #include <iterator>
 
@@ -234,6 +235,153 @@ namespace CrystalMesh{
 			//done
 			return tet;
 		}
+                
+                
+                namespace{
+                    typedef std::array<Triangle,4> TriangleArray;
+                    
+                    TriangleArray const getTriangleArrayOf(Tet const & aTet){
+                        TriangleArray result;
+                        
+                        for (Index i = 0; i<4 ;i ++){
+                            result[i] = aTet.getTriangleAt(i);
+                        }
+                        
+                        return result;
+                    }
+                    
+                    typedef std::array<Triangle::BoundaryPoints,4> BoundaryPointArray;
+                    
+                    //all boundary points of the given tet:
+                    BoundaryPointArray const getBoundaryPointArrayOf(Tet const & aTet){
+                        
+                        BoundaryPointArray result;
+                        for (Index i = 0; i<4; i++){
+                            auto currentTri = aTet.getTriangleAt(i);
+                            result[i]= currentTri.getBoundaryPoints();
+                        }
+                        
+                        return result;
+                    }
+                    
+                    DelaunayTriangulation3D::TetIntPoints const getTetIntPointsOf(Tet const & aTet, Mathbox::Geometry::Point3D const & aPoint){
+                        DelaunayTriangulation3D::TetIntPoints result;
+                        
+                        auto const vertices = aTet.getVertices();
+                        
+                        auto extractPoint = [](Subdiv3::Vertex * apVertex){
+                            return pointFromSubdiv3Vertex(apVertex);
+                        };
+                        
+                        //set first 4 points
+                        std::transform(vertices.begin(), vertices.end(), result.begin(), extractPoint);
+                        
+                        //set last:
+                        result[5] = aPoint;
+                    } 
+                    
+                    Subdiv3::DirectedEdgeRing* directedEdgeRingFromTriangle(Triangle const& aTri){
+                        return aTri.mpDualEdgeRing;
+                    }
+                } 
+                
+                DelaunayTriangulation3D::Flip1To4 const DelaunayTriangulation3D::flip1to4(Tet& aTetToFlip, Insertion const aIns){
+                    
+                    auto const tetsTriangles = getTriangleArrayOf(aTetToFlip);
+                    
+                    auto const tetsBndArray = getBoundaryPointArrayOf(aTetToFlip);
+                    
+                    auto const tetsPoints = aTetToFlip.getVertices();
+                    
+                    auto const tetIntPoints = getTetIntPointsOf(aTetToFlip, aIns.mPoint);
+                    
+                    TetInteriour interiour  = makeTetInterior(tetIntPoints);
+                    
+                    //do things for each bnd triangle
+                    for (Index i=0; i<4; i++){
+                        auto currentTriEdges = tetsTriangles[i].getBoundaryArray();
+                        auto currentBndPoints = tetsBndArray[i];  
+                        auto currentAdapter = interiour.getTetAdapterOf(currentBndPoints[0], currentBndPoints[1], currentBndPoints[2]);
+                        
+                        //topological operations:
+                        for (Index i = 0; i<3; i++){
+                            //Edges tp splice
+                            Subdiv3::FacetEdge * currentEdgeOnTet = currentTriEdges[i]->getInvFnext();
+                            Subdiv3::FacetEdge * currentEdgeOnAdapter = currentAdapter[i];
+                            
+                            //Edge rings to merge
+                            auto dring0 = currentEdgeOnAdapter->getDirectedEdgeRing();
+                            auto dring1 = currentEdgeOnTet->getDirectedEdgeRing();
+                            
+                            //Vertices to merge
+                            auto vert0 = currentEdgeOnAdapter->getOrg();
+                            auto vert1 = currentEdgeOnTet->getOrg();
+                            
+                            //splice
+                            mpManifold->spliceFacets(*currentEdgeOnTet, *currentEdgeOnAdapter);
+                            
+                            //unify linked entities:
+                            unifyEdgeRings(dring0, dring1);
+                            unifyVertices(vert0, vert1);
+                        }
+                    }
+                    
+                    //link dual entities:
+                    
+                    //destroy old body:
+                    destroyTet(aTetToFlip);
+                    
+                    //create four new
+                    typedef std::array<Subdiv3::Vertex* ,4> Bodies;
+                    
+                    Bodies bodies = {makeBody(), makeBody(), makeBody(), makeBody()};
+                    
+                    //link each one
+                    for (Index i = 0; i< 4; i++){
+                        auto currentDring = directedEdgeRingFromTriangle(tetsTriangles[i]);
+                        auto currentVertex = bodies[i];
+                        
+                        mpManifold->linkVertexDirectedEdgeRings(*currentVertex, *currentDring);   
+                    }
+                          
+                    Flip1To4 result;
+                    
+                    return result;
+                
+                }
+                
+                void DelaunayTriangulation3D::unifyVertices(Subdiv3::Vertex  * apVert0, Subdiv3::Vertex  * apVert1){
+                    //get adjacent representative
+                    auto adjacentRing = apVert0->getDirectedEdgeRing();
+                    //dislink
+                    mpManifold->dislinkVertexDirectedEdgeRings(*apVert0);
+                    //delete one
+                    mpManifold->deletePrimalVertex(*apVert1);
+                    //relink other
+                    mpManifold->linkVertexDirectedEdgeRings(*apVert0, *adjacentRing);
+                    
+                    return;
+                }
+                    
+                void DelaunayTriangulation3D::unifyEdgeRings(Subdiv3::DirectedEdgeRing* apDring0 ,Subdiv3::DirectedEdgeRing* apDring1){
+                    //get ring representative
+                    auto ringRep = apDring0->getRingMember();
+                    //unlink
+                    mpManifold->dislinkEdgeRing(*apDring0->getEdgeRing());
+                    //delete one
+                    mpManifold->deletePrimalEdgeRing(*apDring1->getEdgeRing());
+                    //relink other
+                    mpManifold->linkEdgeRingAndFacetEdges(*apDring0->getEdgeRing(), *ringRep);
+                    
+                    return;
+                }
+                    
+                void DelaunayTriangulation3D::destroyTet(Tet & aTet){
+                    mpManifold->dislinkVertexDirectedEdgeRings(*aTet.mpDualVertex);
+                    mpManifold->deleteDualVertex(*(aTet.mpDualVertex));
+                    return;
+                }
+
 
 	}
 
