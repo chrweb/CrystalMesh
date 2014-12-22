@@ -152,12 +152,17 @@ namespace CrystalMesh{
 
 	    }
 
-	    EdgeRing * Manifold::makePrimalEdgeRing()
-	   	    {
-	   	    	auto pInst = mpPrimalEdgeRingMaintener->constructEntity();
-	   	    	setEdgeRingMemberVars(*pInst);
-	   	    	return pInst;
-	   	    }
+	    EdgeRing * Manifold::makePrimalEdgeRing(){
+                auto pInst = mpPrimalEdgeRingMaintener->constructEntity();
+	   	setEdgeRingMemberVars(*pInst);
+	   	return pInst;
+	    }
+            
+            
+            void Manifold::deletePrimalEdgeRing(EdgeRing & aRef){
+                auto pToInstance = &aRef;
+                mpPrimalEdgeRingMaintener->deleteEntity(pToInstance);
+            }
 
 	    EdgeRing * Manifold::makeDualEdgeRing()
 	    {
@@ -165,6 +170,12 @@ namespace CrystalMesh{
 	    	setEdgeRingMemberVars(*pInst);
 	    	return pInst;
 	    }
+            
+            void Manifold::deleteDualEdgeRing(EdgeRing & aRef){
+                auto pToInstance = &aRef;
+                mpDualEdgeRingMaintener->deleteEntity(pToInstance);
+                return;
+            }
 
 	    namespace{
 	    	void setVertexLinks(Vertex & aVert){
@@ -182,12 +193,23 @@ namespace CrystalMesh{
 	    	setVertexLinks(*pInst);
 	    	return pInst;
 	    }
+            
+            void Manifold::deletePrimalVertex(Vertex & aRef){
+                auto pToInstance = &aRef;
+                mpPrimalVertexMaintener->deleteEntity(pToInstance);
+            }
 
 	    Vertex * Manifold::makeDualVertex(){
 	    	auto pInst = mpDualVertexMaintener->constructEntity();
 	    	setVertexLinks(*pInst);
 	    	return pInst;
 	    }
+            
+            void Manifold::deleteDualVertex(Vertex & aRef){
+                auto pToInstance = &aRef;
+                mpDualVertexMaintener->deleteEntity(pToInstance);
+                return;
+            }
 
 	    void Manifold::linkEdgeRingAndFacetEdges(EdgeRing& aEring, FacetEdge & aRingRep) const {
 

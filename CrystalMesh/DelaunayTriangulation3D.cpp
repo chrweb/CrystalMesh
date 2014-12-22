@@ -83,11 +83,6 @@ namespace CrystalMesh{
 				return result;
 			}
 
-//			Vertex const vertexOf(Subdiv3::Vertex  * aVert){
-//				Vertex result;
-//				result.mpPrimalVertex = aVert;
-//				return result;
-//			}
 		}
 
 		namespace{
@@ -285,7 +280,7 @@ namespace CrystalMesh{
                     }
                 } 
                 
-                DelaunayTriangulation3D::Flip1To4 const DelaunayTriangulation3D::flip1to4(Tet& aTetToFlip, Insertion const aIns){
+                Flip1To4 const DelaunayTriangulation3D::flip1to4(Tet& aTetToFlip, PointInsertion const aIns){
                     
                     auto const tetsTriangles = getTriangleArrayOf(aTetToFlip);
                     
@@ -346,11 +341,23 @@ namespace CrystalMesh{
                           
                     Flip1To4 result;
                     
+                    result.result = Flip1To4::Result::success;
+                    
+                    //fill from tet
+                    for (Index i = 0 ; i < 4; i++){
+                        result.tris[i] = aTetToFlip.getTriangleAt(i);
+                    }
+                    
+                    //fill from interiour
+                    for (Index i = 0; i < 6; i++){
+                        result.tris[i+4] = interiour.getTriangleAt(i);
+                    }
+                        
                     return result;
-                
                 }
                 
                 void DelaunayTriangulation3D::unifyVertices(Subdiv3::Vertex  * apVert0, Subdiv3::Vertex  * apVert1){
+                    //TODO: delete point of vertex
                     //get adjacent representative
                     auto adjacentRing = apVert0->getDirectedEdgeRing();
                     //dislink
@@ -380,6 +387,11 @@ namespace CrystalMesh{
                     mpManifold->dislinkVertexDirectedEdgeRings(*aTet.mpDualVertex);
                     mpManifold->deleteDualVertex(*(aTet.mpDualVertex));
                     return;
+                }
+                
+                
+                Subdiv3::Vertex * DelaunayTriangulation3D::makeBody(){
+                    return mpManifold->makeDualVertex();
                 }
 
 

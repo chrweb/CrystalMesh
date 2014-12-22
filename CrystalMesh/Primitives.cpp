@@ -190,7 +190,7 @@ namespace CrystalMesh {
 
 
 		TetInteriour::Vertices const TetInteriour::getVertices() const{
-			Vertices result;
+			Vertices result; 
 			result.mInTet = mpVertex[0];
                         
 			for (Index i = 0; i < 4; i++ ){
@@ -199,12 +199,15 @@ namespace CrystalMesh {
 
 			return result;
 		}
+                
+                Triangle const TetInteriour::getTriangleAt(Index aIndex) const{
+                    MUST_BE(aIndex < 6);
+                    Triangle result;
+                    result.mpDualEdgeRing = mpOuterEdgeRing[aIndex]->getItem(0).getRingMember()->getDual()->getDirectedEdgeRing();
+                    return result;
+                }
 
 		namespace{
-
-//			struct VertexThreeTuple{
-//				Subdiv3::Vertex* mpVerts[3];
-//			};
                         
                         typedef std::array<Subdiv3::Vertex*,3> VertexThreeTuple;
 

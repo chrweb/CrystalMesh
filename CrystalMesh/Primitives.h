@@ -99,7 +99,8 @@ namespace CrystalMesh{
 			};
 
 			Vertices const getVertices() const;
-
+                        
+                        Triangle const getTriangleAt(Index aIndex) const;
 		};
 
 		struct Tet{

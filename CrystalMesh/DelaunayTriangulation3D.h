@@ -20,10 +20,30 @@ namespace CrystalMesh{
 	}
 
 
+        
+        
 
 
 
 	namespace Delaunay3{
+            
+                struct Flip1To4{
+                    enum struct Result{
+                        success,
+                        failure
+                    };
+
+                    typedef std::array<Triangle,10> Triangles;
+                    
+                    Result result;
+                    Triangles tris;
+                };
+
+                struct PointInsertion{
+                    Mathbox::Geometry::Point3D mPoint;
+                };
+                
+                PointInsertion pointInsertionOf(Mathbox::Geometry::Point3D const & aPoint);
 
 		struct VertexData{
 			Mathbox::Geometry::Point3D  mPoint;
@@ -45,16 +65,7 @@ namespace CrystalMesh{
 
 			~DelaunayTriangulation3D();
 
-			struct Flip1To4{
-
-			};
-                        
-                        struct Insertion{
-                            Mathbox::Geometry::Point3D mPoint;
-                        };
-
-                        //TODO: implment
-			Flip1To4 const flip1to4(Tet& aTetToFlip, Insertion const aIns);
+			Flip1To4 const flip1to4(Tet& aTetToFlip, PointInsertion const aIns);
 
 			struct Flip2To3Result{
 
