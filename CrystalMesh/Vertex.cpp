@@ -15,8 +15,8 @@ namespace CrystalMesh {
         using namespace Toolbox;
 
         bool const Vertex::isDual() const{
-                MUST_BE(notNullptr(mpOut));
-                return mpOut->isDual();
+            MUST_BE(notNullptr(mpOut));
+            return mpOut->isDual();
         }
 
         bool const Vertex::isPrimal() const{
@@ -24,12 +24,13 @@ namespace CrystalMesh {
         }
 
         DirectedEdgeRing * Vertex::getDirectedEdgeRing(){
-                return const_cast<DirectedEdgeRing*>(getDirectedEdgeRing());
+            MUST_BE(notNullptr(mpOut));
+            return mpOut;
         }
 
         DirectedEdgeRing const * Vertex::getDirectedEdgeRing() const{
-                MUST_BE(notNullptr(mpOut));
-                return mpOut;
+            MUST_BE(notNullptr(mpOut));
+            return mpOut;
         }
     }  // namespace Subdiv3
 

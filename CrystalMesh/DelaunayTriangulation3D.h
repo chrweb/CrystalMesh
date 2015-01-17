@@ -123,7 +123,7 @@ namespace CrystalMesh{
                     
                     void unifyVertices(Subdiv3::Vertex * apVert0, Subdiv3::Vertex * apVert1);
                     
-                    void unifyEdgeRings(Subdiv3::DirectedEdgeRing* apDring0 ,Subdiv3::DirectedEdgeRing* apDring1);
+                    void unifyEdgeRings(Subdiv3::EdgeRing* apRing0 ,Subdiv3::EdgeRing* apRing1);
                     
                     void destroyTet(Tet & aTet);
                     

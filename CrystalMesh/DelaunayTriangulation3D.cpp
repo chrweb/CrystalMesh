@@ -20,6 +20,13 @@ namespace CrystalMesh{
 
 	namespace Delaunay3{
             
+            PointInsertion pointInsertionOf(Mathbox::Geometry::Point3D const & aPoint){
+                PointInsertion result;
+                result.mPoint = aPoint;
+                return result;
+            }
+
+            
             using namespace Toolbox;
 
 		class VertexDataContainer
@@ -272,11 +279,79 @@ namespace CrystalMesh{
                         std::transform(vertices.begin(), vertices.end(), result.begin(), extractPoint);
                         
                         //set last:
-                        result[5] = aPoint;
+                        result[4] = aPoint;
+                        
+                        return result;
                     } 
                     
                     Subdiv3::DirectedEdgeRing* directedEdgeRingFromTriangle(Triangle const& aTri){
                         return aTri.mpDualEdgeRing;
+                    }
+                    
+                    struct VertexMerge{
+                        //From Tet
+                        Subdiv3::Vertex *mpTet;
+                        //From Interiour
+                        Subdiv3::Vertex *mpInt;
+                    };
+                    
+                    class VertexMergeList: public std::vector<VertexMerge>{
+                    public:
+                        template<class Iterator>
+                        VertexMergeList(Iterator begin, Iterator end): std::vector<VertexMerge>(begin, end){}
+                        
+                        VertexMergeList(): std::vector<VertexMerge>(){};
+                        
+                        void addItem(Subdiv3::Vertex * apTetVertex, Subdiv3::Vertex * apIntVertex){
+                            VertexMerge item = {apTetVertex, apIntVertex};
+                            push_back(item);
+                        }
+                    };
+                    
+                    struct EdgeRingMerge{
+                        //From Tet
+                        Subdiv3::EdgeRing* mpTet;
+                        //From Interiour
+                        Subdiv3::EdgeRing * mpInt;
+                    };
+                    
+                    class EdgeRingMergeList: public std::vector<EdgeRingMerge>{
+                    
+                    public:
+                        template<class Iterator>
+                        EdgeRingMergeList(Iterator begin, Iterator end): std::vector<EdgeRingMerge>(begin, end){}
+                        
+                        EdgeRingMergeList(): std::vector<EdgeRingMerge>(){};
+                        
+                        void addItem(Subdiv3::DirectedEdgeRing * apTetRing, Subdiv3::DirectedEdgeRing* apIntRing){
+                            EdgeRingMerge item = {apTetRing->getEdgeRing(), apIntRing->getEdgeRing()};
+                            push_back(item);
+                        }
+                    };
+                    
+                    VertexMergeList const uniqueListFrom(VertexMergeList  & aList){
+                        auto cmp = [](VertexMerge const & a0, VertexMerge const & a1){
+                            auto const b0 = a0.mpInt == a1.mpInt;
+                            auto const b1 = a0.mpTet == a1.mpTet;
+                            return b0 && b1;
+                        };
+                        
+                        auto range = std::unique(aList.begin(), aList.end(), cmp);
+                                
+                        return VertexMergeList(aList.begin(), range);
+                    }
+                    
+                    EdgeRingMergeList const uniqueListFrom(EdgeRingMergeList  & aList){
+                        auto cmp = [](EdgeRingMerge const & a0, EdgeRingMerge const & a1){
+                            auto const b0 = a0.mpInt == a1.mpInt;
+                            auto const b1 = a0.mpTet == a1.mpTet;
+                            return b0 && b1;
+                        };
+                        auto range = std::unique(aList.begin(), aList.end(), cmp);
+                        
+                        auto result = EdgeRingMergeList(aList.begin(), range);
+                        
+                        return result;
                     }
                 } 
                 
@@ -285,12 +360,15 @@ namespace CrystalMesh{
                     auto const tetsTriangles = getTriangleArrayOf(aTetToFlip);
                     
                     auto const tetsBndArray = getBoundaryPointArrayOf(aTetToFlip);
-                    
-                    auto const tetsPoints = aTetToFlip.getVertices();
-                    
+                       
                     auto const tetIntPoints = getTetIntPointsOf(aTetToFlip, aIns.mPoint);
                     
                     TetInteriour interiour  = makeTetInterior(tetIntPoints);
+                    
+                    //save entities, which have to be merged:
+                    VertexMergeList vertexMergeList;
+                    EdgeRingMergeList edgeRingMergeList;
+                    
                     
                     //do things for each bnd triangle
                     for (Index i=0; i<4; i++){
@@ -305,23 +383,33 @@ namespace CrystalMesh{
                             Subdiv3::FacetEdge * currentEdgeOnAdapter = currentAdapter[i];
                             
                             //Edge rings to merge
-                            auto dring0 = currentEdgeOnAdapter->getDirectedEdgeRing();
-                            auto dring1 = currentEdgeOnTet->getDirectedEdgeRing();
+                            edgeRingMergeList.addItem(currentEdgeOnTet->getDirectedEdgeRing(), currentEdgeOnAdapter->getDirectedEdgeRing());
                             
                             //Vertices to merge
-                            auto vert0 = currentEdgeOnAdapter->getOrg();
-                            auto vert1 = currentEdgeOnTet->getOrg();
+                            vertexMergeList.addItem(currentEdgeOnTet->getOrg(), currentEdgeOnAdapter->getOrg());
                             
                             //splice
                             mpManifold->spliceFacets(*currentEdgeOnTet, *currentEdgeOnAdapter);
-                            
-                            //unify linked entities:
-                            unifyEdgeRings(dring0, dring1);
-                            unifyVertices(vert0, vert1);
                         }
                     }
                     
-                    //link dual entities:
+                    //rearrange primal entities:
+                    //pairs may occur more than once:
+                    auto const eUniqueMergeList = uniqueListFrom(edgeRingMergeList);
+                    
+                    //edge rings
+                    for(auto const& mergeRings: eUniqueMergeList){
+                        unifyEdgeRings(mergeRings.mpTet, mergeRings.mpInt);
+                    }
+                    
+                    //vertices
+                    auto const vUniqueMergeList = uniqueListFrom(vertexMergeList);
+                    
+                    for(auto const& mergeVert: vUniqueMergeList){
+                        unifyVertices(mergeVert.mpInt, mergeVert.mpInt);
+                    }
+                    
+                    //rearrange dual entities:
                     
                     //destroy old body:
                     destroyTet(aTetToFlip);
@@ -370,15 +458,15 @@ namespace CrystalMesh{
                     return;
                 }
                     
-                void DelaunayTriangulation3D::unifyEdgeRings(Subdiv3::DirectedEdgeRing* apDring0 ,Subdiv3::DirectedEdgeRing* apDring1){
+                void DelaunayTriangulation3D::unifyEdgeRings(Subdiv3::EdgeRing* apRing0 ,Subdiv3::EdgeRing* apRing1){
                     //get ring representative
-                    auto ringRep = apDring0->getRingMember();
+                    auto ringRep = apRing0->getItem(0).getRingMember();
                     //unlink
-                    mpManifold->dislinkEdgeRing(*apDring0->getEdgeRing());
+                    mpManifold->dislinkEdgeRing(*apRing0);
                     //delete one
-                    mpManifold->deletePrimalEdgeRing(*apDring1->getEdgeRing());
+                    mpManifold->deletePrimalEdgeRing(*apRing1);
                     //relink other
-                    mpManifold->linkEdgeRingAndFacetEdges(*apDring0->getEdgeRing(), *ringRep);
+                    mpManifold->linkEdgeRingAndFacetEdges(*apRing0, *ringRep);
                     
                     return;
                 }

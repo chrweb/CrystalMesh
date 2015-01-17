@@ -84,7 +84,10 @@ namespace CrystalMesh {
 		    AdjacentRings const getAdjacentRingsOf( Vertex const & aVert){
 		    	return getAdjacentRingsOf(*aVert.getDirectedEdgeRing());
             }
-
+                    AdjacentFacetEdges const getAdjacentFacetEdges( Vertex const & aVert){
+                        return getAdjacentFacetEdges(aVert->getDirectedEdgeRing()->getRingMember());
+                    }
+                    
 		    AdjacentFacetEdges const getAdjacentFacetEdges( FacetEdge const & aStart){
 
 		    	typedef std::queue<FacetEdge*> Fifo;
@@ -98,25 +101,27 @@ namespace CrystalMesh {
 		    	collected.insert(initialNode);
 
 		    	while(!fifo.empty()){
-					auto currentBorder = fifo.front();
-					fifo.pop();
+                            auto currentBorder = fifo.front();
+                            fifo.pop();
 
-					// get adjancent fnext rings
-					auto const transistions = otherIncidentFnextRingsOf(currentBorder);
+                            // get adjancent fnext rings
+                            auto const transistions = otherIncidentFnextRingsOf(currentBorder);
 
-					for(auto currentTransistion: transistions){
+                            for(auto currentTransistion: transistions){
 
-						// extract all ring members:
-						auto const currentRing = getFnextRingMembersOf(*currentTransistion);
+                                // extract all ring members:
+                                auto const currentRing = getFnextRingMembersOf(*currentTransistion);
 
-						for (auto currentRingMember: currentRing){
-							// the fnext ring was not visited yet:
-							if (collected.insert(currentRingMember).second){
-								// add this node into queue
-								fifo.push(currentRingMember);
-							}
-						}
-					}
+                                for (auto currentRingMember: currentRing){
+                                    // the fnext ring was not visited yet:
+                                    if (collected.insert(currentRingMember).second){
+                                        // add this node into queue
+                                        fifo.push(currentRingMember);
+                                        // extract all ring members:}
+                                        auto currentBorder = fifo.front();
+                                    }
+                                }
+                            }
 		    	}
 
 		    	AdjacentFacetEdges result(collected.begin(), collected.end());

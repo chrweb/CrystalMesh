@@ -6,6 +6,8 @@
  */
 #pragma once
 #include "ForwardDecs.h"
+#include "EdgeRing.h"
+#include "FacetEdge.h"
 #include <array>
 
 namespace CrystalMesh{
@@ -15,8 +17,10 @@ namespace CrystalMesh{
                 Mathbox::Geometry::Point3D const pointFromSubdiv3Vertex(Subdiv3::Vertex const *pVertex);
                 
 
+                //Describes an inner Corner of a Complex
                 struct Corner{
-
+                    Subdiv3::FacetEdge* mRef;   // a FacetEdge Reference
+                    Subdiv3::FacetEdge* mFnext; // Fnext to above
 		};
 
                 //TODO: Remove
@@ -106,15 +110,23 @@ namespace CrystalMesh{
 		struct Tet{
                         typedef std::array<Triangle,4> Triangles;   
                         typedef std::array<Subdiv3::Vertex*, 4> Vertices;
+                        typedef std::array<Corner, 6> Corners;
 			
                         Subdiv3::Vertex* mpDualVertex;
 			Triangles mTri;
 			
 			Triangle const getTriangleAt(Index aIndex) const ;
+                        
+                        Triangle const getTriangle(
+                            Mathbox::Geometry::Point3D const & aP0,
+                            Mathbox::Geometry::Point3D const & aP1,
+                            Mathbox::Geometry::Point3D const & aP2) const;
 
 			Vertices const getVertices() const;
 
 			Triangles const getTriangles() const;
+                        
+                        Corners const getCorners() const;
 		};
 
 

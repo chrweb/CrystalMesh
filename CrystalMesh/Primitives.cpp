@@ -14,6 +14,7 @@
 #include "Primitives.h"
 #include <vector>
 #include "../Toolbox/Checks.h"
+#include "AdjacentDirectedEdgeRings.h"
 #include <algorithm>
 #include <array>
 
@@ -208,21 +209,21 @@ namespace CrystalMesh {
                 }
 
 		namespace{
-                        
-                        typedef std::array<Subdiv3::Vertex*,3> VertexThreeTuple;
 
-			VertexThreeTuple collectVerts(Triangle const & aTri){
-				auto const bnd = aTri.getBoundaryArray();
-				VertexThreeTuple result;
-				
-                                auto getOrg = [](Subdiv3::FacetEdge * e){
-                                    return e->getOrg();
-                                };
-                                
-                                std::transform(bnd.begin(), bnd.end(), result.begin(), getOrg);
-				
-				return result;
-			}
+                    typedef std::array<Subdiv3::Vertex*,3> VertexThreeTuple;
+
+                    VertexThreeTuple collectVerts(Triangle const & aTri){
+                        auto const bnd = aTri.getBoundaryArray();
+                        VertexThreeTuple result;
+
+                        auto getOrg = [](Subdiv3::FacetEdge * e){
+                            return e->getOrg();
+                        };
+
+                        std::transform(bnd.begin(), bnd.end(), result.begin(), getOrg);
+
+                        return result;
+                    }
 
 		}
                 
@@ -236,21 +237,131 @@ namespace CrystalMesh {
                 }
 		
                 Tet::Vertices const Tet::getVertices() const{
-			Tet::Vertices result;
-			// two triangles hold all vertices:
-			auto tuple0 = collectVerts(mTri[0]);
-			auto tuple1= collectVerts(mTri[1]);
+                    Tet::Vertices result;
+                    // two triangles hold all vertices:
+                    auto tuple0 = collectVerts(mTri[0]);
+                    auto tuple1= collectVerts(mTri[1]);
 
-			std::vector<Subdiv3::Vertex*> all(tuple0.begin(), tuple0.end());
-			all.insert(all.end(), tuple1.begin(), tuple1.end());
+                    std::vector<Subdiv3::Vertex*> all(tuple0.begin(), tuple0.end());
+                    all.insert(all.end(), tuple1.begin(), tuple1.end());
 
-			std::sort(all.begin(), all.end());
-			auto un = std::unique(all.begin(), all.end());
+                    std::sort(all.begin(), all.end());
+                    auto un = std::unique(all.begin(), all.end());
 
-			std::copy(all.begin(), un, result.begin());
+                    std::copy(all.begin(), un, result.begin());
 
-			return result;
+                    return result;
 		}
+                
+                
+                namespace{
+                    typedef std::vector<Subdiv3::FacetEdge*>  FacetEdgeVector;
+                    
+                    //get dual representation
+                    FacetEdgeVector const toDualSpace(Subdiv3::AdjacentFacetEdges const & adj){
+                        FacetEdgeVector result = adj;
+                        
+                        auto toDual = [](Subdiv3::FacetEdge * aFE){
+                            return  aFE->getDual();
+                        };
+                        
+                        std::transform(adj.begin(), adj.end(), result.begin(), toDual);
+                        return result;
+                    }
+                    
+                    
+                    FacetEdgeVector const toClocked(FacetEdgeVector const & vec){
+                        FacetEdgeVector result = vec;
+                        auto toClocked = [](Subdiv3::FacetEdge* aFE){
+                            return aFE->getClock();
+                        };
+                        std::transform(vec.begin(), vec.end(), result.begin(),toClocked);
+                        return result;
+                    }
+                    //adds clocked version for each item
+                    FacetEdgeVector const unfold(FacetEdgeVector const & vec){
+                        FacetEdgeVector result = vec;
+                        FacetEdgeVector clocked = toClocked(vec);
+                        result.insert(result.end(), clocked.begin(), clocked.end());
+                        return result;
+                    }
+                    
+                    
+                    Corner const swapIfNes(Corner const& aCorner){
+                        if (aCorner.mRef->getFnext() != aCorner.mFnext){
+                            Corner result = {aCorner.mFnext, aCorner.mRef};
+                            
+                            MUST_BE( result.mRef->getFnext() == result.mFnext);
+                            return result;
+                        }
+                        
+                        return aCorner;
+                    }
+                }
+                
+                //ToDo: Test This function
+                Tet::Corners const Tet::getCorners() const{
+                    
+                    auto const verts = getVertices();
+                    
+                    typedef std::array<Subdiv3::Vertex*, 2> Segment;
+                    typedef std::array<Segment, 6> TetSegments;
+                    
+                    //list of segments, represented as vertex pairs
+                    Segment segs[] = {    
+                                        {verts[0], verts[1]}, 
+                                        {verts[0], verts[2]}, 
+                                        {verts[1], verts[2]}, 
+                                        {verts[3], verts[0]},
+                                        {verts[3], verts[1]}, 
+                                        {verts[3], verts[2]},
+                                        };
+                    
+                    //adjanced to dual
+                    Subdiv3::AdjacentFacetEdges const adj = getAdjacentFacetEdges(*mpDualVertex);
+                    
+                    //get duals
+                    FacetEdgeVector const toDual = toDualSpace(adj);
+                    
+                    //unfold: get additionally their clocked versions:
+                    auto const unfolded = unfold(toDual);
+                    
+                    Corners result;
+                    
+                    for (Index i = 0; i<6; i++){
+                        Segment currentSegment = segs[i];
+                        
+                        Corner currentCorner = {nullptr, nullptr};
+                        
+                        auto cornerBuilder = [&currentCorner, currentSegment](Subdiv3::FacetEdge* aFE){
+                            //Vertex pattern fits?
+                            if (currentSegment[0] == aFE->getOrg() && currentSegment[1] == aFE->getDest()){
+                                //set members of currentcorner
+                                if (currentCorner.mRef == nullptr){
+                                    currentCorner.mRef = aFE;
+                                    return;
+                                }
+                                
+                                if (currentCorner.mFnext == nullptr){
+                                    currentCorner.mFnext = aFE;
+                                    return;
+                                }
+                                
+                                UNREACHABLE;
+                            }
+                            
+                            return;
+                        };
+                        //look for the segments in unfolded: each one schould fit to 2 FE references:
+                        std::for_each(unfolded.begin(), unfolded.end(), cornerBuilder);
+                        
+                        //currentcorner may be swapped get its two members in corrcet fnext direction
+                        result[i] = swapIfNes(currentCorner);
+                       
+                    }
+                    
+                    return result;
+                }
 
 	}  // namespace Delaunay
 

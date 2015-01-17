@@ -107,8 +107,8 @@ namespace{
                 EXPECT_TRUE(sameCyclicOrder(currentBound, *result));
             }
 
-    return;
-        }
+        return;
+    }
 
 	class DelaunayTester
 	: public ::testing::Test{
@@ -183,5 +183,15 @@ TEST_F(DelaunayTester, TetAdapter){
     verifyAdapter(adp3, bnd3);
     
     return;
+}
 
+//let's test the point 1-4 flip:
+TEST_F(DelaunayTester, Flip1_4){
+    TetPoints const tp = {p1, p0, p2, p3};
+    PointInsertion pins = pointInsertionOf(p4);
+    
+    auto tet = mDt.makeTetrahedron(tp);
+    auto result = mDt.flip1to4(tet, pins);
+    
+    return;
 }

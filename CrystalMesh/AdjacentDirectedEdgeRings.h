@@ -36,13 +36,17 @@ namespace CrystalMesh {
 		 */
 		AdjacentFacetEdges const getAdjacentFacetEdges( FacetEdge const & aStart);
 
-		typedef std::vector<FacetEdge*> RingMembers;
+		AdjacentFacetEdges const getAdjacentFacetEdges( Vertex const & aVert);
+
+                
+                typedef std::vector<FacetEdge*> RingMembers;
 
 		RingMembers const getFnextRingMembersOf(FacetEdge const & aRef);
 
 		RingMembers const getFnextRingMembersOf(DirectedEdgeRing const & aRef);
 
 		RingMembers const getEnextRingMembersOf(FacetEdge const & aRef);
+                
 
 
 	}  // namespace Subdiv3
