@@ -146,44 +146,96 @@ TEST_F(DelaunayTester, Tet2){
     testTetConstruction(tet);
 }
 
+namespace {
+    
+    Corner const invalidCorner = {nullptr, nullptr}; 
+    
+    bool isValidCorner(Corner aCorner){
+        return (aCorner.mFnext != nullptr) && (aCorner.mRef != nullptr);
+    }
 
-namespace{
-    void verifyAdapter(TetInteriour::TetAdapter const & aAdapter, BoundaryPoints const & aBnd){
-        for (Index i = 0; i<3; i++){
-            auto const current = pointFromSubdiv3Vertex(aAdapter[i]->getOrg());
-            auto const expected = aBnd[i];
-            EXPECT_TRUE(exactEqual(current, expected));
+    Delaunay3::Corner findCorner(Point3D const & aOrg, Point3D const & aDest, Tet::Corners const &aList ){
+        
+        for (auto const &current: aList){
+            Point3D const refOrg = pointFromSubdiv3Vertex(current.mRef->getOrg());
+            Point3D const refDest = pointFromSubdiv3Vertex(current.mRef->getDest());
+            
+            //ceck forward
+            if (exactEqual(refOrg, aOrg) && exactEqual(refDest, aDest))
+                return current;
+            
+            if (exactEqual(refOrg, aDest) && exactEqual(refDest, aOrg))
+                return current;
         }
-        return;
+        
+        return invalidCorner;    
     }
 }
 
+TEST_F(DelaunayTester, TetCorners){
+    using namespace Subdiv3;
+    TetPoints const tp = {p0, p1, p2, p3};
+    auto tet = mDt.makeTetrahedron(tp);
+    Tet::Corners const corners = tet.getCorners();
+    
+    Corner c0 = findCorner(p0, p1, corners);
+    Corner c1 = findCorner(p0, p2, corners);
+    Corner c2 = findCorner(p0, p3, corners);
+    Corner c3 = findCorner(p1, p2, corners);
+    Corner c4 = findCorner(p1, p3, corners);
+    Corner c5 = findCorner(p2, p3, corners);
+    
+    EXPECT_TRUE(isValidCorner(c0));
+    EXPECT_TRUE(isValidCorner(c1));
+    EXPECT_TRUE(isValidCorner(c2));
+    EXPECT_TRUE(isValidCorner(c3));
+    EXPECT_TRUE(isValidCorner(c4));
+    EXPECT_TRUE(isValidCorner(c5));
+    
+    Corner cornerArray[] = {c0, c1, c2, c3, c4, c5};
+    
+    Vertex* toInnerDomain = tet.mpDualVertex;
+    Vertex* toOuterDomain = tet.getTriangleAt(0).mpDualEdgeRing->getSym()->getOrg();
+    
+    for (int i = 0; i<6; i++){
+        auto & ref = cornerArray[i].mRef;
+        auto & next = cornerArray[i].mFnext;
+        EXPECT_EQ(ref->getFnext(), next);
+        EXPECT_TRUE(ref->getDual()->getOrg() == toOuterDomain);
+        EXPECT_TRUE(next->getDual()->getOrg() == toInnerDomain);
+    }
+    
+    
+    
+}
+
+
+
+
 //Test Tet Interiour and adapter
 TEST_F(DelaunayTester, TetAdapter){
+    using namespace Subdiv3;
+    //p4 is the in tet point
     TetIntPoints const tip = {p0, p1, p2, p3, p4};
     auto const tetInt = mDt.makeTetInterior(tip);
     
-    //look for adapter, defined by boundary points:
+    //get adpaters
+    std::array<FacetEdge*,6> adapters = {
+        tetInt.getAdapterOf(p0, p1),
+        tetInt.getAdapterOf(p0, p2),
+        tetInt.getAdapterOf(p0, p3),
+        tetInt.getAdapterOf(p1, p2),
+        tetInt.getAdapterOf(p3, p1),
+        tetInt.getAdapterOf(p3, p2),
+        };
     
-    auto const adp0 = tetInt.getTetAdapterOf(bnd0[0], bnd0[1], bnd0[2]);
-    auto const adp1 = tetInt.getTetAdapterOf(bnd1[0], bnd1[1], bnd1[2]);
-    auto const adp2 = tetInt.getTetAdapterOf(bnd2[0], bnd2[1], bnd2[2]);
-    auto const adp3 = tetInt.getTetAdapterOf(bnd3[0], bnd3[1], bnd3[2]);
     
-    SCOPED_TRACE("DelaunayTester, Adapter0");
-    verifyAdapter(adp0, bnd0);
-    
-    SCOPED_TRACE("DelaunayTester, Adapter1");
-    verifyAdapter(adp1, bnd1);
-    
-    SCOPED_TRACE("DelaunayTester, Adapter2");
-    verifyAdapter(adp2, bnd2);
-    
-    SCOPED_TRACE("DelaunayTester, Adapter3");
-    verifyAdapter(adp3, bnd3);
-    
+    for (auto const current: adapters){
+        EXPECT_TRUE(current!=nullptr);
+    }
     return;
 }
+
 
 //let's test the point 1-4 flip:
 TEST_F(DelaunayTester, Flip1_4){
@@ -195,3 +247,4 @@ TEST_F(DelaunayTester, Flip1_4){
     
     return;
 }
+ 

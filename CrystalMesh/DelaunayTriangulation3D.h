@@ -20,11 +20,6 @@ namespace CrystalMesh{
 	}
 
 
-        
-        
-
-
-
 	namespace Delaunay3{
             
                 struct Flip1To4{

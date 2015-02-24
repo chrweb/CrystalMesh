@@ -24,12 +24,12 @@ build/Debug/GNU-Linux-x86/tests/DelaunayTest/TestComplexConstruction.o: \
  DelaunayTest/../../Mathbox/Geometry_Vector3D.h \
  DelaunayTest/../../Mathbox/Geometry_Plane3D.h \
  DelaunayTest/../../Toolbox/Checks.h DelaunayTest/../Primitives.h \
- DelaunayTest/../ForwardDecs.h DelaunayTest/../ComplexConstruction.h \
+ DelaunayTest/../ForwardDecs.h DelaunayTest/../EdgeRing.h \
+ DelaunayTest/../Subdiv3ForwardDecs.h DelaunayTest/../DirectedEdgeRing.h \
+ DelaunayTest/../FacetEdge.h DelaunayTest/../ComplexConstruction.h \
  DelaunayTest/../DelaunayTriangulation3D.h \
- DelaunayTest/../../Mathbox/Mathbox.h DelaunayTest/../DirectedEdgeRing.h \
- DelaunayTest/../Subdiv3ForwardDecs.h DelaunayTest/../EdgeRing.h \
- DelaunayTest/../FacetEdge.h DelaunayTest/../Manifold.h \
- DelaunayTest/../AdjacentDirectedEdgeRings.h
+ DelaunayTest/../../Mathbox/Mathbox.h DelaunayTest/../Vertex.h \
+ DelaunayTest/../Manifold.h DelaunayTest/../AdjacentDirectedEdgeRings.h
 
 DelaunayTest/TestInclude.h:
 
@@ -85,19 +85,21 @@ DelaunayTest/../Primitives.h:
 
 DelaunayTest/../ForwardDecs.h:
 
+DelaunayTest/../EdgeRing.h:
+
+DelaunayTest/../Subdiv3ForwardDecs.h:
+
+DelaunayTest/../DirectedEdgeRing.h:
+
+DelaunayTest/../FacetEdge.h:
+
 DelaunayTest/../ComplexConstruction.h:
 
 DelaunayTest/../DelaunayTriangulation3D.h:
 
 DelaunayTest/../../Mathbox/Mathbox.h:
 
-DelaunayTest/../DirectedEdgeRing.h:
-
-DelaunayTest/../Subdiv3ForwardDecs.h:
-
-DelaunayTest/../EdgeRing.h:
-
-DelaunayTest/../FacetEdge.h:
+DelaunayTest/../Vertex.h:
 
 DelaunayTest/../Manifold.h:
 

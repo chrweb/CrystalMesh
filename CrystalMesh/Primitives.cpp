@@ -34,16 +34,22 @@ namespace CrystalMesh {
 			return data.mPoint;
 		}
 		
+                Point3D const originPointOf(Subdiv3::FacetEdge const * pFacetEdge){
+                    return pointFromSubdiv3Vertex(pFacetEdge->getOrg());
+                }
+                
+                Point3D const destinationPointOf(Subdiv3::FacetEdge const * pFacetEdge){
+                    return pointFromSubdiv3Vertex(pFacetEdge->getDest());
+                }
+                
+                Point3D const originPointOf(Subdiv3::DirectedEdgeRing const * pRing){
+                    return originPointOf(pRing->getRingMember());
+                }
+                
+                Point3D const destinationPointOf(Subdiv3::DirectedEdgeRing const * pRing){
+                    return destinationPointOf(pRing->getRingMember());
+                }
 
-//		Point3D const Vertex::getPoint() const{
-//			return pointFromSub3Vertex(mpPrimalVertex);
-//		}
-//
-//		void Vertex::setPoint(Point3D const & aPoint){
-//			VertexData & data = *reinterpret_cast<VertexData *>(mpPrimalVertex->mpData);
-//			data.mPoint = aPoint;
-//			return;
-//		}
 
 		namespace{
 			Subdiv3::FacetEdge * toPointer(Subdiv3::FacetEdge const & aRef){
@@ -61,12 +67,7 @@ namespace CrystalMesh {
 			return result;
 		}
 
-		FacetEdgeThreeTuple const Triangle::getBoundary() const{
-			auto pBnd = mpDualEdgeRing->getRingMember()->getDual();
-
-			FacetEdgeThreeTuple result = {pBnd, pBnd->getEnext(), pBnd->getEnext()->getEnext()};
-			return result;
-		}
+		
 
 		Triangle::Boundary const Triangle::getBoundaryArray() const{
 			auto pBnd = mpDualEdgeRing->getRingMember()->getDual();
@@ -89,17 +90,6 @@ namespace CrystalMesh {
                     return result;
                 }
                 
-//		PointThreeTuple const Triangle::getPoints() const{
-//
-//			auto const bnd = getBoundary();
-//			PointThreeTuple result;
-//			result.p0 = pointFromSub3Vertex(bnd.f0->getOrg());
-//			result.p1 = pointFromSub3Vertex(bnd.f1->getOrg());
-//			result.p2 = pointFromSub3Vertex(bnd.f2->getOrg());
-//
-//			return result;
-//		}
-
 		namespace{
 
 			FacetEdgeThreeTuple const toThreeTuple(std::vector<FacetEdge*> & aVec){
@@ -135,61 +125,6 @@ namespace CrystalMesh {
 		}
 
 
-		namespace  {
-
-			Mathbox::Geometry::Point3D const originPointOf(Subdiv3::DirectedEdgeRing const * apRing){
-				return pointFromSubdiv3Vertex(apRing->getOrg());
-			}
-
-		}  // namespace
-
-		TetInteriour::TetAdapter const TetInteriour::getTetAdapterOf(
-				Mathbox::Geometry::Point3D const &a0,
-				Mathbox::Geometry::Point3D const &a1,
-				Mathbox::Geometry::Point3D const &a2) const{
-
-			Mathbox::Geometry::Point3D const point[3] = {a0, a1, a2};
-			Subdiv3::DirectedEdgeRing  * dring[12];
-
-			// Extract all directed edge ring
-			for (Index i = 0; i<6; i++){
-
-				dring[i] = &mpOuterEdgeRing[i]->getItem(0);
-				dring[i+6] = &mpOuterEdgeRing[i]->getItem(1);
-			}
-
-
-			std::vector<FacetEdge*> resultVec;
-
-			// find those with specified point
-			for (Mathbox::Geometry::Point3D const & currentPoint: point){
-
-                            auto condition = [&currentPoint](Subdiv3::DirectedEdgeRing  * apRing) -> bool{
-                                    using  namespace Mathbox::Geometry;
-                                    return exactEqual(currentPoint, originPointOf(apRing));
-                            };
-
-                            auto  beg = std::begin(dring);
-                            auto  end = std::end(dring);
-
-                            auto  found = std::find_if(beg, end, condition);
-
-                            // must be found
-                            MUST_BE(found != end);
-
-                            resultVec.push_back((*found)->getRingMember());
-			}
-                        
-                        MUST_BE(resultVec.size() == 3);
-                        
-                        TetInteriour::TetAdapter result;
-                        
-                        std::copy(resultVec.begin(), resultVec.end(), result.begin());
-                        
-                        return result;
-		}
-
-
 		TetInteriour::Vertices const TetInteriour::getVertices() const{
 			Vertices result; 
 			result.mInTet = mpVertex[0];
@@ -207,7 +142,56 @@ namespace CrystalMesh {
                     result.mpDualEdgeRing = mpOuterEdgeRing[aIndex]->getItem(0).getRingMember()->getDual()->getDirectedEdgeRing();
                     return result;
                 }
-
+                
+                Subdiv3::FacetEdge* TetInteriour::getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const{
+                    using namespace Subdiv3;
+                    
+                    auto finder0 = [&dest, &org](EdgeRing const * ring)->bool{
+                        
+                        DirectedEdgeRing const * dring = &ring->getItem(0);            
+                        Point3D ringOrg = originPointOf(dring);
+                        Point3D ringDest= destinationPointOf(dring);
+                        
+                        if ( exactEqual(ringOrg, org) && exactEqual(ringDest, dest))
+                            return true; 
+                        
+                        return false;
+                    };
+                    
+                    auto finder1 = [&dest, &org](EdgeRing const * ring)->bool{
+                        
+                        DirectedEdgeRing const * dring = &ring->getItem(1);            
+                        Point3D ringOrg = originPointOf(dring);
+                        Point3D ringDest= destinationPointOf(dring);
+                        
+                        if ( exactEqual(ringOrg, org) && exactEqual(ringDest, dest))
+                            return true;                       
+                        
+                        return false;
+                    };
+                    
+                    
+                    auto const result0 = std::find_if(mpOuterEdgeRing.begin(), mpOuterEdgeRing.end(), finder0);
+                    
+                    if (result0!= mpOuterEdgeRing.end()){
+                        return (*result0)->getItem(0).getRingMember();
+                    }
+                    
+                    auto const result1 = std::find_if(mpOuterEdgeRing.begin(), mpOuterEdgeRing.end(), finder1);
+                    
+                    if (result1 != mpOuterEdgeRing.end())
+                        return (*result1)->getItem(1).getRingMember();
+                    
+                    return nullptr;
+                }
+                
+                Subdiv3::FacetEdge* TetInteriour::getAdapterOf(Corner const & aCorner) const{
+                    return getAdapterOf(
+                            originPointOf(aCorner.mRef),
+                            destinationPointOf(aCorner.mRef));
+                }
+                
+                
 		namespace{
 
                     typedef std::array<Subdiv3::Vertex*,3> VertexThreeTuple;
@@ -255,113 +239,72 @@ namespace CrystalMesh {
                 
                 
                 namespace{
-                    typedef std::vector<Subdiv3::FacetEdge*>  FacetEdgeVector;
-                    
-                    //get dual representation
-                    FacetEdgeVector const toDualSpace(Subdiv3::AdjacentFacetEdges const & adj){
-                        FacetEdgeVector result = adj;
+                   
+                    Corner const cornerOf(Subdiv3::EdgeRing * apRing, Subdiv3::Vertex* apDomain){
+                        using namespace Subdiv3;
                         
-                        auto toDual = [](Subdiv3::FacetEdge * aFE){
-                            return  aFE->getDual();
+                        RingMembers const ringmembers0 = getFnextRingMembersOf(apRing->getItem(0));
+                        Corner result = {nullptr, nullptr};
+                        
+                        auto finder = [apDomain](FacetEdge* apFedge)->bool{
+                            auto const currentDomain = apFedge->getDual()->getOrg();
+                            return (currentDomain == apDomain);
                         };
                         
-                        std::transform(adj.begin(), adj.end(), result.begin(), toDual);
-                        return result;
-                    }
-                    
-                    
-                    FacetEdgeVector const toClocked(FacetEdgeVector const & vec){
-                        FacetEdgeVector result = vec;
-                        auto toClocked = [](Subdiv3::FacetEdge* aFE){
-                            return aFE->getClock();
-                        };
-                        std::transform(vec.begin(), vec.end(), result.begin(),toClocked);
-                        return result;
-                    }
-                    //adds clocked version for each item
-                    FacetEdgeVector const unfold(FacetEdgeVector const & vec){
-                        FacetEdgeVector result = vec;
-                        FacetEdgeVector clocked = toClocked(vec);
-                        result.insert(result.end(), clocked.begin(), clocked.end());
-                        return result;
-                    }
-                    
-                    
-                    Corner const swapIfNes(Corner const& aCorner){
-                        if (aCorner.mRef->getFnext() != aCorner.mFnext){
-                            Corner result = {aCorner.mFnext, aCorner.mRef};
-                            
-                            MUST_BE( result.mRef->getFnext() == result.mFnext);
+                        auto toResult0 = std::find_if(ringmembers0.begin(), ringmembers0.end(), finder);
+                        
+                        if (toResult0 != ringmembers0.end()){
+                            result.mFnext = *toResult0;
+                            result.mRef = result.mFnext->getInvFnext();
                             return result;
                         }
                         
-                        return aCorner;
+                        auto const ringmembers1 = getFnextRingMembersOf(apRing->getItem(1));
+                        
+                        auto toResult1 = std::find_if(ringmembers1.begin(), ringmembers1.end(), finder);
+                        
+                        if (toResult1 != ringmembers1.end()){
+                            result.mFnext = *toResult1;
+                            result.mRef = result.mFnext->getInvFnext();
+                            return result;
+                        }
+                        
+                        UNREACHABLE;                    
                     }
                 }
                 
-                //ToDo: Test This function
+                
                 Tet::Corners const Tet::getCorners() const{
+                    using namespace Subdiv3;
+                    std::vector<EdgeRing*> edgeRings;
                     
-                    auto const verts = getVertices();
+                    for (auto const & triangle : mTri){
+                        auto bound = triangle.getBoundaryArray();
+                        
+                        for (auto const fe: bound){
+                            edgeRings.push_back(fe->getDirectedEdgeRing()->getEdgeRing());
+                        }
+                        
+                    }
                     
-                    typedef std::array<Subdiv3::Vertex*, 2> Segment;
-                    typedef std::array<Segment, 6> TetSegments;
+                    std::sort(edgeRings.begin(), edgeRings.end());
+                    auto toUniqueEnd = std::unique(edgeRings.begin(), edgeRings.end());
+                
+                    SHOULD_BE((toUniqueEnd-edgeRings.begin()) == 6 );
+                    std::array<EdgeRing*, 6> uniqueEdgeRings;
+                    std::copy(edgeRings.begin(), toUniqueEnd, uniqueEdgeRings.begin());
                     
-                    //list of segments, represented as vertex pairs
-                    Segment segs[] = {    
-                                        {verts[0], verts[1]}, 
-                                        {verts[0], verts[2]}, 
-                                        {verts[1], verts[2]}, 
-                                        {verts[3], verts[0]},
-                                        {verts[3], verts[1]}, 
-                                        {verts[3], verts[2]},
-                                        };
-                    
-                    //adjanced to dual
-                    Subdiv3::AdjacentFacetEdges const adj = getAdjacentFacetEdges(*mpDualVertex);
-                    
-                    //get duals
-                    FacetEdgeVector const toDual = toDualSpace(adj);
-                    
-                    //unfold: get additionally their clocked versions:
-                    auto const unfolded = unfold(toDual);
                     
                     Corners result;
-                    
                     for (Index i = 0; i<6; i++){
-                        Segment currentSegment = segs[i];
-                        
-                        Corner currentCorner = {nullptr, nullptr};
-                        
-                        auto cornerBuilder = [&currentCorner, currentSegment](Subdiv3::FacetEdge* aFE){
-                            //Vertex pattern fits?
-                            if (currentSegment[0] == aFE->getOrg() && currentSegment[1] == aFE->getDest()){
-                                //set members of currentcorner
-                                if (currentCorner.mRef == nullptr){
-                                    currentCorner.mRef = aFE;
-                                    return;
-                                }
-                                
-                                if (currentCorner.mFnext == nullptr){
-                                    currentCorner.mFnext = aFE;
-                                    return;
-                                }
-                                
-                                UNREACHABLE;
-                            }
-                            
-                            return;
-                        };
-                        //look for the segments in unfolded: each one schould fit to 2 FE references:
-                        std::for_each(unfolded.begin(), unfolded.end(), cornerBuilder);
-                        
-                        //currentcorner may be swapped get its two members in corrcet fnext direction
-                        result[i] = swapIfNes(currentCorner);
-                       
+                        Corner current = cornerOf(uniqueEdgeRings[i], mpDualVertex);
+                        result[i] = current;
                     }
                     
                     return result;
                 }
+                
+                
 
 	}  // namespace Delaunay
 

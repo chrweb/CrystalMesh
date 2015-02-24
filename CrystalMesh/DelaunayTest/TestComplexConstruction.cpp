@@ -49,10 +49,10 @@ TEST_F(ComplexTester, Triangle){
 	EXPECT_EQ(dRing0->getSym(), trig1.mpDualEdgeRing);
 
 	//well defined bounds:
-	auto bnds = trig0.getBoundary();
-	EXPECT_EQ(bnds.f0->getEnext(), bnds.f1);
-	EXPECT_EQ(bnds.f1->getEnext(), bnds.f2);
-	EXPECT_EQ(bnds.f2->getEnext(), bnds.f0);
+	auto bnds = trig0.getBoundaryArray();
+	EXPECT_EQ(bnds[0]->getEnext(), bnds[1]);
+	EXPECT_EQ(bnds[1]->getEnext(), bnds[2]);
+	EXPECT_EQ(bnds[2]->getEnext(), bnds[0]);
 }
 
 

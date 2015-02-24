@@ -356,65 +356,66 @@ namespace CrystalMesh{
                 } 
                 
                 Flip1To4 const DelaunayTriangulation3D::flip1to4(Tet& aTetToFlip, PointInsertion const aIns){
-                    
-                    auto const tetsTriangles = getTriangleArrayOf(aTetToFlip);
-                    
-                    auto const tetsBndArray = getBoundaryPointArrayOf(aTetToFlip);
-                       
+                    using namespace Subdiv3;
+                    //construct to inner complex
                     auto const tetIntPoints = getTetIntPointsOf(aTetToFlip, aIns.mPoint);
+                    TetInteriour innerComplex  = makeTetInterior(tetIntPoints);
                     
-                    TetInteriour interiour  = makeTetInterior(tetIntPoints);
+                    //get adapters
+                    Tet::Corners  const corners = aTetToFlip.getCorners();
+                    std::array<FacetEdge*, 6> adapters;
                     
-                    //save entities, which have to be merged:
-                    VertexMergeList vertexMergeList;
-                    EdgeRingMergeList edgeRingMergeList;
+                    //get triangles outer boundary faces
+                    Tet:: Triangles const tetsTriangles = getTriangleArrayOf(aTetToFlip);
                     
                     
-                    //do things for each bnd triangle
-                    for (Index i=0; i<4; i++){
-                        auto currentTriEdges = tetsTriangles[i].getBoundaryArray();
-                        auto currentBndPoints = tetsBndArray[i];  
-                        auto currentAdapter = interiour.getTetAdapterOf(currentBndPoints[0], currentBndPoints[1], currentBndPoints[2]);
-                        
-                        //topological operations:
-                        for (Index i = 0; i<3; i++){
-                            //Edges tp splice
-                            Subdiv3::FacetEdge * currentEdgeOnTet = currentTriEdges[i]->getInvFnext();
-                            Subdiv3::FacetEdge * currentEdgeOnAdapter = currentAdapter[i];
-                            
-                            //Edge rings to merge
-                            edgeRingMergeList.addItem(currentEdgeOnTet->getDirectedEdgeRing(), currentEdgeOnAdapter->getDirectedEdgeRing());
-                            
-                            //Vertices to merge
-                            vertexMergeList.addItem(currentEdgeOnTet->getOrg(), currentEdgeOnAdapter->getOrg());
-                            
-                            //splice
-                            mpManifold->spliceFacets(*currentEdgeOnTet, *currentEdgeOnAdapter);
-                        }
+                    for (Index i = 0 ; i<6; i++){
+                        adapters[i]= innerComplex.getAdapterOf(corners[i]);
                     }
                     
-                    //rearrange primal entities:
-                    //pairs may occur more than once:
-                    auto const eUniqueMergeList = uniqueListFrom(edgeRingMergeList);
+                    //Tet' vertices:
+                    Tet::Vertices tetVerts = aTetToFlip.getVertices();
+                    //inner complex vertices
+                    TetInteriour::Vertices intVerts = innerComplex.getVertices();
                     
-                    //edge rings
-                    for(auto const& mergeRings: eUniqueMergeList){
-                        unifyEdgeRings(mergeRings.mpTet, mergeRings.mpInt);
-                    }
-                    
-                    //vertices
-                    auto const vUniqueMergeList = uniqueListFrom(vertexMergeList);
-                    
-                    for(auto const& mergeVert: vUniqueMergeList){
-                        unifyVertices(mergeVert.mpInt, mergeVert.mpInt);
-                    }
-                    
-                    //rearrange dual entities:
-                    
-                    //destroy old body:
+                    //destroy the tet
                     destroyTet(aTetToFlip);
                     
-                    //create four new
+                    //to topological operations
+                    for (Index i = 0; i<6; i++){
+                        FacetEdge* fromTet= corners[i].mRef;
+                        FacetEdge* fromInnerComplex = adapters[i];
+                        
+                        mpManifold->spliceFacets(*fromTet, *fromInnerComplex);
+                        
+                        //update edge rings:
+                        EdgeRing* tetEdgeRing = fromTet->getDirectedEdgeRing()->getEdgeRing();
+                        EdgeRing* innerEdgeRing = fromInnerComplex->getDirectedEdgeRing()->getEdgeRing();
+                        
+                        unifyEdgeRings(tetEdgeRing, innerEdgeRing);
+                    }
+                    
+                    //update verices:
+                    //sort lexicogrphical
+                    auto sorter= [](Vertex* v0, Vertex* v1)->bool{
+                        auto const p0 = pointFromSubdiv3Vertex(v0);
+                        auto const p1 = pointFromSubdiv3Vertex(v1);
+                        return inLexicographicalOrder(p0, p1);
+                    };
+                    
+                    auto sortedTetVerts = tetVerts;
+                    auto sortedInnerVerts = intVerts.mAtCorners;
+                    
+                    std::sort(sortedInnerVerts.begin(), sortedInnerVerts.end(), sorter);
+                    std::sort(sortedTetVerts.begin(), sortedTetVerts.end(), sorter);
+                    
+                    for (Index i = 0; i < 4; i++){
+                        Vertex* fromTet = sortedTetVerts[i];
+                        Vertex* fromInner = sortedInnerVerts[i];
+                        unifyVertices(fromInner, fromTet);
+                    }
+                    
+                    //create four new bodies
                     typedef std::array<Subdiv3::Vertex* ,4> Bodies;
                     
                     Bodies bodies = {makeBody(), makeBody(), makeBody(), makeBody()};
@@ -423,7 +424,6 @@ namespace CrystalMesh{
                     for (Index i = 0; i< 4; i++){
                         auto currentDring = directedEdgeRingFromTriangle(tetsTriangles[i]);
                         auto currentVertex = bodies[i];
-                        
                         mpManifold->linkVertexDirectedEdgeRings(*currentVertex, *currentDring);   
                     }
                           
@@ -431,18 +431,131 @@ namespace CrystalMesh{
                     
                     result.result = Flip1To4::Result::success;
                     
-                    //fill from tet
-                    for (Index i = 0 ; i < 4; i++){
-                        result.tris[i] = aTetToFlip.getTriangleAt(i);
+                    //collect all boundary faces:
+                    typedef std::array<DirectedEdgeRing*,16> OrientedFaces;
+                    OrientedFaces orientedFaces = { nullptr, nullptr, nullptr, nullptr, 
+                                                    nullptr, nullptr, nullptr, nullptr,
+                                                    nullptr, nullptr, nullptr, nullptr,
+                                                    nullptr, nullptr, nullptr, nullptr};
+                    
+                    //copy all in one buffer
+                    for (Index i = 0; i<4; i++){
+                        AdjacentRings adj = getAdjacentRingsOf(*bodies[i]);
+                        auto dest = orientedFaces.begin() + (4*i);
+                        std::copy(adj.begin(), adj.end(), dest);
                     }
                     
-                    //fill from interiour
-                    for (Index i = 0; i < 6; i++){
-                        result.tris[i+4] = interiour.getTriangleAt(i);
-                    }
-                        
+                    typedef std::array<EdgeRing*,16> Faces;
+                    Faces faces;
+                    auto transformer = [](DirectedEdgeRing* ring)->EdgeRing*{
+                        ring->getEdgeRing();
+                    };
+                    
+                    std::transform(orientedFaces.begin(), orientedFaces.end(), faces.begin(), transformer);
+                    
+                    //ToDo: Debug this!
+                    std::sort(faces.begin(), faces.end());
+                    auto const uniqueEnd = std::unique(faces.begin(), faces.end());
+                    
+                    SHOULD_BE(uniqueEnd-faces.begin() == 10);
+                    
+                    auto toTriangle = [](EdgeRing* ring)->Triangle {
+                        return triangleOf(&ring->getItem(0));
+                    };
+                    
+                    std::transform(faces.begin(), uniqueEnd, result.tris.begin(), toTriangle);
+                    
                     return result;
                 }
+                
+//                Flip1To4 const DelaunayTriangulation3D::flip1to4(Tet& aTetToFlip, PointInsertion const aIns){
+//                    
+//                    auto const tetsTriangles = getTriangleArrayOf(aTetToFlip);
+//                    
+//                    auto const tetsBndArray = getBoundaryPointArrayOf(aTetToFlip);
+//                       
+//                    auto const tetIntPoints = getTetIntPointsOf(aTetToFlip, aIns.mPoint);
+//                    
+//                    TetInteriour interiour  = makeTetInterior(tetIntPoints);
+//                    
+//                    //save entities, which have to be merged:
+//                    VertexMergeList vertexMergeList;
+//                    EdgeRingMergeList edgeRingMergeList;
+//                    
+//                    
+//                    //do things for each bnd triangle
+//                    for (Index i=0; i<4; i++){
+//                        auto currentTriEdges = tetsTriangles[i].getBoundaryArray();
+//                        auto currentBndPoints = tetsBndArray[i];  
+//                        auto currentAdapter = interiour.getTetAdapterOf(currentBndPoints[0], currentBndPoints[1], currentBndPoints[2]);
+//                        
+//                        //topological operations:
+//                        for (Index i = 0; i<3; i++){
+//                            //Edges tp splice
+//                            Subdiv3::FacetEdge * currentEdgeOnTet = currentTriEdges[i]->getInvFnext();
+//                            Subdiv3::FacetEdge * currentEdgeOnAdapter = currentAdapter[i];
+//                            
+//                            //Edge rings to merge
+//                            edgeRingMergeList.addItem(currentEdgeOnTet->getDirectedEdgeRing(), currentEdgeOnAdapter->getDirectedEdgeRing());
+//                            
+//                            //Vertices to merge
+//                            vertexMergeList.addItem(currentEdgeOnTet->getOrg(), currentEdgeOnAdapter->getOrg());
+//                            
+//                            //splice
+//                            mpManifold->spliceFacets(*currentEdgeOnTet, *currentEdgeOnAdapter);
+//                        }
+//                    }
+//                    
+//                    //rearrange primal entities:
+//                    //pairs may occur more than once:
+//                    auto const eUniqueMergeList = uniqueListFrom(edgeRingMergeList);
+//                    
+//                    //edge rings
+//                    for(auto const& mergeRings: eUniqueMergeList){
+//                        unifyEdgeRings(mergeRings.mpTet, mergeRings.mpInt);
+//                    }
+//                    
+//                    //vertices
+//                    auto const vUniqueMergeList = uniqueListFrom(vertexMergeList);
+//                    
+//                    for(auto const& mergeVert: vUniqueMergeList){
+//                        unifyVertices(mergeVert.mpInt, mergeVert.mpInt);
+//                    }
+//                    
+//                    //rearrange dual entities:
+//                    
+//                    //destroy old body:
+//                    destroyTet(aTetToFlip);
+//                    
+//                    //create four new
+//                    typedef std::array<Subdiv3::Vertex* ,4> Bodies;
+//                    
+//                    Bodies bodies = {makeBody(), makeBody(), makeBody(), makeBody()};
+//                    
+//                    //link each one
+//                    for (Index i = 0; i< 4; i++){
+//                        auto currentDring = directedEdgeRingFromTriangle(tetsTriangles[i]);
+//                        auto currentVertex = bodies[i];
+//                        
+//                        mpManifold->linkVertexDirectedEdgeRings(*currentVertex, *currentDring);   
+//                    }
+//                          
+//                    Flip1To4 result;
+//                    
+//                    result.result = Flip1To4::Result::success;
+//                    
+//                    //fill from tet
+//                    for (Index i = 0 ; i < 4; i++){
+//                        result.tris[i] = aTetToFlip.getTriangleAt(i);
+//                    }
+//                    
+//                    //fill from interiour
+//                    for (Index i = 0; i < 6; i++){
+//                        result.tris[i+4] = interiour.getTriangleAt(i);
+//                    }
+//                        
+//                    return result;
+//                }
                 
                 void DelaunayTriangulation3D::unifyVertices(Subdiv3::Vertex  * apVert0, Subdiv3::Vertex  * apVert1){
                     //TODO: delete point of vertex

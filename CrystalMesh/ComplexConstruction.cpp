@@ -219,19 +219,19 @@ namespace CrystalMesh {
 			result.mpDualVertex = intr;
 
 			// ea => edgeArray
-			auto ea0 = tri[0].getBoundary();
-			auto ea1 = tri[1].getBoundary();
-			auto ea2 = tri[2].getBoundary();
-			auto ea3 = tri[3].getBoundary();
+			auto ea0 = tri[0].getBoundaryArray();
+			auto ea1 = tri[1].getBoundaryArray();
+			auto ea2 = tri[2].getBoundaryArray();
+			auto ea3 = tri[3].getBoundaryArray();
 
 			// do splice operations
-			aComplex.spliceFacets(*ea0.f0, *ea1.f0->getClock());
-			aComplex.spliceFacets(*ea0.f1, *ea2.f0->getClock());
-			aComplex.spliceFacets(*ea0.f2, *ea3.f0->getClock());
+			aComplex.spliceFacets(*ea0[0], *ea1[0]->getClock());
+			aComplex.spliceFacets(*ea0[1], *ea2[0]->getClock());
+			aComplex.spliceFacets(*ea0[2], *ea3[0]->getClock());
 
-			aComplex.spliceFacets(*ea1.f2, *ea2.f1->getClock());
-			aComplex.spliceFacets(*ea2.f2, *ea3.f1->getClock());
-			aComplex.spliceFacets(*ea3.f2, *ea1.f1->getClock());
+			aComplex.spliceFacets(*ea1[2], *ea2[1]->getClock());
+			aComplex.spliceFacets(*ea2[2], *ea3[1]->getClock());
+			aComplex.spliceFacets(*ea3[2], *ea1[1]->getClock());
 
 			// constructing edge rings for tet's corner:
 			Subdiv3::EdgeRing* ring[6];
@@ -240,13 +240,13 @@ namespace CrystalMesh {
 			}
 
 			// link them..
-			aComplex.linkEdgeRingAndFacetEdges(*ring[0], *ea0.f0);
-			aComplex.linkEdgeRingAndFacetEdges(*ring[1], *ea0.f1);
-			aComplex.linkEdgeRingAndFacetEdges(*ring[2], *ea0.f2);
+			aComplex.linkEdgeRingAndFacetEdges(*ring[0], *ea0[0]);
+			aComplex.linkEdgeRingAndFacetEdges(*ring[1], *ea0[1]);
+			aComplex.linkEdgeRingAndFacetEdges(*ring[2], *ea0[2]);
 
-			aComplex.linkEdgeRingAndFacetEdges(*ring[3], *ea1.f2);
-			aComplex.linkEdgeRingAndFacetEdges(*ring[4], *ea2.f2);
-			aComplex.linkEdgeRingAndFacetEdges(*ring[5], *ea3.f2);
+			aComplex.linkEdgeRingAndFacetEdges(*ring[3], *ea1[2]);
+			aComplex.linkEdgeRingAndFacetEdges(*ring[4], *ea2[2]);
+			aComplex.linkEdgeRingAndFacetEdges(*ring[5], *ea3[2]);
 
 			// linking the primal vertices:
 			aComplex.linkVertexDirectedEdgeRings(*verts[0], ring[3]->operator [](0));

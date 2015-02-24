@@ -85,7 +85,7 @@ namespace CrystalMesh {
 		    	return getAdjacentRingsOf(*aVert.getDirectedEdgeRing());
             }
                     AdjacentFacetEdges const getAdjacentFacetEdges( Vertex const & aVert){
-                        return getAdjacentFacetEdges(aVert->getDirectedEdgeRing()->getRingMember());
+                        return getAdjacentFacetEdges(*aVert.getDirectedEdgeRing()->getRingMember());
                     }
                     
 		    AdjacentFacetEdges const getAdjacentFacetEdges( FacetEdge const & aStart){

@@ -16,6 +16,14 @@ namespace CrystalMesh{
             
                 Mathbox::Geometry::Point3D const pointFromSubdiv3Vertex(Subdiv3::Vertex const *pVertex);
                 
+                Mathbox::Geometry::Point3D const originPointOf(Subdiv3::FacetEdge const * pFacetEdge);
+                
+                Mathbox::Geometry::Point3D const destinationPointOf(Subdiv3::FacetEdge const pFacetEdge);
+                
+                Mathbox::Geometry::Point3D const originPointOf(Subdiv3::DirectedEdgeRing const * pFacetEdge);
+                
+                Mathbox::Geometry::Point3D const destinationPointOf(Subdiv3::DirectedEdgeRing const * pFacetEdge);
+                
 
                 //Describes an inner Corner of a Complex
                 struct Corner{
@@ -23,11 +31,13 @@ namespace CrystalMesh{
                     Subdiv3::FacetEdge* mFnext; // Fnext to above
 		};
 
+                
                 //TODO: Remove
 		struct FacetEdgeThreeTuple{
 			Subdiv3::FacetEdge * f0, *f1, *f2;
 		};
 
+                
                 //TODO: Remove
 		FacetEdgeThreeTuple const facetEdgeThreeTupleOf(
 				Subdiv3::FacetEdge const & a0,
@@ -55,9 +65,6 @@ namespace CrystalMesh{
 
 			BoundaryPoints const getBoundaryPoints() const;
 
-                        //TODO: remove
-			FacetEdgeThreeTuple const getBoundary() const;
-
 			Mathbox::Geometry::OrientedPlane3D const getOrientedPlane() const;
 
 			Subdiv3::DirectedEdgeRing* mpDualEdgeRing;
@@ -84,20 +91,12 @@ namespace CrystalMesh{
 
 		struct TetInteriour{
 
-			Subdiv3::EdgeRing * mpOuterEdgeRing[6];
+			std::array<Subdiv3::EdgeRing*,6> mpOuterEdgeRing;
 			Subdiv3::Vertex * mpVertex[5];
-                        
-                        typedef std::array<Subdiv3::FacetEdge*,3> TetAdapter;
-
-                        
-			TetAdapter const getTetAdapterOf(
-					Mathbox::Geometry::Point3D const &a0,
-					Mathbox::Geometry::Point3D const &a1,
-					Mathbox::Geometry::Point3D const &a2) const;
 
 			struct Vertices{
                                 //Boundary Vertices
-				Subdiv3::Vertex * mAtCorners[4];
+				std::array<Subdiv3::Vertex *,4> mAtCorners;
                                 //Inner Vertex
 				Subdiv3::Vertex * mInTet;
 			};
@@ -105,6 +104,10 @@ namespace CrystalMesh{
 			Vertices const getVertices() const;
                         
                         Triangle const getTriangleAt(Index aIndex) const;
+                        
+                        Subdiv3::FacetEdge* getAdapterOf(Corner const & aCorner) const;
+                        
+                        Subdiv3::FacetEdge* getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const;
 		};
 
 		struct Tet{
@@ -127,6 +130,7 @@ namespace CrystalMesh{
 			Triangles const getTriangles() const;
                         
                         Corners const getCorners() const;
+                        
 		};
 
 
