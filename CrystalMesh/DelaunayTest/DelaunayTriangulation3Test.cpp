@@ -245,6 +245,8 @@ TEST_F(DelaunayTester, Flip1_4){
     auto tet = mDt.makeTetrahedron(tp);
     auto result = mDt.flip1to4(tet, pins);
     
+    EXPECT_TRUE(result.result ==Flip1To4::Result::success);
+    
     return;
 }
  

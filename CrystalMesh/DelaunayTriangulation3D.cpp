@@ -467,104 +467,21 @@ namespace CrystalMesh{
                     
                     return result;
                 }
-                
-//                Flip1To4 const DelaunayTriangulation3D::flip1to4(Tet& aTetToFlip, PointInsertion const aIns){
-//                    
-//                    auto const tetsTriangles = getTriangleArrayOf(aTetToFlip);
-//                    
-//                    auto const tetsBndArray = getBoundaryPointArrayOf(aTetToFlip);
-//                       
-//                    auto const tetIntPoints = getTetIntPointsOf(aTetToFlip, aIns.mPoint);
-//                    
-//                    TetInteriour interiour  = makeTetInterior(tetIntPoints);
-//                    
-//                    //save entities, which have to be merged:
-//                    VertexMergeList vertexMergeList;
-//                    EdgeRingMergeList edgeRingMergeList;
-//                    
-//                    
-//                    //do things for each bnd triangle
-//                    for (Index i=0; i<4; i++){
-//                        auto currentTriEdges = tetsTriangles[i].getBoundaryArray();
-//                        auto currentBndPoints = tetsBndArray[i];  
-//                        auto currentAdapter = interiour.getTetAdapterOf(currentBndPoints[0], currentBndPoints[1], currentBndPoints[2]);
-//                        
-//                        //topological operations:
-//                        for (Index i = 0; i<3; i++){
-//                            //Edges tp splice
-//                            Subdiv3::FacetEdge * currentEdgeOnTet = currentTriEdges[i]->getInvFnext();
-//                            Subdiv3::FacetEdge * currentEdgeOnAdapter = currentAdapter[i];
-//                            
-//                            //Edge rings to merge
-//                            edgeRingMergeList.addItem(currentEdgeOnTet->getDirectedEdgeRing(), currentEdgeOnAdapter->getDirectedEdgeRing());
-//                            
-//                            //Vertices to merge
-//                            vertexMergeList.addItem(currentEdgeOnTet->getOrg(), currentEdgeOnAdapter->getOrg());
-//                            
-//                            //splice
-//                            mpManifold->spliceFacets(*currentEdgeOnTet, *currentEdgeOnAdapter);
-//                        }
-//                    }
-//                    
-//                    //rearrange primal entities:
-//                    //pairs may occur more than once:
-//                    auto const eUniqueMergeList = uniqueListFrom(edgeRingMergeList);
-//                    
-//                    //edge rings
-//                    for(auto const& mergeRings: eUniqueMergeList){
-//                        unifyEdgeRings(mergeRings.mpTet, mergeRings.mpInt);
-//                    }
-//                    
-//                    //vertices
-//                    auto const vUniqueMergeList = uniqueListFrom(vertexMergeList);
-//                    
-//                    for(auto const& mergeVert: vUniqueMergeList){
-//                        unifyVertices(mergeVert.mpInt, mergeVert.mpInt);
-//                    }
-//                    
-//                    //rearrange dual entities:
-//                    
-//                    //destroy old body:
-//                    destroyTet(aTetToFlip);
-//                    
-//                    //create four new
-//                    typedef std::array<Subdiv3::Vertex* ,4> Bodies;
-//                    
-//                    Bodies bodies = {makeBody(), makeBody(), makeBody(), makeBody()};
-//                    
-//                    //link each one
-//                    for (Index i = 0; i< 4; i++){
-//                        auto currentDring = directedEdgeRingFromTriangle(tetsTriangles[i]);
-//                        auto currentVertex = bodies[i];
-//                        
-//                        mpManifold->linkVertexDirectedEdgeRings(*currentVertex, *currentDring);   
-//                    }
-//                          
-//                    Flip1To4 result;
-//                    
-//                    result.result = Flip1To4::Result::success;
-//                    
-//                    //fill from tet
-//                    for (Index i = 0 ; i < 4; i++){
-//                        result.tris[i] = aTetToFlip.getTriangleAt(i);
-//                    }
-//                    
-//                    //fill from interiour
-//                    for (Index i = 0; i < 6; i++){
-//                        result.tris[i+4] = interiour.getTriangleAt(i);
-//                    }
-//                        
-//                    return result;
-//                }
+          
                 
                 void DelaunayTriangulation3D::unifyVertices(Subdiv3::Vertex  * apVert0, Subdiv3::Vertex  * apVert1){
-                    //TODO: delete point of vertex
+                    //data of vertex1
+                    VertexData * data1 = reinterpret_cast<VertexData*>(apVert1->mpData);
+                
                     //get adjacent representative
                     auto adjacentRing = apVert0->getDirectedEdgeRing();
                     //dislink
                     mpManifold->dislinkVertexDirectedEdgeRings(*apVert0);
                     //delete one
                     mpManifold->deletePrimalVertex(*apVert1);
+                    //delete its data:
+                    mpToVetexData->deleteEntity(data1);
+                    
                     //relink other
                     mpManifold->linkVertexDirectedEdgeRings(*apVert0, *adjacentRing);
                     
