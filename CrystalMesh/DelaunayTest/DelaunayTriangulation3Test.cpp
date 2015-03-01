@@ -243,10 +243,55 @@ TEST_F(DelaunayTester, Flip1_4){
     PointInsertion pins = pointInsertionOf(p4);
     
     auto tet = mDt.makeTetrahedron(tp);
+    Tet outerDomain = tet.adjancentTetAt(0);
+    
+    //tet is adjancent to the aouter domain with all its faces:
+    EXPECT_TRUE(outerDomain==tet.adjancentTetAt(1));
+    EXPECT_TRUE(outerDomain==tet.adjancentTetAt(2));
+    EXPECT_TRUE(outerDomain==tet.adjancentTetAt(3));
+    
     auto result = mDt.flip1to4(tet, pins);
     
     EXPECT_TRUE(result.result ==Flip1To4::Result::success);
     
+    //outer domain it adjacent to 4 different inner domains:
+    std::array<Tet,4> inner= {  outerDomain.adjancentTetAt(0), 
+                                outerDomain.adjancentTetAt(1),
+                                outerDomain.adjancentTetAt(2),
+                                outerDomain.adjancentTetAt(3)};
+    //4 different domains?
+    auto it = std::unique(inner.begin(), inner.end());
+    EXPECT_TRUE(it = inner.end());
+    //not domain equal to outer=
+    for (auto const & domain: inner){
+        EXPECT_TRUE(domain!=outerDomain);
+    }
+    
+     
     return;
+}
+
+TEST_F(DelaunayTester, Flip2_3){
+    //create test setup.
+    //Firstly I'll only take care for topological issues
+    TetPoints const tp = {p1, p0, p2, p3};
+    PointInsertion pins = pointInsertionOf(p4);
+    
+    auto tet = mDt.makeTetrahedron(tp);
+    Tet outerDomain = tet.adjancentTetAt(0);
+    
+    mDt.flip1to4(tet, pins);
+    
+    //now let's get 3 representative inner domains:
+    Tet inner0 = outerDomain.adjancentTetAt(0);
+    Tet inner1 = outerDomain.adjancentTetAt(1);
+    // lets get ther common bound:
+    Triangle const bound = inner0.commonBoundaryWith(inner1);
+    EXPECT_TRUE(bound!=Triangle::invalid);
+    
+    
+    return;
+    
+
 }
  

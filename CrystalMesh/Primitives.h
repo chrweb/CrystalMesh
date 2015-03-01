@@ -8,6 +8,7 @@
 #include "ForwardDecs.h"
 #include "EdgeRing.h"
 #include "FacetEdge.h"
+#include "Vertex.h"
 #include <array>
 
 namespace CrystalMesh{
@@ -24,8 +25,10 @@ namespace CrystalMesh{
                 
                 Mathbox::Geometry::Point3D const destinationPointOf(Subdiv3::DirectedEdgeRing const * pFacetEdge);
                 
+                void setVertexPointTo(Mathbox::Geometry::Point3D const & aPoint, Subdiv3::Vertex * pVertex);
+                
 
-                //Describes an inner Corner of a Complex
+                //Describes an inner corner of a domain
                 struct Corner{
                     Subdiv3::FacetEdge* mRef;   // a FacetEdge Reference
                     Subdiv3::FacetEdge* mFnext; // Fnext to above
@@ -66,8 +69,14 @@ namespace CrystalMesh{
 			BoundaryPoints const getBoundaryPoints() const;
 
 			Mathbox::Geometry::OrientedPlane3D const getOrientedPlane() const;
+                        
+                        bool const operator == (const Triangle& other) const;
+                        
+                        bool const operator != (const Triangle& other) const;
 
 			Subdiv3::DirectedEdgeRing* mpDualEdgeRing;
+                        
+                        static Triangle const invalid;
 		};
 
 		Triangle const getCounterOrientedOf(Triangle const aTri);
@@ -109,7 +118,8 @@ namespace CrystalMesh{
                         
                         Subdiv3::FacetEdge* getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const;
 		};
-
+                
+                
 		struct Tet{
                         typedef std::array<Triangle,4> Triangles;   
                         typedef std::array<Subdiv3::Vertex*, 4> Vertices;
@@ -117,20 +127,22 @@ namespace CrystalMesh{
 			
                         Subdiv3::Vertex* mpDualVertex;
 			Triangles mTri;
-			
-			Triangle const getTriangleAt(Index aIndex) const ;
                         
-                        Triangle const getTriangle(
-                            Mathbox::Geometry::Point3D const & aP0,
-                            Mathbox::Geometry::Point3D const & aP1,
-                            Mathbox::Geometry::Point3D const & aP2) const;
+                        bool const operator == (Tet const & rhs) const;
+                        
+                        bool const operator != (Tet const & rhs) const;
+			
+			Triangle const getTriangleAt(Index aIndex) const;
+                        
+                        Tet const adjancentTetAt(Index aIndex) const;
+                        
+                        Triangle const commonBoundaryWith(Tet const & aOther) const;
 
 			Vertices const getVertices() const;
 
 			Triangles const getTriangles() const;
                         
-                        Corners const getCorners() const;
-                        
+                        Corners const getCorners() const;      
 		};
 
 

@@ -10,6 +10,7 @@
 #pragma once
 #include "Primitives.h"
 #include "ForwardDecs.h"
+#include "Vertex.h"
 
 namespace CrystalMesh {
 
@@ -17,6 +18,8 @@ namespace CrystalMesh {
 	namespace Delaunay3 {
 
 		Tet const constructTetInComplex(Subdiv3::Manifold & aComplex);
+                
+                Tet const tetFromDomain(Subdiv3::Vertex const & aVertex);
 
 		Triangle const constructTriangleInComplex(Subdiv3::Manifold & aComplex);
 
@@ -25,6 +28,8 @@ namespace CrystalMesh {
 		TetInteriour const constructTetInteriourInComplex( Subdiv3::Manifold & aComplex );
 
 		Blossom const constructBlossomInComplex(Subdiv3::Manifold & aComplex);
+                
+                
 
 
 

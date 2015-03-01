@@ -12,6 +12,7 @@
 #include "EdgeRing.h"
 #include "AdjacentDirectedEdgeRings.h"
 #include "ComplexConstruction.h"
+#include "../Toolbox/Checks.h"
 
 namespace CrystalMesh {
 
@@ -198,71 +199,86 @@ namespace CrystalMesh {
 
 		Tet const constructTetInComplex(Subdiv3::Manifold & aComplex){
 
-			Tet result;
+                    Tet result;
 
-			Subdiv3::Vertex* verts[4];
+                    Subdiv3::Vertex* verts[4];
 
-			// four primal vertices,
-			// four tris
-			for (Index i = 0; i<4; i++){
-				result.mTri[i] = constructTriangleInComplex(aComplex);
-				verts[i] = aComplex.makePrimalVertex();
-			}
+                    // four primal vertices,
+                    // four tris
+                    for (Index i = 0; i<4; i++){
+                            result.mTri[i] = constructTriangleInComplex(aComplex);
+                            verts[i] = aComplex.makePrimalVertex();
+                    }
 
-			auto & tri = result.mTri;
+                    auto & tri = result.mTri;
 
-			// two dual verts
-			auto extr = aComplex.makeDualVertex();
-			auto intr = aComplex.makeDualVertex();
+                    // two dual verts
+                    auto extr = aComplex.makeDualVertex();
+                    auto intr = aComplex.makeDualVertex();
 
-			//interiour is needed for result:
-			result.mpDualVertex = intr;
+                    //interiour is needed for result:
+                    result.mpDualVertex = intr;
 
-			// ea => edgeArray
-			auto ea0 = tri[0].getBoundaryArray();
-			auto ea1 = tri[1].getBoundaryArray();
-			auto ea2 = tri[2].getBoundaryArray();
-			auto ea3 = tri[3].getBoundaryArray();
+                    // ea => edgeArray
+                    auto ea0 = tri[0].getBoundaryArray();
+                    auto ea1 = tri[1].getBoundaryArray();
+                    auto ea2 = tri[2].getBoundaryArray();
+                    auto ea3 = tri[3].getBoundaryArray();
 
-			// do splice operations
-			aComplex.spliceFacets(*ea0[0], *ea1[0]->getClock());
-			aComplex.spliceFacets(*ea0[1], *ea2[0]->getClock());
-			aComplex.spliceFacets(*ea0[2], *ea3[0]->getClock());
+                    // do splice operations
+                    aComplex.spliceFacets(*ea0[0], *ea1[0]->getClock());
+                    aComplex.spliceFacets(*ea0[1], *ea2[0]->getClock());
+                    aComplex.spliceFacets(*ea0[2], *ea3[0]->getClock());
 
-			aComplex.spliceFacets(*ea1[2], *ea2[1]->getClock());
-			aComplex.spliceFacets(*ea2[2], *ea3[1]->getClock());
-			aComplex.spliceFacets(*ea3[2], *ea1[1]->getClock());
+                    aComplex.spliceFacets(*ea1[2], *ea2[1]->getClock());
+                    aComplex.spliceFacets(*ea2[2], *ea3[1]->getClock());
+                    aComplex.spliceFacets(*ea3[2], *ea1[1]->getClock());
 
-			// constructing edge rings for tet's corner:
-			Subdiv3::EdgeRing* ring[6];
-			for (Index c = 0; c < 6; c++){
-				ring[c] = aComplex.makePrimalEdgeRing();
-			}
+                    // constructing edge rings for tet's corner:
+                    Subdiv3::EdgeRing* ring[6];
+                    for (Index c = 0; c < 6; c++){
+                            ring[c] = aComplex.makePrimalEdgeRing();
+                    }
 
-			// link them..
-			aComplex.linkEdgeRingAndFacetEdges(*ring[0], *ea0[0]);
-			aComplex.linkEdgeRingAndFacetEdges(*ring[1], *ea0[1]);
-			aComplex.linkEdgeRingAndFacetEdges(*ring[2], *ea0[2]);
+                    // link them..
+                    aComplex.linkEdgeRingAndFacetEdges(*ring[0], *ea0[0]);
+                    aComplex.linkEdgeRingAndFacetEdges(*ring[1], *ea0[1]);
+                    aComplex.linkEdgeRingAndFacetEdges(*ring[2], *ea0[2]);
 
-			aComplex.linkEdgeRingAndFacetEdges(*ring[3], *ea1[2]);
-			aComplex.linkEdgeRingAndFacetEdges(*ring[4], *ea2[2]);
-			aComplex.linkEdgeRingAndFacetEdges(*ring[5], *ea3[2]);
+                    aComplex.linkEdgeRingAndFacetEdges(*ring[3], *ea1[2]);
+                    aComplex.linkEdgeRingAndFacetEdges(*ring[4], *ea2[2]);
+                    aComplex.linkEdgeRingAndFacetEdges(*ring[5], *ea3[2]);
 
-			// linking the primal vertices:
-			aComplex.linkVertexDirectedEdgeRings(*verts[0], ring[3]->operator [](0));
-			aComplex.linkVertexDirectedEdgeRings(*verts[1], ring[2]->operator [](0));
-			aComplex.linkVertexDirectedEdgeRings(*verts[2], ring[0]->operator [](0));
-			aComplex.linkVertexDirectedEdgeRings(*verts[3], ring[1]->operator [](0));
+                    // linking the primal vertices:
+                    aComplex.linkVertexDirectedEdgeRings(*verts[0], ring[3]->operator [](0));
+                    aComplex.linkVertexDirectedEdgeRings(*verts[1], ring[2]->operator [](0));
+                    aComplex.linkVertexDirectedEdgeRings(*verts[2], ring[0]->operator [](0));
+                    aComplex.linkVertexDirectedEdgeRings(*verts[3], ring[1]->operator [](0));
 
-			// link dual  verts:
-			Subdiv3::DirectedEdgeRing * pToOuter = result.mTri[0].mpDualEdgeRing;
-			Subdiv3::DirectedEdgeRing * pToInner = pToOuter->getSym();
+                    // link dual  verts:
+                    Subdiv3::DirectedEdgeRing * pToOuter = result.mTri[0].mpDualEdgeRing;
+                    Subdiv3::DirectedEdgeRing * pToInner = pToOuter->getSym();
 
-			aComplex.linkVertexDirectedEdgeRings(*extr, *pToInner);
-			aComplex.linkVertexDirectedEdgeRings(*intr, *pToOuter);
+                    aComplex.linkVertexDirectedEdgeRings(*extr, *pToInner);
+                    aComplex.linkVertexDirectedEdgeRings(*intr, *pToOuter);
 
-			return result;
+                    return result;
 		}
+                
+                Tet const tetFromDomain(Subdiv3::Vertex const & aVertex){
+                    auto adjRings = getAdjacentRingsOf(aVertex);
+                    MUST_BE(aVertex.isDual());
+                    MUST_BE(adjRings.size() == 4);
+                    
+                    Tet result;
+                    result.mpDualVertex = adjRings.front()->getOrg();
+                    
+                    for (Index i = 0; i<4; i++){
+                        result.mTri[i].mpDualEdgeRing=adjRings[i];
+                    }
+                    
+                    return result;
+                }
 
 
 	}  // namespace Delaunay3

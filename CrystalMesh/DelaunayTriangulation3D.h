@@ -66,13 +66,13 @@ namespace CrystalMesh{
 
 			};
 
-			Flip2To3Result flip2to3(Corner& aCornerToFlip);
+			Flip2To3Result flip2to3(Triangle& aTriangleToFlip);
 
 			struct Flip3To2Result{
 
 			};
 
-			Flip3To2Result flip3to2(Triangle& aTriangleToFlip);
+			//Flip3To2Result flip3to2();
 
 //			struct PointLocation{
 //

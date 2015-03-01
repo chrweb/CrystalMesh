@@ -15,6 +15,7 @@
 #include <vector>
 #include "../Toolbox/Checks.h"
 #include "AdjacentDirectedEdgeRings.h"
+#include "ComplexConstruction.h"
 #include <algorithm>
 #include <array>
 
@@ -89,6 +90,16 @@ namespace CrystalMesh {
                     }
                     return result;
                 }
+                
+                bool const Triangle::operator == (const Triangle& other) const{
+                    return (other.mpDualEdgeRing == mpDualEdgeRing);
+                }
+                        
+                bool const Triangle::operator != (const Triangle& other) const{
+                    return ! operator ==(other);
+                }
+                
+                Triangle const Triangle::invalid  = {nullptr}; 
                 
 		namespace{
 
@@ -211,13 +222,47 @@ namespace CrystalMesh {
 
 		}
                 
+                bool const Tet::operator == (Tet const & rhs) const{
+                    return mpDualVertex == rhs.mpDualVertex;
+                }
+                
+                bool const Tet::operator != (Tet const & rhs) const{
+                    return !operator ==(rhs);
+                }
+                
                 Triangle const Tet::getTriangleAt(Index aIndex) const{
                     SHOULD_BE(aIndex < 4);
                     return mTri[aIndex];
                 }
                 
+                Tet const Tet::adjancentTetAt(Index aIndex) const{
+                    auto const tri = getTriangleAt(aIndex);
+                    auto vertex =  tri.mpDualEdgeRing->getSym()->getOrg();
+                    return tetFromDomain(*vertex);
+                }
+                
                 Tet::Triangles const Tet::getTriangles() const{
                     return mTri;                    
+                }
+                
+                Triangle const Tet::commonBoundaryWith(Tet const & aOther) const{
+                    
+                    if (aOther == (*this)){
+                        return Triangle::invalid;
+                    }
+                        
+                    
+                    for (Triangle const & myTriangle :mTri ){
+                        for (Triangle const & otherTriangle : aOther.mTri){
+                            auto myRing = myTriangle.mpDualEdgeRing->getEdgeRing();
+                            auto otherRing = otherTriangle.mpDualEdgeRing->getEdgeRing();
+                            if (myRing == otherRing){
+                                return myTriangle;
+                            }
+                        }
+                    }
+                    
+                    return Triangle::invalid;
                 }
 		
                 Tet::Vertices const Tet::getVertices() const{
