@@ -33,6 +33,10 @@ namespace CrystalMesh{
                     Result result;
                     Triangles tris;
                 };
+                
+                struct Flip2To3{
+
+		};
 
                 struct PointInsertion{
                     Mathbox::Geometry::Point3D mPoint;
@@ -62,15 +66,9 @@ namespace CrystalMesh{
 
 			Flip1To4 const flip1to4(Tet& aTetToFlip, PointInsertion const aIns);
 
-			struct Flip2To3Result{
+			Flip2To3 flip2to3(Triangle& aTriangleToFlip);
 
-			};
-
-			Flip2To3Result flip2to3(Triangle& aTriangleToFlip);
-
-			struct Flip3To2Result{
-
-			};
+		
 
 			//Flip3To2Result flip3to2();
 

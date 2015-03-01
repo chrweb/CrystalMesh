@@ -350,6 +350,30 @@ namespace CrystalMesh {
                 }
                 
                 
+                IntersectingVertices intersectionOf(const Tet& aTet0, const Tet& aTet1){
+                    auto vertices0 = aTet0.getVertices();
+                    auto vertices1 = aTet1.getVertices();
+                    std::array<Subdiv3::Vertex*,4> intersection = {nullptr, nullptr, nullptr, nullptr};
+                    std::sort(vertices0.begin(), vertices0.end());
+                    std::sort(vertices1.begin(), vertices1.end());
+                    auto setEnd = std::set_intersection(vertices0.begin(), vertices0.end(), vertices1.begin(), vertices1.end(), intersection.begin());
+                    IntersectingVertices result(intersection.begin(), setEnd);
+                    return result;                    
+                }
+                
+                
+                SymmetricDifferenceVertices symmetricDifferenceOf(const Tet& aTet0, const Tet& aTet1){
+                    auto vertices0 = aTet0.getVertices();
+                    auto vertices1 = aTet1.getVertices();
+                    std::array<Subdiv3::Vertex*,8> intersection = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+                    std::sort(vertices0.begin(), vertices0.end());
+                    std::sort(vertices1.begin(), vertices1.end());
+                    auto setEnd = std::set_symmetric_difference(vertices0.begin(), vertices0.end(), vertices1.begin(), vertices1.end(), intersection.begin());
+                    IntersectingVertices result(intersection.begin(), setEnd);
+                    return result;
+                }
+
+                
 
 	}  // namespace Delaunay
 

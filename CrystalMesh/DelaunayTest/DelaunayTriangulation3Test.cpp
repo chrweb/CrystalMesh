@@ -286,9 +286,19 @@ TEST_F(DelaunayTester, Flip2_3){
     Tet inner0 = outerDomain.adjancentTetAt(0);
     Tet inner1 = outerDomain.adjancentTetAt(1);
     // lets get ther common bound:
-    Triangle const bound = inner0.commonBoundaryWith(inner1);
+    Triangle  bound = inner0.commonBoundaryWith(inner1);
     EXPECT_TRUE(bound!=Triangle::invalid);
     
+    Flip2To3 result = mDt.flip2to3(bound);
+    
+    //auto vertsIntersection = intersectionOf(inner0, inner1);
+    //auto vertsDiff = symmetricDifferenceOf(inner0, inner1);
+    
+    //EXPECT_TRUE(vertsIntersection.size() == 3);
+    //EXPECT_TRUE(vertsDiff.size() == 2);
+    
+    //Subdiv3::
+    //if (inner0 )
     
     return;
     

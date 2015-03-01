@@ -467,7 +467,17 @@ namespace CrystalMesh{
                     
                     return result;
                 }
-          
+                
+                
+                Flip2To3 DelaunayTriangulation3D::flip2to3(Triangle& aTriangleToFlip){
+                    Tet tet0 = aTriangleToFlip.upperTet();
+                    Tet tet1 = aTriangleToFlip.lowerTet();
+                    auto symDiff = 
+                    
+                    Flip2To3 result;
+                    return result;
+                }
+               
                 
                 void DelaunayTriangulation3D::unifyVertices(Subdiv3::Vertex  * apVert0, Subdiv3::Vertex  * apVert1){
                     //data of vertex1
