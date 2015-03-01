@@ -33,6 +33,8 @@ namespace CrystalMesh{
                 struct Corner{
                     Subdiv3::FacetEdge* mRef;   // a FacetEdge Reference
                     Subdiv3::FacetEdge* mFnext; // Fnext to above
+                    
+                    bool representsSegment(Mathbox::Geometry::Point3D const& p0, Mathbox::Geometry::Point3D const & p1) const;
 		};
 
                 
@@ -165,6 +167,21 @@ namespace CrystalMesh{
                 typedef std::vector<Subdiv3::Vertex*> SymmetricDifferenceVertices;
                 
                 SymmetricDifferenceVertices symmetricDifferenceOf(const Tet& aTet0, const Tet& aTet1);
+                
+                
+                struct Domain{
+                    typedef std::vector<Corner> Corners;
+                    
+                    Subdiv3::Vertex* mpDual;
+                    
+                    bool const operator == (Tet const & rhs) const;
+                        
+                    bool const operator != (Tet const & rhs) const;
+                    
+                    Corners const getCorners() const;
+                
+                
+                };
 
 
 

@@ -107,6 +107,10 @@ namespace CrystalMesh{
 			 * Point [4]: in-tet point
 			 */
 			TetInteriour const makeTetInterior( TetIntPoints const & aTetIntPoints);
+                        
+                        typedef std::array<Mathbox::Geometry::Point3D, 3>  FanPoints;
+                        typedef std::array<Mathbox::Geometry::Point3D, 2>  TopBottomPoints;
+                        Fan const makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints);
 
 			VertexData * makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr = nullptr);
 
@@ -119,6 +123,12 @@ namespace CrystalMesh{
                     void unifyEdgeRings(Subdiv3::EdgeRing* apRing0 ,Subdiv3::EdgeRing* apRing1);
                     
                     void destroyTet(Tet & aTet);
+                    
+                    void separateTriangle(Triangle & aTri);
+                    
+                    //void dislinkTriangle(Triangle & aTri);
+                    
+                    void destroyTriangle(Triangle & aTri);
                     
                     Subdiv3::Vertex * makeBody();
                     

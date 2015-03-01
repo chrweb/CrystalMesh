@@ -13,6 +13,7 @@
 #include "AdjacentDirectedEdgeRings.h"
 #include <algorithm>
 #include <iterator>
+#include <bits/stl_tree.h>
 
 
 namespace CrystalMesh{
@@ -381,7 +382,7 @@ namespace CrystalMesh{
                     //destroy the tet
                     destroyTet(aTetToFlip);
                     
-                    //to topological operations
+                    //do topological operations
                     for (Index i = 0; i<6; i++){
                         FacetEdge* fromTet= corners[i].mRef;
                         FacetEdge* fromInnerComplex = adapters[i];
@@ -453,7 +454,7 @@ namespace CrystalMesh{
                     
                     std::transform(orientedFaces.begin(), orientedFaces.end(), faces.begin(), transformer);
                     
-                    //ToDo: Debug this!
+                   
                     std::sort(faces.begin(), faces.end());
                     auto const uniqueEnd = std::unique(faces.begin(), faces.end());
                     
@@ -472,12 +473,67 @@ namespace CrystalMesh{
                 Flip2To3 DelaunayTriangulation3D::flip2to3(Triangle& aTriangleToFlip){
                     Tet tet0 = aTriangleToFlip.upperTet();
                     Tet tet1 = aTriangleToFlip.lowerTet();
-                    auto symDiff = 
+                    //getting top/bottom points
+                    auto symDiff = symmetricDifferenceOf(tet0, tet1);
+                    //triangle holds fanpoints:
+                    auto triVerts = aTriangleToFlip.getBoundaryVertices();
+                    
+                    SHOULD_BE(symDiff.size() == 2);
+                    
+                    if (! tet0.isPartOf(symDiff[0])){
+                        std::swap(symDiff[0], symDiff[1]);
+                    }
+                    
+                    TopBottomPoints tbPoints;
+                    FanPoints fanPoints;
+                    
+                    std::transform(symDiff.begin(), symDiff.end(), tbPoints.begin(), pointFromSubdiv3Vertex);
+                    std::transform(triVerts.begin(), triVerts.end(), fanPoints.begin(), pointFromSubdiv3Vertex);
+                    
+                    //construct the fan:
+                    Fan const fan = makeFan3(tbPoints, fanPoints);
+                    
+                    //destoy the tets:
+                    destroyTet(tet0);
+                    destroyTet(tet1);
+                    
+                    //destroy separating bound
+                    separateTriangle(aTriangleToFlip);
+                    destroyTriangle(aTriangleToFlip);
+                    
+                    //construct a temp domain:
+                    Domain domain = {makeBody()};
+                    
+                    //get its corners:
+                    auto corners = domain.getCorners();
+                    
+                    //exclude corners with fanPoints:
+                    auto finder = [&fanPoints](Corner const& aCorner)-> bool{
+                        if (aCorner.representsSegment(fanPoints[0], fanPoints[1]))
+                            return false;
+                        
+                        if (aCorner.representsSegment(fanPoints[1], fanPoints[2]))
+                            return false;
+                        
+                        
+                        if (aCorner.representsSegment(fanPoints[2], fanPoints[0]))
+                            return false;
+                        
+                        return true;
+                    };
+                    
+                    auto range = std::partition(corners.begin(), corners.end(), finder);
+                    
+                    //copy the valid set of corners:
+                    std::vector<Corner> validCorners(corners.begin(), corners.end());
+                    
+                    //do topologic ops:
+                    //ToDo: continue
                     
                     Flip2To3 result;
                     return result;
                 }
-               
+                
                 
                 void DelaunayTriangulation3D::unifyVertices(Subdiv3::Vertex  * apVert0, Subdiv3::Vertex  * apVert1){
                     //data of vertex1
