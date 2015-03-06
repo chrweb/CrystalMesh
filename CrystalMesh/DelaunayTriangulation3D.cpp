@@ -289,6 +289,12 @@ namespace CrystalMesh{
                         return aTri.mpDualEdgeRing;
                     }
                     
+                    
+                    bool const inLexicographicalOrder(Subdiv3::Vertex const * pV0, Subdiv3::Vertex const * pV1){
+                        auto const p0 = pointFromSubdiv3Vertex(pV0);
+                        auto const p1 = pointFromSubdiv3Vertex(pV1);
+                        return inLexicographicalOrder(p0, p1);
+                    }
                 } 
                 
                 Flip1To4 const DelaunayTriangulation3D::flip1to4(Tet& aTetToFlip, PointInsertion const aIns){
@@ -333,17 +339,12 @@ namespace CrystalMesh{
                     
                     //update verices:
                     //sort lexicogrphical
-                    auto sorter= [](Vertex* v0, Vertex* v1)->bool{
-                        auto const p0 = pointFromSubdiv3Vertex(v0);
-                        auto const p1 = pointFromSubdiv3Vertex(v1);
-                        return inLexicographicalOrder(p0, p1);
-                    };
-                    
+                   
                     auto sortedTetVerts = tetVerts;
                     auto sortedInnerVerts = intVerts.mAtCorners;
                     
-                    std::sort(sortedInnerVerts.begin(), sortedInnerVerts.end(), sorter);
-                    std::sort(sortedTetVerts.begin(), sortedTetVerts.end(), sorter);
+                    std::sort(sortedInnerVerts.begin(), sortedInnerVerts.end(), inLexicographicalOrder);
+                    std::sort(sortedTetVerts.begin(), sortedTetVerts.end(), inLexicographicalOrder);
                     
                     for (Index i = 0; i < 4; i++){
                         Vertex* fromTet = sortedTetVerts[i];
@@ -467,8 +468,41 @@ namespace CrystalMesh{
                         Subdiv3::FacetEdge * adapter = fan.getAdapterOf(corner);
                         SHOULD_BE(adapter!=nullptr);
                         mpManifold->spliceFacets(*corner.mRef, *adapter);
+                        //unify edge ring for each splice operation
+                        auto ring0 = corner.mRef->getDirectedEdgeRing()->getEdgeRing();
+                        auto ring1 = adapter->getDirectedEdgeRing()->getEdgeRing();
+                        unifyEdgeRings(ring0, ring1);
                     }
-                    //ToDo: continue
+                    
+                    //unify vertices:
+                    auto domainVerts = domain.getVertices();
+                    auto innerVerts = fan.getVertices();
+                    
+                    std::sort(domainVerts.begin(), domainVerts.end(), inLexicographicalOrder);
+                    std::sort(innerVerts.begin(), innerVerts.end(), inLexicographicalOrder);
+                    
+                    SHOULD_BE(domainVerts.size() == innerVerts.size());
+                    for (Index i = 0; i < domainVerts.size(); i++){
+                        //unifyVertices(domainVerts[i], innerVerts[i]);
+                    }
+                    
+                    //destroy domain:
+                    destroyDomain(domain);
+                    
+                    //..and construct 3 new:
+                    std::array<Subdiv3::Vertex*,3> tets = {makeBody(), makeBody(), makeBody()};
+                    // links them
+                    TetInteriourFan::Triangles tris = fan.getTriangles();
+                    
+                    SHOULD_BE(tets.size() == tris.size());
+                    
+                    for (Index i = 0; i<3; i++){
+                        auto currentDomain = tets[i];
+                        auto currentRing = directedEdgeRingFromTriangle(tris[i]);
+                        mpManifold->linkVertexDirectedEdgeRings(*currentDomain, *currentRing);
+                    }
+                    
+                    // prepare result:
                     
                     Flip2To3 result;
                     return result;

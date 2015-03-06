@@ -124,6 +124,8 @@ namespace CrystalMesh{
                     
                     void destroyTet(Tet & aTet);
                     
+                    void destroyDomain(Domain & aVert);
+                    
                     void separateTriangle(Triangle & aTri);
                     
                     //void dislinkTriangle(Triangle & aTri);

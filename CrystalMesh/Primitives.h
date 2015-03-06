@@ -133,10 +133,12 @@ namespace CrystalMesh{
                 
                 //ToDo: implement for flip 
                 struct TetInteriourFan{
+                    typedef std::array<Subdiv3::Vertex*, 5> Vertices;
+                    typedef std::array<Triangle, 3> Triangles;
                     
                     std::array<Subdiv3::EdgeRing*, 6> mCornerEdgeRings;
                     
-                    typedef std::array<Subdiv3::Vertex, 5> Vertices;
+                    
                     Vertices mVertices;
                     
                     Subdiv3::FacetEdge* getAdapterOf(Corner const & aCorner) const;
@@ -144,6 +146,8 @@ namespace CrystalMesh{
                     Subdiv3::FacetEdge* getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const;
                     
                     Vertices const getVertices() const;
+                    
+                    Triangles const getTriangles() const;
                 };
                 
                 
@@ -183,10 +187,10 @@ namespace CrystalMesh{
                 
                 SymmetricDifferenceVertices symmetricDifferenceOf(const Tet& aTet0, const Tet& aTet1);
                 
-                
+                /*A genera domain with triangles as boundary faces*/
                 struct Domain{
                     typedef std::vector<Corner> Corners;
-                    
+                    typedef std::vector<Subdiv3::Vertex*> Vertices;
                     Subdiv3::Vertex* mpDual;
                     
                     bool const operator == (Tet const & rhs) const;
@@ -195,7 +199,7 @@ namespace CrystalMesh{
                     
                     Corners const getCorners() const;
                 
-                
+                    Vertices const getVertices() const;
                 };
 
 
