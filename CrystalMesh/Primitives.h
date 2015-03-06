@@ -96,9 +96,9 @@ namespace CrystalMesh{
 
 		struct Fan{
 
-			Subdiv3::DirectedEdgeRing * mpCorner;
+                    Subdiv3::DirectedEdgeRing * mpCorner;
 
-			FacetEdgeThreeTuple const getBlossomAdapter() const;
+                    FacetEdgeThreeTuple const getBlossomAdapter() const;
 		};
 
 
@@ -130,6 +130,21 @@ namespace CrystalMesh{
                         
                         Subdiv3::FacetEdge* getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const;
 		};
+                
+                //ToDo: implement for flip 
+                struct TetInteriourFan{
+                    
+                    std::array<Subdiv3::EdgeRing*, 6> mCornerEdgeRings;
+                    
+                    typedef std::array<Subdiv3::Vertex, 5> Vertices;
+                    Vertices mVertices;
+                    
+                    Subdiv3::FacetEdge* getAdapterOf(Corner const & aCorner) const;
+                    
+                    Subdiv3::FacetEdge* getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const;
+                    
+                    Vertices const getVertices() const;
+                };
                 
                 
                 

@@ -110,7 +110,7 @@ namespace CrystalMesh{
                         
                         typedef std::array<Mathbox::Geometry::Point3D, 3>  FanPoints;
                         typedef std::array<Mathbox::Geometry::Point3D, 2>  TopBottomPoints;
-                        Fan const makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints);
+                        TetInteriourFan const makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints);
 
 			VertexData * makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr = nullptr);
 

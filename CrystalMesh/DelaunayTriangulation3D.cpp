@@ -289,71 +289,6 @@ namespace CrystalMesh{
                         return aTri.mpDualEdgeRing;
                     }
                     
-                    struct VertexMerge{
-                        //From Tet
-                        Subdiv3::Vertex *mpTet;
-                        //From Interiour
-                        Subdiv3::Vertex *mpInt;
-                    };
-                    
-                    class VertexMergeList: public std::vector<VertexMerge>{
-                    public:
-                        template<class Iterator>
-                        VertexMergeList(Iterator begin, Iterator end): std::vector<VertexMerge>(begin, end){}
-                        
-                        VertexMergeList(): std::vector<VertexMerge>(){};
-                        
-                        void addItem(Subdiv3::Vertex * apTetVertex, Subdiv3::Vertex * apIntVertex){
-                            VertexMerge item = {apTetVertex, apIntVertex};
-                            push_back(item);
-                        }
-                    };
-                    
-                    struct EdgeRingMerge{
-                        //From Tet
-                        Subdiv3::EdgeRing* mpTet;
-                        //From Interiour
-                        Subdiv3::EdgeRing * mpInt;
-                    };
-                    
-                    class EdgeRingMergeList: public std::vector<EdgeRingMerge>{
-                    
-                    public:
-                        template<class Iterator>
-                        EdgeRingMergeList(Iterator begin, Iterator end): std::vector<EdgeRingMerge>(begin, end){}
-                        
-                        EdgeRingMergeList(): std::vector<EdgeRingMerge>(){};
-                        
-                        void addItem(Subdiv3::DirectedEdgeRing * apTetRing, Subdiv3::DirectedEdgeRing* apIntRing){
-                            EdgeRingMerge item = {apTetRing->getEdgeRing(), apIntRing->getEdgeRing()};
-                            push_back(item);
-                        }
-                    };
-                    
-                    VertexMergeList const uniqueListFrom(VertexMergeList  & aList){
-                        auto cmp = [](VertexMerge const & a0, VertexMerge const & a1){
-                            auto const b0 = a0.mpInt == a1.mpInt;
-                            auto const b1 = a0.mpTet == a1.mpTet;
-                            return b0 && b1;
-                        };
-                        
-                        auto range = std::unique(aList.begin(), aList.end(), cmp);
-                                
-                        return VertexMergeList(aList.begin(), range);
-                    }
-                    
-                    EdgeRingMergeList const uniqueListFrom(EdgeRingMergeList  & aList){
-                        auto cmp = [](EdgeRingMerge const & a0, EdgeRingMerge const & a1){
-                            auto const b0 = a0.mpInt == a1.mpInt;
-                            auto const b1 = a0.mpTet == a1.mpTet;
-                            return b0 && b1;
-                        };
-                        auto range = std::unique(aList.begin(), aList.end(), cmp);
-                        
-                        auto result = EdgeRingMergeList(aList.begin(), range);
-                        
-                        return result;
-                    }
                 } 
                 
                 Flip1To4 const DelaunayTriangulation3D::flip1to4(Tet& aTetToFlip, PointInsertion const aIns){
@@ -491,7 +426,7 @@ namespace CrystalMesh{
                     std::transform(triVerts.begin(), triVerts.end(), fanPoints.begin(), pointFromSubdiv3Vertex);
                     
                     //construct the fan:
-                    Fan const fan = makeFan3(tbPoints, fanPoints);
+                    TetInteriourFan const fan = makeFan3(tbPoints, fanPoints);
                     
                     //destoy the tets:
                     destroyTet(tet0);
@@ -525,9 +460,14 @@ namespace CrystalMesh{
                     auto range = std::partition(corners.begin(), corners.end(), finder);
                     
                     //copy the valid set of corners:
-                    std::vector<Corner> validCorners(corners.begin(), corners.end());
+                    std::vector<Corner> validCorners(corners.begin(), range);
                     
                     //do topologic ops:
+                    for (Corner& corner :validCorners){
+                        Subdiv3::FacetEdge * adapter = fan.getAdapterOf(corner);
+                        SHOULD_BE(adapter!=nullptr);
+                        mpManifold->spliceFacets(*corner.mRef, *adapter);
+                    }
                     //ToDo: continue
                     
                     Flip2To3 result;
