@@ -47,14 +47,9 @@ namespace CrystalMesh{
 			delete mpToVetexData;
 		}
 
-		namespace{
-			Triangle const triangleOf(Subdiv3::DirectedEdgeRing * apRing){
-				Triangle result;
-				result.mpDualEdgeRing = apRing;
-				return result;
-			}
+		
 
-		}
+		
 
 
 		namespace {
@@ -156,6 +151,54 @@ namespace CrystalMesh{
 			return result;
 		}
                 
+                Triangle DelaunayTriangulation3D::makeTriangle(){
+                    //basic structure
+                    Triangle result = constructTriangleInComplex(*mpManifold);
+                    //add vertices:
+                    Subdiv3::Vertex* verts[3] = {makeVertexWithData(), makeVertexWithData(), makeVertexWithData()};
+                    auto bnd = result.getBoundaryArray();
+                    for (Index i = 0; i<3; i++){
+                        auto dRing = bnd[i]->getDirectedEdgeRing();
+                        auto vertex = verts[i];
+                        mpManifold->linkVertexDirectedEdgeRings(*vertex, *dRing);
+                    }
+                    
+                    return result;
+                }
+                
+                
+                TetInteriourFan const DelaunayTriangulation3D::makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints){
+                    
+                    TetInteriourFan result;
+                    result.mTriangles = {makeTriangle(), makeTriangle(), makeTriangle()};
+                    auto & tris = result.mTriangles;
+                    
+                    for (Index i = 0 ; i<3; i++){
+                        auto vertsArray = tris[i].getBoundaryVertices();
+                        setVertexPointTo(aTbPoints[0], vertsArray[0]);
+                        setVertexPointTo(aTbPoints[1], vertsArray[1]);
+                        setVertexPointTo(aFanPoints[i], vertsArray[2]);
+                    }
+                    
+                    Subdiv3::FacetEdge* edges[3] = {
+                        tris[0].boundaryWith(aTbPoints[0], aTbPoints[1]),
+                        tris[1].boundaryWith(aTbPoints[0], aTbPoints[1]),
+                        tris[2].boundaryWith(aTbPoints[0], aTbPoints[1])
+                    };                   
+                 
+                    mpManifold->spliceFacets(*edges[0], *edges[1]);
+                    unifyEdgeRings(edges[0]->getDirectedEdgeRing()->getEdgeRing(), edges[1]->getDirectedEdgeRing()->getEdgeRing());
+                    unifyVertices(edges[0]->getOrg(), edges[1]->getOrg());
+                    unifyVertices(edges[0]->getDest(), edges[1]->getDest());
+                    
+                    mpManifold->spliceFacets(*edges[1], *edges[2]);
+                    unifyEdgeRings(edges[1]->getDirectedEdgeRing()->getEdgeRing(), edges[2]->getDirectedEdgeRing()->getEdgeRing());
+                    unifyVertices(edges[1]->getOrg(), edges[2]->getOrg());
+                    unifyVertices(edges[1]->getDest(), edges[2]->getDest());
+                    
+                    return result;
+                }
+                
                 namespace{
                     
                     DelaunayTriangulation3D::TetPoints  permutate(DelaunayTriangulation3D::TetPoints const & aPoints){
@@ -167,7 +210,7 @@ namespace CrystalMesh{
                         
                         auto permutation = aPoints;
                         
-                                   //FIXME: eps issue in Point projection
+                        //FIXME: eps issue in Point projection
 			//auto const eps = 1e-6;
                         
                         PointToPlaneProjection projection = pointPlaneProjection(plane, aPoints[3]);
@@ -410,7 +453,7 @@ namespace CrystalMesh{
                     Tet tet0 = aTriangleToFlip.upperTet();
                     Tet tet1 = aTriangleToFlip.lowerTet();
                     //getting top/bottom points
-                    auto symDiff = symmetricDifferenceOf(tet0, tet1);
+                    auto symDiff = symmetricDifferenceInVerticesOf(tet0, tet1);
                     //triangle holds fanpoints:
                     auto triVerts = aTriangleToFlip.getBoundaryVertices();
                     
@@ -429,6 +472,10 @@ namespace CrystalMesh{
                     //construct the fan:
                     TetInteriourFan const fan = makeFan3(tbPoints, fanPoints);
                     
+                    //get a container with tris, representig the room partition
+                    //given by the two tets
+                    SymmetricDiffenrenceTriangles hull  = symmetricDifferenceInTriangles(tet0, tet1);
+                    
                     //destoy the tets:
                     destroyTet(tet0);
                     destroyTet(tet1);
@@ -437,8 +484,11 @@ namespace CrystalMesh{
                     separateTriangle(aTriangleToFlip);
                     destroyTriangle(aTriangleToFlip);
                     
-                    //construct a temp domain:
-                    Domain domain = {makeBody()};
+                    //creade a valid domain unifiying the two tets
+                    auto domainVertex = makeBody();         
+                    mpManifold->linkVertexDirectedEdgeRings(*domainVertex, *directedEdgeRingFromTriangle(hull.front()));
+                    Domain domain = domainOf(makeBody());
+                    
                     
                     //get its corners:
                     auto corners = domain.getCorners();
@@ -483,7 +533,7 @@ namespace CrystalMesh{
                     
                     SHOULD_BE(domainVerts.size() == innerVerts.size());
                     for (Index i = 0; i < domainVerts.size(); i++){
-                        //unifyVertices(domainVerts[i], innerVerts[i]);
+                        unifyVertices(domainVerts[i], innerVerts[i]);
                     }
                     
                     //destroy domain:
@@ -505,6 +555,16 @@ namespace CrystalMesh{
                     // prepare result:
                     
                     Flip2To3 result;
+                    result.result = Flip2To3::Result::success;
+                    
+                    SHOULD_BE(hull.size() == 6);
+                    //triangles from hull
+                    auto position = std::copy(hull.begin(), hull.end(), result.tris.begin());
+                    //triangles from fan
+                    auto fanTris = fan.getTriangles();
+                    SHOULD_BE(fanTris.size() == 3);
+                    std::copy(fanTris.begin(), fanTris.end(), position);
+                    
                     return result;
                 }
                 
@@ -550,6 +610,13 @@ namespace CrystalMesh{
                 
                 Subdiv3::Vertex * DelaunayTriangulation3D::makeBody(){
                     return mpManifold->makeDualVertex();
+                }
+                
+                Subdiv3::Vertex* DelaunayTriangulation3D::makeVertexWithData(){
+                    auto vertex = mpManifold->makePrimalVertex();
+                    auto data = makeVertexData(Mathbox::Geometry::Point3D::NaN);
+                    linkVertexDataVertex(data , vertex );
+                    return vertex;
                 }
 
 

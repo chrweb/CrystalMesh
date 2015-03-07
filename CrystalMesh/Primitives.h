@@ -34,6 +34,12 @@ namespace CrystalMesh{
                     Subdiv3::FacetEdge* mRef;   // a FacetEdge Reference
                     Subdiv3::FacetEdge* mFnext; // Fnext to above
                     
+                    /**
+                     * True, if Corner holds p0 and p1 in arbitary order (origin, destination) or (destination, origin)
+                     * @param p0
+                     * @param p1
+                     * @return 
+                     */
                     bool representsSegment(Mathbox::Geometry::Point3D const& p0, Mathbox::Geometry::Point3D const & p1) const;
 		};
 
@@ -78,6 +84,8 @@ namespace CrystalMesh{
 
 			Mathbox::Geometry::OrientedPlane3D const getOrientedPlane() const;
                         
+                        Subdiv3::FacetEdge* boundaryWith(Mathbox::Geometry::Point3D const & aP0, Mathbox::Geometry::Point3D const & aP1);
+                        
                         bool const operator == (const Triangle& other) const;
                         
                         bool const operator != (const Triangle& other) const;
@@ -92,6 +100,8 @@ namespace CrystalMesh{
 		};
 
 		Triangle const getCounterOrientedOf(Triangle const aTri);
+                
+                Triangle const triangleOf(Subdiv3::DirectedEdgeRing* apDring);
 
 
 		struct Fan{
@@ -136,8 +146,7 @@ namespace CrystalMesh{
                     typedef std::array<Subdiv3::Vertex*, 5> Vertices;
                     typedef std::array<Triangle, 3> Triangles;
                     
-                    std::array<Subdiv3::EdgeRing*, 6> mCornerEdgeRings;
-                    
+                    Triangles mTriangles;
                     
                     Vertices mVertices;
                     
@@ -164,6 +173,11 @@ namespace CrystalMesh{
                         
                         bool const operator != (Tet const & rhs) const;
                         
+                        /**
+                         * True, if Vertex is part of this Tet
+                         * @param apVert
+                         * @return 
+                         */
                         bool const isPartOf(Subdiv3::Vertex const *apVert) const;
 			
 			Triangle const getTriangleAt(Index aIndex) const;
@@ -179,13 +193,36 @@ namespace CrystalMesh{
                         Corners const getCorners() const;      
 		};
                 
+                Tet const tetOf(Subdiv3::Vertex* pVertex, Tet::Triangles tris);
+                
                 typedef std::vector<Subdiv3::Vertex*> IntersectingVertices;
                 
-                IntersectingVertices intersectionOf(const Tet& aTet0, const Tet& aTet1);
+                /**
+                 * Returns a set of intersecting vertices of th two given tets. This is,
+                 * their shared Vertices
+                 * @param aTet0
+                 * @param aTet1
+                 * @return 
+                 */
+                IntersectingVertices intersectionInVerticesOf(const Tet& aTet0, const Tet& aTet1);
                 
                 typedef std::vector<Subdiv3::Vertex*> SymmetricDifferenceVertices;
                 
-                SymmetricDifferenceVertices symmetricDifferenceOf(const Tet& aTet0, const Tet& aTet1);
+                /**
+                 * Returns all non non shared Vertives of the two given tets
+                 * @param aTet0
+                 * @param aTet1
+                 * @return 
+                 */
+                SymmetricDifferenceVertices symmetricDifferenceInVerticesOf(const Tet& aTet0, const Tet& aTet1);
+                
+                typedef std::vector<Triangle> IntersectionTriangles;
+                
+                IntersectionTriangles intersectionInTrianglesOf(Tet const & aTet0, Tet const & aTet1);
+                
+                typedef std::vector<Triangle> SymmetricDiffenrenceTriangles;
+                
+                SymmetricDiffenrenceTriangles symmetricDifferenceInTriangles(Tet const & aTet0, Tet const & aTet1);
                 
                 /*A genera domain with triangles as boundary faces*/
                 struct Domain{
@@ -201,6 +238,8 @@ namespace CrystalMesh{
                 
                     Vertices const getVertices() const;
                 };
+                
+                Domain const domainOf(Subdiv3::Vertex*  apVertey);
 
 
 

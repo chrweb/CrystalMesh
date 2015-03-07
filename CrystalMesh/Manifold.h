@@ -55,7 +55,12 @@ namespace CrystalMesh{
 			 * all aEring's directed edge rings's facet edges set to nullptr
 			 */
 			void dislinkEdgeRing(EdgeRing & aEring) const;
-
+                        
+                        /**
+                         * Links the vertex to all adjacent directed edge ring and vice versa
+                         * @param aVertex
+                         * @param aRingRep
+                         */
 			void linkVertexDirectedEdgeRings(Vertex& aVertex, DirectedEdgeRing& aRingRep);
 
 			/**

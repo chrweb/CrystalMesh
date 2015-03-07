@@ -35,7 +35,15 @@ namespace CrystalMesh{
                 };
                 
                 struct Flip2To3{
-
+                    enum struct Result{
+                        success,
+                        failure
+                    };
+                    
+                    typedef std::array<Triangle, 9> Triangles;
+                    
+                    Result result;
+                    Triangles tris;
 		};
 
                 struct PointInsertion{
@@ -68,31 +76,6 @@ namespace CrystalMesh{
 
 			Flip2To3 flip2to3(Triangle& aTriangleToFlip);
 
-		
-
-			//Flip3To2Result flip3to2();
-
-//			struct PointLocation{
-//
-//				enum struct Situation{
-//					inTetraeder,
-//					onFace,
-//					onSegment,
-//					onVertex
-//				} mSituation;
-//
-//				union Location{
-//					Tet mInTet;
-//					Triangle  mOnFace;
-//					Corner   mOnCorner;
-//					Vertex	  mOnVertex;
-//				} mLocation;
-//			};
-//
-//
-//			PointLocation const locatePoint(Mathbox::Geometry::Point3D const & aPoint);
-
-
 			void insertPoint(Mathbox::Geometry::Point3D const & aPoint);
 
 			typedef std::array<Mathbox::Geometry::Point3D,4 > TetPoints;
@@ -113,6 +96,8 @@ namespace CrystalMesh{
                         TetInteriourFan const makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints);
 
 			VertexData * makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr = nullptr);
+                        
+                        Triangle makeTriangle();
 
 
 
@@ -128,11 +113,11 @@ namespace CrystalMesh{
                     
                     void separateTriangle(Triangle & aTri);
                     
-                    //void dislinkTriangle(Triangle & aTri);
-                    
                     void destroyTriangle(Triangle & aTri);
                     
                     Subdiv3::Vertex * makeBody();
+                    
+                    Subdiv3::Vertex* makeVertexWithData();
                     
                     Subdiv3::Manifold * mpManifold;
 

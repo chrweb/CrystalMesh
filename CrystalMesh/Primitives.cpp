@@ -50,6 +50,11 @@ namespace CrystalMesh {
                 Point3D const destinationPointOf(Subdiv3::DirectedEdgeRing const * pRing){
                     return destinationPointOf(pRing->getRingMember());
                 }
+                
+                void setVertexPointTo(Mathbox::Geometry::Point3D const & aPoint, Subdiv3::Vertex * pVertex){
+                    VertexData * data = reinterpret_cast<VertexData*>(pVertex->mpData);
+                    data->mPoint = aPoint;
+                }
 
 
 		namespace{
@@ -67,6 +72,20 @@ namespace CrystalMesh {
 			PointThreeTuple result = { a0, a1, a2};
 			return result;
 		}
+                
+                
+                bool Corner::representsSegment(Mathbox::Geometry::Point3D const& p0, Mathbox::Geometry::Point3D const & p1) const{
+                    auto org = originPointOf(mRef);
+                    auto dest = destinationPointOf(mRef);
+                    
+                    if (exactEqual(p0, org) && exactEqual( p1, dest))
+                        return true;
+                    
+                    if (exactEqual(p0, dest) && exactEqual(p1, org))
+                        return true;
+                    
+                    return false;
+                }
 
 		
 
@@ -91,12 +110,36 @@ namespace CrystalMesh {
                     return result;
                 }
                 
+                Triangle::BoundaryVertices const Triangle::getBoundaryVertices() const{
+                    auto bnd = getBoundaryArray();
+                    BoundaryVertices result = {bnd[0]->getOrg(), bnd[1]->getOrg(), bnd[2]->getOrg()};
+                    return result;
+                }
+                
                 bool const Triangle::operator == (const Triangle& other) const{
                     return (other.mpDualEdgeRing == mpDualEdgeRing);
                 }
                         
                 bool const Triangle::operator != (const Triangle& other) const{
                     return ! operator ==(other);
+                }
+                
+                Tet const Triangle::lowerTet() const{
+                    Triangle other = getCounterOrientedOf(*this);
+                    return other.upperTet();
+                }
+                
+                Tet const Triangle::upperTet() const{
+                    Subdiv3::Vertex* domain = mpDualEdgeRing->getOrg();
+                    auto adj = getAdjacentRingsOf(*domain);
+                    Tet result;
+                    result.mpDualVertex = domain;
+                   
+                    for (Index i = 0 ; i<4; i++){
+                        result.mTri[i] = triangleOf(adj[i]);
+                    }
+                    
+                    return result;
                 }
                 
                 Triangle const Triangle::invalid  = {nullptr}; 
@@ -130,10 +173,13 @@ namespace CrystalMesh {
 		}
 
 		Triangle const getCounterOrientedOf(Triangle const aTri){
-			Triangle result;
-			result.mpDualEdgeRing = aTri.mpDualEdgeRing->getSym();
-			return result;
+                    return triangleOf(aTri.mpDualEdgeRing->getSym());
 		}
+                
+                Triangle const triangleOf(Subdiv3::DirectedEdgeRing* apDring){
+                    Triangle result = {apDring};
+                    return result;
+                }
 
 
 		TetInteriour::Vertices const TetInteriour::getVertices() const{
@@ -233,6 +279,12 @@ namespace CrystalMesh {
                 Triangle const Tet::getTriangleAt(Index aIndex) const{
                     SHOULD_BE(aIndex < 4);
                     return mTri[aIndex];
+                }
+                
+                bool const Tet::isPartOf(Subdiv3::Vertex const *apVert) const{
+                    auto const verts = getVertices();
+                    auto result = std::find(verts.begin(), verts.end(), apVert);
+                    return (result != verts.end());
                 }
                 
                 Tet const Tet::adjancentTetAt(Index aIndex) const{
@@ -350,7 +402,7 @@ namespace CrystalMesh {
                 }
                 
                 
-                IntersectingVertices intersectionOf(const Tet& aTet0, const Tet& aTet1){
+                IntersectingVertices intersectionInVerticesOf(const Tet& aTet0, const Tet& aTet1){
                     auto vertices0 = aTet0.getVertices();
                     auto vertices1 = aTet1.getVertices();
                     std::array<Subdiv3::Vertex*,4> intersection = {nullptr, nullptr, nullptr, nullptr};
@@ -362,7 +414,7 @@ namespace CrystalMesh {
                 }
                 
                 
-                SymmetricDifferenceVertices symmetricDifferenceOf(const Tet& aTet0, const Tet& aTet1){
+                SymmetricDifferenceVertices symmetricDifferenceInVerticesOf(const Tet& aTet0, const Tet& aTet1){
                     auto vertices0 = aTet0.getVertices();
                     auto vertices1 = aTet1.getVertices();
                     std::array<Subdiv3::Vertex*,8> intersection = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
