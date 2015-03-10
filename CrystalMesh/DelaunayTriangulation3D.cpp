@@ -12,8 +12,9 @@
 #include "../Mathbox/Mathbox.h"
 #include "AdjacentDirectedEdgeRings.h"
 #include <algorithm>
-#include <iterator>
-#include <bits/stl_tree.h>
+//#include <iterator>
+//#include <bits/stl_tree.h>
+//#include <bits/fcntl-linux.h>
 
 
 namespace CrystalMesh{
@@ -29,6 +30,7 @@ namespace CrystalMesh{
 
             
             using namespace Toolbox;
+           
 
 		class VertexDataContainer
 		:public Subdiv3::EntityMaintener<VertexData>
@@ -481,13 +483,13 @@ namespace CrystalMesh{
                     destroyTet(tet1);
                     
                     //destroy separating bound
-                    separateTriangle(aTriangleToFlip);
-                    destroyTriangle(aTriangleToFlip);
+                    //separateTriangle(aTriangleToFlip);
+                    //destroyTriangle(aTriangleToFlip);
                     
                     //creade a valid domain unifiying the two tets
-                    auto domainVertex = makeBody();         
-                    mpManifold->linkVertexDirectedEdgeRings(*domainVertex, *directedEdgeRingFromTriangle(hull.front()));
-                    Domain domain = domainOf(makeBody());
+                    //auto domainVertex = makeBody();         
+                    //mpManifold->linkVertexDirectedEdgeRings(*domainVertex, *directedEdgeRingFromTriangle(hull.front()));
+                    Domain domain = destroyTriangle(aTriangleToFlip);
                     
                     
                     //get its corners:
@@ -618,7 +620,90 @@ namespace CrystalMesh{
                     linkVertexDataVertex(data , vertex );
                     return vertex;
                 }
-
+                
+                //ToDo: continue here
+                Domain const DelaunayTriangulation3D::destroyTriangle(Triangle& aTri){
+                    using namespace Subdiv3;
+                    //handle dual
+                    DirectedEdgeRing* dualRing = aTri.mpDualEdgeRing;
+                    DirectedEdgeRing* otherRing = aTri.mpDualEdgeRing->getRingMember()->getOnext()->getDirectedEdgeRing();
+                    Vertex* upperDomainVertex = dualRing->getOrg();
+                    Vertex* lowerDomainVertex = dualRing->getSym()->getOrg();
+                    
+                    mpManifold->dislinkVertexDirectedEdgeRings(*upperDomainVertex);
+                    mpManifold->dislinkVertexDirectedEdgeRings(*lowerDomainVertex);
+                    
+                          
+                    
+                    //handle primal
+                    auto boundary = aTri.getBoundaryArray();
+                    for (FacetEdge* edge: boundary){
+                        MUST_BE(edge->getDirectedEdgeRing()->computeEdgeRingSize()>1);
+                        FacetEdge* inv = edge->getInvFnext();
+                        DirectedEdgeRing* dRing = edge->getDirectedEdgeRing();
+                        
+                        //seperate
+                        mpManifold->spliceFacets(*inv, *edge);
+                        //garant validity:
+                        dRing->mpRingMember = inv;
+                        edge->mpDirectedEdgeRing = nullptr;   
+                    }
+                    
+                    //delete primal:
+                    for (FacetEdge* edge: boundary){
+                        mpManifold->deleteQuaterNodeOf(*edge);
+                    }
+                    
+                    //delete dual
+                    mpManifold->deleteDualEdgeRing(*dualRing->getEdgeRing());
+                    mpManifold->deleteDualVertex(*lowerDomainVertex);
+                    
+                    //recylce upper for domain
+                    mpManifold->linkVertexDirectedEdgeRings(*upperDomainVertex, *otherRing);
+                    
+                    return domainOf(upperDomainVertex);
+                }
+                /*
+                void DelaunayTriangulation3D::separateTriangle(Triangle & aTri){
+                    using namespace Subdiv3;
+                    //handle dual
+                    Fa
+                    
+                    //handle primal
+                    auto boundary = aTri.getBoundaryArray();
+                    for (FacetEdge* edge: boundary){
+                        MUST_BE(edge->getDirectedEdgeRing()->computeEdgeRingSize()>1);
+                        FacetEdge* inv = edge->getInvFnext();
+                        DirectedEdgeRing* dRing = edge->getDirectedEdgeRing();
+                        
+                        //seperate
+                        mpManifold->spliceFacets(inv, *edge);
+                        //garant validity:
+                        dRing->mpRingMember = inv;
+                        edge->mpDirectedEdgeRing = nullptr;   
+                    }
+                    
+                }*/
+                /*/
+                void DelaunayTriangulation3D::destroyTriangle(Triangle& aTri){
+                    MUST_BE(getAdjacentRingsOf(aTri.mpDualEdgeRing) ==1);
+                    MUST_BE(aTri.mpDualEdgeRing->getOrg() == nullptr);
+                    auto bound = aTri.getBoundaryArray();
+                    for (auto edge : bound){
+                        MUST_BE(edge->getDirectedEdgeRing() == nullptr);
+                        MUST_BE(edge->getFnext() == edge);
+                    }
+                    
+                    for (auto edge: bound){
+                        mpManifold->deleteQuaterNodeOf(*edge);
+                    }
+                    
+                    mpManifold->deleteDualEdgeRing(aTri.mpDualEdgeRing);
+                    
+                    return;
+                }
+                 
+                 */
 
 	}
 

@@ -58,9 +58,61 @@ namespace CrystalMesh {
 
 
 		namespace{
-			Subdiv3::FacetEdge * toPointer(Subdiv3::FacetEdge const & aRef){
-				return const_cast<Subdiv3::FacetEdge*>(&aRef);
-			}
+                    
+                    Subdiv3::FacetEdge * toPointer(Subdiv3::FacetEdge const & aRef){
+                        return const_cast<Subdiv3::FacetEdge*>(&aRef);
+                    }
+                    
+                    
+                    /**
+                     * Tries to find a FacetEdge with given start/endpoints in an Edgering container.
+                     * @param org
+                     * @param dest
+                     * @param container
+                     * @return nullptr, if nothing found, else the annotated FacetEdge
+                     */
+                    template<class TEdgeRingContainer>
+                    Subdiv3::FacetEdge* facetEdgeWithEndPoints(Point3D const& org, Point3D const & dest, TEdgeRingContainer const &container){
+                        using namespace Subdiv3;
+                      
+                        auto finder0 = [&dest, &org](EdgeRing const * ring)->bool{
+
+                            DirectedEdgeRing const * dring = &ring->getItem(0);            
+                            Point3D ringOrg = originPointOf(dring);
+                            Point3D ringDest= destinationPointOf(dring);
+
+                            if ( exactEqual(ringOrg, org) && exactEqual(ringDest, dest))
+                                return true; 
+
+                            return false;
+                        };
+
+                        auto finder1 = [&dest, &org](EdgeRing const * ring)->bool{
+
+                            DirectedEdgeRing const * dring = &ring->getItem(1);            
+                            Point3D ringOrg = originPointOf(dring);
+                            Point3D ringDest= destinationPointOf(dring);
+
+                            if ( exactEqual(ringOrg, org) && exactEqual(ringDest, dest))
+                                return true;                       
+
+                            return false;
+                        };
+
+
+                        auto const result0 = std::find_if(container.begin(), container.end(), finder0);
+
+                        if (result0!= container.end()){
+                            return (*result0)->getItem(0).getRingMember();
+                        }
+
+                        auto const result1 = std::find_if(container.begin(), container.end(), finder1);
+
+                        if (result1 != container.end())
+                            return (*result1)->getItem(1).getRingMember();
+                        
+                        return nullptr;
+                    }
 		}
 
 		FacetEdgeThreeTuple const facetEdgeThreeTupleOf(Subdiv3::FacetEdge const & a0, Subdiv3::FacetEdge const & a1, Subdiv3::FacetEdge const & a2){
@@ -115,6 +167,20 @@ namespace CrystalMesh {
                     BoundaryVertices result = {bnd[0]->getOrg(), bnd[1]->getOrg(), bnd[2]->getOrg()};
                     return result;
                 }
+                
+                Subdiv3::FacetEdge* Triangle::boundaryWith(Mathbox::Geometry::Point3D const & aOrg, Mathbox::Geometry::Point3D const & aDest){
+                    using namespace Subdiv3;
+                    auto boundaryEdges = getBoundaryArray();
+                    std::array<EdgeRing*,3> edgeRings;
+                    
+                    auto toEdgeRing = [](FacetEdge* edge)->EdgeRing*{
+                        return edge->getDirectedEdgeRing()->getEdgeRing();
+                    };
+                    
+                    std::transform(boundaryEdges.begin(), boundaryEdges.end(), edgeRings.begin(), toEdgeRing);
+                    return facetEdgeWithEndPoints(aOrg, aOrg, edgeRings);
+                }
+                       
                 
                 bool const Triangle::operator == (const Triangle& other) const{
                     return (other.mpDualEdgeRing == mpDualEdgeRing);
@@ -201,45 +267,8 @@ namespace CrystalMesh {
                 }
                 
                 Subdiv3::FacetEdge* TetInteriour::getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const{
-                    using namespace Subdiv3;
                     
-                    auto finder0 = [&dest, &org](EdgeRing const * ring)->bool{
-                        
-                        DirectedEdgeRing const * dring = &ring->getItem(0);            
-                        Point3D ringOrg = originPointOf(dring);
-                        Point3D ringDest= destinationPointOf(dring);
-                        
-                        if ( exactEqual(ringOrg, org) && exactEqual(ringDest, dest))
-                            return true; 
-                        
-                        return false;
-                    };
-                    
-                    auto finder1 = [&dest, &org](EdgeRing const * ring)->bool{
-                        
-                        DirectedEdgeRing const * dring = &ring->getItem(1);            
-                        Point3D ringOrg = originPointOf(dring);
-                        Point3D ringDest= destinationPointOf(dring);
-                        
-                        if ( exactEqual(ringOrg, org) && exactEqual(ringDest, dest))
-                            return true;                       
-                        
-                        return false;
-                    };
-                    
-                    
-                    auto const result0 = std::find_if(mpOuterEdgeRing.begin(), mpOuterEdgeRing.end(), finder0);
-                    
-                    if (result0!= mpOuterEdgeRing.end()){
-                        return (*result0)->getItem(0).getRingMember();
-                    }
-                    
-                    auto const result1 = std::find_if(mpOuterEdgeRing.begin(), mpOuterEdgeRing.end(), finder1);
-                    
-                    if (result1 != mpOuterEdgeRing.end())
-                        return (*result1)->getItem(1).getRingMember();
-                    
-                    return nullptr;
+                    return facetEdgeWithEndPoints(org, dest, mpOuterEdgeRing);
                 }
                 
                 Subdiv3::FacetEdge* TetInteriour::getAdapterOf(Corner const & aCorner) const{
@@ -422,6 +451,31 @@ namespace CrystalMesh {
                     std::sort(vertices1.begin(), vertices1.end());
                     auto setEnd = std::set_symmetric_difference(vertices0.begin(), vertices0.end(), vertices1.begin(), vertices1.end(), intersection.begin());
                     IntersectingVertices result(intersection.begin(), setEnd);
+                    return result;
+                }
+                
+                SymmetricDiffenrenceTriangles symmetricDifferenceInTriangles(Tet const & aTet0, Tet const & aTet1){
+                    std::array<Triangle,4> intersection = {Triangle::invalid, Triangle::invalid, Triangle::invalid, Triangle::invalid};
+                    
+                    auto sorter = [](Triangle const & t0, Triangle const & t1){
+                        return t0.mpDualEdgeRing < t1.mpDualEdgeRing;
+                    };
+                    
+                    auto tris0 = aTet0.getTriangles();
+                    auto tris1 = aTet1.getTriangles();
+                    Tet::Triangles ccw1; 
+                    
+                    std::transform(tris1.begin(), tris1.end(), ccw1.begin(), getCounterOrientedOf);
+                    std::sort(tris0.begin(), tris0.end(), sorter);
+                    std::sort(ccw1.begin(), ccw1.end(), sorter);
+                    
+                    auto setEnd = std::set_symmetric_difference(tris0.begin(), tris0.end(), ccw1.begin(), ccw1.end(), intersection.begin(), sorter);
+                    SymmetricDiffenrenceTriangles result(intersection.begin(), setEnd);
+                    return result;
+                }
+
+                Domain const domainOf(Subdiv3::Vertex*  apVertex){
+                    Domain result = {apVertex};
                     return result;
                 }
 

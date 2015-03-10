@@ -111,9 +111,12 @@ namespace CrystalMesh{
                     
                     void destroyDomain(Domain & aVert);
                     
+                    /*
                     void separateTriangle(Triangle & aTri);
                     
                     void destroyTriangle(Triangle & aTri);
+                    */
+                    Domain const destroyTriangle(Triangle & aTri);
                     
                     Subdiv3::Vertex * makeBody();
                     
