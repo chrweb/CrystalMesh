@@ -198,6 +198,13 @@ namespace CrystalMesh{
                 auto pToInstance = &aRef;
                 mpPrimalVertexMaintener->deleteEntity(pToInstance);
             }
+            
+            void Manifold::deleteQuaterNodeOf(FacetEdge & aRef){
+               auto toQuaterNode = aRef.getQuaterNode();
+               mpQuaterNodeMaintener->deleteEntity(toQuaterNode);
+               return;
+            }
+
 
 	    Vertex * Manifold::makeDualVertex(){
 	    	auto pInst = mpDualVertexMaintener->constructEntity();
@@ -382,6 +389,30 @@ namespace CrystalMesh{
 
 			return;
 		}
+                
+                VertexMaintener const & Manifold::getPrimalVertexMaintener() const{
+                    return *mpPrimalVertexMaintener;
+                }
+                
+                        
+                VertexMaintener const & Manifold::getDualVertexMaintener() const{
+                    return *mpDualVertexMaintener;
+                }
+                
+                        
+                EdgeRingMaintener const & Manifold::getPrimalEdgeRingMaintener() const {
+                    return *mpPrimalEdgeRingMaintener;
+                }
+                
+                
+                const EdgeRingMaintener& Manifold::getDualEdgeRingMaintener() const {
+                    return *mpDualEdgeRingMaintener;
+                }
+                
+                const QuaterNodeMaintener& Manifold::getQuaternodeMaintener() const{
+                    return *mpQuaterNodeMaintener;
+                }
+
 
 
 

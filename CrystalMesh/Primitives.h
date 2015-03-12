@@ -228,15 +228,18 @@ namespace CrystalMesh{
                 struct Domain{
                     typedef std::vector<Corner> Corners;
                     typedef std::vector<Subdiv3::Vertex*> Vertices;
+                    typedef std::vector<Triangle> Triangles;
                     Subdiv3::Vertex* mpDual;
                     
-                    bool const operator == (Tet const & rhs) const;
+                    bool const operator == (Domain const & rhs) const;
                         
-                    bool const operator != (Tet const & rhs) const;
+                    bool const operator != (Domain const & rhs) const;
                     
                     Corners const getCorners() const;
                 
                     Vertices const getVertices() const;
+                    
+                    Triangles const getTriangles() const;
                 };
                 
                 Domain const domainOf(Subdiv3::Vertex*  apVertex);

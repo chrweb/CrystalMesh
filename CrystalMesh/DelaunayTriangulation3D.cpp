@@ -609,6 +609,13 @@ namespace CrystalMesh{
                     return;
                 }
                 
+                void DelaunayTriangulation3D::destroyDomain(Domain & aDomain){
+                    mpManifold->dislinkVertexDirectedEdgeRings(*aDomain.mpDual);
+                    mpManifold->deleteDualVertex(*aDomain.mpDual);
+                    return;
+                }
+                   
+                
                 
                 Subdiv3::Vertex * DelaunayTriangulation3D::makeBody(){
                     return mpManifold->makeDualVertex();

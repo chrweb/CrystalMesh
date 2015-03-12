@@ -271,6 +271,42 @@ TEST_F(DelaunayTester, Flip1_4){
     return;
 }
 
+TEST_F(DelaunayTester, DestroyTriangle){
+    //create test setup.
+    //Firstly I'll only take care for topological issues
+    TetPoints const tp = {p1, p0, p2, p3};
+    PointInsertion pins = pointInsertionOf(p4);
+    
+    auto tet = mDt.makeTetrahedron(tp);
+    Tet outerDomain = tet.adjancentTetAt(0);
+    
+    mDt.flip1to4(tet, pins);
+    
+    //now let's get 3 representative inner domains:
+    Tet inner0 = outerDomain.adjancentTetAt(0);
+    Tet inner1 = outerDomain.adjancentTetAt(1);
+    // lets get ther common bound:
+    Triangle  bound = inner0.commonBoundaryWith(inner1);
+    
+    Domain domain = mDt.destroyTriangle(bound);
+    
+    auto itsTris = domain.getTriangles();
+    
+    EXPECT_EQ(6, itsTris.size());
+    for (auto const& triangle: itsTris){
+        EXPECT_TRUE(triangle != Triangle::invalid);
+    }
+    
+    auto itsVerts = domain.getVertices();
+    EXPECT_EQ(5, itsVerts.size());
+    
+    auto itsCorners = domain.getCorners();
+    EXPECT_EQ(9, itsCorners.size());
+    
+    
+    
+}
+/*
 TEST_F(DelaunayTester, Flip2_3){
     //create test setup.
     //Firstly I'll only take care for topological issues
@@ -289,7 +325,7 @@ TEST_F(DelaunayTester, Flip2_3){
     Triangle  bound = inner0.commonBoundaryWith(inner1);
     EXPECT_TRUE(bound!=Triangle::invalid);
     
-    Flip2To3 result = mDt.flip2to3(bound);
+    //Flip2To3 result = mDt.flip2to3(bound);
     
     //auto vertsIntersection = intersectionOf(inner0, inner1);
     //auto vertsDiff = symmetricDifferenceOf(inner0, inner1);
@@ -304,4 +340,4 @@ TEST_F(DelaunayTester, Flip2_3){
     
 
 }
- 
+ */

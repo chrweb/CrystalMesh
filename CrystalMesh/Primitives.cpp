@@ -277,6 +277,22 @@ namespace CrystalMesh {
                             destinationPointOf(aCorner.mRef));
                 }
                 
+                Subdiv3::FacetEdge* TetInteriourFan::getAdapterOf(Corner const & aCorner) const{
+                    UNREACHABLE;
+                }
+                    
+                Subdiv3::FacetEdge* TetInteriourFan::getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const{
+                    UNREACHABLE;
+                }
+                    
+                TetInteriourFan::Vertices const TetInteriourFan::getVertices() const{
+                    return mVertices;
+                }
+                    
+                TetInteriourFan::Triangles const TetInteriourFan::getTriangles() const {
+                    return mTriangles;
+                }
+                    
                 
 		namespace{
 
@@ -476,6 +492,47 @@ namespace CrystalMesh {
 
                 Domain const domainOf(Subdiv3::Vertex*  apVertex){
                     Domain result = {apVertex};
+                    return result;
+                }
+                
+                bool const Domain::operator == (Domain const & rhs) const{
+                    return rhs.mpDual == mpDual;
+                }
+                        
+                bool const Domain::operator != (Domain const & rhs) const{
+                    return !operator ==(rhs);
+                }
+                
+               
+                Domain::Corners const Domain::getCorners() const{
+                
+                    Corners result;
+                    return result;
+                
+                }               
+                
+                Domain::Vertices const Domain::getVertices() const{
+                    auto triangles = getTriangles();
+                    Vertices result;
+                    
+                    for (auto const& triangle : triangles){
+                        auto triVerts = triangle.getBoundaryVertices();
+                        result.insert(result.end(), triVerts.begin(), triVerts.end());
+                    }
+                    
+                    std::sort(result.begin(), result.end());
+                    auto uniqueEnd = std::unique(result.begin(), result.end());
+                    return Vertices(result.begin(), uniqueEnd);
+                    
+                    
+                }
+                    
+                Domain::Triangles const Domain::getTriangles() const{
+                    auto adjDualEdgeRings = getAdjacentRingsOf(*mpDual);
+                    
+                    Triangles result(adjDualEdgeRings.size(),Triangle::invalid);
+                    std::transform(adjDualEdgeRings.begin(), adjDualEdgeRings.end(), result.begin(), triangleOf);
+                
                     return result;
                 }
 
