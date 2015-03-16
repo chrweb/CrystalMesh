@@ -41,7 +41,7 @@ namespace CrystalMesh{
 		: mpManifold(new Subdiv3::Manifold)
 		, mpToVetexData(new VertexDataContainer)
 		{
-
+                    return;
 		}
 
 		DelaunayTriangulation3D::~DelaunayTriangulation3D(){
@@ -154,15 +154,23 @@ namespace CrystalMesh{
 		}
                 
                 Triangle DelaunayTriangulation3D::makeTriangle(){
+                    using namespace Subdiv3;
                     //basic structure
                     Triangle result = constructTriangleInComplex(*mpManifold);
                     //add vertices:
-                    Subdiv3::Vertex* verts[3] = {makeVertexWithData(), makeVertexWithData(), makeVertexWithData()};
+                    Vertex* verts[3] = {makeVertexWithData(), makeVertexWithData(), makeVertexWithData()};
+                    //add edge rings:
+                    EdgeRing* ering[3] = {mpManifold->makePrimalEdgeRing(), mpManifold->makePrimalEdgeRing(), mpManifold->makePrimalEdgeRing()};
+                    
                     auto bnd = result.getBoundaryArray();
                     for (Index i = 0; i<3; i++){
-                        auto dRing = bnd[i]->getDirectedEdgeRing();
-                        auto vertex = verts[i];
-                        mpManifold->linkVertexDirectedEdgeRings(*vertex, *dRing);
+                        EdgeRing * eRing = ering[i];
+                        Vertex * vertex = verts[i];
+                        FacetEdge* facetEdge = bnd[i];
+                        mpManifold->linkEdgeRingAndFacetEdges(*eRing, *facetEdge);
+                        DirectedEdgeRing* dirRing = facetEdge->getDirectedEdgeRing();
+                        dirRing->mpOrg = vertex;
+                        vertex->mpOut = dirRing;
                     }
                     
                     return result;
@@ -670,6 +678,9 @@ namespace CrystalMesh{
                     
                     return domainOf(upperDomainVertex);
                 }
+                
+             
+                
                 /*
                 void DelaunayTriangulation3D::separateTriangle(Triangle & aTri){
                     using namespace Subdiv3;

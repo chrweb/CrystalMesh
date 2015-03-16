@@ -390,30 +390,7 @@ namespace CrystalMesh{
 			return;
 		}
                 
-                VertexMaintener const & Manifold::getPrimalVertexMaintener() const{
-                    return *mpPrimalVertexMaintener;
-                }
-                
-                        
-                VertexMaintener const & Manifold::getDualVertexMaintener() const{
-                    return *mpDualVertexMaintener;
-                }
-                
-                        
-                EdgeRingMaintener const & Manifold::getPrimalEdgeRingMaintener() const {
-                    return *mpPrimalEdgeRingMaintener;
-                }
-                
-                
-                const EdgeRingMaintener& Manifold::getDualEdgeRingMaintener() const {
-                    return *mpDualEdgeRingMaintener;
-                }
-                
-                const QuaterNodeMaintener& Manifold::getQuaternodeMaintener() const{
-                    return *mpQuaterNodeMaintener;
-                }
-
-
+          
 
 
 

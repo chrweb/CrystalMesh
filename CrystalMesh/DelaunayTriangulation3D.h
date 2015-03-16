@@ -63,45 +63,54 @@ namespace CrystalMesh{
 
 		public:
 
-			DelaunayTriangulation3D();
+                    DelaunayTriangulation3D();
 
-			template<typename Iterator>
-			DelaunayTriangulation3D( Iterator const & aPointsBegin, Iterator const & aPointsEnd);
+                    template<typename Iterator>
+                    DelaunayTriangulation3D( Iterator const & aPointsBegin, Iterator const & aPointsEnd);
 
-			DelaunayTriangulation3D( DelaunayTriangulation3D const & aSrc);
+                    DelaunayTriangulation3D( DelaunayTriangulation3D const & aSrc);
 
-			~DelaunayTriangulation3D();
+                    ~DelaunayTriangulation3D();
 
-			Flip1To4 const flip1to4(Tet& aTetToFlip, PointInsertion const aIns);
+                    Flip1To4 const flip1to4(Tet& aTetToFlip, PointInsertion const aIns);
 
-			Flip2To3 flip2to3(Triangle& aTriangleToFlip);
+                    Flip2To3 flip2to3(Triangle& aTriangleToFlip);
 
-			void insertPoint(Mathbox::Geometry::Point3D const & aPoint);
+                    void insertPoint(Mathbox::Geometry::Point3D const & aPoint);
 
-			typedef std::array<Mathbox::Geometry::Point3D,4 > TetPoints;
+                    typedef std::array<Mathbox::Geometry::Point3D,4 > TetPoints;
 
-			// constructs a tet of the given 4 points
-			Tet const makeTetrahedron(TetPoints const & aTetPoints);
+                    // constructs a tet of the given 4 points
+                    Tet const makeTetrahedron(TetPoints const & aTetPoints);
 
-                        typedef std::array<Mathbox::Geometry::Point3D, 5> TetIntPoints;
-			/**
-			 * Creates the interior of execute a 1-4 Flip,
-			 * Points [0-3]: tet bunds
-			 * Point [4]: in-tet point
-			 */
-			TetInteriour const makeTetInterior( TetIntPoints const & aTetIntPoints);
-                        
-                        typedef std::array<Mathbox::Geometry::Point3D, 3>  FanPoints;
-                        typedef std::array<Mathbox::Geometry::Point3D, 2>  TopBottomPoints;
-                        TetInteriourFan const makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints);
+                    typedef std::array<Mathbox::Geometry::Point3D, 5> TetIntPoints;
+                    /**
+                     * Creates the interior of execute a 1-4 Flip,
+                     * Points [0-3]: tet bunds
+                     * Point [4]: in-tet point
+                     */
+                    TetInteriour const makeTetInterior( TetIntPoints const & aTetIntPoints);
+                    
+                    typedef std::array<Mathbox::Geometry::Point3D, 3>  FanPoints;
+                    typedef std::array<Mathbox::Geometry::Point3D, 2>  TopBottomPoints;
+                    TetInteriourFan const makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints);
 
-			VertexData * makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr = nullptr);
-                        
-                        Triangle makeTriangle();
+                    VertexData * makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr = nullptr);
+                    
+                    Triangle makeTriangle();
 
-                        Domain const destroyTriangle(Triangle & aTri);
-
-		private:
+                    Domain const destroyTriangle(Triangle & aTri);
+                    
+                    /*
+                    size_t countTriangles() const;
+                    
+                    size_t countTets() const;
+                    
+                    size_t countDomains() const;
+                    
+                    size_t countCorners() const;
+                    */
+                private:
                     
                     void unifyVertices(Subdiv3::Vertex * apVert0, Subdiv3::Vertex * apVert1);
                     

@@ -382,6 +382,12 @@ namespace CrystalMesh {
                 
                 namespace{
                    
+                    /**
+                     * Constructs cornes. 
+                     * @param apRing: The primal edge ring 
+                     * @param apDomain the inner domain
+                     * @return 
+                     */
                     Corner const cornerOf(Subdiv3::EdgeRing * apRing, Subdiv3::Vertex* apDomain){
                         using namespace Subdiv3;
                         
@@ -505,8 +511,28 @@ namespace CrystalMesh {
                 
                
                 Domain::Corners const Domain::getCorners() const{
+                    using namespace Subdiv3;
+                    std::vector<EdgeRing*> edgeRings;
+                    auto triangles = getTriangles();
+                    
+                    for (auto const & triangle : triangles){
+                        auto bound = triangle.getBoundaryArray();
+                        
+                        for (auto const fe: bound){
+                            edgeRings.push_back(fe->getDirectedEdgeRing()->getEdgeRing());
+                        }
+                        
+                    }
+                    
+                    std::sort(edgeRings.begin(), edgeRings.end());
+                    auto toUniqueEnd = std::unique(edgeRings.begin(), edgeRings.end());
                 
                     Corners result;
+                    
+                    for (auto iterator = edgeRings.begin(); iterator != toUniqueEnd; iterator++){
+                        result.push_back(cornerOf(*iterator, mpDual));
+                    }
+                    
                     return result;
                 
                 }               

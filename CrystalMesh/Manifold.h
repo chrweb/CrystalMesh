@@ -78,8 +78,9 @@ namespace CrystalMesh{
 			bool const isMyPrimalEdgeRing(EdgeRing const & aRing) const;
 
 			bool const isMyDualEdgeRing(EdgeRing const & aRing) const;
-
-
+                        
+                    
+                       
 
 		private:
 

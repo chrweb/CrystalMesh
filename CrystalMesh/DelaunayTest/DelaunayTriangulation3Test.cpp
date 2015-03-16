@@ -121,6 +121,18 @@ namespace{
 	};
 }
 
+TEST_F(DelaunayTester, MakeTriangle){
+    using namespace Subdiv3;
+    Triangle tri = mDt.makeTriangle();
+    
+    // Test a valid set of edge rings:
+    auto edges = tri.getBoundaryArray();
+    std::array<EdgeRing*,3>  edgeRings = {edges[0]->getDirectedEdgeRing()->getEdgeRing(), edges[1]->getDirectedEdgeRing()->getEdgeRing(), edges[2]->getDirectedEdgeRing()->getEdgeRing()};
+    std::sort(edgeRings.begin(), edgeRings.end());
+    auto uniqueEnd = std::unique(edgeRings.begin(), edgeRings.end());
+    EXPECT_TRUE(uniqueEnd == edgeRings.end());
+}
+
 TEST_F(DelaunayTester, Tet0){
     // Tetpoints to construct a tet
     TetPoints const tp = {p0, p1, p2, p3};
@@ -237,10 +249,13 @@ TEST_F(DelaunayTester, TetAdapter){
 }
 
 
+
 //let's test the point 1-4 flip:
 TEST_F(DelaunayTester, Flip1_4){
     TetPoints const tp = {p1, p0, p2, p3};
     PointInsertion pins = pointInsertionOf(p4);
+    
+    //ToDo: validate Corners
     
     auto tet = mDt.makeTetrahedron(tp);
     Tet outerDomain = tet.adjancentTetAt(0);
@@ -270,6 +285,8 @@ TEST_F(DelaunayTester, Flip1_4){
      
     return;
 }
+
+
 
 TEST_F(DelaunayTester, DestroyTriangle){
     //create test setup.
@@ -301,31 +318,38 @@ TEST_F(DelaunayTester, DestroyTriangle){
     EXPECT_EQ(5, itsVerts.size());
     
     auto itsCorners = domain.getCorners();
-    EXPECT_EQ(9, itsCorners.size());
-    
-    
-    
+    EXPECT_EQ(9, itsCorners.size());   
 }
-/*
-TEST_F(DelaunayTester, Flip2_3){
-    //create test setup.
-    //Firstly I'll only take care for topological issues
-    TetPoints const tp = {p1, p0, p2, p3};
-    PointInsertion pins = pointInsertionOf(p4);
+
+
+TEST_F(DelaunayTester, TetInteriourFan){
+    DelaunayTriangulation3D::TopBottomPoints tb = {p3, p4};
+    DelaunayTriangulation3D::FanPoints fp = {p0, p1, p2};
+    TetInteriourFan sample = mDt.makeFan3(tb, fp);
     
-    auto tet = mDt.makeTetrahedron(tp);
-    Tet outerDomain = tet.adjancentTetAt(0);
-    
-    mDt.flip1to4(tet, pins);
-    
-    //now let's get 3 representative inner domains:
-    Tet inner0 = outerDomain.adjancentTetAt(0);
-    Tet inner1 = outerDomain.adjancentTetAt(1);
-    // lets get ther common bound:
-    Triangle  bound = inner0.commonBoundaryWith(inner1);
-    EXPECT_TRUE(bound!=Triangle::invalid);
-    
-    //Flip2To3 result = mDt.flip2to3(bound);
+    return;
+}
+
+//ToDo: Reactivate
+//TEST_F(DelaunayTester, Flip2_3){
+//    //create test setup.
+//    //Firstly I'll only take care for topological issues
+//    TetPoints const tp = {p1, p0, p2, p3};
+//    PointInsertion pins = pointInsertionOf(p4);
+//    
+//    auto tet = mDt.makeTetrahedron(tp);
+//    Tet outerDomain = tet.adjancentTetAt(0);
+//    
+//    mDt.flip1to4(tet, pins);
+//    
+//    //now let's get 3 representative inner domains:
+//    Tet inner0 = outerDomain.adjancentTetAt(0);
+//    Tet inner1 = outerDomain.adjancentTetAt(1);
+//    // lets get ther common bound:
+//    Triangle  bound = inner0.commonBoundaryWith(inner1);
+//    EXPECT_TRUE(bound!=Triangle::invalid);
+//    
+//    Flip2To3 result = mDt.flip2to3(bound);
     
     //auto vertsIntersection = intersectionOf(inner0, inner1);
     //auto vertsDiff = symmetricDifferenceOf(inner0, inner1);
@@ -336,8 +360,7 @@ TEST_F(DelaunayTester, Flip2_3){
     //Subdiv3::
     //if (inner0 )
     
-    return;
-    
-
-}
- */
+//    return;
+//    
+//
+//}

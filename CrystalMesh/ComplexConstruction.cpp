@@ -4,7 +4,7 @@
  *  Created on: 25.07.2014
  *      Author: christoph
  */
-
+#include <stddef.h>
 #include "Manifold.h"
 #include "../Mathbox/Mathbox.h"
 #include "FacetEdge.h"
