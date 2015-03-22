@@ -361,7 +361,7 @@ namespace CrystalMesh{
                     std::array<FacetEdge*, 6> adapters;
                     
                     //get triangles outer boundary faces
-                    Tet:: Triangles const tetsTriangles = getTriangleArrayOf(aTetToFlip);
+                    Tet::Triangles const tetsTriangles = getTriangleArrayOf(aTetToFlip);
                     
                     
                     for (Index i = 0 ; i<6; i++){
@@ -378,11 +378,16 @@ namespace CrystalMesh{
                     
                     //do topological operations
                     for (Index i = 0; i<6; i++){
+                       
+                        auto dr0 = getAdjacentRingsOf(*tetsTriangles[0].mpDualEdgeRing);
+                       
+                        
                         FacetEdge* fromTet= corners[i].mRef;
                         FacetEdge* fromInnerComplex = adapters[i];
                         
                         mpManifold->spliceFacets(*fromTet, *fromInnerComplex);
                         
+                        auto dr1 = getAdjacentRingsOf(*tetsTriangles[1].mpDualEdgeRing);
                         //update edge rings:
                         EdgeRing* tetEdgeRing = fromTet->getDirectedEdgeRing()->getEdgeRing();
                         EdgeRing* innerEdgeRing = fromInnerComplex->getDirectedEdgeRing()->getEdgeRing();
@@ -597,8 +602,12 @@ namespace CrystalMesh{
                     
                     return;
                 }
-                    
+                   
                 void DelaunayTriangulation3D::unifyEdgeRings(Subdiv3::EdgeRing* apRing0 ,Subdiv3::EdgeRing* apRing1){
+////Validation:                    
+//#ifdef DEBUG
+//                    auto fnextRing = getFnextRingMembersOf()
+//#endif
                     //get ring representative
                     auto ringRep = apRing0->getItem(0).getRingMember();
                     //unlink

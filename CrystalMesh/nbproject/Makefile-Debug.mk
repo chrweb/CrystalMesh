@@ -82,47 +82,47 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcrystalmesh.a: ${OBJECTFILES}
 ${OBJECTDIR}/AdjacentDirectedEdgeRings.o: AdjacentDirectedEdgeRings.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AdjacentDirectedEdgeRings.o AdjacentDirectedEdgeRings.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AdjacentDirectedEdgeRings.o AdjacentDirectedEdgeRings.cpp
 
 ${OBJECTDIR}/ComplexConstruction.o: ComplexConstruction.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ComplexConstruction.o ComplexConstruction.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ComplexConstruction.o ComplexConstruction.cpp
 
 ${OBJECTDIR}/DelaunayTriangulation3D.o: DelaunayTriangulation3D.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayTriangulation3D.o DelaunayTriangulation3D.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayTriangulation3D.o DelaunayTriangulation3D.cpp
 
 ${OBJECTDIR}/DirectedEdgeRing.o: DirectedEdgeRing.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DirectedEdgeRing.o DirectedEdgeRing.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DirectedEdgeRing.o DirectedEdgeRing.cpp
 
 ${OBJECTDIR}/EdgeRing.o: EdgeRing.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EdgeRing.o EdgeRing.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EdgeRing.o EdgeRing.cpp
 
 ${OBJECTDIR}/FacetEdge.o: FacetEdge.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FacetEdge.o FacetEdge.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FacetEdge.o FacetEdge.cpp
 
 ${OBJECTDIR}/Manifold.o: Manifold.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Manifold.o Manifold.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Manifold.o Manifold.cpp
 
 ${OBJECTDIR}/Primitives.o: Primitives.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Primitives.o Primitives.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Primitives.o Primitives.cpp
 
 ${OBJECTDIR}/Vertex.o: Vertex.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Vertex.o Vertex.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Vertex.o Vertex.cpp
 
 # Subprojects
 .build-subprojects:
@@ -141,31 +141,31 @@ ${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o ${
 ${TESTDIR}/ComplexTest/TestEdgeRings.o: ComplexTest/TestEdgeRings.cpp 
 	${MKDIR} -p ${TESTDIR}/ComplexTest
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestEdgeRings.o ComplexTest/TestEdgeRings.cpp
+	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestEdgeRings.o ComplexTest/TestEdgeRings.cpp
 
 
 ${TESTDIR}/ComplexTest/TestManifold.o: ComplexTest/TestManifold.cpp 
 	${MKDIR} -p ${TESTDIR}/ComplexTest
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestManifold.o ComplexTest/TestManifold.cpp
+	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestManifold.o ComplexTest/TestManifold.cpp
 
 
 ${TESTDIR}/ComplexTest/TestTopologicalOperations.o: ComplexTest/TestTopologicalOperations.cpp 
 	${MKDIR} -p ${TESTDIR}/ComplexTest
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestTopologicalOperations.o ComplexTest/TestTopologicalOperations.cpp
+	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestTopologicalOperations.o ComplexTest/TestTopologicalOperations.cpp
 
 
 ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o: DelaunayTest/DelaunayTriangulation3Test.cpp 
 	${MKDIR} -p ${TESTDIR}/DelaunayTest
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o DelaunayTest/DelaunayTriangulation3Test.cpp
+	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o DelaunayTest/DelaunayTriangulation3Test.cpp
 
 
 ${TESTDIR}/DelaunayTest/TestComplexConstruction.o: DelaunayTest/TestComplexConstruction.cpp 
 	${MKDIR} -p ${TESTDIR}/DelaunayTest
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o DelaunayTest/TestComplexConstruction.cpp
+	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o DelaunayTest/TestComplexConstruction.cpp
 
 
 ${OBJECTDIR}/AdjacentDirectedEdgeRings_nomain.o: ${OBJECTDIR}/AdjacentDirectedEdgeRings.o AdjacentDirectedEdgeRings.cpp 
@@ -176,7 +176,7 @@ ${OBJECTDIR}/AdjacentDirectedEdgeRings_nomain.o: ${OBJECTDIR}/AdjacentDirectedEd
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AdjacentDirectedEdgeRings_nomain.o AdjacentDirectedEdgeRings.cpp;\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AdjacentDirectedEdgeRings_nomain.o AdjacentDirectedEdgeRings.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/AdjacentDirectedEdgeRings.o ${OBJECTDIR}/AdjacentDirectedEdgeRings_nomain.o;\
 	fi
@@ -189,7 +189,7 @@ ${OBJECTDIR}/ComplexConstruction_nomain.o: ${OBJECTDIR}/ComplexConstruction.o Co
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ComplexConstruction_nomain.o ComplexConstruction.cpp;\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ComplexConstruction_nomain.o ComplexConstruction.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/ComplexConstruction.o ${OBJECTDIR}/ComplexConstruction_nomain.o;\
 	fi
@@ -202,7 +202,7 @@ ${OBJECTDIR}/DelaunayTriangulation3D_nomain.o: ${OBJECTDIR}/DelaunayTriangulatio
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayTriangulation3D_nomain.o DelaunayTriangulation3D.cpp;\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayTriangulation3D_nomain.o DelaunayTriangulation3D.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/DelaunayTriangulation3D.o ${OBJECTDIR}/DelaunayTriangulation3D_nomain.o;\
 	fi
@@ -215,7 +215,7 @@ ${OBJECTDIR}/DirectedEdgeRing_nomain.o: ${OBJECTDIR}/DirectedEdgeRing.o Directed
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DirectedEdgeRing_nomain.o DirectedEdgeRing.cpp;\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DirectedEdgeRing_nomain.o DirectedEdgeRing.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/DirectedEdgeRing.o ${OBJECTDIR}/DirectedEdgeRing_nomain.o;\
 	fi
@@ -228,7 +228,7 @@ ${OBJECTDIR}/EdgeRing_nomain.o: ${OBJECTDIR}/EdgeRing.o EdgeRing.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EdgeRing_nomain.o EdgeRing.cpp;\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/EdgeRing_nomain.o EdgeRing.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/EdgeRing.o ${OBJECTDIR}/EdgeRing_nomain.o;\
 	fi
@@ -241,7 +241,7 @@ ${OBJECTDIR}/FacetEdge_nomain.o: ${OBJECTDIR}/FacetEdge.o FacetEdge.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FacetEdge_nomain.o FacetEdge.cpp;\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FacetEdge_nomain.o FacetEdge.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/FacetEdge.o ${OBJECTDIR}/FacetEdge_nomain.o;\
 	fi
@@ -254,7 +254,7 @@ ${OBJECTDIR}/Manifold_nomain.o: ${OBJECTDIR}/Manifold.o Manifold.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Manifold_nomain.o Manifold.cpp;\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Manifold_nomain.o Manifold.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Manifold.o ${OBJECTDIR}/Manifold_nomain.o;\
 	fi
@@ -267,7 +267,7 @@ ${OBJECTDIR}/Primitives_nomain.o: ${OBJECTDIR}/Primitives.o Primitives.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Primitives_nomain.o Primitives.cpp;\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Primitives_nomain.o Primitives.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Primitives.o ${OBJECTDIR}/Primitives_nomain.o;\
 	fi
@@ -280,7 +280,7 @@ ${OBJECTDIR}/Vertex_nomain.o: ${OBJECTDIR}/Vertex.o Vertex.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Vertex_nomain.o Vertex.cpp;\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Vertex_nomain.o Vertex.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Vertex.o ${OBJECTDIR}/Vertex_nomain.o;\
 	fi

@@ -20,7 +20,7 @@ namespace CrystalMesh{
                 
                 Mathbox::Geometry::Point3D const originPointOf(Subdiv3::FacetEdge const * pFacetEdge);
                 
-                Mathbox::Geometry::Point3D const destinationPointOf(Subdiv3::FacetEdge const pFacetEdge);
+                Mathbox::Geometry::Point3D const destinationPointOf(Subdiv3::FacetEdge const * pFacetEdge);
                 
                 Mathbox::Geometry::Point3D const originPointOf(Subdiv3::DirectedEdgeRing const * pFacetEdge);
                 

@@ -383,7 +383,7 @@ namespace CrystalMesh {
                 namespace{
                    
                     /**
-                     * Constructs cornes. 
+                     * Constructs cornes. Corners Fnext-member is adjancent to the given domain.
                      * @param apRing: The primal edge ring 
                      * @param apDomain the inner domain
                      * @return 

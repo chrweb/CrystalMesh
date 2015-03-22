@@ -8,6 +8,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/ComplexConstruction.cpp</file>
+            <file>file:/home/christoph/CrystalMesh/CrystalMesh/DelaunayTriangulation3DPrototypes.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/AdjacentDirectedEdgeRings.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/DelaunayTest/DelaunayTriangulation3Test.cpp</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/FacetEdge.h</file>

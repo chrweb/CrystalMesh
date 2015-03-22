@@ -82,6 +82,9 @@
       <compileType>
         <ccTool>
           <commandLine>-std=c++11</commandLine>
+          <preprocessorList>
+            <Elem>DEBUG</Elem>
+          </preprocessorList>
         </ccTool>
         <archiverTool>
         </archiverTool>
