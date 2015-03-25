@@ -249,13 +249,15 @@ TEST_F(DelaunayTester, TetAdapter){
     Tuple t1 = {p0, p2};
     Tuple t2 = {p0, p3};
     Tuple t3 = {p1, p2};
-    Tuple t4 = {p3, p1};
-    Tuple t5 = {p2, p1};
+    Tuple t4 = {p1, p3};
+    Tuple t5 = {p2, p3};
     
     std::array<Tuple, 6> tuples = {t0, t1, t2, t3, t4, t5 };
     
     //construct tet interiour
     auto const tetInt = mDt.makeTetInterior(tip);
+    
+    std::vector<EdgeRing*> edgeRings;
     
     //verify adapters as expected:
     for (auto const tuple: tuples){
@@ -263,7 +265,7 @@ TEST_F(DelaunayTester, TetAdapter){
         auto point1 = tuple[1];
         
         FacetEdge * adapterFacetEdge0 = tetInt.getAdapterOf(point0, point1); 
-        
+        EdgeRing* ring0 = adapterFacetEdge0->getDirectedEdgeRing()->getEdgeRing();
         EXPECT_TRUE(exactEqual( originPointOf(adapterFacetEdge0), point0));
         EXPECT_TRUE(exactEqual( destinationPointOf(adapterFacetEdge0), point1));
         
@@ -272,13 +274,18 @@ TEST_F(DelaunayTester, TetAdapter){
         
         EXPECT_TRUE(exactEqual( originPointOf(adapterFacetEdge1), point1));
         EXPECT_TRUE(exactEqual( destinationPointOf(adapterFacetEdge1), point0));    
+    
+        EdgeRing* ring1 = adapterFacetEdge0->getDirectedEdgeRing()->getEdgeRing();
+        
+        EXPECT_EQ(ring0,ring1);
+        edgeRings.push_back(ring0);
     }
     
     //ToDo: all edge ring unique?
-  
+    std::sort(edgeRings.begin(), edgeRings.end());
+    auto toUniqueEnd = std::unique(edgeRings.begin(), edgeRings.end());
     
-    
-    
+    EXPECT_EQ(toUniqueEnd, edgeRings.end());
     
     return;
 }
@@ -286,83 +293,83 @@ TEST_F(DelaunayTester, TetAdapter){
 
 
 //let's test the point 1-4 flip:
-//TEST_F(DelaunayTester, Flip1_4){
-//    TetPoints const tp = {p1, p0, p2, p3};
-//    PointInsertion pins = pointInsertionOf(p4);
-//     
-//    auto tet = mDt.makeTetrahedron(tp);
-//    Tet outerDomain = tet.adjancentTetAt(0); 
-//    //tet is adjancent to the aouter domain with all its faces:
-//    EXPECT_TRUE(outerDomain==tet.adjancentTetAt(1));
-//    EXPECT_TRUE(outerDomain==tet.adjancentTetAt(2));
-//    EXPECT_TRUE(outerDomain==tet.adjancentTetAt(3));
-//    
-//    //check validity of corners:
-//    auto corners = tet.getCorners();
-//    
-//    SCOPED_TRACE("in Flip1_4");
-//    for (Corner const & corner : corners){
-//        validateCornerDomains(corner, tet.mpDualVertex, outerDomain.mpDualVertex);
-//    }
-//    
-//    
-//    auto result = mDt.flip1to4(tet, pins);
-//    
-//    EXPECT_TRUE(result.result ==Flip1To4::Result::success);
-//    
-//    //outer domain it adjacent to 4 different inner domains:
-//    std::array<Tet,4> inner= {  outerDomain.adjancentTetAt(0), 
-//                                outerDomain.adjancentTetAt(1),
-//                                outerDomain.adjancentTetAt(2),
-//                                outerDomain.adjancentTetAt(3)};
-//    //4 different domains?
-//    auto it = std::unique(inner.begin(), inner.end());
-//    EXPECT_TRUE(it = inner.end());
-//    //not domain equal to outer=
-//    for (auto const & domain: inner){
-//        EXPECT_TRUE(domain!=outerDomain);
-//    }
-//    
-//     
-//    return;
-//}
-//
-//
-//
-//TEST_F(DelaunayTester, DestroyTriangle){
-//    //create test setup.
-//    //Firstly I'll only take care for topological issues
-//    TetPoints const tp = {p1, p0, p2, p3};
-//    PointInsertion pins = pointInsertionOf(p4);
-//    
-//    auto tet = mDt.makeTetrahedron(tp);
-//    Tet outerDomain = tet.adjancentTetAt(0);
-//    
-//    mDt.flip1to4(tet, pins);
-//    
-//    //now let's get 3 representative inner domains:
-//    Tet inner0 = outerDomain.adjancentTetAt(0);
-//    Tet inner1 = outerDomain.adjancentTetAt(1);
-//    // lets get ther common bound:
-//    Triangle  bound = inner0.commonBoundaryWith(inner1);
-//    
-//    Domain domain = mDt.destroyTriangle(bound);
-//    
-//    auto itsTris = domain.getTriangles();
-//    
-//    EXPECT_EQ(6, itsTris.size());
-//    for (auto const& triangle: itsTris){
-//        EXPECT_TRUE(triangle != Triangle::invalid);
-//    }
-//    
-//    auto itsVerts = domain.getVertices();
-//    EXPECT_EQ(5, itsVerts.size());
-//    
-//    auto itsCorners = domain.getCorners();
-//    EXPECT_EQ(9, itsCorners.size());   
-//}
-//
-//
+TEST_F(DelaunayTester, Flip1_4){
+    TetPoints const tp = {p1, p0, p2, p3};
+    PointInsertion pins = pointInsertionOf(p4);
+     
+    auto tet = mDt.makeTetrahedron(tp);
+    Tet outerDomain = tet.adjancentTetAt(0); 
+    //tet is adjancent to the aouter domain with all its faces:
+    EXPECT_TRUE(outerDomain==tet.adjancentTetAt(1));
+    EXPECT_TRUE(outerDomain==tet.adjancentTetAt(2));
+    EXPECT_TRUE(outerDomain==tet.adjancentTetAt(3));
+    
+    //check validity of corners:
+    auto corners = tet.getCorners();
+    
+    SCOPED_TRACE("in Flip1_4");
+    for (Corner const & corner : corners){
+        validateCornerDomains(corner, tet.mpDualVertex, outerDomain.mpDualVertex);
+    }
+    
+    
+    auto result = mDt.flip1to4(tet, pins);
+    
+    EXPECT_TRUE(result.result ==Flip1To4::Result::success);
+    
+    //outer domain it adjacent to 4 different inner domains:
+    std::array<Tet,4> inner= {  outerDomain.adjancentTetAt(0), 
+                                outerDomain.adjancentTetAt(1),
+                                outerDomain.adjancentTetAt(2),
+                                outerDomain.adjancentTetAt(3)};
+    //4 different domains?
+    auto it = std::unique(inner.begin(), inner.end());
+    EXPECT_TRUE(it = inner.end());
+    //not domain equal to outer=
+    for (auto const & domain: inner){
+        EXPECT_TRUE(domain!=outerDomain);
+    }
+    
+     
+    return;
+}
+
+
+
+TEST_F(DelaunayTester, DestroyTriangle){
+    //create test setup.
+    //Firstly I'll only take care for topological issues
+    TetPoints const tp = {p1, p0, p2, p3};
+    PointInsertion pins = pointInsertionOf(p4);
+    
+    auto tet = mDt.makeTetrahedron(tp);
+    Tet outerDomain = tet.adjancentTetAt(0);
+    
+    mDt.flip1to4(tet, pins);
+    
+    //now let's get 3 representative inner domains:
+    Tet inner0 = outerDomain.adjancentTetAt(0);
+    Tet inner1 = outerDomain.adjancentTetAt(1);
+    // lets get ther common bound:
+    Triangle  bound = inner0.commonBoundaryWith(inner1);
+    
+    Domain domain = mDt.destroyTriangle(bound);
+    
+    auto itsTris = domain.getTriangles();
+    
+    EXPECT_EQ(6, itsTris.size());
+    for (auto const& triangle: itsTris){
+        EXPECT_TRUE(triangle != Triangle::invalid);
+    }
+    
+    auto itsVerts = domain.getVertices();
+    EXPECT_EQ(5, itsVerts.size());
+    
+    auto itsCorners = domain.getCorners();
+    EXPECT_EQ(9, itsCorners.size());   
+}
+
+
 //TEST_F(DelaunayTester, TetInteriourFan){
 //    DelaunayTriangulation3D::TopBottomPoints tb = {p3, p4};
 //    DelaunayTriangulation3D::FanPoints fp = {p0, p1, p2};
