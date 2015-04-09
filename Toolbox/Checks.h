@@ -14,6 +14,8 @@ namespace Toolbox{
 
 	void proceedOnViolation(char const * apFilenName, int aLineNumber, char const * aExpression);
 
+        void throwOnViolation(char const * apFilenName, int aLineNumber, char const * aExpression);
+        
         void terminate(char const * apFilenName, int aLineNumber);
 
 	template<typename T>
@@ -32,7 +34,7 @@ namespace Toolbox{
 	#define  SHOULD_BE_INTERNAL(Expression)\
 	if (!(Expression)) \
 	{ \
-		Toolbox::proceedOnViolation(__FILE__, __LINE__, #Expression); \
+		Toolbox::throwOnViolation(__FILE__, __LINE__, #Expression); \
 	}
 
 #else
@@ -40,13 +42,19 @@ namespace Toolbox{
 	#define SHOULD_BE_INTERNAL(Expression)
 #endif
 
+#ifdef DEBUG
+    #define MUST_BE_INTERNAL(EXPRESSION) SHOULD_BE_INTERNAL(#EXPRESSION);
+#else
+    #define MUST_BE_INTERNAL(Expression)\
+    if(!(Expression))\
+    {\
+        Toolbox::terminateOnViolation(__FILE__, __LINE__, #Expression); \
+    } 
+#endif
+
 #define SHOULD_BE(Expression)	SHOULD_BE_INTERNAL(Expression)
 
-#define MUST_BE(Expression)\
-if(!(Expression))\
-{\
-    Toolbox::terminateOnViolation(__FILE__, __LINE__, #Expression); \
-}
+#define MUST_BE(Expression) MUST_BE_INTERNAL(Expression)
 
 
 #define UNREACHABLE Toolbox::terminate(__FILE__, __LINE__);

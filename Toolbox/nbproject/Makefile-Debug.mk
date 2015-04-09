@@ -67,7 +67,7 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libtoolbox.a: ${OBJECTFILES}
 ${OBJECTDIR}/Checks.o: Checks.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Checks.o Checks.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Checks.o Checks.cpp
 
 # Subprojects
 .build-subprojects:
