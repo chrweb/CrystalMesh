@@ -6,10 +6,17 @@
  */
 #pragma once
 
+
 #include "../Mathbox/Mathbox.h"
-#include "Primitives.h"
-#include "Vertex.h"
-#include "DirectedEdgeRing.h"
+#include "DelaunayForwardDecs.h"
+#include "DelaunayVertex.h"
+#include "Triangle.h"
+#include "Corner.h"
+#include "Tet.h"
+#include "Domain.h"
+//#include "Primitives.h"
+//#include "Vertex.h"
+//#include "DirectedEdgeRing.h"
 #include <array>
 
 namespace CrystalMesh{
@@ -52,10 +59,7 @@ namespace CrystalMesh{
                 
                 PointInsertion pointInsertionOf(Mathbox::Geometry::Point3D const & aPoint);
 
-		struct VertexData{
-			Mathbox::Geometry::Point3D  mPoint;
-			void const * mpPropPtr;
-		};
+		
 
 		class VertexDataContainer;
 
@@ -89,17 +93,21 @@ namespace CrystalMesh{
                      * Points [0-3]: tet bunds
                      * Point [4]: in-tet point
                      */
-                    TetInteriour const makeTetInterior( TetIntPoints const & aTetIntPoints);
+                    //TetInteriour const makeTetInterior( TetIntPoints const & aTetIntPoints);
                     
                     typedef std::array<Mathbox::Geometry::Point3D, 3>  FanPoints;
                     typedef std::array<Mathbox::Geometry::Point3D, 2>  TopBottomPoints;
-                    TetInteriourFan const makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints);
+                    //TetInteriourFan const makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints);
 
-                    VertexData * makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr = nullptr);
+                    VertexData * makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void const * apPropPtr = nullptr);
                     
-                    Triangle makeTriangle();
+                    Subdiv3::Vertex* makeVertexWith(VertexData const & aData);
+                    
+                    Triangle makeTriangle(VertexData const& aData0, VertexData const& aData1, VertexData const& aData2 );
+                    
+                    
 
-                    Domain const destroyTriangle(Triangle & aTri);
+                    //Domain const destroyTriangle(Triangle & aTri);
                     
                     /*
                     size_t countTriangles() const;
@@ -118,12 +126,15 @@ namespace CrystalMesh{
                     
                     void destroyTet(Tet & aTet);
                     
+                    
+                    Domain const makeDomainUnder(Triangle& aTri);
+                    
                     void destroyDomain(Domain & aVert);
                     
                     
                     Subdiv3::Vertex * makeBody();
                     
-                    Subdiv3::Vertex* makeVertexWithData();
+                    
                     
                     Subdiv3::Manifold * mpManifold;
 

@@ -11,14 +11,8 @@
 #include <gtest/gtest.h>
 #include "../../Mathbox/Mathbox.h"
 #include "../../Toolbox/Checks.h"
-#include "../Primitives.h"
-#include "../ComplexConstruction.h"
+#include "../ComplexTypes.h"
 #include "../DelaunayTriangulation3D.h"
-#include "../DirectedEdgeRing.h"
-#include "../EdgeRing.h"
-#include "../FacetEdge.h"
-#include "../Manifold.h"
-#include "../AdjacentDirectedEdgeRings.h"
 
 #endif	/* TESTINCLUDE_H */
 

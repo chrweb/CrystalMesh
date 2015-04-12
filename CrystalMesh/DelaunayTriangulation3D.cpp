@@ -4,11 +4,16 @@
  *  Created on: 29.06.2014
  *      Author: christoph
  */
+
+#include "Triangle.h"
+#include "Corner.h"
+#include "Tet.h"
+#include "DelaunayVertex.h"
 #include "DelaunayTriangulation3D.h"
 #include "Subdiv3Prototypes.h"
 #include "MaintenerTemplate.h"
 #include "FacetEdge.h"
-#include "ComplexConstruction.h"
+//#include "ComplexConstruction.h"
 #include "../Mathbox/Mathbox.h"
 #include "AdjacentDirectedEdgeRings.h"
 #include <algorithm>
@@ -30,97 +35,70 @@ namespace CrystalMesh{
 
             
             using namespace Toolbox;
+            using namespace Subdiv3;
            
 
-		class VertexDataContainer
-		:public Subdiv3::EntityMaintener<VertexData>
-		 {};
+	class VertexDataContainer
+	:public Subdiv3::EntityMaintener<VertexData>
+	 {};
 
 
-		DelaunayTriangulation3D::DelaunayTriangulation3D()
-		: mpManifold(new Subdiv3::Manifold)
-		, mpToVetexData(new VertexDataContainer)
-		{
-                    return;
-		}
+	DelaunayTriangulation3D::DelaunayTriangulation3D()
+	: mpManifold(new Subdiv3::Manifold)
+	, mpToVetexData(new VertexDataContainer)
+	{
+                return;
+	}
 
-		DelaunayTriangulation3D::~DelaunayTriangulation3D(){
-			delete mpManifold;
-			delete mpToVetexData;
-		}
+	DelaunayTriangulation3D::~DelaunayTriangulation3D(){
+		delete mpManifold;
+		delete mpToVetexData;
+	}
 
-		
+	
 
-		
+	
 
 
-		namespace {
+	namespace {
 
-			typedef uint32_t Counter;
+		typedef uint32_t Counter;
 
-			struct EdgeArray{
-				Subdiv3::FacetEdge * mArray[3];
+		struct EdgeArray{
+			Subdiv3::FacetEdge * mArray[3];
 
-				Subdiv3::FacetEdge * operator[](Counter i){
-					return mArray[i];
-				}
+			Subdiv3::FacetEdge * operator[](Counter i){
+				return mArray[i];
+			}
+		};
+
+		EdgeArray const edgeArrayOf(Triangle const & aTri){
+			using namespace Subdiv3;
+			EdgeArray result;
+			int counter = 0;
+
+			auto collector = [&result, &counter](FacetEdge  & aInst){
+				MUST_BE(counter < 3);
+				result.mArray[counter] = aInst.getDual();
+				counter++;
 			};
 
-			EdgeArray const edgeArrayOf(Triangle const & aTri){
-				using namespace Subdiv3;
-				EdgeArray result;
-				int counter = 0;
+			forEachElementInFnextRing(*aTri.mpDualEdgeRing->mpRingMember, collector);
 
-				auto collector = [&result, &counter](FacetEdge  & aInst){
-					MUST_BE(counter < 3);
-					result.mArray[counter] = aInst.getDual();
-					counter++;
-				};
-
-				forEachElementInFnextRing(*aTri.mpDualEdgeRing->mpRingMember, collector);
-
-				return result;
-			}
-
-			Triangle const clockedTriangle(Triangle const & aTri){
-				Triangle result;
-				result.mpDualEdgeRing = aTri.mpDualEdgeRing->mpRingMember->getClock()->getDirectedEdgeRing();
-				return result;
-			}
-
+			return result;
 		}
 
-		namespace{
-
-			VertexData const vertexDataOf(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr){
-				VertexData result{ aPoint, apPropPtr};
-				return result;
-			}
-
-			VertexData const vertexDataOf(Mathbox::Geometry::Point3D const & aPoint){
-				VertexData result{ aPoint, nullptr};
-				return result;
-			}
-
-			bool noData(Subdiv3::Vertex const * apVertex){
-							MUST_BE(notNullptr(apVertex));
-							return isNullptr(apVertex->mpData);
-			}
-
-			void linkVertexDataVertex(VertexData * apData, Subdiv3::Vertex * apVertex){
-				MUST_BE(notNullptr(apVertex));
-				MUST_BE(notNullptr(apData));
-				MUST_BE(noData(apVertex));
-
-				apVertex->mpData = reinterpret_cast<void*>(apData);
-
-				return;
-			}
-
-
+		Triangle const clockedTriangle(Triangle const & aTri){
+			Triangle result;
+			result.mpDualEdgeRing = aTri.mpDualEdgeRing->mpRingMember->getClock()->getDirectedEdgeRing();
+			return result;
 		}
 
+	}
 
+		
+
+/*
 		TetInteriour const DelaunayTriangulation3D::makeTetInterior( TetIntPoints const & aTetIntPoints)
 		{
                     // construct interior, given five Points: [0]...[3] tetBounds
@@ -144,39 +122,102 @@ namespace CrystalMesh{
 
                     return tetInterior;
 		}
+*/
+                
+                namespace{
 
-		VertexData * DelaunayTriangulation3D::makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void * apPropPtr)
+		
+
+			VertexData const vertexDataOf(Mathbox::Geometry::Point3D const & aPoint){
+				VertexData result{ aPoint, nullptr};
+				return result;
+			}
+
+			bool noData(Subdiv3::Vertex const * apVertex){
+							MUST_BE(notNullptr(apVertex));
+							return isNullptr(apVertex->mpData);
+			}
+
+			void linkVertexDataVertex(VertexData * apData, Subdiv3::Vertex * apVertex){
+				MUST_BE(notNullptr(apVertex));
+				MUST_BE(notNullptr(apData));
+				MUST_BE(noData(apVertex));
+
+				apVertex->mpData = reinterpret_cast<void*>(apData);
+
+				return;
+			}
+
+
+		}
+                
+                Subdiv3::Vertex* DelaunayTriangulation3D::makeVertexWith(VertexData const & aData){
+                    
+                    auto  vertex = mpManifold->makePrimalVertex();
+                    auto  data = makeVertexData(aData.mPoint, aData.mpPropPtr);
+                   
+             
+                    linkVertexDataVertex(data , vertex );
+                    return vertex;
+                    
+                
+                }
+                
+ 
+		VertexData * DelaunayTriangulation3D::makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void const * apPropPtr)
 		{
 			auto result = mpToVetexData->constructEntity();
 			result->mPoint = aPoint;
 			result->mpPropPtr = apPropPtr;
 			return result;
 		}
+  
                 
-                Triangle DelaunayTriangulation3D::makeTriangle(){
-                    using namespace Subdiv3;
+                
+                Triangle DelaunayTriangulation3D::makeTriangle(VertexData const& aData0, VertexData const& aData1, VertexData const& aData2 ){
+                    
                     //basic structure
-                    Triangle result = constructTriangleInComplex(*mpManifold);
+                    FacetEdge* edges[3] ={ mpManifold->makeFacetEdge(), mpManifold->makeFacetEdge(),  mpManifold->makeFacetEdge()};
+                    mpManifold->spliceEdges(*edges[0], *edges[1]);
+                    mpManifold->spliceEdges(*edges[1], *edges[2]);
+                   
+			
                     //add vertices:
-                    Vertex* verts[3] = {makeVertexWithData(), makeVertexWithData(), makeVertexWithData()};
+                    Vertex* verts[3] = {makeVertexWith(aData0), makeVertexWith(aData1), makeVertexWith(aData2)};
                     //add edge rings:
                     EdgeRing* ering[3] = {mpManifold->makePrimalEdgeRing(), mpManifold->makePrimalEdgeRing(), mpManifold->makePrimalEdgeRing()};
                     
-                    auto bnd = result.getBoundaryArray();
+                    //edge ring linking:
                     for (Index i = 0; i<3; i++){
                         EdgeRing * eRing = ering[i];
-                        Vertex * vertex = verts[i];
-                        FacetEdge* facetEdge = bnd[i];
+                        FacetEdge* facetEdge = edges[i];
                         mpManifold->linkEdgeRingAndFacetEdges(*eRing, *facetEdge);
-                        DirectedEdgeRing* dirRing = facetEdge->getDirectedEdgeRing();
-                        dirRing->mpOrg = vertex;
-                        vertex->mpOut = dirRing;
+                        
                     }
+                    
+                    //Vertex linking
+                    for (Index i = 0; i< 3; i++){
+                        Vertex * vertex = verts[i];
+                        FacetEdge* facetEdge = edges[i];
+                        DirectedEdgeRing * dring0 = facetEdge->getDirectedEdgeRing();
+                        mpManifold->linkVertexDirectedEdgeRings(*vertex, *dring0);
+                    }
+                    
+                     //dual edge ring linking
+                    EdgeRing* dualRing = mpManifold->makeDualEdgeRing();
+		    mpManifold->linkEdgeRingAndFacetEdges(*dualRing, *edges[0]->getDual());
+
+                    //prepare result
+                    Triangle result;
+                    result.mpDualEdgeRing = edges[0]->getDual()->getDirectedEdgeRing();
+                    
+                    //domain construction
+                    makeDomainUnder(result);
                     
                     return result;
                 }
-                
-                
+ 
+/*                
                 TetInteriourFan const DelaunayTriangulation3D::makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints){
                     
                     TetInteriourFan result;
@@ -208,7 +249,7 @@ namespace CrystalMesh{
                     
                     return result;
                 }
-                
+ */               
                 namespace{
                     
                     DelaunayTriangulation3D::TetPoints  permutate(DelaunayTriangulation3D::TetPoints const & aPoints){
@@ -242,7 +283,7 @@ namespace CrystalMesh{
                                 
                 }
         
-
+/*
 		Tet const DelaunayTriangulation3D::makeTetrahedron(TetPoints const & aTetPoints){
 			using namespace CrystalMesh;
 			using namespace Mathbox;
@@ -291,8 +332,9 @@ namespace CrystalMesh{
 			//done
 			return tet;
 		}
-                
-                
+ */             
+    
+                /*
                 namespace{
                     typedef std::array<Triangle,4> TriangleArray;
                     
@@ -337,7 +379,7 @@ namespace CrystalMesh{
                         
                         return result;
                     } 
-                    
+                   
                     Subdiv3::DirectedEdgeRing* directedEdgeRingFromTriangle(Triangle const& aTri){
                         return aTri.mpDualEdgeRing;
                     }
@@ -348,8 +390,8 @@ namespace CrystalMesh{
                         auto const p1 = pointFromSubdiv3Vertex(pV1);
                         return inLexicographicalOrder(p0, p1);
                     }
-                } 
-                
+                } */
+/*                
                 Flip1To4 const DelaunayTriangulation3D::flip1to4(Tet& aTetToFlip, PointInsertion const aIns){
                     using namespace Subdiv3;
                     //construct to inner complex
@@ -462,7 +504,8 @@ namespace CrystalMesh{
                     
                     return result;
                 }
-                
+*/
+/*                
                 
                 Flip2To3 DelaunayTriangulation3D::flip2to3(Triangle& aTriangleToFlip){
                     Tet tet0 = aTriangleToFlip.upperTet();
@@ -602,7 +645,8 @@ namespace CrystalMesh{
                     
                     return;
                 }
-                   
+ * */
+               /*    
                 void DelaunayTriangulation3D::unifyEdgeRings(Subdiv3::EdgeRing* apRing0 ,Subdiv3::EdgeRing* apRing1){
 ////Validation:                    
 //#ifdef DEBUG
@@ -624,27 +668,24 @@ namespace CrystalMesh{
                     mpManifold->dislinkVertexDirectedEdgeRings(*aTet.mpDualVertex);
                     mpManifold->deleteDualVertex(*(aTet.mpDualVertex));
                     return;
-                }
-                
+                }*/
+ /*               
                 void DelaunayTriangulation3D::destroyDomain(Domain & aDomain){
                     mpManifold->dislinkVertexDirectedEdgeRings(*aDomain.mpDual);
                     mpManifold->deleteDualVertex(*aDomain.mpDual);
                     return;
                 }
-                   
+       */            
                 
                 
-                Subdiv3::Vertex * DelaunayTriangulation3D::makeBody(){
-                    return mpManifold->makeDualVertex();
+                Domain const  DelaunayTriangulation3D::makeDomainUnder(Triangle& aTri){
+                    Domain result;
+                    result.mpDual = mpManifold->makeDualVertex();
+                    mpManifold->linkVertexDirectedEdgeRings(*result.mpDual, *aTri.mpDualEdgeRing);
+                    return result;
                 }
                 
-                Subdiv3::Vertex* DelaunayTriangulation3D::makeVertexWithData(){
-                    auto vertex = mpManifold->makePrimalVertex();
-                    auto data = makeVertexData(Mathbox::Geometry::Point3D::NaN);
-                    linkVertexDataVertex(data , vertex );
-                    return vertex;
-                }
-                
+  /*              
                 //ToDo: continue here
                 Domain const DelaunayTriangulation3D::destroyTriangle(Triangle& aTri){
                     using namespace Subdiv3;
@@ -688,7 +729,7 @@ namespace CrystalMesh{
                     return domainOf(upperDomainVertex);
                 }
                 
-             
+ */            
                 
                 /*
                 void DelaunayTriangulation3D::separateTriangle(Triangle & aTri){

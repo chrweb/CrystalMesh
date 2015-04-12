@@ -36,13 +36,14 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/AdjacentDirectedEdgeRings.o \
-	${OBJECTDIR}/ComplexConstruction.o \
+	${OBJECTDIR}/Corner.o \
 	${OBJECTDIR}/DelaunayTriangulation3D.o \
+	${OBJECTDIR}/DelaunayVertex.o \
 	${OBJECTDIR}/DirectedEdgeRing.o \
 	${OBJECTDIR}/EdgeRing.o \
 	${OBJECTDIR}/FacetEdge.o \
 	${OBJECTDIR}/Manifold.o \
-	${OBJECTDIR}/Primitives.o \
+	${OBJECTDIR}/Triangle.o \
 	${OBJECTDIR}/Vertex.o
 
 # Test Directory
@@ -84,15 +85,20 @@ ${OBJECTDIR}/AdjacentDirectedEdgeRings.o: AdjacentDirectedEdgeRings.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AdjacentDirectedEdgeRings.o AdjacentDirectedEdgeRings.cpp
 
-${OBJECTDIR}/ComplexConstruction.o: ComplexConstruction.cpp 
+${OBJECTDIR}/Corner.o: Corner.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ComplexConstruction.o ComplexConstruction.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Corner.o Corner.cpp
 
 ${OBJECTDIR}/DelaunayTriangulation3D.o: DelaunayTriangulation3D.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayTriangulation3D.o DelaunayTriangulation3D.cpp
+
+${OBJECTDIR}/DelaunayVertex.o: DelaunayVertex.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayVertex.o DelaunayVertex.cpp
 
 ${OBJECTDIR}/DirectedEdgeRing.o: DirectedEdgeRing.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -114,10 +120,10 @@ ${OBJECTDIR}/Manifold.o: Manifold.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Manifold.o Manifold.cpp
 
-${OBJECTDIR}/Primitives.o: Primitives.cpp 
+${OBJECTDIR}/Triangle.o: Triangle.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Primitives.o Primitives.cpp
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Triangle.o Triangle.cpp
 
 ${OBJECTDIR}/Vertex.o: Vertex.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -133,7 +139,7 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/ComplexTest/TestEdgeRings.o ${TESTDIR}/Compl
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} ../googletest/dist/Debug/GNU-Linux-x86/libgoogletest.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a 
 
-${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} ../googletest/dist/Debug/GNU-Linux-x86/libgoogletest.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a 
 
@@ -156,16 +162,16 @@ ${TESTDIR}/ComplexTest/TestTopologicalOperations.o: ComplexTest/TestTopologicalO
 	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestTopologicalOperations.o ComplexTest/TestTopologicalOperations.cpp
 
 
-${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o: DelaunayTest/DelaunayTriangulation3Test.cpp 
+${TESTDIR}/DelaunayTest/TestDelaunayVertex.o: DelaunayTest/TestDelaunayVertex.cpp 
 	${MKDIR} -p ${TESTDIR}/DelaunayTest
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o DelaunayTest/DelaunayTriangulation3Test.cpp
+	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o DelaunayTest/TestDelaunayVertex.cpp
 
 
-${TESTDIR}/DelaunayTest/TestComplexConstruction.o: DelaunayTest/TestComplexConstruction.cpp 
+${TESTDIR}/DelaunayTest/TestTriangle.o: DelaunayTest/TestTriangle.cpp 
 	${MKDIR} -p ${TESTDIR}/DelaunayTest
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o DelaunayTest/TestComplexConstruction.cpp
+	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestTriangle.o DelaunayTest/TestTriangle.cpp
 
 
 ${OBJECTDIR}/AdjacentDirectedEdgeRings_nomain.o: ${OBJECTDIR}/AdjacentDirectedEdgeRings.o AdjacentDirectedEdgeRings.cpp 
@@ -181,17 +187,17 @@ ${OBJECTDIR}/AdjacentDirectedEdgeRings_nomain.o: ${OBJECTDIR}/AdjacentDirectedEd
 	    ${CP} ${OBJECTDIR}/AdjacentDirectedEdgeRings.o ${OBJECTDIR}/AdjacentDirectedEdgeRings_nomain.o;\
 	fi
 
-${OBJECTDIR}/ComplexConstruction_nomain.o: ${OBJECTDIR}/ComplexConstruction.o ComplexConstruction.cpp 
+${OBJECTDIR}/Corner_nomain.o: ${OBJECTDIR}/Corner.o Corner.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/ComplexConstruction.o`; \
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Corner.o`; \
 	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ComplexConstruction_nomain.o ComplexConstruction.cpp;\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Corner_nomain.o Corner.cpp;\
 	else  \
-	    ${CP} ${OBJECTDIR}/ComplexConstruction.o ${OBJECTDIR}/ComplexConstruction_nomain.o;\
+	    ${CP} ${OBJECTDIR}/Corner.o ${OBJECTDIR}/Corner_nomain.o;\
 	fi
 
 ${OBJECTDIR}/DelaunayTriangulation3D_nomain.o: ${OBJECTDIR}/DelaunayTriangulation3D.o DelaunayTriangulation3D.cpp 
@@ -205,6 +211,19 @@ ${OBJECTDIR}/DelaunayTriangulation3D_nomain.o: ${OBJECTDIR}/DelaunayTriangulatio
 	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayTriangulation3D_nomain.o DelaunayTriangulation3D.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/DelaunayTriangulation3D.o ${OBJECTDIR}/DelaunayTriangulation3D_nomain.o;\
+	fi
+
+${OBJECTDIR}/DelaunayVertex_nomain.o: ${OBJECTDIR}/DelaunayVertex.o DelaunayVertex.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/DelaunayVertex.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayVertex_nomain.o DelaunayVertex.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/DelaunayVertex.o ${OBJECTDIR}/DelaunayVertex_nomain.o;\
 	fi
 
 ${OBJECTDIR}/DirectedEdgeRing_nomain.o: ${OBJECTDIR}/DirectedEdgeRing.o DirectedEdgeRing.cpp 
@@ -259,17 +278,17 @@ ${OBJECTDIR}/Manifold_nomain.o: ${OBJECTDIR}/Manifold.o Manifold.cpp
 	    ${CP} ${OBJECTDIR}/Manifold.o ${OBJECTDIR}/Manifold_nomain.o;\
 	fi
 
-${OBJECTDIR}/Primitives_nomain.o: ${OBJECTDIR}/Primitives.o Primitives.cpp 
+${OBJECTDIR}/Triangle_nomain.o: ${OBJECTDIR}/Triangle.o Triangle.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/Primitives.o`; \
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Triangle.o`; \
 	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Primitives_nomain.o Primitives.cpp;\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Triangle_nomain.o Triangle.cpp;\
 	else  \
-	    ${CP} ${OBJECTDIR}/Primitives.o ${OBJECTDIR}/Primitives_nomain.o;\
+	    ${CP} ${OBJECTDIR}/Triangle.o ${OBJECTDIR}/Triangle_nomain.o;\
 	fi
 
 ${OBJECTDIR}/Vertex_nomain.o: ${OBJECTDIR}/Vertex.o Vertex.cpp 

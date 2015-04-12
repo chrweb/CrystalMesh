@@ -15,6 +15,7 @@
       <logicalFolder name="f2" displayName="Complex" projectFiles="true">
         <itemPath>AdjacentDirectedEdgeRings.cpp</itemPath>
         <itemPath>AdjacentDirectedEdgeRings.h</itemPath>
+        <itemPath>ComplexTypes.h</itemPath>
         <itemPath>DirectedEdgeRing.cpp</itemPath>
         <itemPath>DirectedEdgeRing.h</itemPath>
         <itemPath>EdgeRing.cpp</itemPath>
@@ -34,12 +35,20 @@
       <logicalFolder name="f1" displayName="Delaunay" projectFiles="true">
         <itemPath>ComplexConstruction.cpp</itemPath>
         <itemPath>ComplexConstruction.h</itemPath>
+        <itemPath>Corner.cpp</itemPath>
+        <itemPath>Corner.h</itemPath>
+        <itemPath>DelaunayForwardDecs.h</itemPath>
         <itemPath>DelaunayTriangulation3D.cpp</itemPath>
         <itemPath>DelaunayTriangulation3D.h</itemPath>
         <itemPath>DelaunayTriangulation3DPrototypes.h</itemPath>
-        <itemPath>ForwardDecs.h</itemPath>
+        <itemPath>DelaunayVertex.cpp</itemPath>
+        <itemPath>DelaunayVertex.h</itemPath>
+        <itemPath>Domain.h</itemPath>
         <itemPath>Primitives.cpp</itemPath>
         <itemPath>Primitives.h</itemPath>
+        <itemPath>Tet.h</itemPath>
+        <itemPath>Triangle.cpp</itemPath>
+        <itemPath>Triangle.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -61,7 +70,9 @@
                      kind="TEST">
         <itemPath>DelaunayTest/DelaunayTriangulation3Test.cpp</itemPath>
         <itemPath>DelaunayTest/TestComplexConstruction.cpp</itemPath>
+        <itemPath>DelaunayTest/TestDelaunayVertex.cpp</itemPath>
         <itemPath>DelaunayTest/TestInclude.h</itemPath>
+        <itemPath>DelaunayTest/TestTriangle.cpp</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -93,8 +104,6 @@
       </item>
       <item path="AdjacentDirectedEdgeRings.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="ComplexConstruction.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="ComplexConstruction.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="ComplexTest/TestEdgeRings.cpp" ex="false" tool="1" flavor2="0">
@@ -108,17 +117,22 @@
             tool="1"
             flavor2="0">
       </item>
-      <item path="DelaunayTest/DelaunayTriangulation3Test.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="ComplexTypes.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="DelaunayTest/TestComplexConstruction.cpp"
+      <item path="Corner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Corner.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayForwardDecs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTest/TestDelaunayVertex.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
       <item path="DelaunayTest/TestInclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTest/TestTriangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTriangulation3D.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -129,9 +143,15 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="DelaunayVertex.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DelaunayVertex.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DirectedEdgeRing.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DirectedEdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Domain.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="EdgeRing.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -141,8 +161,6 @@
       </item>
       <item path="FacetEdge.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="ForwardDecs.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="MaintenerTemplate.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Manifold.cpp" ex="false" tool="1" flavor2="0">
@@ -151,8 +169,6 @@
       </item>
       <item path="MiscTypes.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Primitives.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="Primitives.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="QuaterNode.h" ex="false" tool="3" flavor2="0">
@@ -160,6 +176,12 @@
       <item path="Subdiv3ForwardDecs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Subdiv3Prototypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Tet.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Triangle.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Triangle.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Vertex.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -320,6 +342,14 @@
             tool="1"
             flavor2="0">
       </item>
+      <item path="ComplexTypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Corner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Corner.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayForwardDecs.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DelaunayTest/DelaunayTriangulation3Test.cpp"
             ex="false"
             tool="1"
@@ -330,7 +360,14 @@
             tool="1"
             flavor2="0">
       </item>
+      <item path="DelaunayTest/TestDelaunayVertex.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="DelaunayTest/TestInclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTest/TestTriangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTriangulation3D.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -341,9 +378,15 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="DelaunayVertex.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="DelaunayVertex.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DirectedEdgeRing.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DirectedEdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Domain.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="EdgeRing.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -352,8 +395,6 @@
       <item path="FacetEdge.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="FacetEdge.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="ForwardDecs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="MaintenerTemplate.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -372,6 +413,12 @@
       <item path="Subdiv3ForwardDecs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Subdiv3Prototypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Tet.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Triangle.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Triangle.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Vertex.cpp" ex="false" tool="1" flavor2="0">
       </item>

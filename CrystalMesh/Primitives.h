@@ -5,7 +5,7 @@
  *      Author: christoph
  */
 #pragma once
-#include "ForwardDecs.h"
+#include "DelaunayForwardDecs.h"
 #include "EdgeRing.h"
 #include "FacetEdge.h"
 #include "Vertex.h"
@@ -16,32 +16,9 @@ namespace CrystalMesh{
 
 	namespace Delaunay3{
             
-                Mathbox::Geometry::Point3D const pointFromSubdiv3Vertex(Subdiv3::Vertex const *pVertex);
-                
-                Mathbox::Geometry::Point3D const originPointOf(Subdiv3::FacetEdge const * pFacetEdge);
-                
-                Mathbox::Geometry::Point3D const destinationPointOf(Subdiv3::FacetEdge const * pFacetEdge);
-                
-                Mathbox::Geometry::Point3D const originPointOf(Subdiv3::DirectedEdgeRing const * pFacetEdge);
-                
-                Mathbox::Geometry::Point3D const destinationPointOf(Subdiv3::DirectedEdgeRing const * pFacetEdge);
-                
-                void setVertexPointTo(Mathbox::Geometry::Point3D const & aPoint, Subdiv3::Vertex * pVertex);
                 
 
-                //Describes an inner corner of a domain
-                struct Corner{
-                    Subdiv3::FacetEdge* mRef;   // a FacetEdge Reference
-                    Subdiv3::FacetEdge* mFnext; // Fnext to above
-                    
-                    /**
-                     * True, if Corner holds p0 and p1 in arbitary order (origin, destination) or (destination, origin)
-                     * @param p0
-                     * @param p1
-                     * @return 
-                     */
-                    bool representsSegment(Mathbox::Geometry::Point3D const& p0, Mathbox::Geometry::Point3D const & p1) const;
-		};
+
 
                 
                 //TODO: Remove
@@ -70,38 +47,6 @@ namespace CrystalMesh{
                 
                 struct Tet;
 
-		struct Triangle
-		{
-			typedef std::array<Subdiv3::FacetEdge*, 3> Boundary;
-			typedef std::array<Mathbox::Geometry::Point3D, 3> BoundaryPoints;
-                        typedef std::array<Subdiv3::Vertex*, 3> BoundaryVertices;
-                        
-			Boundary const getBoundaryArray() const;
-
-			BoundaryPoints const getBoundaryPoints() const;
-                        
-                        BoundaryVertices const getBoundaryVertices() const;
-
-			Mathbox::Geometry::OrientedPlane3D const getOrientedPlane() const;
-                        
-                        Subdiv3::FacetEdge* boundaryWith(Mathbox::Geometry::Point3D const & aOrg, Mathbox::Geometry::Point3D const & aDest);
-                        
-                        bool const operator == (const Triangle& other) const;
-                        
-                        bool const operator != (const Triangle& other) const;
-                        
-                        Tet const upperTet() const;
-                        
-                        Tet const lowerTet() const;
-
-			Subdiv3::DirectedEdgeRing* mpDualEdgeRing;
-                        
-                        static Triangle const invalid;
-		};
-
-		Triangle const getCounterOrientedOf(Triangle const aTri);
-                
-                Triangle const triangleOf(Subdiv3::DirectedEdgeRing* apDring);
 
 
 		struct Fan{
@@ -224,7 +169,7 @@ namespace CrystalMesh{
                 
                 SymmetricDiffenrenceTriangles symmetricDifferenceInTriangles(Tet const & aTet0, Tet const & aTet1);
                 
-                /*A genera domain with triangles as boundary faces*/
+                /*A general domain with triangles as boundary faces*/
                 struct Domain{
                     typedef std::vector<Corner> Corners;
                     typedef std::vector<Subdiv3::Vertex*> Vertices;

@@ -9,7 +9,7 @@
  */
 #pragma once
 #include "Primitives.h"
-#include "ForwardDecs.h"
+#include "DelaunayForwardDecs.h"
 #include "Vertex.h"
 
 namespace CrystalMesh {
@@ -29,12 +29,6 @@ namespace CrystalMesh {
 
 		Blossom const constructBlossomInComplex(Subdiv3::Manifold & aComplex);
                 
-                
-
-
-
-
-
 	}  // namespace Delaunay3
 
 

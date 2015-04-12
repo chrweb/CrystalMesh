@@ -25,6 +25,8 @@ namespace CrystalMesh {
 		struct EdgeRing;
 
 		struct Vertex;
+                
+                struct Tet;
 	}
 
 	namespace Delaunay3{

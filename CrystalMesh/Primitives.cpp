@@ -64,56 +64,7 @@ namespace CrystalMesh {
                     }
                     
                     
-                    /**
-                     * Tries to find a FacetEdge with given start/endpoints in an Edgering container.
-                     * @param org
-                     * @param dest
-                     * @param container
-                     * @return nullptr, if nothing found, else the annotated FacetEdge
-                     */
-                    template<class TEdgeRingContainer>
-                    Subdiv3::FacetEdge* facetEdgeWithEndPoints(Point3D const& org, Point3D const & dest, TEdgeRingContainer const &container){
-                        using namespace Subdiv3;
-                      
-                        auto finder0 = [&dest, &org](EdgeRing const * ring)->bool{
-
-                            DirectedEdgeRing const * dring = &ring->getItem(0);            
-                            Point3D ringOrg = originPointOf(dring);
-                            Point3D ringDest= destinationPointOf(dring);
-
-                            if ( exactEqual(ringOrg, org) && exactEqual(ringDest, dest))
-                                return true; 
-
-                            return false;
-                        };
-
-                        auto finder1 = [&dest, &org](EdgeRing const * ring)->bool{
-
-                            DirectedEdgeRing const * dring = &ring->getItem(1);            
-                            Point3D ringOrg = originPointOf(dring);
-                            Point3D ringDest= destinationPointOf(dring);
-
-                            if ( exactEqual(ringOrg, org) && exactEqual(ringDest, dest))
-                                return true;                       
-
-                            return false;
-                        };
-
-
-                        auto const result0 = std::find_if(container.begin(), container.end(), finder0);
-
-                        if (result0!= container.end()){
-                            return (*result0)->getItem(0).getRingMember();
-                        }
-
-                        auto const result1 = std::find_if(container.begin(), container.end(), finder1);
-
-                        if (result1 != container.end())
-                            return (*result1)->getItem(1).getRingMember();
-                        
-                        return nullptr;
-                    }
-		}
+                   
 
 		FacetEdgeThreeTuple const facetEdgeThreeTupleOf(Subdiv3::FacetEdge const & a0, Subdiv3::FacetEdge const & a1, Subdiv3::FacetEdge const & a2){
 			FacetEdgeThreeTuple result = {toPointer(a0), toPointer(a1), toPointer(a2)};
@@ -126,89 +77,10 @@ namespace CrystalMesh {
 		}
                 
                 
-                bool Corner::representsSegment(Mathbox::Geometry::Point3D const& p0, Mathbox::Geometry::Point3D const & p1) const{
-                    auto org = originPointOf(mRef);
-                    auto dest = destinationPointOf(mRef);
-                    
-                    if (exactEqual(p0, org) && exactEqual( p1, dest))
-                        return true;
-                    
-                    if (exactEqual(p0, dest) && exactEqual(p1, org))
-                        return true;
-                    
-                    return false;
-                }
-
+                
 		
 
-		Triangle::Boundary const Triangle::getBoundaryArray() const{
-			auto pBnd = mpDualEdgeRing->getRingMember()->getDual();
-
-			Triangle::Boundary result;
-
-			result[0] = pBnd;
-			result[1] = result[0]->getEnext();
-			result[2] = result[1]->getEnext();
-
-			return result;
-		}
-                
-                Triangle::BoundaryPoints const Triangle::getBoundaryPoints() const{
-                    auto const bndEdges = getBoundaryArray();
-                    BoundaryPoints result;
-                    for (Index i = 0; i<3; i++){
-                        result[i] = pointFromSubdiv3Vertex(bndEdges[i]->getOrg());
-                    }
-                    return result;
-                }
-                
-                Triangle::BoundaryVertices const Triangle::getBoundaryVertices() const{
-                    auto bnd = getBoundaryArray();
-                    BoundaryVertices result = {bnd[0]->getOrg(), bnd[1]->getOrg(), bnd[2]->getOrg()};
-                    return result;
-                }
-                
-                Subdiv3::FacetEdge* Triangle::boundaryWith(Mathbox::Geometry::Point3D const & aOrg, Mathbox::Geometry::Point3D const & aDest){
-                    using namespace Subdiv3;
-                    auto boundaryEdges = getBoundaryArray();
-                    std::array<EdgeRing*,3> edgeRings;
-                    
-                    auto toEdgeRing = [](FacetEdge* edge)->EdgeRing*{
-                        return edge->getDirectedEdgeRing()->getEdgeRing();
-                    };
-                    
-                    std::transform(boundaryEdges.begin(), boundaryEdges.end(), edgeRings.begin(), toEdgeRing);
-                    return facetEdgeWithEndPoints(aOrg, aOrg, edgeRings);
-                }
-                       
-                
-                bool const Triangle::operator == (const Triangle& other) const{
-                    return (other.mpDualEdgeRing == mpDualEdgeRing);
-                }
-                        
-                bool const Triangle::operator != (const Triangle& other) const{
-                    return ! operator ==(other);
-                }
-                
-                Tet const Triangle::lowerTet() const{
-                    Triangle other = getCounterOrientedOf(*this);
-                    return other.upperTet();
-                }
-                
-                Tet const Triangle::upperTet() const{
-                    Subdiv3::Vertex* domain = mpDualEdgeRing->getOrg();
-                    auto adj = getAdjacentRingsOf(*domain);
-                    Tet result;
-                    result.mpDualVertex = domain;
-                   
-                    for (Index i = 0 ; i<4; i++){
-                        result.mTri[i] = triangleOf(adj[i]);
-                    }
-                    
-                    return result;
-                }
-                
-                Triangle const Triangle::invalid  = {nullptr}; 
+		 
                 
 		namespace{
 
