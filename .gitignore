@@ -35,3 +35,7 @@ https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
 /Toolbox/dist/
 /CrystalMesh/build/
 /CrystalMesh/dist/
+/FluidUI/dist/
+/FluidUI/build/
+/CppApplication_1/dist/
+/CppApplication_1/build/

@@ -1,0 +1,65 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+header_name {.h} 
+code_name {.cpp}
+class CubeViewUI {open selected
+} {
+  Function {CubeUIView()} {open
+  } {
+    Fl_Window {} {open
+      xywh {847 83 1065 935} type Double visible
+    } {
+      Fl_Group {} {
+        label VChange open
+        xywh {40 105 230 480} box UP_BOX
+      } {
+        Fl_Roller {} {
+          label vRot
+          xywh {115 155 45 395}
+        }
+        Fl_Slider {} {
+          label {slider:yPan}
+          callback {cube->pany(((Fl_Slider*)o)->value());
+cube->redraw()}
+          xywh {190 155 40 395} type {Vert Knob} box UP_BOX align 0
+        }
+      }
+      Fl_Group {} {
+        label HChange open
+        xywh {310 605 675 145} box UP_BOX align 135
+      } {
+        Fl_Roller {} {
+          label hRot
+          xywh {420 700 475 25} type Horizontal
+        }
+        Fl_Slider {} {
+          label {slider:xPan}
+          xywh {420 630 475 40} type {Horz Knob}
+        }
+      }
+      Fl_Group {} {
+        label MainView open
+        xywh {250 50 765 525} align 65
+      } {
+        Fl_Box {} {
+          label cFrame
+          xywh {285 134 710 441} box DOWN_BOX
+        }
+        Fl_Box cube {
+          label CubeView
+          xywh {330 180 620 385}
+          code0 {\#include "CubeView.h"}
+          class CubeView
+        }
+      }
+      Fl_Value_Slider {} {
+        label Zoom
+        xywh {285 79 700 18} type {Horz Knob} align 418 maximum 10 value 5 slider_size 1 textsize 14
+      }
+    }
+  }
+  Function {show(int argc, char **argv)} {open
+  } {
+    code {} {}
+  }
+} 
