@@ -1,0 +1,32 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include <iostream>} {private local
+} 
+
+Function {Button_CB(Fl_Widget*,void*)} {open return_type {static void}
+} {
+  code {//code on button
+char const str[] = "Hello fluid";
+std::cout << str<< std::endl;
+output->value(str);} {}
+} 
+
+Function {} {open
+} {
+  Fl_Window {} {
+    label Hauptfenster open
+    xywh {987 236 240 240} type Double visible
+  } {
+    Fl_Button {} {
+      label Knopf
+      callback Button_CB
+      xywh {80 95 70 20}
+    }
+    Fl_Output output {
+      label Output selected
+      xywh {65 28 156 57}
+    }
+  }
+} 
