@@ -46,7 +46,8 @@ TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
 TESTFILES= \
 	${TESTDIR}/TestFiles/f1 \
 	${TESTDIR}/TestFiles/f2 \
-	${TESTDIR}/TestFiles/f3
+	${TESTDIR}/TestFiles/f3 \
+	${TESTDIR}/TestFiles/f4
 
 # C Compiler Flags
 CFLAGS=
@@ -104,6 +105,10 @@ ${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/fluid02.o ${OBJECTFILES:%.o=%_nomain.o
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f3 $^ ${LDLIBSOPTIONS} 
 
+${TESTDIR}/TestFiles/f4: ${TESTDIR}/tests/fluid03.o ${OBJECTFILES:%.o=%_nomain.o}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc}   -o ${TESTDIR}/TestFiles/f4 $^ ${LDLIBSOPTIONS} 
+
 
 ${TESTDIR}/tests/fluid00.o: tests/fluid00.cxx 
 	${MKDIR} -p ${TESTDIR}/tests
@@ -121,6 +126,12 @@ ${TESTDIR}/tests/fluid02.o: tests/fluid02.cxx
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid02.o tests/fluid02.cxx
+
+
+${TESTDIR}/tests/fluid03.o: tests/fluid03.cxx 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid03.o tests/fluid03.cxx
 
 
 ${OBJECTDIR}/CubeView_nomain.o: ${OBJECTDIR}/CubeView.o CubeView.cpp 
@@ -169,6 +180,7 @@ ${OBJECTDIR}/test_nomain.o: ${OBJECTDIR}/test.o test.cpp
 	    ${TESTDIR}/TestFiles/f1 || true; \
 	    ${TESTDIR}/TestFiles/f2 || true; \
 	    ${TESTDIR}/TestFiles/f3 || true; \
+	    ${TESTDIR}/TestFiles/f4 || true; \
 	else  \
 	    ./${TEST} || true; \
 	fi
