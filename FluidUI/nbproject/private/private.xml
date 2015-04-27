@@ -4,11 +4,22 @@
         <activeConfTypeElem>1</activeConfTypeElem>
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/christoph/CrystalMesh/FluiUI/test.cpp</file>
-            <file>file:/home/christoph/CrystalMesh/FluiUI/main.cpp</file>
-            <file>file:/home/christoph/CrystalMesh/FluiUI/test.h</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/tests/fluid02.cxx</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/tests/fluid00.cxx</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/tests/fluid04.h</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/tests/fluid03.h</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/DelaunayModels.h</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/DelaunayTestView.cpp</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/tests/fluid03.cxx</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/tests/newsimpletest.cpp</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/tests/CubeView.cpp</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/tests/fluid04.cxx</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/DelaunayTestView.h</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/tests/CubeView.h</file>
+            <file>file:/home/christoph/CrystalMesh/FluidUI/DelaunayModels.cpp</file>
         </group>
     </open-files>
 </project-private>

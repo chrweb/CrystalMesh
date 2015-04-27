@@ -12,7 +12,7 @@ Function {} {open
 } {
   Fl_Window {} {
     label Hauptfenster open
-    xywh {987 236 240 240} type Double visible
+    xywh {1108 270 240 240} type Double visible
   } {
     Fl_Button {} {
       label Knopf
@@ -24,8 +24,13 @@ Function {} {open
       xywh {65 133 156 57}
     }
     Fl_Input textInput {
-      label {Text input} selected
+      label {Text input}
       xywh {88 81 134 40}
+    }
+    Fl_Button {} {
+      label popupWindow
+      callback Button_PopWin selected
+      xywh {91 25 114 26}
     }
   }
 } 
@@ -38,4 +43,17 @@ std::string fromInput(textInput->value());
 //std::cout << str<< std::endl;
 //output->value(fromInput->c_str());
 output->value(fromInput.c_str());} {}
+} 
+
+Function {NewWindow()} {open return_type {Fl_Window*}
+} {
+  code {return w;} {}
+  Fl_Window {} {open
+    xywh {988 273 100 100} type Double visible
+  } {}
+} 
+
+Function {Button_PopWin(Fl_Widget* ,void*)} {open
+} {
+  code {NewWindow()->show();} {}
 } 

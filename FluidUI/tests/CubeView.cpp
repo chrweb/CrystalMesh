@@ -6,6 +6,8 @@ CubeView::CubeView(int x,int y,int w,int h,const char *l)
 : Fl_Gl_Window(x,y,w,h,l)
 {
 vAng = 0.0; hAng=0.0; size=10.0;
+//vAng = 3.14*0.25;
+//hAng = 3.14*0.25;
 /* The cube definition. These are the vertices of a unit cube
 * centered on the origin.*/
 boxv0[0] = -0.5; boxv0[1] = -0.5; boxv0[2] = -0.5; boxv1[0] = 0.5;

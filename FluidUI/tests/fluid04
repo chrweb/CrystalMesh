@@ -1,0 +1,44 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0302 
+header_name {.h} 
+code_name {.cxx}
+Function {} {open
+} {
+  Fl_Window {} {
+    label MainWindow open
+    xywh {876 115 600 600} type Double hide
+  } {
+    Fl_Box cube {
+      label glDisplay
+      xywh {100 100 400 400} box DOWN_BOX
+      code0 {\#include "CubeView.h"}
+      class CubeView
+    }
+    Fl_Roller {} {
+      callback hRotate selected
+      xywh {78 513 446 24} type Horizontal maximum 360 step 1
+    }
+    Fl_Slider {} {
+      label {slider:}
+      callback xShift
+      xywh {210 546 217 24} type Horizontal minimum -1 step 0.1
+    }
+  }
+} 
+
+Function {hRotate(Fl_Roller* widget,void*)} {
+  comment {//horizontal rotation} open return_type {static void}
+} {
+  code {double angle = widget->value();
+    cube->h_angle(angle);
+    cube->redraw();
+    return;} {}
+} 
+
+Function {xShift(Fl_Roller* widget,void*)} {
+  comment {shift in x dir} open return_type void
+} {
+  code {//shift in x dir
+    cube->panx(widget->value());
+    cube->redraw();} {}
+} 
