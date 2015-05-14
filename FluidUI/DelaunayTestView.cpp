@@ -6,8 +6,30 @@
  */
 
 #include "DelaunayTestView.h"
+#include "DelaunayModels.h"
+
 namespace CrystalMesh{
-   // using namespace Delaunay3;
+   
+    namespace UI{
+        DelaunayTestView::DelaunayTestView(int x, int y, int w, int h, const char* l)
+        :Fl_Gl_Window(x, y, w, h, l)
+        {
+
+        }
+
+        
+        void DelaunayTestView::registerModel(const DelaunayOpenGLExporter* pModel){
+            mpModel = pModel;
+        }
+        
+        
+        
+        void DelaunayTestView::draw(){}
+    
+        DelaunayTestView::~DelaunayTestView(){}
+    
+    
+    }
 
 }
 

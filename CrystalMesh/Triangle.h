@@ -48,6 +48,8 @@ namespace CrystalMesh{
             Triangle const getCounterOriented() const;
 
 	};
+        
+        Triangle const triangleOf(Subdiv3::DirectedEdgeRing* apDring);
 
     }
 }

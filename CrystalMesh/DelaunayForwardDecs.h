@@ -8,9 +8,14 @@
 #include <stdint.h>
 
 /**
- * Forward-declared types, often used in Delaunay3:
- *
+ * Forward-declared types, often used in Delaunay3: 
  */
+
+namespace Mathbox{
+    namespace Geometry {
+        struct Point3D;
+    }  // namespace Geometry
+}
 
 namespace CrystalMesh {
 
@@ -27,18 +32,23 @@ namespace CrystalMesh {
 		struct Vertex;
                 
                 struct Tet;
+               
 	}
 
 	namespace Delaunay3{
 
-		typedef uint32_t Index;
+            typedef uint32_t Index;
+            
+            class Exporter{
+                virtual Index addVertex(Mathbox::Geometry::Point3D const & aPoint3D) = 0;
+                virtual void addTriangle(Index id0, Index id1, Index id2) = 0;        
+            };
+            
+            class DelaunayTriangulation3D;
+                
 	}
 
 }  // namespace CrystalMesh
 
 
-namespace Mathbox{
-    namespace Geometry {
-        struct Point3D;
-    }  // namespace Geometry
-}
+

@@ -7,11 +7,15 @@
 #pragma once
 
 #include "Subdiv3ForwardDecs.h"
+#include "Vertex.h"
+#include <vector>
 
 namespace CrystalMesh{
 
 	namespace Subdiv3{
 
+            typedef std::vector<Vertex*>  VertexBuffer;
+            typedef std::vector<EdgeRing*> EdgeRingBuffer;
 
 
 		class Manifold{
@@ -79,7 +83,13 @@ namespace CrystalMesh{
 
 			bool const isMyDualEdgeRing(EdgeRing const & aRing) const;
                         
-                    
+                        void exportPrimalVerts(VertexBuffer& aBuffer) const;
+                        
+                        void exportDualVerts(VertexBuffer& aBuffer) const;
+                        
+                        void exportPrimalEdgeRings(EdgeRingBuffer& aBuffer) const;
+                        
+                        void exportDualEdgeRings(EdgeRingBuffer& aBuffer) const;
                        
 
 		private:

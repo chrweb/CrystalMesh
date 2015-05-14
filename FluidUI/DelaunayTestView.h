@@ -9,16 +9,23 @@
 #define	DELAUNAYTESTVIEW_H
 
 #include <FL/Fl_Gl_Window.H>
-//#include "../CrystalMesh/DelaunayTriangulation3D.h"
+
+#include "DelaunayModels.h"
+
 
 namespace CrystalMesh{
 
     namespace UI{
         
+        class DelaunayOpenGLExporter;
+        
         class DelaunayTestView: public Fl_Gl_Window {
+            
             public:
     
             DelaunayTestView(int x,int y,int w,int h,const char *l=0);
+            
+            void registerModel(DelaunayOpenGLExporter const *mpModel);
             
            //void setCurrentSelectedCorner(Delaunay3::Triangle const aTri)
     
@@ -27,7 +34,15 @@ namespace CrystalMesh{
             virtual ~DelaunayTestView();
 
             private:
-
+                
+            void drawModel();
+                
+            DelaunayOpenGLExporter const * mpModel;
+            
+            float vAng,hAng; 
+            
+            float xshift,yshift;
+                
         };
 
     

@@ -14,6 +14,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>DelaunayModels.cpp</itemPath>
+      <itemPath>FluidUI.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -67,10 +68,6 @@
       </toolsSet>
       <compileType>
         <ccTool>
-          <incDir>
-            <pElem>/usr/include/GL</pElem>
-            <pElem>/usr/include/FL</pElem>
-          </incDir>
           <commandLine>-std=c++11</commandLine>
         </ccTool>
         <linkerTool>
@@ -83,6 +80,30 @@
             <linkerLibLibItem>fltk_gl</linkerLibLibItem>
             <linkerLibLibItem>glut</linkerLibLibItem>
             <linkerLibLibItem>GL</linkerLibLibItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../CrystalMesh"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../CrystalMesh"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libcrystalmesh.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../Mathbox"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../Mathbox"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmathbox.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -93,6 +114,8 @@
       <item path="DelaunayTestView.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTestView.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FluidUI.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>
@@ -238,6 +261,8 @@
       <item path="DelaunayTestView.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTestView.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="FluidUI.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <folder path="TestFiles/f1">
         <cTool>

@@ -27,6 +27,8 @@ namespace CrystalMesh{
 			bool const isMyEntity( Entity const & aRef) const;
 
 			void deleteEntity (Entity *apInstance);
+                        
+                        std::set<Entity*> const& getContainer() const;
 
 		private:
 
@@ -70,6 +72,11 @@ namespace CrystalMesh{
 
 			mContainer.clear();
 		}
+                
+                template<typename Entity>
+                typename std::set<Entity*> const& EntityMaintener<Entity>::getContainer() const{
+                    return mContainer;
+                }
 	}
 
 }

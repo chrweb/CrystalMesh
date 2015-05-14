@@ -396,7 +396,44 @@ namespace CrystalMesh{
 
 
 
-
+                void Manifold::exportPrimalVerts(VertexBuffer& aBuffer) const{
+                
+                    auto const& container = mpPrimalVertexMaintener->getContainer();
+                    
+                    aBuffer.reserve(container.size());
+                    for (auto item: container){
+                        aBuffer.push_back(item);
+                    }
+                    
+                }
+                        
+                void Manifold::exportDualVerts(VertexBuffer& aBuffer) const{
+                    auto const& container = mpDualVertexMaintener->getContainer();
+                    
+                    aBuffer.reserve(container.size());
+                    for (auto item: container){
+                        aBuffer.push_back(item);
+                    }
+                }
+                        
+                void Manifold::exportPrimalEdgeRings(EdgeRingBuffer& aBuffer) const{
+                    auto const& container = mpPrimalEdgeRingMaintener->getContainer();
+                    
+                    aBuffer.reserve(container.size());
+                    for (auto item: container){
+                        aBuffer.push_back(item);
+                    }
+                }
+                        
+                void Manifold::exportDualEdgeRings(EdgeRingBuffer& aBuffer) const{
+                    auto const& container = mpDualEdgeRingMaintener->getContainer();
+                    
+                    aBuffer.reserve(container.size());
+                    for (auto item: container){
+                        aBuffer.push_back(item);
+                    }
+                }
+                       
 	}
 }
 

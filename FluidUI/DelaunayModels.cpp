@@ -1,3 +1,5 @@
+#define GL_GLEXT_PROTOTYPES
+
 #include "../CrystalMesh/Triangle.h"
 #include "../Mathbox/Mathbox.h"
 #include "DelaunayModels.h"
@@ -35,5 +37,48 @@ namespace CrystalMesh{
                     
         }
         
+
+            
+        Pointf const glPointOf(Mathbox::Geometry::Point3D const & aPoint){
+           Pointf result = {(float) aPoint.mX, (float) aPoint.mY, (float) aPoint.mZ};
+           return result;
+        }
+       
+        GLTriangle const glTriangleOf(Delaunay3::Index id0, Delaunay3::Index id1, Delaunay3::Index id2){
+            GLTriangle result = {(GLuint) id0, (GLuint) id1, (GLuint) id2};
+            return result;
+        }
+        
+        
+        DelaunayOpenGLExporter::DelaunayOpenGLExporter()
+        {
+            mLastFreeIndex = 0;
+        }
+        
+        DelaunayOpenGLExporter::~DelaunayOpenGLExporter(){}
+        
+        Delaunay3::Index DelaunayOpenGLExporter::addVertex(Mathbox::Geometry::Point3D const & aPoint3D){
+            Index result = mLastFreeIndex;
+            mVertexBuffer.push_back(glPointOf(aPoint3D));
+            mLastFreeIndex++;
+            return result;
+        }
+        
+        void DelaunayOpenGLExporter::addTriangle(Delaunay3::Index id0, Delaunay3::Index id1, Delaunay3::Index id2){
+            GLTriangle tri = glTriangleOf(id0, id1, id2);
+            mTriangleBuffer.push_back(tri);
+            return;
+        }
+        
+        std::vector<Pointf> const * DelaunayOpenGLExporter::getVertexBuffer() const{
+            return &mVertexBuffer;
+        }
+            
+        std::vector<GLTriangle> const * DelaunayOpenGLExporter::getTriangleBuffer() const{
+            return &mTriangleBuffer;
+        }
+        
     }
 } 
+
+int main(){};

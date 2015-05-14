@@ -92,7 +92,8 @@ glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 glPushMatrix(); glTranslatef(xshift, yshift, 0);
 glRotatef(hAng,0,1,0); glRotatef(vAng,1,0,0);
-glScalef(float(size),float(size),float(size)); drawCube();
+glScalef(float(size),float(size),float(size)); 
+drawCube();
 glPopMatrix();
 };
 

@@ -35,7 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/DelaunayModels.o
+	${OBJECTDIR}/DelaunayModels.o \
+	${OBJECTDIR}/FluidUI.o
 
 # Test Directory
 TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
@@ -77,6 +78,11 @@ ${OBJECTDIR}/DelaunayModels.o: DelaunayModels.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayModels.o DelaunayModels.cpp
+
+${OBJECTDIR}/FluidUI.o: FluidUI.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FluidUI.o FluidUI.cpp
 
 # Subprojects
 .build-subprojects:
@@ -167,6 +173,19 @@ ${OBJECTDIR}/DelaunayModels_nomain.o: ${OBJECTDIR}/DelaunayModels.o DelaunayMode
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayModels_nomain.o DelaunayModels.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/DelaunayModels.o ${OBJECTDIR}/DelaunayModels_nomain.o;\
+	fi
+
+${OBJECTDIR}/FluidUI_nomain.o: ${OBJECTDIR}/FluidUI.o FluidUI.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/FluidUI.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FluidUI_nomain.o FluidUI.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/FluidUI.o ${OBJECTDIR}/FluidUI_nomain.o;\
 	fi
 
 # Run Test Targets

@@ -9,8 +9,10 @@ namespace CrystalMesh{
         using namespace Mathbox::Geometry;
         using namespace Subdiv3;
         
+        Index const VertexData::invalidID = Index(-1);
+        
         VertexData const vertexDataOf(Mathbox::Geometry::Point3D const & aPoint, void const * apPropPtr){
-            VertexData result{ aPoint, apPropPtr};
+            VertexData result{ aPoint, apPropPtr, VertexData::invalidID};
             return result;
 	}
         
@@ -18,6 +20,11 @@ namespace CrystalMesh{
             VertexData const & data = *reinterpret_cast<VertexData const *>(pVertex->mpData);
             return data.mPoint;
 	}
+        
+        Index idOf(Subdiv3::Vertex const *pVertex){
+            VertexData const & data = *reinterpret_cast<VertexData const *>(pVertex->mpData);
+            return data.mId;
+        }
         
         void const * propertyPtrOf(Subdiv3::Vertex const * pVertex){
              VertexData const & data = *reinterpret_cast<VertexData const *>(pVertex->mpData);

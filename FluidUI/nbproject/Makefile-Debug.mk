@@ -35,7 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/DelaunayModels.o
+	${OBJECTDIR}/DelaunayModels.o \
+	${OBJECTDIR}/FluidUI.o
 
 # Test Directory
 TESTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tests
@@ -63,11 +64,15 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/usr/lib/x86_64-linux-gnu -lGLU -lfltk -lfltk_gl -lglut -lGL
+LDLIBSOPTIONS=-L/usr/lib/x86_64-linux-gnu -lGLU -lfltk -lfltk_gl -lglut -lGL ../CrystalMesh/dist/Debug/GNU-Linux-x86/libcrystalmesh.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fluidui
+
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fluidui: ../CrystalMesh/dist/Debug/GNU-Linux-x86/libcrystalmesh.a
+
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fluidui: ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fluidui: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
@@ -76,10 +81,17 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fluidui: ${OBJECTFILES}
 ${OBJECTDIR}/DelaunayModels.o: DelaunayModels.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/GL -I/usr/include/FL -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayModels.o DelaunayModels.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayModels.o DelaunayModels.cpp
+
+${OBJECTDIR}/FluidUI.o: FluidUI.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FluidUI.o FluidUI.cpp
 
 # Subprojects
 .build-subprojects:
+	cd ../CrystalMesh && ${MAKE}  -f Makefile CONF=Debug
+	cd ../Mathbox && ${MAKE}  -f Makefile CONF=Debug
 
 # Build Test Targets
 .build-tests-conf: .build-conf ${TESTFILES}
@@ -111,49 +123,49 @@ ${TESTDIR}/TestFiles/f5: ${TESTDIR}/tests/CubeView.o ${TESTDIR}/tests/fluid04.o 
 ${TESTDIR}/DelaunayTestView.o: DelaunayTestView.cpp 
 	${MKDIR} -p ${TESTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/GL -I/usr/include/FL -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTestView.o DelaunayTestView.cpp
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTestView.o DelaunayTestView.cpp
 
 
 ${TESTDIR}/tests/newsimpletest.o: tests/newsimpletest.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/GL -I/usr/include/FL -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/newsimpletest.o tests/newsimpletest.cpp
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/newsimpletest.o tests/newsimpletest.cpp
 
 
 ${TESTDIR}/tests/fluid00.o: tests/fluid00.cxx 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/GL -I/usr/include/FL -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid00.o tests/fluid00.cxx
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid00.o tests/fluid00.cxx
 
 
 ${TESTDIR}/tests/fluid01.o: tests/fluid01.cxx 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/GL -I/usr/include/FL -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid01.o tests/fluid01.cxx
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid01.o tests/fluid01.cxx
 
 
 ${TESTDIR}/tests/fluid02.o: tests/fluid02.cxx 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/GL -I/usr/include/FL -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid02.o tests/fluid02.cxx
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid02.o tests/fluid02.cxx
 
 
 ${TESTDIR}/tests/fluid03.o: tests/fluid03.cxx 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/GL -I/usr/include/FL -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid03.o tests/fluid03.cxx
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid03.o tests/fluid03.cxx
 
 
 ${TESTDIR}/tests/CubeView.o: tests/CubeView.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/GL -I/usr/include/FL -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/CubeView.o tests/CubeView.cpp
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/CubeView.o tests/CubeView.cpp
 
 
 ${TESTDIR}/tests/fluid04.o: tests/fluid04.cxx 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I/usr/include/GL -I/usr/include/FL -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid04.o tests/fluid04.cxx
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/fluid04.o tests/fluid04.cxx
 
 
 ${OBJECTDIR}/DelaunayModels_nomain.o: ${OBJECTDIR}/DelaunayModels.o DelaunayModels.cpp 
@@ -164,9 +176,22 @@ ${OBJECTDIR}/DelaunayModels_nomain.o: ${OBJECTDIR}/DelaunayModels.o DelaunayMode
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -g -I/usr/include/GL -I/usr/include/FL -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayModels_nomain.o DelaunayModels.cpp;\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DelaunayModels_nomain.o DelaunayModels.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/DelaunayModels.o ${OBJECTDIR}/DelaunayModels_nomain.o;\
+	fi
+
+${OBJECTDIR}/FluidUI_nomain.o: ${OBJECTDIR}/FluidUI.o FluidUI.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/FluidUI.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FluidUI_nomain.o FluidUI.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/FluidUI.o ${OBJECTDIR}/FluidUI_nomain.o;\
 	fi
 
 # Run Test Targets
@@ -190,6 +215,8 @@ ${OBJECTDIR}/DelaunayModels_nomain.o: ${OBJECTDIR}/DelaunayModels.o DelaunayMode
 
 # Subprojects
 .clean-subprojects:
+	cd ../CrystalMesh && ${MAKE}  -f Makefile CONF=Debug clean
+	cd ../Mathbox && ${MAKE}  -f Makefile CONF=Debug clean
 
 # Enable dependency checking
 .dep.inc: .depcheck-impl
