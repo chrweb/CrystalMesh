@@ -89,7 +89,7 @@ ${OBJECTDIR}/FluidUI.o: FluidUI.cpp
 
 # Build Test Targets
 .build-tests-conf: .build-conf ${TESTFILES}
-${TESTDIR}/TestFiles/f6: ${TESTDIR}/DelaunayTestView.o ${TESTDIR}/tests/newsimpletest.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f6: ${TESTDIR}/DelaunayTestView.o ${TESTDIR}/tests/TestModel.o ${TESTDIR}/tests/delaunayTriangleTest.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f6 $^ ${LDLIBSOPTIONS} 
 
@@ -120,10 +120,16 @@ ${TESTDIR}/DelaunayTestView.o: DelaunayTestView.cpp
 	$(COMPILE.cc) -O2 -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTestView.o DelaunayTestView.cpp
 
 
-${TESTDIR}/tests/newsimpletest.o: tests/newsimpletest.cpp 
+${TESTDIR}/tests/TestModel.o: tests/TestModel.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/newsimpletest.o tests/newsimpletest.cpp
+	$(COMPILE.cc) -O2 -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/TestModel.o tests/TestModel.cpp
+
+
+${TESTDIR}/tests/delaunayTriangleTest.o: tests/delaunayTriangleTest.cxx 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/delaunayTriangleTest.o tests/delaunayTriangleTest.cxx
 
 
 ${TESTDIR}/tests/fluid00.o: tests/fluid00.cxx 

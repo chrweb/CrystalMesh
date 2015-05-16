@@ -114,10 +114,7 @@ namespace CrystalMesh {
                     return triangleOf(aTri.mpDualEdgeRing->getSym());
 		}
                 
-                Triangle const triangleOf(Subdiv3::DirectedEdgeRing* apDring){
-                    Triangle result = {apDring};
-                    return result;
-                }
+
 
 
 		TetInteriour::Vertices const TetInteriour::getVertices() const{

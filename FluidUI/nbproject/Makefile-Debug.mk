@@ -64,7 +64,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/usr/lib/x86_64-linux-gnu -lGLU -lfltk -lfltk_gl -lglut -lGL ../CrystalMesh/dist/Debug/GNU-Linux-x86/libcrystalmesh.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a
+LDLIBSOPTIONS=-L/usr/lib/x86_64-linux-gnu -lGLU -lfltk -lfltk_gl -lglut -lGL ../CrystalMesh/dist/Debug/GNU-Linux-x86/libcrystalmesh.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -73,6 +73,8 @@ LDLIBSOPTIONS=-L/usr/lib/x86_64-linux-gnu -lGLU -lfltk -lfltk_gl -lglut -lGL ../
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fluidui: ../CrystalMesh/dist/Debug/GNU-Linux-x86/libcrystalmesh.a
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fluidui: ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a
+
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fluidui: ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fluidui: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
@@ -92,10 +94,11 @@ ${OBJECTDIR}/FluidUI.o: FluidUI.cpp
 .build-subprojects:
 	cd ../CrystalMesh && ${MAKE}  -f Makefile CONF=Debug
 	cd ../Mathbox && ${MAKE}  -f Makefile CONF=Debug
+	cd ../Toolbox && ${MAKE}  -f Makefile CONF=Debug
 
 # Build Test Targets
 .build-tests-conf: .build-conf ${TESTFILES}
-${TESTDIR}/TestFiles/f6: ${TESTDIR}/DelaunayTestView.o ${TESTDIR}/tests/newsimpletest.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f6: ${TESTDIR}/DelaunayTestView.o ${TESTDIR}/tests/TestModel.o ${TESTDIR}/tests/delaunayTriangleTest.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f6 $^ ${LDLIBSOPTIONS} 
 
@@ -126,10 +129,16 @@ ${TESTDIR}/DelaunayTestView.o: DelaunayTestView.cpp
 	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTestView.o DelaunayTestView.cpp
 
 
-${TESTDIR}/tests/newsimpletest.o: tests/newsimpletest.cpp 
+${TESTDIR}/tests/TestModel.o: tests/TestModel.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/newsimpletest.o tests/newsimpletest.cpp
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/TestModel.o tests/TestModel.cpp
+
+
+${TESTDIR}/tests/delaunayTriangleTest.o: tests/delaunayTriangleTest.cxx 
+	${MKDIR} -p ${TESTDIR}/tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/tests/delaunayTriangleTest.o tests/delaunayTriangleTest.cxx
 
 
 ${TESTDIR}/tests/fluid00.o: tests/fluid00.cxx 
@@ -217,6 +226,7 @@ ${OBJECTDIR}/FluidUI_nomain.o: ${OBJECTDIR}/FluidUI.o FluidUI.cpp
 .clean-subprojects:
 	cd ../CrystalMesh && ${MAKE}  -f Makefile CONF=Debug clean
 	cd ../Mathbox && ${MAKE}  -f Makefile CONF=Debug clean
+	cd ../Toolbox && ${MAKE}  -f Makefile CONF=Debug clean
 
 # Enable dependency checking
 .dep.inc: .depcheck-impl

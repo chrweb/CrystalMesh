@@ -1,4 +1,4 @@
-#define GL_GLEXT_PROTOTYPES
+
 
 #include "../CrystalMesh/Triangle.h"
 #include "../Mathbox/Mathbox.h"
@@ -51,8 +51,16 @@ namespace CrystalMesh{
         
         
         DelaunayOpenGLExporter::DelaunayOpenGLExporter()
+        :mVertexBuffer()
+        ,mTriangleBuffer()
         {
             mLastFreeIndex = 0;
+        }
+        
+        void DelaunayOpenGLExporter::initialze(){
+            mLastFreeIndex = 0;
+            mTriangleBuffer.clear();
+            mVertexBuffer.clear();
         }
         
         DelaunayOpenGLExporter::~DelaunayOpenGLExporter(){}

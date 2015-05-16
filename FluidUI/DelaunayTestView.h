@@ -27,6 +27,7 @@ namespace CrystalMesh{
             
             void registerModel(DelaunayOpenGLExporter const *mpModel);
             
+            
            //void setCurrentSelectedCorner(Delaunay3::Triangle const aTri)
     
             void draw();
@@ -42,6 +43,8 @@ namespace CrystalMesh{
             float vAng,hAng; 
             
             float xshift,yshift;
+            
+            double size;
                 
         };
 

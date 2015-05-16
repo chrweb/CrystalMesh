@@ -11,6 +11,7 @@
             <make-dep-projects>
                 <make-dep-project>../CrystalMesh</make-dep-project>
                 <make-dep-project>../Mathbox</make-dep-project>
+                <make-dep-project>../Toolbox</make-dep-project>
             </make-dep-projects>
             <sourceRootList/>
             <confList>

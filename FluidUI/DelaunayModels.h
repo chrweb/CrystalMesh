@@ -42,10 +42,13 @@ namespace CrystalMesh{
         class DelaunayOpenGLExporter
         :public Delaunay3::Exporter
         {
+            
+        public:
 
             DelaunayOpenGLExporter();
             virtual ~DelaunayOpenGLExporter();
             
+            void initialze();
             virtual Delaunay3::Index addVertex(Mathbox::Geometry::Point3D const & aPoint3D) override;
             virtual void addTriangle(Delaunay3::Index id0, Delaunay3::Index id1, Delaunay3::Index id2) override;
             

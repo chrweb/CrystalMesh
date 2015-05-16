@@ -43,6 +43,8 @@ namespace CrystalMesh{
 
         void setVertexPointTo(Mathbox::Geometry::Point3D const & aPoint, Subdiv3::Vertex * pVertex);
         
+        void setVertexIdTo(Index aIndex, Subdiv3::Vertex* pVertex);
+        
             /**
         * Tries to find a FacetEdge with given start/endpoints in an Edgering container.
         * @param org

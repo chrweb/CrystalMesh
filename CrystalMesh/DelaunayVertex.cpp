@@ -49,9 +49,15 @@ namespace CrystalMesh{
          }
          
          void setVertexPointTo(Mathbox::Geometry::Point3D const & aPoint, Subdiv3::Vertex * pVertex){
-             VertexData * data = reinterpret_cast<VertexData*>(pVertex->mpData);
-             data->mPoint = aPoint;
+            VertexData * data = reinterpret_cast<VertexData*>(pVertex->mpData);
+            data->mPoint = aPoint;
          }
+         
+        void setVertexIdTo(Index aIndex, Subdiv3::Vertex* pVertex){
+            VertexData * data = reinterpret_cast<VertexData*>(pVertex->mpData);
+            data->mId = aIndex;
+            return;
+        }
          
          
     }

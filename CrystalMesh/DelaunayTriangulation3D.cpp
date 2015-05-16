@@ -685,6 +685,42 @@ namespace CrystalMesh{
                     return result;
                 }
                 
+                void DelaunayTriangulation3D::addTriangles(Exporter & aExporter) const{
+            
+            Subdiv3::EdgeRingBuffer buffer;
+            mpManifold->exportDualEdgeRings(buffer);
+            for (EdgeRing* pRing: buffer){
+                Triangle tri0 = triangleOf(&pRing->getItem(0));
+                auto verts = tri0.getBoundaryVertices();
+                
+                //one dir
+                aExporter.addTriangle(idOf(verts[0]),
+                                      idOf(verts[1]),
+                                      idOf(verts[2]));
+                
+            
+                //other dir
+                aExporter.addTriangle(idOf(verts[2]),
+                                      idOf(verts[1]),
+                                      idOf(verts[0]));
+                
+            }
+         
+        }
+                
+        void DelaunayTriangulation3D::addVertices(Exporter & aExporter) const{
+            Subdiv3::VertexBuffer buffer;
+            mpManifold->exportPrimalVerts(buffer);
+            for (auto pVertex: buffer)
+            {
+                auto const point = pointOf(pVertex);
+                Index id = aExporter.addVertex(point);
+                setVertexIdTo(id, pVertex);
+                
+            }
+
+        }
+                
   /*              
                 //ToDo: continue here
                 Domain const DelaunayTriangulation3D::destroyTriangle(Triangle& aTri){
@@ -776,40 +812,7 @@ namespace CrystalMesh{
 	}
         
         
-        void DelaunayTriangulation3D::addTriangles(Exporter & aExporter) const{
-            
-            Subdiv3::EdgeRingBuffer buffer;
-            mpManifold->exportDualEdgeRings(buffer);
-            for (EdgeRing* pRing: buffer){
-                Triangle tri0 = triangleOf(pRing->getItem(0));
-                auto verts = tri0.getBoundaryVertices();
-                
-                //one dir
-                aExporter.addTriangle(idOf(verts[0]),
-                                      idOf(verts[1]),
-                                      idOf(verts[2]));
-                
-            
-                //other dir
-                aExporter.addTriangle(idOf(verts[2]),
-                                      idOf(verts[1]),
-                                      idOf(verts[0]));
-                
-            }
-         
-        }
-                
-        void DelaunayTriangulation3D::addVertices(Exporter & aExporter) const{
-            Subdiv3::VertexBuffer buffer;
-            mpManifold->exportPrimalVerts(buffer);
-            for (auto pVertex: buffer)
-            {
-                VertexData * data = vertexDataOf(pVertex);
-                Index id = aExporter.addVertex(data->mPoint);
-                data->mId = id;
-            }
-
-        }
+        
 
 }
 

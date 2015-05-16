@@ -1,4 +1,5 @@
 #include <algorithm>
+#include "ComplexTypes.h"
 #include "Triangle.h"
 #include "DelaunayVertex.h"
 
@@ -80,4 +81,20 @@ Tet const Triangle::upperTet() const{
 }
 */
 
-Triangle const Triangle::invalid  = {nullptr};
+
+
+
+
+Triangle const Triangle::invalid = {nullptr}; 
+    
+namespace CrystalMesh{
+
+    namespace Delaunay3{
+        
+        Triangle const triangleOf(Subdiv3::DirectedEdgeRing* apDring){
+            Triangle result = {apDring};
+            return result;
+        }
+    }
+}
+

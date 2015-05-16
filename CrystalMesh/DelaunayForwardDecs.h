@@ -40,6 +40,8 @@ namespace CrystalMesh {
             typedef uint32_t Index;
             
             class Exporter{
+                
+            public:
                 virtual Index addVertex(Mathbox::Geometry::Point3D const & aPoint3D) = 0;
                 virtual void addTriangle(Index id0, Index id1, Index id2) = 0;        
             };
