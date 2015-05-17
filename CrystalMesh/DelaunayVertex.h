@@ -11,6 +11,7 @@
 #include "DelaunayForwardDecs.h"
 #include "Vertex.h"
 #include "DirectedEdgeRing.h"
+#include "FacetEdge.h"
 #include <algorithm>
 namespace CrystalMesh{
     
@@ -41,6 +42,10 @@ namespace CrystalMesh{
         Mathbox::Geometry::Point3D const originPointOf(Subdiv3::DirectedEdgeRing const * pFacetEdge);
 
         Mathbox::Geometry::Point3D const destinationPointOf(Subdiv3::DirectedEdgeRing const * pFacetEdge);
+        
+        Index const originIndexOf(Subdiv3::FacetEdge const *pFedge);
+        
+        Index const destinationIndexOf(Subdiv3::FacetEdge const *pFedge);
         
         Index const originIndexOf(Subdiv3::DirectedEdgeRing const *pRing);
         

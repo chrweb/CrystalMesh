@@ -8,7 +8,10 @@
 extern CrystalMesh::UI::DelaunayTestView *dtView;
 #include <FL/Fl_Roller.H>
 #include <FL/Fl_Slider.H>
+#include <FL/Fl_Group.H>
+#include <FL/Fl_Button.H>
 void hRotate(Fl_Roller* widget,void*);
 void vRotate(Fl_Roller * widget, void*);
 void xShift(Fl_Roller* widget,void*);
+void buttonFnext(Fl_Button* widget, void*);
 #endif

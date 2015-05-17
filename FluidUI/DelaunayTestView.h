@@ -45,7 +45,7 @@ namespace CrystalMesh{
             
             void setSelectedEdgeTo(GLEdge const& aEdge);
             
-            void setSelectedTrigTo(GLTriangle const& aEdge);
+            void setSelectedTrigTo(GLTriangle const& aTrig);
             
            //void setCurrentSelectedCorner(Delaunay3::Triangle const aTri)
     
@@ -62,6 +62,9 @@ namespace CrystalMesh{
             
             void setTrigStyleSelected() const;
             void setTrigStyleDefault() const;
+            
+            void drawLine(GLEdge const& aEdge) const;
+            void drawTrig(GLTriangle const& aTrig) const;
                 
             DelaunayOpenGLExporter const * mpModel;
             

@@ -9,6 +9,7 @@
 #define	CORNER_H
 #include "ComplexTypes.h"
 #include "DelaunayForwardDecs.h"
+#include "Triangle.h"
 namespace CrystalMesh{
 
     namespace Delaunay3{
@@ -26,7 +27,13 @@ namespace CrystalMesh{
              * @return 
              */
             bool representsSegment(Mathbox::Geometry::Point3D const& p0, Mathbox::Geometry::Point3D const & p1) const;
+            
+            Triangle const adjancentTriangle() const;
+            
+            static Corner const invalid;
 	};
+        
+        Corner const cornerOf(Subdiv3::FacetEdge* pFe);
     }
 }
 

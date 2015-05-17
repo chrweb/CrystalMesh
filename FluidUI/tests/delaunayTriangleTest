@@ -2,43 +2,84 @@
 version 1.0302 
 header_name {.h} 
 code_name {.cxx}
+decl {\#include "DelaunayTestView.h"} {private local
+} 
+
+decl {\#include "TestModel.h"} {private local
+} 
+
 Function {} {open
 } {
   Fl_Window {} {
-    label MainWindow open
-    xywh {876 115 600 600} type Double hide
+    label MainWindow open selected
+    xywh {945 104 815 670} type Double visible
   } {
-    Fl_Box cube {
+    Fl_Box dtView {
       label glDisplay
-      xywh {100 100 400 400} box DOWN_BOX
-      code0 {\#include "CubeView.h"}
-      class CubeView
+      xywh {278 100 446 400} box DOWN_BOX
+      code0 {\#include "DelaunayTestView.h"}
+      class {CrystalMesh::UI::DelaunayTestView}
     }
     Fl_Roller {} {
-      callback hRotate selected
-      xywh {78 513 446 24} type Horizontal maximum 360 step 1
+      callback vRotate
+      xywh {278 513 446 24} type Horizontal maximum 361 step 1
     }
     Fl_Slider {} {
       label {slider:}
       callback xShift
-      xywh {210 546 217 24} type Horizontal minimum -1 step 0.1
+      xywh {410 546 217 24} type Horizontal minimum -1 step 0.1
+    }
+    Fl_Roller {} {
+      callback hRotate
+      xywh {235 99 24 400} minimum -1 maximum 361 step 1
+    }
+    Fl_Group {} {open
+      xywh {40 190 185 100} box DOWN_BOX
+    } {
+      Fl_Button {} {
+        label FNext
+        xywh {95 200 70 20}
+      }
+      Fl_Button {} {
+        label EPrev
+        xywh {145 230 70 20}
+      }
+      Fl_Button {} {
+        label ENext
+        xywh {50 230 70 20}
+      }
+      Fl_Button {} {
+        label FPrev
+        xywh {95 260 70 20}
+      }
     }
   }
+  code {CrystalMesh::UI::triangleTest_launch();} {}
+  code {CrystalMesh::UI::triangleTest_tearDown();} {}
 } 
 
 Function {hRotate(Fl_Roller* widget,void*)} {
   comment {//horizontal rotation} open return_type {static void}
 } {
   code {double angle = widget->value();
-    cube->h_angle(angle);
-    cube->redraw();
-    return;} {}
+dtView->rotateViewH(angle);
+if (angle > 360){
+	widget->value(0.0);		
+}
+if (anglie < 0){
+	widget->value(360.0);	
+}} {}
+} 
+
+Function {vRotate(Fl_Roller * widget, void*)} {
+  comment {//horizontal rotation} open return_type void
+} {
+  code {double angle = widget->value();
+dtView->rotateViewV(angle);} {}
 } 
 
 Function {xShift(Fl_Roller* widget,void*)} {
   comment {shift in x dir} open return_type void
 } {
-  code {//shift in x dir
-    cube->panx(widget->value());
-    cube->redraw();} {}
+  code {//shift in x dir} {}
 } 

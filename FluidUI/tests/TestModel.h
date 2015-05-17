@@ -19,7 +19,19 @@ namespace CrystalMesh{
         DelaunayOpenGLExporter const * currentModel();
 
         void triangleTest_tearDown();
-
+        
+        GLTriangle const currentSelectedTrig();
+        
+        GLTriangle const selectedTrigSetNext();
+        
+        GLTriangle const selectedTrigSetPrev();
+        
+        GLEdge const currentSelectedEdge();
+        
+        GLEdge const selectedEdgeSetNext();
+        
+        GLEdge const selectedEdgeSetPrev();
+        
     }
 
 }

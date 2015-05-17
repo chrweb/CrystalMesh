@@ -17,6 +17,19 @@ namespace CrystalMesh{
             
             return false;
         }
+        
+        Corner const Corner::invalid  = {nullptr, nullptr};
+        
+        Triangle const Corner::adjancentTriangle() const{
+            return triangleOf(mRef->getDual()->getDirectedEdgeRing());
+        }
+        
+        Corner const cornerOf(Subdiv3::FacetEdge* pFe){
+            Corner result;
+            result.mRef = pFe;
+            result.mFnext = pFe->getFnext();
+            return result;
+        }
 
     }
 }

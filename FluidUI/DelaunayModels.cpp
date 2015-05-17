@@ -53,6 +53,18 @@ namespace CrystalMesh{
              GLEdge result = {(GLuint) id0, (GLuint) id1};
              return result;
          }
+         
+         bool const GLTriangle::operator == (GLTriangle const& aOther) const{
+             return (id0 == aOther.id0) && (id1 == aOther.id1) && (id2 == aOther.id2);
+         }
+         
+         GLTriangle const GLTriangle::invalid  = {GLuint(-1), GLuint(-1), GLuint(-1)};
+         
+         bool const GLEdge::operator ==(const GLEdge& aOther) const{
+             return (id0 == aOther.id0) && (id1 == aOther.id1);
+         }
+         
+         GLEdge const GLEdge::invalid = {GLuint(-1), GLuint(-1)};
         
         DelaunayOpenGLExporter::DelaunayOpenGLExporter()
         :mVertexBuffer()

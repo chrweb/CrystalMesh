@@ -48,6 +48,14 @@ namespace CrystalMesh{
              return destinationPointOf(pRing->getRingMember());
          }
          
+        Index const originIndexOf(Subdiv3::FacetEdge const *pFedge){
+            return originIndexOf(pFedge->getDirectedEdgeRing());
+        }
+        
+        Index const destinationIndexOf(Subdiv3::FacetEdge const *pFedge){
+            return destinationIndexOf(pFedge->getDirectedEdgeRing());
+        }
+         
         Index const originIndexOf(Subdiv3::DirectedEdgeRing const *pRing){
             Index result =  idOf(pRing->getOrg());
             return result;

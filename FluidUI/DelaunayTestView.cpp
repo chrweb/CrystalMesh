@@ -26,6 +26,8 @@ namespace CrystalMesh{
         
         void DelaunayTestView::registerModel(const DelaunayOpenGLExporter* pModel){
             mpModel = pModel;
+            mSelectedEdge = GLEdge::invalid;
+            mSelectedTrig = GLTriangle::invalid;
         }
         
         
@@ -84,6 +86,18 @@ namespace CrystalMesh{
             incrementVerticalAngleBy(aDeltaV);
             redraw();
         }
+        
+        
+        void DelaunayTestView::setSelectedEdgeTo(const GLEdge& aEdge) {
+            mSelectedEdge = aEdge;
+            redraw();
+        }
+        
+        void DelaunayTestView::setSelectedTrigTo(const GLTriangle& aTrig){
+            mSelectedTrig = aTrig;
+            redraw();
+        }
+
 //        void DelaunayTestView::drawModel(){
 //            glShadeModel(GL_FLAT);
 //            glBegin(GL_TRIANGLES);
@@ -132,31 +146,72 @@ namespace CrystalMesh{
             auto const & tbo = *mpModel->getTriangleBuffer();
             
             glShadeModel(GL_FLAT);
-            glColor4f(0.0, 0.0, 1.0, 0.5);
             glEnableClientState(GL_VERTEX_ARRAY);
             glVertexPointer(3, GL_FLOAT, 0, mpModel->getVertexBuffer()->data());
             
+            
+            setTrigStyleDefault();
             glBegin(GL_TRIANGLES);
             for (auto const tri : tbo){
-                glArrayElement(tri.id0);
-                glArrayElement(tri.id1);
-                glArrayElement(tri.id2);
+                drawTrig(tri);
             }
             glEnd();
             
-            auto const& lbo = *mpModel->getEdgeBuffer();
-            glColor4f(1.0, 0.0, 0.0, 1.0);
-         
+            auto const& lbo = *mpModel->getEdgeBuffer();    
+            setLineStyleDefault();
             glBegin(GL_LINES);
             for (auto const edge:lbo){
-                glArrayElement(edge.id0);
-                glArrayElement(edge.id1);
+                drawLine(edge);
             }
             
             glEnd();
       
     
         };
+        
+        void DelaunayTestView::setTrigStyleDefault() const{
+            glColor4f(0.0, 0.0, 1.0, 0.5);
+        }
+        
+        void DelaunayTestView::setTrigStyleSelected() const{
+            glColor4f(0.0, 0.0, 1.0, 1.0);
+        }
+        
+        void DelaunayTestView::setLineStyleSelected() const{
+            glColor4f(1.0, 0.0, 0.0, 1.0);
+        }
+        
+        void DelaunayTestView::setLineStyleDefault() const{
+            glColor4f(0.8, 0.2, 0.0, 1.0);
+        }
+        
+        void DelaunayTestView::drawTrig(const GLTriangle& aTrig) const{
+            if (aTrig == mSelectedTrig){
+                setTrigStyleSelected();
+            }
+            
+            glArrayElement(aTrig.id0);
+            glArrayElement(aTrig.id1);
+            glArrayElement(aTrig.id2);
+            
+            if (aTrig == mSelectedTrig){
+                setTrigStyleDefault();
+            }
+        }
+        
+        void DelaunayTestView::drawLine(const GLEdge& aEdge) const{
+            if (aEdge == mSelectedEdge){
+                setLineStyleSelected();
+            }
+            
+            glArrayElement(aEdge.id0);
+            glArrayElement(aEdge.id1);
+            
+            if (aEdge == mSelectedEdge){
+                setLineStyleDefault();
+            }
+        
+        }
 
 
     
