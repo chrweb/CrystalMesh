@@ -95,7 +95,7 @@ namespace CrystalMesh{
         }
         
         GLEdge const selectedEdgeSetNext(){
-            auto next = selectedEdge.mRef->getFnext();
+            auto next = selectedEdge.mRef->getEnext();
             selectedEdge = cornerOf(next);
             return currentSelectedEdge();
         }

@@ -710,10 +710,10 @@ namespace CrystalMesh{
 
 
                         //other dir
-                        aExporter.addTriangle(idOf(verts[2]),
-                                              idOf(verts[1]),
-                                              idOf(verts[0]));
-                
+//                        aExporter.addTriangle(idOf(verts[2]),
+//                                              idOf(verts[1]),
+//                                              idOf(verts[0]));
+//                
                 }
          
             }

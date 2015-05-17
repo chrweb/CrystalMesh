@@ -44,20 +44,24 @@ int main(int argc, char **argv) {
       { Fl_Button* o = new Fl_Button(95, 200, 70, 20, "FNext");
         o->callback((Fl_Callback*)buttonFnext);
       } // Fl_Button* o
-      { new Fl_Button(145, 230, 70, 20, "EPrev");
+      { Fl_Button* o = new Fl_Button(145, 230, 70, 20, "EPrev");
+        o->callback((Fl_Callback*)buttonEPrev);
       } // Fl_Button* o
-      { new Fl_Button(50, 230, 70, 20, "ENext");
+      { Fl_Button* o = new Fl_Button(50, 230, 70, 20, "ENext");
+        o->callback((Fl_Callback*)buttonEnext);
       } // Fl_Button* o
-      { new Fl_Button(95, 260, 70, 20, "FPrev");
+      { Fl_Button* o = new Fl_Button(95, 260, 70, 20, "FPrev");
+        o->callback((Fl_Callback*)buttonFPrev);
       } // Fl_Button* o
       o->end();
     } // Fl_Group* o
     o->end();
   } // Fl_Double_Window* o
   CrystalMesh::UI::triangleTest_launch();
-  CrystalMesh::UI::triangleTest_tearDown();
+
   w->show(argc, argv);
-  return Fl::run();
+  return Fl::run();  
+  CrystalMesh::UI::triangleTest_tearDown();
 }
 
 /**
@@ -91,5 +95,29 @@ void xShift(Fl_Roller* widget,void*) {
 
 void buttonFnext(Fl_Button* widget, void*) {
   CrystalMesh::UI::GLTriangle selected = CrystalMesh::UI::selectedTrigSetNext();
+  dtView->setSelectedTrigTo(selected);
+}
+
+/**
+   //Enext button
+*/
+void buttonEnext(Fl_Button* widget, void*) {
+  CrystalMesh::UI::GLEdge selected = CrystalMesh::UI::selectedEdgeSetNext();
+  dtView->setSelectedEdgeTo(selected);
+}
+
+/**
+   //EPrev button
+*/
+void buttonEPrev(Fl_Button* widget, void*) {
+  CrystalMesh::UI::GLEdge selected = CrystalMesh::UI::selectedEdgeSetPrev();
+  dtView->setSelectedEdgeTo(selected);
+}
+
+/**
+   //FPrev Button
+*/
+void buttonFPrev(Fl_Button* widget, void*) {
+  CrystalMesh::UI::GLTriangle selected = CrystalMesh::UI::selectedTrigSetPrev();
   dtView->setSelectedTrigTo(selected);
 }

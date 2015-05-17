@@ -14,4 +14,7 @@ void hRotate(Fl_Roller* widget,void*);
 void vRotate(Fl_Roller * widget, void*);
 void xShift(Fl_Roller* widget,void*);
 void buttonFnext(Fl_Button* widget, void*);
+void buttonEnext(Fl_Button* widget, void*);
+void buttonEPrev(Fl_Button* widget, void*);
+void buttonFPrev(Fl_Button* widget, void*);
 #endif

@@ -178,11 +178,11 @@ namespace CrystalMesh{
         }
         
         void DelaunayTestView::setLineStyleSelected() const{
-            glColor4f(1.0, 0.0, 0.0, 1.0);
+            glColor4f(0.0, 1.0, 0.0, 1.0);
         }
         
         void DelaunayTestView::setLineStyleDefault() const{
-            glColor4f(0.8, 0.2, 0.0, 1.0);
+            glColor4f(1.0, 0.0, 0.0, 1.0);
         }
         
         void DelaunayTestView::drawTrig(const GLTriangle& aTrig) const{
