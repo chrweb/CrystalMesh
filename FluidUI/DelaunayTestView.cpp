@@ -42,13 +42,48 @@ namespace CrystalMesh{
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glPushMatrix(); 
             glTranslatef(xshift, yshift, 0);
-            glRotatef(hAng,0,1,0); 
-            glRotatef(vAng,1,0,0);
+            glRotatef(hAng,1,0,0); 
+            glRotatef(vAng,0,1,0);
             glScalef(float(size),float(size),float(size)); 
             drawModel();
             glPopMatrix();
         }
         
+        void DelaunayTestView::setVerticalAngleTo(float aVang){
+            vAng = aVang;
+        }
+            
+        void DelaunayTestView::setHorizontalAngleTo(float aHang){
+            hAng = aHang;
+        }
+            
+        void DelaunayTestView::rotateViewH(float aHang){
+            setHorizontalAngleTo(aHang);
+            redraw();
+        }
+            
+        void DelaunayTestView::rotateViewV(float aVang){
+            setVerticalAngleTo(aVang);
+            redraw();
+        }
+        
+        void DelaunayTestView::incrementHorizontalAngleBy(float aDeltaH){
+            hAng = hAng+aDeltaH;
+        }
+        
+        void DelaunayTestView::incrementVerticalAngleBy(float aDeltaV){
+            vAng = vAng+aDeltaV;
+        }
+
+        void DelaunayTestView::rotateIncrementalH(float aDeltaH){
+            incrementHorizontalAngleBy(aDeltaH);
+            redraw();
+        }
+        
+        void DelaunayTestView::rotateIncrementalV(float aDeltaV){
+            incrementVerticalAngleBy(aDeltaV);
+            redraw();
+        }
 //        void DelaunayTestView::drawModel(){
 //            glShadeModel(GL_FLAT);
 //            glBegin(GL_TRIANGLES);

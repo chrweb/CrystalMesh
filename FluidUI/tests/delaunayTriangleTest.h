@@ -4,10 +4,11 @@
 #define delaunayTriangleTest_h
 #include <FL/Fl.H>
 #include <FL/Fl_Double_Window.H>
-#include "../DelaunayTestView.h"
-extern CrystalMesh::UI::DelaunayTestView *TestView;
+#include "DelaunayTestView.h"
+extern CrystalMesh::UI::DelaunayTestView *dtView;
 #include <FL/Fl_Roller.H>
 #include <FL/Fl_Slider.H>
 void hRotate(Fl_Roller* widget,void*);
+void vRotate(Fl_Roller * widget, void*);
 void xShift(Fl_Roller* widget,void*);
 #endif

@@ -40,7 +40,7 @@ namespace CrystalMesh{
             dt->addVertices(*model);
             dt->addTriangles(*model);
             
-            TestView->registerModel(model);
+            dtView->registerModel(model);
             
         }
         

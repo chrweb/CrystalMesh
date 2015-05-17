@@ -21,12 +21,27 @@ namespace CrystalMesh{
         
         class DelaunayTestView: public Fl_Gl_Window {
             
-            public:
+        public:
     
             DelaunayTestView(int x,int y,int w,int h,const char *l=0);
             
             void registerModel(DelaunayOpenGLExporter const *mpModel);
             
+            void setVerticalAngleTo(float aVang);
+            
+            void setHorizontalAngleTo(float aHang);
+            
+            void incrementVerticalAngleBy(float aDeltaV);
+            
+            void incrementHorizontalAngleBy(float aDeltaH);
+            
+            void rotateViewH(float aHang);
+            
+            void rotateViewV(float aVang);
+            
+            void rotateIncrementalH(float aDeltaH);
+            
+            void rotateIncrementalV(float aDeltaV);
             
            //void setCurrentSelectedCorner(Delaunay3::Triangle const aTri)
     
@@ -36,7 +51,7 @@ namespace CrystalMesh{
 
             private:
                 
-            void drawModel();
+        void drawModel();
                 
             DelaunayOpenGLExporter const * mpModel;
             
