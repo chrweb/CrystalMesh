@@ -49,10 +49,15 @@ namespace CrystalMesh{
             return result;
         }
         
+         GLEdge const glEdgeOf(Delaunay3::Index id0, Delaunay3::Index id1){
+             GLEdge result = {(GLuint) id0, (GLuint) id1};
+             return result;
+         }
         
         DelaunayOpenGLExporter::DelaunayOpenGLExporter()
         :mVertexBuffer()
         ,mTriangleBuffer()
+        ,mEdgeBuffer()
         {
             mLastFreeIndex = 0;
         }
@@ -61,6 +66,7 @@ namespace CrystalMesh{
             mLastFreeIndex = 0;
             mTriangleBuffer.clear();
             mVertexBuffer.clear();
+            mEdgeBuffer.clear();
         }
         
         DelaunayOpenGLExporter::~DelaunayOpenGLExporter(){}
@@ -78,12 +84,21 @@ namespace CrystalMesh{
             return;
         }
         
+        void DelaunayOpenGLExporter::addCorner(Index id0, Index id1){
+            GLEdge edge = glEdgeOf(id0, id1);
+            mEdgeBuffer.push_back(edge);
+        }
+        
         std::vector<Pointf> const * DelaunayOpenGLExporter::getVertexBuffer() const{
             return &mVertexBuffer;
         }
             
         std::vector<GLTriangle> const * DelaunayOpenGLExporter::getTriangleBuffer() const{
             return &mTriangleBuffer;
+        }
+        
+        std::vector<GLEdge> const * DelaunayOpenGLExporter::getEdgeBuffer() const{
+            return &mEdgeBuffer;
         }
         
     }

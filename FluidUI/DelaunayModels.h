@@ -32,9 +32,25 @@ namespace CrystalMesh{
             GLuint id0;
             GLuint id1;
             GLuint id2;
+            
+            static GLTriangle const invalid;
+            
+            bool const operator == (GLTriangle const& aOther) const;
         };
         
         GLTriangle const glTriangleOf(Delaunay3::Index id0, Delaunay3::Index id1, Delaunay3::Index id2);
+        
+        struct GLEdge{
+            GLuint id0;
+            GLuint id1;
+            
+            static GLEdge const invalid;
+            
+            bool const operator == (GLEdge const & aOther) const;
+            
+        };
+        
+        GLEdge const glEdgeOf(Delaunay3::Index id0, Delaunay3::Index id1);
          
         
             
@@ -51,15 +67,19 @@ namespace CrystalMesh{
             void initialze();
             virtual Delaunay3::Index addVertex(Mathbox::Geometry::Point3D const & aPoint3D) override;
             virtual void addTriangle(Delaunay3::Index id0, Delaunay3::Index id1, Delaunay3::Index id2) override;
+            virtual void addCorner(Delaunay3::Index id0, Delaunay3::Index id1) override;
             
             std::vector<Pointf> const * getVertexBuffer() const;
             
             std::vector<GLTriangle> const * getTriangleBuffer() const;
             
+            std::vector<GLEdge> const * getEdgeBuffer() const;
+            
         private:
             
             std::vector<Pointf> mVertexBuffer;
             std::vector<GLTriangle> mTriangleBuffer;
+            std::vector<GLEdge> mEdgeBuffer;
             
             GLuint mLastFreeIndex;
         

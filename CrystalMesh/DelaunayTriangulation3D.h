@@ -123,6 +123,7 @@ namespace CrystalMesh{
                 size_t countCorners() const;
                 */
                 
+                void addCorners(Exporter & aExporter) const;
                 
                 void addTriangles(Exporter & aExporter) const;
                 

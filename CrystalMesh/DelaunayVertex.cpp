@@ -48,6 +48,16 @@ namespace CrystalMesh{
              return destinationPointOf(pRing->getRingMember());
          }
          
+        Index const originIndexOf(Subdiv3::DirectedEdgeRing const *pRing){
+            Index result =  idOf(pRing->getOrg());
+            return result;
+        }
+        
+        Index const destinationIndexOf(Subdiv3::DirectedEdgeRing const * pRing){
+            Index result =  idOf(pRing->getSym()->getOrg());
+            return result;
+        }
+         
          void setVertexPointTo(Mathbox::Geometry::Point3D const & aPoint, Subdiv3::Vertex * pVertex){
             VertexData * data = reinterpret_cast<VertexData*>(pVertex->mpData);
             data->mPoint = aPoint;

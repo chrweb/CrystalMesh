@@ -128,7 +128,7 @@ namespace CrystalMesh{
             if (mpModel == nullptr)
                 return;
             
-            auto vbo = mpModel->getVertexBuffer();
+      
             auto const & tbo = *mpModel->getTriangleBuffer();
             
             glShadeModel(GL_FLAT);
@@ -142,6 +142,17 @@ namespace CrystalMesh{
                 glArrayElement(tri.id1);
                 glArrayElement(tri.id2);
             }
+            glEnd();
+            
+            auto const& lbo = *mpModel->getEdgeBuffer();
+            glColor4f(1.0, 0.0, 0.0, 1.0);
+         
+            glBegin(GL_LINES);
+            for (auto const edge:lbo){
+                glArrayElement(edge.id0);
+                glArrayElement(edge.id1);
+            }
+            
             glEnd();
       
     

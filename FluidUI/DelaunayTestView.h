@@ -43,15 +43,25 @@ namespace CrystalMesh{
             
             void rotateIncrementalV(float aDeltaV);
             
+            void setSelectedEdgeTo(GLEdge const& aEdge);
+            
+            void setSelectedTrigTo(GLTriangle const& aEdge);
+            
            //void setCurrentSelectedCorner(Delaunay3::Triangle const aTri)
     
             void draw();
     
             virtual ~DelaunayTestView();
 
-            private:
+        private:
                 
-        void drawModel();
+            void drawModel();
+            
+            void setLineStyleSelected() const;
+            void setLineStyleDefault() const;
+            
+            void setTrigStyleSelected() const;
+            void setTrigStyleDefault() const;
                 
             DelaunayOpenGLExporter const * mpModel;
             
@@ -60,6 +70,9 @@ namespace CrystalMesh{
             float xshift,yshift;
             
             double size;
+            
+            GLEdge mSelectedEdge;
+            GLTriangle mSelectedTrig;
                 
         };
 

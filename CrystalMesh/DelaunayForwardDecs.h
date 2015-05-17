@@ -43,7 +43,8 @@ namespace CrystalMesh {
                 
             public:
                 virtual Index addVertex(Mathbox::Geometry::Point3D const & aPoint3D) = 0;
-                virtual void addTriangle(Index id0, Index id1, Index id2) = 0;        
+                virtual void addTriangle(Index id0, Index id1, Index id2) = 0;  
+                virtual void addCorner(Index id0, Index id1) = 0;
             };
             
             class DelaunayTriangulation3D;

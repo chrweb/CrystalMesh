@@ -39,6 +39,7 @@ namespace CrystalMesh{
             
             dt->addVertices(*model);
             dt->addTriangles(*model);
+            dt->addCorners(*model);
             
             dtView->registerModel(model);
             
