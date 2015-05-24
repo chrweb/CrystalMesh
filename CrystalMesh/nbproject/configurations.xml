@@ -44,6 +44,8 @@
         <itemPath>DelaunayVertex.cpp</itemPath>
         <itemPath>DelaunayVertex.h</itemPath>
         <itemPath>Domain.h</itemPath>
+        <itemPath>Fan.cpp</itemPath>
+        <itemPath>Fan.h</itemPath>
         <itemPath>Primitives.cpp</itemPath>
         <itemPath>Primitives.h</itemPath>
         <itemPath>Tet.h</itemPath>
@@ -71,6 +73,7 @@
         <itemPath>DelaunayTest/DelaunayTriangulation3Test.cpp</itemPath>
         <itemPath>DelaunayTest/TestComplexConstruction.cpp</itemPath>
         <itemPath>DelaunayTest/TestDelaunayVertex.cpp</itemPath>
+        <itemPath>DelaunayTest/TestFan.cpp</itemPath>
         <itemPath>DelaunayTest/TestInclude.h</itemPath>
         <itemPath>DelaunayTest/TestTriangle.cpp</itemPath>
       </logicalFolder>
@@ -130,6 +133,8 @@
             tool="1"
             flavor2="0">
       </item>
+      <item path="DelaunayTest/TestFan.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="DelaunayTest/TestInclude.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="DelaunayTest/TestTriangle.cpp" ex="false" tool="1" flavor2="0">
@@ -160,6 +165,10 @@
       <item path="FacetEdge.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="FacetEdge.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Fan.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Fan.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="MaintenerTemplate.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -365,6 +374,8 @@
             tool="1"
             flavor2="0">
       </item>
+      <item path="DelaunayTest/TestFan.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="DelaunayTest/TestInclude.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="DelaunayTest/TestTriangle.cpp" ex="false" tool="1" flavor2="0">
@@ -395,6 +406,10 @@
       <item path="FacetEdge.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="FacetEdge.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Fan.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Fan.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="MaintenerTemplate.h" ex="false" tool="3" flavor2="0">
       </item>

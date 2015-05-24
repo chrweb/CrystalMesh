@@ -78,12 +78,30 @@ namespace{
 TEST_F(TriangleTester, construction){
 
     
-    Triangle trig0 = mDT.makeTriangle(vertexDataOf(p0), vertexDataOf(p1), vertexDataOf(p2));
+    Triangle trig0 = mDT.makeTriangle(vertexDataFrom(p0), vertexDataFrom(p1), vertexDataFrom(p2));
     SCOPED_TRACE("construction");
     validSingletonTrianlge(trig0);
     validSingletonTrianlge(trig0.getCounterOriented());
     
 }
+
+TEST_F(TriangleTester, findBnd){
+    Triangle trig0 = mDT.makeTriangle(vertexDataFrom(p0), vertexDataFrom(p1), vertexDataFrom(p2));
+    auto bnd0 = trig0.boundaryWith(p0, p1);
+    auto bnd1 = trig0.boundaryWith(p1, p2);
+    auto bnd2 = trig0.boundaryWith(p2, p0);
+    
+    EXPECT_NE(bnd0, nullptr);
+    EXPECT_NE(bnd1, nullptr);
+    EXPECT_NE(bnd2, nullptr);
+    
+    EXPECT_EQ(mDT.getCornerCount(), 3);
+    EXPECT_EQ(mDT.getDomainCount(), 1);
+    EXPECT_EQ(mDT.getVertexCount(), 3);
+    EXPECT_EQ(mDT.getFaceCount(), 1);
+}
+
+
 
 
 

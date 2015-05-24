@@ -31,7 +31,7 @@ namespace CrystalMesh{
 
             Mathbox::Geometry::OrientedPlane3D const getOrientedPlane() const;
             
-            Subdiv3::FacetEdge* boundaryWith(Mathbox::Geometry::Point3D const & aOrg, Mathbox::Geometry::Point3D const & aDest);
+            Subdiv3::FacetEdge* boundaryWith(Mathbox::Geometry::Point3D const & aOrg, Mathbox::Geometry::Point3D const & aDest) const;
             
             bool const operator == (const Triangle& other) const;
             

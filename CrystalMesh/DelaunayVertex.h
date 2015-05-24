@@ -25,15 +25,25 @@ namespace CrystalMesh{
             static const Index invalidID;
 	};
         
-        VertexData const vertexDataOf(Mathbox::Geometry::Point3D const & aPoint, void const * aPropPtr = nullptr);
+        /**
+         * Construct a vertex data struct of the given set of parameters.
+         * @param aPoint
+         * @param aPropPtr
+         * @return 
+         */
+        VertexData const vertexDataFrom(Mathbox::Geometry::Point3D const & aPoint, void const * aPropPtr = nullptr);
         
-        VertexData * vertexDataOf(Subdiv3::Vertex const pVertex);
+        VertexData const vertexDataFrom(VertexData const& aOther);
+        
+        VertexData const vertexDataOf(Subdiv3::VertexPtr const & pVertex);
         
         Mathbox::Geometry::Point3D const pointOf(Subdiv3::Vertex const *pVertex);
         
         Index idOf(Subdiv3::Vertex const *pVertex);
 
         void const * propertyPtrOf(Subdiv3::Vertex const * pVertex);
+        
+        VertexData * vertexDataPtrOf(Subdiv3::Vertex const * pVertex);
         
         Mathbox::Geometry::Point3D const originPointOf(Subdiv3::FacetEdge const * pFacetEdge);
 

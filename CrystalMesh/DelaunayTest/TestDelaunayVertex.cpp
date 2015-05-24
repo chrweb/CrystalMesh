@@ -27,7 +27,7 @@ namespace{
         Point3D p0 = Point3D::zero;
         Point3D p1 = pointFromXYZ(1.0, 1.0, 1.0);
         
-        VertexData data0 = vertexDataOf(p0);
+        VertexData data0 = vertexDataFrom(p0);
 }
 
 TEST_F(VertexTester, makeVertex){
@@ -42,5 +42,8 @@ TEST_F(VertexTester, makeVertex){
     EXPECT_EQ(prop, nullptr);
     EXPECT_EQ(vertex->mpOut, nullptr);
     
+    VertexData vd = vertexDataOf(vertex);
     
+    EXPECT_TRUE(exactEqual(vd.mPoint, p0));
+    EXPECT_EQ(vd.mpPropPtr, nullptr);
 }

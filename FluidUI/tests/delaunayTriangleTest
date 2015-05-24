@@ -11,8 +11,8 @@ decl {\#include "TestModel.h"} {private local
 Function {} {open
 } {
   Fl_Window {} {
-    label MainWindow open selected
-    xywh {945 104 815 670} type Double visible
+    label MainWindow open
+    xywh {945 104 815 670} type Double hide
   } {
     Fl_Box dtView {
       label glDisplay
@@ -38,18 +38,22 @@ Function {} {open
     } {
       Fl_Button {} {
         label FNext
+        callback buttonFnext
         xywh {95 200 70 20}
       }
       Fl_Button {} {
         label EPrev
+        callback buttonEPrev
         xywh {145 230 70 20}
       }
       Fl_Button {} {
         label ENext
+        callback buttonEnext
         xywh {50 230 70 20}
       }
       Fl_Button {} {
         label FPrev
+        callback buttonFPrev selected
         xywh {95 260 70 20}
       }
     }
@@ -66,7 +70,7 @@ dtView->rotateViewH(angle);
 if (angle > 360){
 	widget->value(0.0);		
 }
-if (anglie < 0){
+if (angle < 0){
 	widget->value(360.0);	
 }} {}
 } 
@@ -82,4 +86,31 @@ Function {xShift(Fl_Roller* widget,void*)} {
   comment {shift in x dir} open return_type void
 } {
   code {//shift in x dir} {}
+} 
+
+Function {buttonFnext(Fl_Button* widget, void*)} {open return_type void
+} {
+  code {CrystalMesh::UI::GLTriangle selected = CrystalMesh::UI::selectedTrigSetNext();
+dtView->setSelectedTrigTo(selected);} {}
+} 
+
+Function {buttonEnext(Fl_Button* widget, void*)} {
+  comment {//Enext button} open
+} {
+  code {CrystalMesh::UI::GLEdge selected = CrystalMesh::UI::selectedEdgeSetNext();
+dtView->setSelectedEdgeTo(selected);} {}
+} 
+
+Function {buttonEPrev(Fl_Button* widget, void*)} {
+  comment {//EPrev button} open return_type void
+} {
+  code {CrystalMesh::UI::GLEdge selected = CrystalMesh::UI::selectedEdgeSetPrev();
+dtView->setSelectedEdgeTo(selected);} {}
+} 
+
+Function {buttonFPrev(Fl_Button* widget, void*)} {
+  comment {//FPrev Button} open return_type void
+} {
+  code {CrystalMesh::UI::GLTriangle selected = CrystalMesh::UI::selectedTrigSetPrev();
+dtView->setSelectedTrigTo(selected);} {}
 } 

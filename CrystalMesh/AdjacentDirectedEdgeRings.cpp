@@ -62,18 +62,18 @@ namespace CrystalMesh {
 		    	visitedNodes.insert(initialNode);
 
 		    	while(!nodeQueue.empty()){
-					auto currentEdgeRing = nodeQueue.front();
-					nodeQueue.pop();
+                            auto currentEdgeRing = nodeQueue.front();
+                            nodeQueue.pop();
 
-					auto const transistions = incidentEdgeRingsFrom(currentEdgeRing);
+                            auto const transistions = incidentEdgeRingsFrom(currentEdgeRing);
 
-					for(auto currentTransition: transistions){
-						// the node was not visited yet:
-						if (visitedNodes.insert(currentTransition).second){
-							// add this node into queue to get neighbored nodes:
-							nodeQueue.push(currentTransition);
-						}
-					}
+                            for(auto currentTransition: transistions){
+                                // the node was not visited yet:
+                                if (visitedNodes.insert(currentTransition).second){
+                                        // add this node into queue to get neighbored nodes:
+                                        nodeQueue.push(currentTransition);
+                                auto currentEdgeRing = nodeQueue.front();}
+                            }
 		    	}
 
 		    	AdjacentRings result(visitedNodes.begin(), visitedNodes.end());

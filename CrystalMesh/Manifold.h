@@ -10,6 +10,7 @@
 #include "Vertex.h"
 #include <vector>
 
+
 namespace CrystalMesh{
 
 	namespace Subdiv3{
@@ -90,8 +91,15 @@ namespace CrystalMesh{
                         void exportPrimalEdgeRings(EdgeRingBuffer& aBuffer) const;
                         
                         void exportDualEdgeRings(EdgeRingBuffer& aBuffer) const;
-                       
-
+                        
+                        size_t primalVertexSize() const;
+                        
+                        size_t dualVertexSize() const;
+                        
+                        size_t primalEdgeRingSize() const;
+                        
+                        size_t dualEdgeRingSize() const;
+                        
 		private:
 
 			VertexMaintener * mpPrimalVertexMaintener;

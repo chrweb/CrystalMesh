@@ -23,19 +23,32 @@ namespace CrystalMesh{
     
     namespace UI{
         
+        namespace{
+            Point3D const uPoint = pointFromXYZ( 0.0,  0.0,  1.0);
+            Point3D const dPoint = pointFromXYZ( 0.0,  0.0,  -1.0);
+
+   
+            std::array<Point3D,4> sample2 = {
+                pointFromXYZ( 1.0,  0.0,  0.0), 
+                pointFromXYZ(0.0, 1.0, 0.0), 
+                pointFromXYZ(0.0, -1.0, 0.0),
+                pointFromXYZ(0.0, -1.0, 0.0)};
+
+        }
+        
         void triangleTest_launch(){
             dt = new DelaunayTriangulation3D();
             
             dt->makeTriangle(
-                    vertexDataOf(pointFromXYZ(0.0, 0.0, 0.0)),
-                    vertexDataOf(pointFromXYZ(1.0, 0.3, 0.0)),
-                    vertexDataOf(pointFromXYZ(0.5, 1.0, 0.0))
+                    vertexDataFrom(pointFromXYZ(0.0, 0.0, 0.0)),
+                    vertexDataFrom(pointFromXYZ(1.0, 0.3, 0.0)),
+                    vertexDataFrom(pointFromXYZ(0.5, 1.0, 0.0))
                     );
             
             selectedTri = dt->makeTriangle(
-                    vertexDataOf(pointFromXYZ(0.0, 0.0, 0.0)),
-                    vertexDataOf(pointFromXYZ(1.0, -0.3, 1.0)),
-                    vertexDataOf(pointFromXYZ(0.5, -1.0, 2.0))
+                    vertexDataFrom(pointFromXYZ(0.0, 0.0, 0.0)),
+                    vertexDataFrom(pointFromXYZ(1.0, -0.3, 1.0)),
+                    vertexDataFrom(pointFromXYZ(0.5, -1.0, 2.0))
                     );
             
             selectedEdge = cornerOf(selectedTri.getBoundaryEdges()[0]);

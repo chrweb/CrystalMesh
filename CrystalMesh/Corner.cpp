@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include "../Mathbox/Mathbox.h"
 #include "Corner.h"
 #include "DelaunayVertex.h"

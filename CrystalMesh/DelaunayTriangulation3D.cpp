@@ -4,7 +4,7 @@
  *  Created on: 29.06.2014
  *      Author: christoph
  */
-
+#include <algorithm>
 #include "Triangle.h"
 #include "Corner.h"
 #include "Tet.h"
@@ -13,13 +13,10 @@
 #include "Subdiv3Prototypes.h"
 #include "MaintenerTemplate.h"
 #include "FacetEdge.h"
-//#include "ComplexConstruction.h"
 #include "../Mathbox/Mathbox.h"
 #include "AdjacentDirectedEdgeRings.h"
-#include <algorithm>
-//#include <iterator>
-//#include <bits/stl_tree.h>
-//#include <bits/fcntl-linux.h>
+
+
 
 
 namespace CrystalMesh{
@@ -54,10 +51,6 @@ namespace CrystalMesh{
 		delete mpManifold;
 		delete mpToVetexData;
 	}
-
-	
-
-	
 
 
 	namespace {
@@ -126,27 +119,20 @@ namespace CrystalMesh{
                 
                 namespace{
 
-		
+                    bool noData(Subdiv3::Vertex const * apVertex){
+                                                    MUST_BE(notNullptr(apVertex));
+                                                    return isNullptr(apVertex->mpData);
+                    }
 
-			VertexData const vertexDataOf(Mathbox::Geometry::Point3D const & aPoint){
-				VertexData result{ aPoint, nullptr};
-				return result;
-			}
+                    void linkVertexDataVertex(VertexData * apData, Subdiv3::Vertex * apVertex){
+                            MUST_BE(notNullptr(apVertex));
+                            MUST_BE(notNullptr(apData));
+                            MUST_BE(noData(apVertex));
 
-			bool noData(Subdiv3::Vertex const * apVertex){
-							MUST_BE(notNullptr(apVertex));
-							return isNullptr(apVertex->mpData);
-			}
+                            apVertex->mpData = reinterpret_cast<void*>(apData);
 
-			void linkVertexDataVertex(VertexData * apData, Subdiv3::Vertex * apVertex){
-				MUST_BE(notNullptr(apVertex));
-				MUST_BE(notNullptr(apData));
-				MUST_BE(noData(apVertex));
-
-				apVertex->mpData = reinterpret_cast<void*>(apData);
-
-				return;
-			}
+                            return;
+                    }
 
 
 		}
@@ -159,18 +145,22 @@ namespace CrystalMesh{
              
                     linkVertexDataVertex(data , vertex );
                     return vertex;
-                    
-                
                 }
                 
  
 		VertexData * DelaunayTriangulation3D::makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void const * apPropPtr)
 		{
-			auto result = mpToVetexData->constructEntity();
-			result->mPoint = aPoint;
-			result->mpPropPtr = apPropPtr;
-			return result;
+                    auto result = mpToVetexData->constructEntity();
+                    result->mPoint = aPoint;
+                    result->mpPropPtr = apPropPtr;
+                    return result;
 		}
+                
+                
+                void DelaunayTriangulation3D::deleteVertexData(VertexData* pData){
+                    mpToVetexData->deleteEntity(pData);
+                    return;
+                }
   
                 
                 
@@ -216,6 +206,167 @@ namespace CrystalMesh{
                     
                     return result;
                 }
+                
+                namespace {
+                    
+                    std::vector<Subdiv3::Vertex*> const collectDomains(Subdiv3::FacetEdge* aFedge){
+                        AdjacentFacetEdges adj = getAdjacentFacetEdges(*aFedge);
+                        std::vector<Subdiv3::Vertex*>  collectedVerts; 
+                        
+                        for (auto current: adj){
+                            collectedVerts.push_back(current->getOrg());
+                        }
+                        
+                       
+                        std::sort(collectedVerts.begin(), collectedVerts.end());
+                        auto uniqueEnd = std::unique(collectedVerts.begin(), collectedVerts.end());
+                       
+                        std::vector<Subdiv3::Vertex*> result(collectedVerts.begin(), uniqueEnd);
+                        
+                        return result;
+                        
+                    }
+                    
+                    std::vector<Subdiv3::EdgeRing*> const collectRingsFnext(Subdiv3::FacetEdge* aFedge){
+                        std::vector<Subdiv3::EdgeRing*> result;
+                        RingMembers ringMembers = getFnextRingMembersOf(*aFedge);
+                        
+                        for (auto current: ringMembers){
+                            result.push_back(current->getDirectedEdgeRing()->getEdgeRing());
+                        }
+                        
+                        std::sort(result.begin(), result.end());
+                        auto unqEnd= std::unique(result.begin(), result.end());
+                        result.erase(unqEnd, result.end());
+                        
+                        return result;
+                        
+                    
+                    }
+                  
+                
+                }
+                
+                Fan const DelaunayTriangulation3D::makeFan
+                    (Mathbox::Geometry::Point3D const & aTopPoint
+                    ,Mathbox::Geometry::Point3D const & aBotPoint
+                    ,std::vector<Mathbox::Geometry::Point3D> const& aFanPoints){
+                    
+                    MUST_BE(aFanPoints.size() >1);
+                    
+                    std::vector<Triangle> tris;
+                    tris.reserve(aFanPoints.size());
+                    
+                    for (auto const& point : aFanPoints){
+                    
+                        tris.push_back(makeTriangle
+                                (vertexDataFrom(aTopPoint)
+                                ,vertexDataFrom(aBotPoint)
+                                ,vertexDataFrom(point)
+                                ));
+                    }
+                    
+                    
+                    for (Index i = 0 ; i<aFanPoints.size()-1; i++){
+                        Triangle const& tri0 = tris[i];
+                        Triangle const& tri1 = tris[i+1];
+                        FacetEdge *e0 = tri0.boundaryWith(aBotPoint, aTopPoint);
+                        FacetEdge *e1 = tri1.boundaryWith(aBotPoint, aTopPoint);
+                        
+                        mpManifold->spliceFacets(*e0, *e1);
+                    }
+                    
+                    
+                    FacetEdge* commonCorner = tris[0].boundaryWith(aBotPoint, aTopPoint);
+                    //collect domains
+                    auto orgVerts = collectDomains(commonCorner);
+                    auto destVerts = collectDomains(commonCorner->getClock());
+                    //rearrange verts:
+                    unifyVertices(orgVerts);
+                    unifyVertices(destVerts);
+                    
+                    //rearrange edge rings                      
+                    auto edgeRings = collectRingsFnext(commonCorner);
+                    RingMembers ringMembers = getFnextRingMembersOf(*commonCorner);
+                 
+                    for (EdgeRing * ring : edgeRings){
+                        mpManifold->deletePrimalEdgeRing(*ring);
+                    }
+                    
+                    for (FacetEdge * current: ringMembers){
+                        current->mpDirectedEdgeRing = nullptr;
+                        current->getClock()->mpDirectedEdgeRing = nullptr;
+                    }
+                    
+                    EdgeRing *newRing = mpManifold->makePrimalEdgeRing();
+                    mpManifold->linkEdgeRingAndFacetEdges(*newRing, *ringMembers[0]);
+      
+
+                
+                    //rearrange domains:
+                    auto domains = collectDomains(tris[0].mpDualEdgeRing->getRingMember());
+                    
+                    unifyDomains(domains);
+                    
+                    return fanFrom(&newRing->getItem(0));
+                }
+                
+                Subdiv3::VertexPtr DelaunayTriangulation3D::unifyVertices(UnifyList& aList){
+                    VertexPtr vp = aList.front();
+                    
+                    AdjacentRings adjr = getAdjacentRingsOf(*vp->getDirectedEdgeRing());
+                    VertexData  data = vertexDataFrom(vertexDataOf(vp));
+                    
+                    for (auto current : aList){
+                        auto toData  = vertexDataPtrOf(current);
+                        mpManifold->deletePrimalVertex(*current);                       
+                        deleteVertexData(toData);
+                    }
+                    
+                    for (DirectedEdgeRing* current: adjr){
+                        current->mpOrg = nullptr;
+                    }
+                    
+                    Subdiv3::VertexPtr result = makeVertexWith(data);
+                    mpManifold->linkVertexDirectedEdgeRings(*result,*adjr.front());
+                    return result;
+                }
+                
+                Subdiv3::VertexPtr  DelaunayTriangulation3D::unifyDomains(UnifyList& aList){
+                    VertexPtr vp = aList.front();
+                    AdjacentRings adjr = getAdjacentRingsOf(*vp->getDirectedEdgeRing());
+
+                    for (auto current: aList){
+                        mpManifold->deleteDualVertex(*current);
+                    }
+                    
+                    for (DirectedEdgeRing* current: adjr){
+                        current->mpOrg = nullptr;
+                    }
+                   
+                    
+                    Subdiv3::VertexPtr result = mpManifold->makeDualVertex();
+                    mpManifold->linkVertexDirectedEdgeRings(*result, *adjr.front());
+                    return result;
+               
+                }
+                
+                size_t DelaunayTriangulation3D::getDomainCount() const{
+                    return mpManifold->dualVertexSize();
+                }
+                
+                size_t DelaunayTriangulation3D::getFaceCount() const{
+                    return mpManifold->dualEdgeRingSize();
+                }
+                
+                size_t DelaunayTriangulation3D::getCornerCount() const{
+                    return mpManifold->primalEdgeRingSize();
+                }
+                
+                size_t DelaunayTriangulation3D::getVertexCount() const{
+                    return mpManifold->primalVertexSize();
+                }
+                //TetInteriourFan const makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints);
  
 /*                
                 TetInteriourFan const DelaunayTriangulation3D::makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints){

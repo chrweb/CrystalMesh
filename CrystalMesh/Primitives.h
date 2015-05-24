@@ -101,7 +101,7 @@ namespace CrystalMesh{
                     
                     Vertices const getVertices() const;
                     
-                    Triangles const getTriangles() const;
+                    typedef std::vector<Triangle> Triangles;
                 };
                 
                 

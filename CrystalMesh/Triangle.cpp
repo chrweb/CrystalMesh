@@ -33,7 +33,7 @@ Triangle::BoundaryVertices const Triangle::getBoundaryVertices() const{
     return result;
 }
 
-Subdiv3::FacetEdge* Triangle::boundaryWith(Mathbox::Geometry::Point3D const & aOrg, Mathbox::Geometry::Point3D const & aDest){
+Subdiv3::FacetEdge* Triangle::boundaryWith(Mathbox::Geometry::Point3D const & aOrg, Mathbox::Geometry::Point3D const & aDest) const{
     using namespace Subdiv3;
     auto boundaryEdges =getBoundaryEdges();
     std::array<EdgeRing*,3> edgeRings;
@@ -43,7 +43,7 @@ Subdiv3::FacetEdge* Triangle::boundaryWith(Mathbox::Geometry::Point3D const & aO
     };
     
     std::transform(boundaryEdges.begin(), boundaryEdges.end(), edgeRings.begin(), toEdgeRing);
-    return facetEdgeWithEndPoints(aOrg, aOrg, edgeRings);
+    return facetEdgeWithEndPoints(aOrg, aDest, edgeRings);
 }
 
 Triangle const Triangle::getCounterOriented() const{

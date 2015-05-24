@@ -14,6 +14,7 @@
 #include "Triangle.h"
 #include "Corner.h"
 #include "Tet.h"
+#include "Fan.h"
 #include "Domain.h"
 //#include "Primitives.h"
 //#include "Vertex.h"
@@ -69,84 +70,94 @@ namespace CrystalMesh{
 
 	class DelaunayTriangulation3D{
 
-	public:
+            public:
 
-                DelaunayTriangulation3D();
+            DelaunayTriangulation3D();
 
-                template<typename Iterator>
-                DelaunayTriangulation3D( Iterator const & aPointsBegin, Iterator const & aPointsEnd);
+            template<typename Iterator>
+            DelaunayTriangulation3D( Iterator const & aPointsBegin, Iterator const & aPointsEnd);
 
-                DelaunayTriangulation3D( DelaunayTriangulation3D const & aSrc);
+            DelaunayTriangulation3D( DelaunayTriangulation3D const & aSrc);
 
-                ~DelaunayTriangulation3D();
+            ~DelaunayTriangulation3D();
 
-                Flip1To4 const flip1to4(Tet& aTetToFlip, PointInsertion const aIns);
+            Flip1To4 const flip1to4(Tet& aTetToFlip, PointInsertion const aIns);
 
-                Flip2To3 flip2to3(Triangle& aTriangleToFlip);
+            Flip2To3 flip2to3(Triangle& aTriangleToFlip);
 
-                void insertPoint(Mathbox::Geometry::Point3D const & aPoint);
+            void insertPoint(Mathbox::Geometry::Point3D const & aPoint);
 
-                typedef std::array<Mathbox::Geometry::Point3D,4 > TetPoints;
+            typedef std::array<Mathbox::Geometry::Point3D,4 > TetPoints;
 
-                // constructs a tet of the given 4 points
-                Tet const makeTetrahedron(TetPoints const & aTetPoints);
+            // constructs a tet of the given 4 points
+            Tet const makeTetrahedron(TetPoints const & aTetPoints);
 
-                typedef std::array<Mathbox::Geometry::Point3D, 5> TetIntPoints;
-                /**
-                 * Creates the interior of execute a 1-4 Flip,
-                 * Points [0-3]: tet bunds
-                 * Point [4]: in-tet point
-                 */
-                //TetInteriour const makeTetInterior( TetIntPoints const & aTetIntPoints);
-                
-                typedef std::array<Mathbox::Geometry::Point3D, 3>  FanPoints;
-                typedef std::array<Mathbox::Geometry::Point3D, 2>  TopBottomPoints;
-                //TetInteriourFan const makeFan3(TopBottomPoints const & aTbPoints, FanPoints const& aFanPoints);
+            typedef std::array<Mathbox::Geometry::Point3D, 5> TetIntPoints;
+            /**
+             * Creates the interior of execute a 1-4 Flip,
+             * Points [0-3]: tet bunds
+             * Point [4]: in-tet point
+             */
+            //TetInteriour const makeTetInterior( TetIntPoints const & aTetIntPoints);
+            
+            typedef std::vector<Mathbox::Geometry::Point3D>  FanPoints;
+            
+            Fan const makeFan
+                (Mathbox::Geometry::Point3D const & aTopPoint
+                ,Mathbox::Geometry::Point3D const & aBotPoint
+                ,FanPoints const& aFanPoints);
 
-                VertexData * makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void const * apPropPtr = nullptr);
-                
-                Subdiv3::Vertex* makeVertexWith(VertexData const & aData);
-                
-                Triangle makeTriangle(VertexData const& aData0, VertexData const& aData1, VertexData const& aData2 );
-                
-                
+            VertexData * makeVertexData(Mathbox::Geometry::Point3D const & aPoint, void const * apPropPtr = nullptr);
+            
+            void deleteVertexData(VertexData* pData);
+            
+            Subdiv3::Vertex* makeVertexWith(VertexData const & aData);
+            
+            Triangle makeTriangle(VertexData const& aData0, VertexData const& aData1, VertexData const& aData2 );
+            
+            
 
-                //Domain const destroyTriangle(Triangle & aTri);
-                
-                /*
-                size_t countTriangles() const;
-                
-                size_t countTets() const;
-                
-                size_t countDomains() const;
-                
-                size_t countCorners() const;
-                */
-                
-                void addCorners(Exporter & aExporter) const;
-                
-                void addTriangles(Exporter & aExporter) const;
-                
-                void addVertices(Exporter & aExporter) const;
-                
+            //Domain const destroyTriangle(Triangle & aTri);
+            
+            void addCorners(Exporter & aExporter) const;
+            
+            void addTriangles(Exporter & aExporter) const;
+            
+            void addVertices(Exporter & aExporter) const;
+            
+            size_t getDomainCount() const;
+            
+            size_t getFaceCount() const;
+            
+            size_t getCornerCount() const;
+            
+            size_t getVertexCount() const;
+            
             private:
                 
-                void unifyVertices(Subdiv3::Vertex * apVert0, Subdiv3::Vertex * apVert1);
-                
-                void unifyEdgeRings(Subdiv3::EdgeRing* apRing0 ,Subdiv3::EdgeRing* apRing1);
-                
-                void destroyTet(Tet & aTet);
-                
-                
-                Domain const makeDomainUnder(Triangle& aTri);
-                
-                void destroyDomain(Domain & aVert);
-                       
-                Subdiv3::Vertex * makeBody();
-                
-                Subdiv3::Manifold * mpManifold;
+            typedef std::vector<Subdiv3::VertexPtr> UnifyList;
+            Subdiv3::VertexPtr unifyVertices(UnifyList & aList);
+            
+            Subdiv3::VertexPtr unifyDomains(UnifyList & aList);
+            
+            void unifyVertices(Subdiv3::Vertex * apVert0, Subdiv3::Vertex * apVert1);
+            
+            void unifyEdgeRings(Subdiv3::EdgeRing* apRing0 ,Subdiv3::EdgeRing* apRing1);
+            
+            //void unifyEdgeRingsF(RingMembers const& aFnextRing);
+            
+            void destroyTet(Tet & aTet);
+            
+            
+            Domain const makeDomainUnder(Triangle& aTri);
+            
+            void destroyDomain(Domain & aVert);
+                   
+            Subdiv3::Vertex * makeBody();
+            
+            Subdiv3::Manifold * mpManifold;
 
-                VertexDataContainer *mpToVetexData;
+            VertexDataContainer *mpToVetexData;
 	};
 
 	}

@@ -28,6 +28,8 @@ namespace CrystalMesh{
 
 
 		};
+                
+                typedef Vertex* VertexPtr;
 
 
 	}

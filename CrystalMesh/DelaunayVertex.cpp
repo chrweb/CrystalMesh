@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include "ComplexTypes.h"
 #include "../Mathbox/Mathbox.h"
 #include "DelaunayVertex.h"
@@ -11,10 +12,20 @@ namespace CrystalMesh{
         
         Index const VertexData::invalidID = Index(-1);
         
-        VertexData const vertexDataOf(Mathbox::Geometry::Point3D const & aPoint, void const * apPropPtr){
+        VertexData const vertexDataFrom(Mathbox::Geometry::Point3D const & aPoint, void const * apPropPtr){
             VertexData result{ aPoint, apPropPtr, VertexData::invalidID};
             return result;
 	}
+        
+        VertexData const vertexDataFrom(VertexData const& aOther){
+            VertexData const result = aOther;
+            return result;
+        }
+        
+        VertexData const vertexDataOf(Subdiv3::VertexPtr const & pVertex){
+            VertexData const  data = *reinterpret_cast<VertexData const *>(pVertex->mpData);
+            return data;
+        }
         
         Point3D const pointOf(Subdiv3::Vertex const *pVertex){
             VertexData const & data = *reinterpret_cast<VertexData const *>(pVertex->mpData);
@@ -29,6 +40,11 @@ namespace CrystalMesh{
         void const * propertyPtrOf(Subdiv3::Vertex const * pVertex){
              VertexData const & data = *reinterpret_cast<VertexData const *>(pVertex->mpData);
             return data.mpPropPtr;
+        }
+        
+        VertexData * vertexDataPtrOf(Subdiv3::Vertex const * pVertex){
+            VertexData * data = reinterpret_cast<VertexData*>(pVertex->mpData);
+            return data;
         }
    
 	

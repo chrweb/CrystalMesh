@@ -4,13 +4,15 @@
  *  Created on: 19.06.2014
  *      Author: christoph
 */
+#include <vector>
+#include <stddef.h>
 #include "MaintenerTemplate.h"
 #include  "../Toolbox/Checks.h"
 #include "Vertex.h"
 #include "QuaterNode.h"
 #include "EdgeRing.h"
 #include <assert.h>
-#include <vector>
+
 #include "Manifold.h"
 #include "AdjacentDirectedEdgeRings.h"
 
@@ -432,6 +434,22 @@ namespace CrystalMesh{
                     for (auto item: container){
                         aBuffer.push_back(item);
                     }
+                }
+                
+                size_t Manifold::primalVertexSize() const{
+                    return mpPrimalVertexMaintener->size();
+                }
+                        
+                size_t Manifold::dualVertexSize() const{
+                    return mpDualVertexMaintener->size();
+                }
+                        
+                size_t Manifold::primalEdgeRingSize() const{
+                    return mpPrimalEdgeRingMaintener->size();
+                }
+                        
+                size_t Manifold::dualEdgeRingSize() const{
+                    return mpDualEdgeRingMaintener->size();
                 }
                        
 	}

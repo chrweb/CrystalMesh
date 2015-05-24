@@ -43,6 +43,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/DirectedEdgeRing.o \
 	${OBJECTDIR}/EdgeRing.o \
 	${OBJECTDIR}/FacetEdge.o \
+	${OBJECTDIR}/Fan.o \
 	${OBJECTDIR}/Manifold.o \
 	${OBJECTDIR}/Primitives.o \
 	${OBJECTDIR}/Triangle.o \
@@ -122,6 +123,11 @@ ${OBJECTDIR}/FacetEdge.o: FacetEdge.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FacetEdge.o FacetEdge.cpp
 
+${OBJECTDIR}/Fan.o: Fan.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Fan.o Fan.cpp
+
 ${OBJECTDIR}/Manifold.o: Manifold.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -151,7 +157,7 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/ComplexTest/TestEdgeRings.o ${TESTDIR}/Compl
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} 
 
-${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestFan.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} 
 
@@ -190,6 +196,12 @@ ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o: DelaunayTest/TestDelaunayVertex.cp
 	${MKDIR} -p ${TESTDIR}/DelaunayTest
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o DelaunayTest/TestDelaunayVertex.cpp
+
+
+${TESTDIR}/DelaunayTest/TestFan.o: DelaunayTest/TestFan.cpp 
+	${MKDIR} -p ${TESTDIR}/DelaunayTest
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestFan.o DelaunayTest/TestFan.cpp
 
 
 ${TESTDIR}/DelaunayTest/TestTriangle.o: DelaunayTest/TestTriangle.cpp 
@@ -300,6 +312,19 @@ ${OBJECTDIR}/FacetEdge_nomain.o: ${OBJECTDIR}/FacetEdge.o FacetEdge.cpp
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/FacetEdge_nomain.o FacetEdge.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/FacetEdge.o ${OBJECTDIR}/FacetEdge_nomain.o;\
+	fi
+
+${OBJECTDIR}/Fan_nomain.o: ${OBJECTDIR}/Fan.o Fan.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Fan.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Fan_nomain.o Fan.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Fan.o ${OBJECTDIR}/Fan_nomain.o;\
 	fi
 
 ${OBJECTDIR}/Manifold_nomain.o: ${OBJECTDIR}/Manifold.o Manifold.cpp 

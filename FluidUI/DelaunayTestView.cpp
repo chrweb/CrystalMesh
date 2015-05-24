@@ -178,10 +178,14 @@ namespace CrystalMesh{
         }
         
         void DelaunayTestView::setLineStyleSelected() const{
-            glColor4f(0.0, 1.0, 0.0, 1.0);
+         //   glPushAttrib(GL_ENABLE_BIT);
+         //   glEnable(GL_LINE_STIPPLE);
+         //   glLineStipple(2, 0xAAAA);
+            glColor4f(0.0, 0.0, 0.0, 1.0);
         }
         
         void DelaunayTestView::setLineStyleDefault() const{
+            glPopAttrib();
             glColor4f(1.0, 0.0, 0.0, 1.0);
         }
         
