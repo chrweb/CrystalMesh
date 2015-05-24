@@ -13,10 +13,10 @@ namespace{
 
     std::array<Point3D,2> sample1 = {pointFromXYZ( 0.0,  1.0,  0.0), pointFromXYZ(0.0, -1.0, 0.0)};
     std::array<Point3D,4> sample2 = {
-        pointFromXYZ( 1.0,  0.0,  0.0), 
-        pointFromXYZ(0.0, 1.0, 0.0), 
-        pointFromXYZ(0.0, -1.0, 0.0),
-        pointFromXYZ(0.0, -1.0, 0.0)};
+                pointFromXYZ( 1.0,  0.0,  0.0), 
+                pointFromXYZ(0.0, 1.0, 0.0), 
+                pointFromXYZ(-1.0, 0.0, 0.0),
+                pointFromXYZ(0.0, -1.0, 0.0)};
 
 
 }

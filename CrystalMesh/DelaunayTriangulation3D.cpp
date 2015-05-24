@@ -282,8 +282,8 @@ namespace CrystalMesh{
                     auto orgVerts = collectDomains(commonCorner);
                     auto destVerts = collectDomains(commonCorner->getClock());
                     //rearrange verts:
-                    unifyVertices(orgVerts);
-                    unifyVertices(destVerts);
+                    VertexPtr newOrg = unifyVertices(orgVerts);
+                    VertexPtr newDest = unifyVertices(destVerts);
                     
                     //rearrange edge rings                      
                     auto edgeRings = collectRingsFnext(commonCorner);
@@ -301,13 +301,14 @@ namespace CrystalMesh{
                     EdgeRing *newRing = mpManifold->makePrimalEdgeRing();
                     mpManifold->linkEdgeRingAndFacetEdges(*newRing, *ringMembers[0]);
       
-
+                    mpManifold->linkVertexDirectedEdgeRings(*newOrg, *commonCorner->getDirectedEdgeRing());
+                    mpManifold->linkVertexDirectedEdgeRings(*newDest, *commonCorner->getClock()->getDirectedEdgeRing());
                 
                     //rearrange domains:
                     auto domains = collectDomains(tris[0].mpDualEdgeRing->getRingMember());
-                    
-                    unifyDomains(domains);
-                    
+                   
+                    VertexPtr newDomain = unifyDomains(domains);
+                    mpManifold->linkVertexDirectedEdgeRings(*newDomain, *tris[0].mpDualEdgeRing);
                     return fanFrom(&newRing->getItem(0));
                 }
                 
@@ -327,8 +328,7 @@ namespace CrystalMesh{
                         current->mpOrg = nullptr;
                     }
                     
-                    Subdiv3::VertexPtr result = makeVertexWith(data);
-                    mpManifold->linkVertexDirectedEdgeRings(*result,*adjr.front());
+                    Subdiv3::VertexPtr result = makeVertexWith(data);            
                     return result;
                 }
                 
@@ -346,7 +346,6 @@ namespace CrystalMesh{
                    
                     
                     Subdiv3::VertexPtr result = mpManifold->makeDualVertex();
-                    mpManifold->linkVertexDirectedEdgeRings(*result, *adjr.front());
                     return result;
                
                 }

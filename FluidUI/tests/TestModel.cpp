@@ -28,10 +28,10 @@ namespace CrystalMesh{
             Point3D const dPoint = pointFromXYZ( 0.0,  0.0,  -1.0);
 
    
-            std::array<Point3D,4> sample2 = {
+            std::array<Point3D,4> sample = {
                 pointFromXYZ( 1.0,  0.0,  0.0), 
                 pointFromXYZ(0.0, 1.0, 0.0), 
-                pointFromXYZ(0.0, -1.0, 0.0),
+                pointFromXYZ(-1.0, 0.0, 0.0),
                 pointFromXYZ(0.0, -1.0, 0.0)};
 
         }
@@ -39,17 +39,10 @@ namespace CrystalMesh{
         void triangleTest_launch(){
             dt = new DelaunayTriangulation3D();
             
-            dt->makeTriangle(
-                    vertexDataFrom(pointFromXYZ(0.0, 0.0, 0.0)),
-                    vertexDataFrom(pointFromXYZ(1.0, 0.3, 0.0)),
-                    vertexDataFrom(pointFromXYZ(0.5, 1.0, 0.0))
-                    );
             
-            selectedTri = dt->makeTriangle(
-                    vertexDataFrom(pointFromXYZ(0.0, 0.0, 0.0)),
-                    vertexDataFrom(pointFromXYZ(1.0, -0.3, 1.0)),
-                    vertexDataFrom(pointFromXYZ(0.5, -1.0, 2.0))
-                    );
+            auto fan = dt->makeFan(uPoint, dPoint, std::vector<Mathbox::Geometry::Point3D>(sample.begin(), sample.end()));
+            selectedTri = fan.getTriangles().at(0);
+            
             
             selectedEdge = cornerOf(selectedTri.getBoundaryEdges()[0]);
             
