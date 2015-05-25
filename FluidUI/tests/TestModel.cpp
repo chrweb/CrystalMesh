@@ -84,13 +84,20 @@ namespace CrystalMesh{
         }
         
         GLTriangle const selectedTrigSetNext(){
-            auto next = selectedEdge.mRef->getFnext();
+            //move upwards in fnext ring und set the selected
+            Subdiv3::FacetEdge* next = selectedEdge.mRef->getFnext();
+            selectedEdge = cornerOf(next);
+            // set the triangle
             selectedTri = cornerOf(next).adjancentTriangle();
             return currentSelectedTrig();
         }
         
         GLTriangle const selectedTrigSetPrev(){
-            auto prev = selectedEdge.mRef->getInvFnext();
+            //move backwards in selected
+            Subdiv3::FacetEdge* prev = selectedEdge.mRef->getInvFnext();
+            ///set selected
+            selectedEdge = cornerOf(prev);
+            //set the selected triangle
             selectedTri = cornerOf(prev).adjancentTriangle();
             return currentSelectedTrig();
         }

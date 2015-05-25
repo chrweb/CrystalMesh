@@ -142,7 +142,6 @@ namespace CrystalMesh{
             if (mpModel == nullptr)
                 return;
             
-      
             auto const & tbo = *mpModel->getTriangleBuffer();
             
             glShadeModel(GL_FLAT);
@@ -181,7 +180,7 @@ namespace CrystalMesh{
          //   glPushAttrib(GL_ENABLE_BIT);
          //   glEnable(GL_LINE_STIPPLE);
          //   glLineStipple(2, 0xAAAA);
-            glColor4f(0.0, 0.0, 0.0, 1.0);
+            glColor4f(0.0, 1.0, 0.0, 1.0);
         }
         
         void DelaunayTestView::setLineStyleDefault() const{
@@ -214,6 +213,12 @@ namespace CrystalMesh{
             if (aEdge == mSelectedEdge){
                 setLineStyleDefault();
             }
+            
+//            if (aEdge == mSelectedEdge){
+//                setLineStyleSelected();
+//                glArrayElement(aEdge.id0);
+//                glArrayElement(aEdge.id1);
+//            }
         
         }
 

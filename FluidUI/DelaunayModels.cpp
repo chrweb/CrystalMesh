@@ -5,6 +5,7 @@
 #include "DelaunayModels.h"
 #include <GL/freeglut.h>
 #include <stdlib.h>
+#include <algorithm>
 
 
 namespace CrystalMesh{
@@ -55,13 +56,20 @@ namespace CrystalMesh{
          }
          
          bool const GLTriangle::operator == (GLTriangle const& aOther) const{
-             return (id0 == aOther.id0) && (id1 == aOther.id1) && (id2 == aOther.id2);
+             std::array<GLuint, 3> my = {id0, id1, id2};
+             std::array<GLuint, 3> other = {aOther.id0, aOther.id1, aOther.id2};
+             
+             std::sort(my.begin(), my.end());
+             std::sort(other.begin(), other.end());
+             
+             
+             return (my[0] == other[0]) && (my[1] == other[1]) && (my[2] == other[2]);
          }
          
          GLTriangle const GLTriangle::invalid  = {GLuint(-1), GLuint(-1), GLuint(-1)};
          
          bool const GLEdge::operator ==(const GLEdge& aOther) const{
-             return (id0 == aOther.id0) && (id1 == aOther.id1);
+             return (id0 == aOther.id0) && (id1 == aOther.id1) || (id0 == aOther.id1) && (id1 == aOther.id0);
          }
          
          GLEdge const GLEdge::invalid = {GLuint(-1), GLuint(-1)};
