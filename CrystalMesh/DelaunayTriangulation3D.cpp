@@ -19,10 +19,16 @@
 
 
 
+
 namespace CrystalMesh{
 
 
 	namespace Delaunay3{
+            
+            using namespace Mathbox;
+            using namespace Geometry;
+            using namespace Subdiv3;
+            
             
             PointInsertion pointInsertionOf(Mathbox::Geometry::Point3D const & aPoint){
                 PointInsertion result;
@@ -209,7 +215,7 @@ namespace CrystalMesh{
                 
                 namespace {
                     
-                    std::vector<Subdiv3::Vertex*> const collectDomains(Subdiv3::FacetEdge* aFedge){
+                    std::vector<Subdiv3::Vertex*> const collectOrgsOf(Subdiv3::FacetEdge* aFedge){
                         AdjacentFacetEdges adj = getAdjacentFacetEdges(*aFedge);
                         std::vector<Subdiv3::Vertex*>  collectedVerts; 
                         
@@ -279,40 +285,100 @@ namespace CrystalMesh{
                     
                     FacetEdge* commonCorner = tris[0].boundaryWith(aBotPoint, aTopPoint);
                     //collect domains
-                    auto orgVerts = collectDomains(commonCorner);
-                    auto destVerts = collectDomains(commonCorner->getClock());
+                    auto orgVerts = collectOrgsOf(commonCorner);
+                    auto destVerts = collectOrgsOf(commonCorner->getClock());
                     //rearrange verts:
                     VertexPtr newOrg = unifyVertices(orgVerts);
                     VertexPtr newDest = unifyVertices(destVerts);
                     
                     //rearrange edge rings                      
                     auto edgeRings = collectRingsFnext(commonCorner);
-                    RingMembers ringMembers = getFnextRingMembersOf(*commonCorner);
+
+                    
+                    EdgeRingPtr newRing = unifyEdgeRings(edgeRings);
                  
-                    for (EdgeRing * ring : edgeRings){
-                        mpManifold->deletePrimalEdgeRing(*ring);
-                    }
-                    
-                    for (FacetEdge * current: ringMembers){
-                        current->mpDirectedEdgeRing = nullptr;
-                        current->getClock()->mpDirectedEdgeRing = nullptr;
-                    }
-                    
-                    EdgeRing *newRing = mpManifold->makePrimalEdgeRing();
-                    mpManifold->linkEdgeRingAndFacetEdges(*newRing, *ringMembers[0]);
+                    mpManifold->linkEdgeRingAndFacetEdges(*newRing, *commonCorner);
       
                     mpManifold->linkVertexDirectedEdgeRings(*newOrg, *commonCorner->getDirectedEdgeRing());
                     mpManifold->linkVertexDirectedEdgeRings(*newDest, *commonCorner->getClock()->getDirectedEdgeRing());
                 
                     //rearrange domains:
-                    auto domains = collectDomains(tris[0].mpDualEdgeRing->getRingMember());
+                    auto domains = collectOrgsOf(tris[0].mpDualEdgeRing->getRingMember());
                    
                     VertexPtr newDomain = unifyDomains(domains);
                     mpManifold->linkVertexDirectedEdgeRings(*newDomain, *tris[0].mpDualEdgeRing);
                     return fanFrom(&newRing->getItem(0));
                 }
                 
-                Subdiv3::VertexPtr DelaunayTriangulation3D::unifyVertices(UnifyList& aList){
+                
+                Crater DelaunayTriangulation3D::makeCrater(Mathbox::Geometry::Point3D const & aMidPoint, CraterPoints const& aCraterPoints ){
+                    MUST_BE(aCraterPoints.size()>2);
+                    CraterPoints bndPointsCpy(aCraterPoints);
+                    bndPointsCpy.push_back(aCraterPoints.front());
+                    std::vector<Triangle> triangles;
+                    
+                    for (Index i = 0; i < bndPointsCpy.size(); i++){
+                        Point3D const& p0 = aMidPoint;
+                        Point3D const& p1 = bndPointsCpy[i];
+                        Point3D const& p2 = bndPointsCpy[i+1];
+                        Triangle const trig = makeTriangle(
+                            vertexDataFrom(p0),
+                            vertexDataFrom(p2),
+                            vertexDataFrom(p1)
+                            );
+                        
+                        triangles.push_back(trig);
+                    }
+                    
+                    triangles.push_back(triangles.front());
+                    
+                    for (Index i = 0; i<bndPointsCpy.size(); i++){
+                        FacetEdge* b0 = triangles[i].boundaryWith(aMidPoint, bndPointsCpy[i]);
+                        FacetEdge* b1 = triangles[i+1].boundaryWith(aMidPoint, bndPointsCpy[i]);
+                        SHOULD_BE(b0!=nullptr);
+                        SHOULD_BE(b1!=nullptr);
+                        mpManifold->spliceFacets(*b0, *b1);
+                    }
+                    
+                    //track inner vertex for rearrange
+                    FacetEdge* centerToBnd = triangles[0].boundaryWith(aMidPoint, bndPointsCpy[0]);
+                    SHOULD_BE(centerToBnd != nullptr);
+                    auto orgsOfCenter = collectOrgsOf(centerToBnd);
+                    
+                    
+                    for (Index i = 0; i<bndPointsCpy.size(); i++){
+                        
+                        FacetEdge *bndToCenter = triangles[i].boundaryWith(bndPointsCpy[i], aMidPoint);
+                        SHOULD_BE(bndToCenter!=nullptr);
+                        //track bndVertex for rearrange
+                        auto orgsOfBnd = collectOrgsOf(bndToCenter);
+                        //track edge ring for rearrange
+                        auto rings = collectRingsFnext(bndToCenter);
+                        
+                        //rearrange edge rings:
+                        EdgeRingPtr newRing = unifyEdgeRings(rings);
+                        mpManifold->linkEdgeRingAndFacetEdges(*newRing, *bndToCenter);
+                        
+                        //rearrage bnd vertex:
+                        VertexPtr newVertex = unifyVertices(orgsOfBnd);
+                        mpManifold->linkVertexDirectedEdgeRings(*newVertex, *bndToCenter->getDirectedEdgeRing());
+                    }
+                    
+                    //rearrange inner vertex:
+                    VertexPtr newInnerVertex = unifyVertices(orgsOfCenter);
+                    mpManifold->linkVertexDirectedEdgeRings(*newInnerVertex, *centerToBnd->getDirectedEdgeRing());
+                    
+                    //rearrange domains:
+                    auto dualEdgeRing = centerToBnd->getDual()->getDirectedEdgeRing();
+                    auto oldDomains = collectOrgsOf(dualEdgeRing->getRingMember());
+                    VertexPtr newDomain = unifyDomains(oldDomains);
+                    mpManifold->linkVertexDirectedEdgeRings(*newDomain, *dualEdgeRing);
+                    
+                    return craterOf(newInnerVertex);
+                }
+                
+                
+                Subdiv3::VertexPtr DelaunayTriangulation3D::unifyVertices(VertexUnifyList& aList){
                     VertexPtr vp = aList.front();
                     
                     AdjacentRings adjr = getAdjacentRingsOf(*vp->getDirectedEdgeRing());
@@ -332,7 +398,7 @@ namespace CrystalMesh{
                     return result;
                 }
                 
-                Subdiv3::VertexPtr  DelaunayTriangulation3D::unifyDomains(UnifyList& aList){
+                Subdiv3::VertexPtr  DelaunayTriangulation3D::unifyDomains(VertexUnifyList& aList){
                     VertexPtr vp = aList.front();
                     AdjacentRings adjr = getAdjacentRingsOf(*vp->getDirectedEdgeRing());
 
@@ -348,6 +414,23 @@ namespace CrystalMesh{
                     Subdiv3::VertexPtr result = mpManifold->makeDualVertex();
                     return result;
                
+                }
+                
+                Subdiv3::EdgeRingPtr DelaunayTriangulation3D::unifyEdgeRings(EdgeRingUnifyList& aList){
+                    FacetEdge* ringMember = aList.front()->getItem(0).getRingMember();
+                    RingMembers ringMembers = getFnextRingMembersOf(*ringMember);
+                 
+                    for (EdgeRing * ring : aList){
+                        mpManifold->deletePrimalEdgeRing(*ring);
+                    }
+                    
+                    for (FacetEdge * current: ringMembers){
+                        current->mpDirectedEdgeRing = nullptr;
+                        current->getClock()->mpDirectedEdgeRing = nullptr;
+                    }
+                    
+                    EdgeRingPtr result = mpManifold->makePrimalEdgeRing();
+                    return result;
                 }
                 
                 size_t DelaunayTriangulation3D::getDomainCount() const{

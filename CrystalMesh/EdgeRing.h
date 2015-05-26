@@ -32,6 +32,8 @@ namespace CrystalMesh{
 
 			DirectedEdgeRing mRings[2];
 		};
+                
+                typedef EdgeRing* EdgeRingPtr;
 
 
 

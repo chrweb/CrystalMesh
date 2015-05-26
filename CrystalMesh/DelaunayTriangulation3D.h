@@ -6,7 +6,7 @@
  */
 #pragma once
 
-
+#include <array>
 #include "../Mathbox/Mathbox.h"
 #include "ComplexTypes.h"
 #include "DelaunayForwardDecs.h"
@@ -16,10 +16,7 @@
 #include "Tet.h"
 #include "Fan.h"
 #include "Domain.h"
-//#include "Primitives.h"
-//#include "Vertex.h"
-//#include "DirectedEdgeRing.h"
-#include <array>
+#include "Crater.h"
 
 namespace CrystalMesh{
 
@@ -30,10 +27,7 @@ namespace CrystalMesh{
 
 
 	namespace Delaunay3{
-            
-            
 
-            
             struct Flip1To4{
                 enum struct Result{
                     success,
@@ -115,9 +109,9 @@ namespace CrystalMesh{
             
             Triangle makeTriangle(VertexData const& aData0, VertexData const& aData1, VertexData const& aData2 );
             
-            
+            typedef std::vector<Mathbox::Geometry::Point3D> CraterPoints;
+            Crater makeCrater(Mathbox::Geometry::Point3D const & aMidPoint, CraterPoints const& aCraterPoints );
 
-            //Domain const destroyTriangle(Triangle & aTri);
             
             void addCorners(Exporter & aExporter) const;
             
@@ -135,10 +129,14 @@ namespace CrystalMesh{
             
             private:
                 
-            typedef std::vector<Subdiv3::VertexPtr> UnifyList;
-            Subdiv3::VertexPtr unifyVertices(UnifyList & aList);
+            typedef std::vector<Subdiv3::VertexPtr> VertexUnifyList;
+            Subdiv3::VertexPtr unifyVertices(VertexUnifyList & aList);
             
-            Subdiv3::VertexPtr unifyDomains(UnifyList & aList);
+            Subdiv3::VertexPtr unifyDomains(VertexUnifyList & aList);
+            
+            typedef std::vector<Subdiv3::EdgeRingPtr> EdgeRingUnifyList;
+            
+            Subdiv3::EdgeRingPtr unifyEdgeRings(EdgeRingUnifyList& aList);
             
             void unifyVertices(Subdiv3::Vertex * apVert0, Subdiv3::Vertex * apVert1);
             

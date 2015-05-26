@@ -41,7 +41,7 @@ TEST(FanTest, Fan1 ){
 }
 
 TEST(FanTest, Fan2){
-        DelaunayTriangulation3D dt;
+    DelaunayTriangulation3D dt;
     FanPoints fp(sample2.begin(), sample2.end());
     Fan fan = dt.makeFan(uPoint, dPoint, fp);
     

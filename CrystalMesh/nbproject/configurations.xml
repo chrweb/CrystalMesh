@@ -37,6 +37,8 @@
         <itemPath>ComplexConstruction.h</itemPath>
         <itemPath>Corner.cpp</itemPath>
         <itemPath>Corner.h</itemPath>
+        <itemPath>Crater.cpp</itemPath>
+        <itemPath>Crater.h</itemPath>
         <itemPath>DelaunayForwardDecs.h</itemPath>
         <itemPath>DelaunayTriangulation3D.cpp</itemPath>
         <itemPath>DelaunayTriangulation3D.h</itemPath>
@@ -72,6 +74,7 @@
                      kind="TEST">
         <itemPath>DelaunayTest/DelaunayTriangulation3Test.cpp</itemPath>
         <itemPath>DelaunayTest/TestComplexConstruction.cpp</itemPath>
+        <itemPath>DelaunayTest/TestCrater.cpp</itemPath>
         <itemPath>DelaunayTest/TestDelaunayVertex.cpp</itemPath>
         <itemPath>DelaunayTest/TestFan.cpp</itemPath>
         <itemPath>DelaunayTest/TestInclude.h</itemPath>
@@ -126,7 +129,13 @@
       </item>
       <item path="Corner.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Crater.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Crater.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DelaunayForwardDecs.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTest/TestCrater.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTest/TestDelaunayVertex.cpp"
             ex="false"
@@ -357,6 +366,10 @@
       </item>
       <item path="Corner.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Crater.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Crater.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="DelaunayForwardDecs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="DelaunayTest/DelaunayTriangulation3Test.cpp"
@@ -368,6 +381,8 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="DelaunayTest/TestCrater.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTest/TestDelaunayVertex.cpp"
             ex="false"

@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/AdjacentDirectedEdgeRings.o \
 	${OBJECTDIR}/Corner.o \
+	${OBJECTDIR}/Crater.o \
 	${OBJECTDIR}/DelaunayTriangulation3D.o \
 	${OBJECTDIR}/DelaunayVertex.o \
 	${OBJECTDIR}/DirectedEdgeRing.o \
@@ -90,6 +91,11 @@ ${OBJECTDIR}/Corner.o: Corner.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Corner.o Corner.cpp
+
+${OBJECTDIR}/Crater.o: Crater.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Crater.o Crater.cpp
 
 ${OBJECTDIR}/DelaunayTriangulation3D.o: DelaunayTriangulation3D.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -145,7 +151,7 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/ComplexTest/TestEdgeRings.o ${TESTDIR}/Compl
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} ../googletest/dist/Debug/GNU-Linux-x86/libgoogletest.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a 
 
-${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestFan.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/TestCrater.o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestFan.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} ../googletest/dist/Debug/GNU-Linux-x86/libgoogletest.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a 
 
@@ -166,6 +172,12 @@ ${TESTDIR}/ComplexTest/TestTopologicalOperations.o: ComplexTest/TestTopologicalO
 	${MKDIR} -p ${TESTDIR}/ComplexTest
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/ComplexTest/TestTopologicalOperations.o ComplexTest/TestTopologicalOperations.cpp
+
+
+${TESTDIR}/DelaunayTest/TestCrater.o: DelaunayTest/TestCrater.cpp 
+	${MKDIR} -p ${TESTDIR}/DelaunayTest
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestCrater.o DelaunayTest/TestCrater.cpp
 
 
 ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o: DelaunayTest/TestDelaunayVertex.cpp 
@@ -210,6 +222,19 @@ ${OBJECTDIR}/Corner_nomain.o: ${OBJECTDIR}/Corner.o Corner.cpp
 	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Corner_nomain.o Corner.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Corner.o ${OBJECTDIR}/Corner_nomain.o;\
+	fi
+
+${OBJECTDIR}/Crater_nomain.o: ${OBJECTDIR}/Crater.o Crater.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Crater.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Crater_nomain.o Crater.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Crater.o ${OBJECTDIR}/Crater_nomain.o;\
 	fi
 
 ${OBJECTDIR}/DelaunayTriangulation3D_nomain.o: ${OBJECTDIR}/DelaunayTriangulation3D.o DelaunayTriangulation3D.cpp 

@@ -24,7 +24,6 @@ namespace CrystalMesh{
             Mathbox::Geometry::Point3D const getTopPoint() const;
             
             Mathbox::Geometry::Point3D const getBotPoint() const;
-            
 
 	};
         
