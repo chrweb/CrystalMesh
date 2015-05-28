@@ -95,6 +95,18 @@ TEST_F(TriangleTester, findBnd){
     EXPECT_NE(bnd1, nullptr);
     EXPECT_NE(bnd2, nullptr);
     
+    auto bndC0 = trig0.boundaryWith(p1,p0);
+    auto bndC1 = trig0.boundaryWith(p2,p1);
+    auto bndC2 = trig0.boundaryWith(p0,p2);
+   
+    EXPECT_NE(bndC0, nullptr);
+    EXPECT_NE(bndC1, nullptr);
+    EXPECT_NE(bndC2, nullptr);
+    
+    EXPECT_EQ(bndC0, bnd0->getClock());
+    EXPECT_EQ(bndC1, bnd1->getClock());
+    EXPECT_EQ(bndC2, bnd2->getClock());
+    
     EXPECT_EQ(mDT.getCornerCount(), 3);
     EXPECT_EQ(mDT.getDomainCount(), 1);
     EXPECT_EQ(mDT.getVertexCount(), 3);

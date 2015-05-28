@@ -22,8 +22,7 @@ namespace CrystalMesh{
 
 			DirectedEdgeRing const * getDirectedEdgeRing() const;
 
-
-			DirectedEdgeRing * mpOut;
+			FacetEdge * mpOut;
 			void * mpData;
 
 

@@ -317,7 +317,7 @@ namespace CrystalMesh{
                     bndPointsCpy.push_back(aCraterPoints.front());
                     std::vector<Triangle> triangles;
                     
-                    for (Index i = 0; i < bndPointsCpy.size(); i++){
+                    for (Index i = 0; i < bndPointsCpy.size()-1; i++){
                         Point3D const& p0 = aMidPoint;
                         Point3D const& p1 = bndPointsCpy[i];
                         Point3D const& p2 = bndPointsCpy[i+1];
@@ -332,9 +332,13 @@ namespace CrystalMesh{
                     
                     triangles.push_back(triangles.front());
                     
-                    for (Index i = 0; i<bndPointsCpy.size(); i++){
-                        FacetEdge* b0 = triangles[i].boundaryWith(aMidPoint, bndPointsCpy[i]);
-                        FacetEdge* b1 = triangles[i+1].boundaryWith(aMidPoint, bndPointsCpy[i]);
+                    for (Index i = 0; i<bndPointsCpy.size()-1; i++){
+                        auto points0 = triangles[i].getBoundaryPoints();
+                        auto points1 = triangles[i+1].getBoundaryPoints();
+                        auto const &p0 = aMidPoint;
+                        auto const &p1 = bndPointsCpy[i+1];
+                        FacetEdge* b0 = triangles[i].boundaryWith(p0, p1);
+                        FacetEdge* b1 = triangles[i+1].boundaryWith(p0, p1);
                         SHOULD_BE(b0!=nullptr);
                         SHOULD_BE(b1!=nullptr);
                         mpManifold->spliceFacets(*b0, *b1);
