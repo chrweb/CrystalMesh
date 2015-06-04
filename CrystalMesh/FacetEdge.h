@@ -76,12 +76,12 @@ namespace CrystalMesh{
 		    FacetEdge * getInvOnext();
 
 
-			DirectedEdgeRing* mpDirectedEdgeRing;
-			FacetEdge *mpNext;
+                    DirectedEdgeRing* mpDirectedEdgeRing;
+                    FacetEdge *mpNext;
 
-			FieldIndex mIndex;
-			FieldIndex  mDualIt;
-			FieldIndex  mClckIt;
+                    FieldIndex mIndex;
+                    FieldIndex  mDualIt;
+                    FieldIndex  mClckIt;
 
 		};
 

@@ -312,14 +312,15 @@ namespace CrystalMesh{
 
 	    namespace{
 	    	void linkVertexToDirectedEdgeRing(Vertex * apVert, DirectedEdgeRing & aDring){
-	    		// TODO: check nullptr'ness here..?
-	    		aDring.mpOrg = apVert;
+	    	
+                    SHOULD_BE(apVert!=nullptr);
+                    aDring.mpOrg = apVert;
 
 	    	}
 
 	    	void linkDirectedEdgeRingToVertex(DirectedEdgeRing * apDring, Vertex& aVert){
-	    		// TODO: check nullptr'ness here..?
-	    		aVert.mpOut = apDring;
+                    SHOULD_BE(apDring!=nullptr);
+                    aVert.mpOut = apDring->getRingMember();
 	    	}
 	    }
 

@@ -5,6 +5,7 @@
  *      Author: christoph
  */
 #include "Vertex.h"
+#include "FacetEdge.h"
 #include "../Toolbox/Checks.h"
 #include "DirectedEdgeRing.h"
 
@@ -15,7 +16,7 @@ namespace CrystalMesh {
         using namespace Toolbox;
 
         bool const Vertex::isDual() const{
-            MUST_BE(notNullptr(mpOut));
+            SHOULD_BE(notNullptr(mpOut));
             return mpOut->isDual();
         }
 
@@ -24,14 +25,15 @@ namespace CrystalMesh {
         }
 
         DirectedEdgeRing * Vertex::getDirectedEdgeRing(){
-            MUST_BE(notNullptr(mpOut));
-            return mpOut;
+            SHOULD_BE(notNullptr(mpOut));
+            SHOULD_BE(notNullptr(mpOut->mpDirectedEdgeRing));
+            return mpOut->mpDirectedEdgeRing;
         }
 
         DirectedEdgeRing const * Vertex::getDirectedEdgeRing() const{
-            MUST_BE(notNullptr(mpOut));
-            return mpOut;
-        }
+            SHOULD_BE(notNullptr(mpOut));
+            SHOULD_BE(notNullptr(mpOut->mpDirectedEdgeRing));
+            return mpOut->mpDirectedEdgeRing;        }
     }  // namespace Subdiv3
 
 }  // namespace CrystalMesh

@@ -2,7 +2,7 @@
 #include "ComplexTypes.h"
 #include "../Mathbox/Mathbox.h"
 #include "DelaunayVertex.h"
-
+#include "../Toolbox/Checks.h"
 
 namespace CrystalMesh{
     namespace Delaunay3{
@@ -28,6 +28,7 @@ namespace CrystalMesh{
         }
         
         Point3D const pointOf(Subdiv3::Vertex const *pVertex){
+            SHOULD_BE(pVertex!=nullptr);
             VertexData const & data = *reinterpret_cast<VertexData const *>(pVertex->mpData);
             return data.mPoint;
 	}

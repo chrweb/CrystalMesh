@@ -333,8 +333,8 @@ namespace CrystalMesh{
                     triangles.push_back(triangles.front());
                     
                     for (Index i = 0; i<bndPointsCpy.size()-1; i++){
-                        auto points0 = triangles[i].getBoundaryPoints();
-                        auto points1 = triangles[i+1].getBoundaryPoints();
+                        //auto points0 = triangles[i].getBoundaryPoints();
+                        //auto points1 = triangles[i+1].getBoundaryPoints();
                         auto const &p0 = aMidPoint;
                         auto const &p1 = bndPointsCpy[i+1];
                         FacetEdge* b0 = triangles[i].boundaryWith(p0, p1);
@@ -342,35 +342,39 @@ namespace CrystalMesh{
                         SHOULD_BE(b0!=nullptr);
                         SHOULD_BE(b1!=nullptr);
                         mpManifold->spliceFacets(*b0, *b1);
+                        
+                        EdgeRingPtr newRing = unifyEdgeRings(rings);
+                        mpManifold->linkEdgeRingAndFacetEdges(*newRing, *bndToCenter);
                     }
                     
                     //track inner vertex for rearrange
-                    FacetEdge* centerToBnd = triangles[0].boundaryWith(aMidPoint, bndPointsCpy[0]);
-                    SHOULD_BE(centerToBnd != nullptr);
-                    auto orgsOfCenter = collectOrgsOf(centerToBnd);
+//                    FacetEdge* centerToBnd = triangles[0].boundaryWith(aMidPoint, bndPointsCpy[0]);
+//                    SHOULD_BE(centerToBnd != nullptr);
+//                    auto orgsOfCenter = collectOrgsOf(centerToBnd);
+//                    VertexPtr newInnerVertex = unifyVertices(orgsOfCenter);
+//                    mpManifold->linkVertexDirectedEdgeRings(*newInnerVertex, *centerToBnd->getDirectedEdgeRing());
                     
                     
-                    for (Index i = 0; i<bndPointsCpy.size(); i++){
-                        
-                        FacetEdge *bndToCenter = triangles[i].boundaryWith(bndPointsCpy[i], aMidPoint);
-                        SHOULD_BE(bndToCenter!=nullptr);
-                        //track bndVertex for rearrange
-                        auto orgsOfBnd = collectOrgsOf(bndToCenter);
-                        //track edge ring for rearrange
-                        auto rings = collectRingsFnext(bndToCenter);
-                        
-                        //rearrange edge rings:
-                        EdgeRingPtr newRing = unifyEdgeRings(rings);
-                        mpManifold->linkEdgeRingAndFacetEdges(*newRing, *bndToCenter);
-                        
-                        //rearrage bnd vertex:
-                        VertexPtr newVertex = unifyVertices(orgsOfBnd);
-                        mpManifold->linkVertexDirectedEdgeRings(*newVertex, *bndToCenter->getDirectedEdgeRing());
-                    }
+//                    for (Index i = 0; i<bndPointsCpy.size()-1; i++){
+//                        
+//                        FacetEdge *bndToCenter = triangles[i].boundaryWith(bndPointsCpy[i], aMidPoint);
+//                        SHOULD_BE(bndToCenter!=nullptr);
+//                        //track bndVertex for rearrange
+//                        auto orgsOfBnd = collectOrgsOf(bndToCenter);
+//                        //track edge ring for rearrange
+//                        auto rings = collectRingsFnext(bndToCenter);
+//                        
+//                        //rearrange edge rings:
+//                        EdgeRingPtr newRing = unifyEdgeRings(rings);
+//                        mpManifold->linkEdgeRingAndFacetEdges(*newRing, *bndToCenter);
+//                        
+//                        //rearrage bnd vertex:
+//                        VertexPtr newVertex = unifyVertices(orgsOfBnd);
+//                        mpManifold->linkVertexDirectedEdgeRings(*newVertex, *bndToCenter->getDirectedEdgeRing());
+//                    }
                     
                     //rearrange inner vertex:
-                    VertexPtr newInnerVertex = unifyVertices(orgsOfCenter);
-                    mpManifold->linkVertexDirectedEdgeRings(*newInnerVertex, *centerToBnd->getDirectedEdgeRing());
+
                     
                     //rearrange domains:
                     auto dualEdgeRing = centerToBnd->getDual()->getDirectedEdgeRing();

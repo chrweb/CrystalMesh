@@ -21,24 +21,33 @@
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/DelaunayVertex.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/Manifold.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/Corner.cpp</file>
+            <file>file:/home/christoph/CrystalMesh/CrystalMesh/Crater.cpp</file>
+            <file>file:/home/christoph/CrystalMesh/CrystalMesh/ComplexConstruction.h</file>
+            <file>file:/home/christoph/CrystalMesh/CrystalMesh/DelaunayTest/TestCrater.cpp</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/DelaunayTest/TestInclude.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/FacetEdge.cpp</file>
+            <file>file:/home/christoph/CrystalMesh/CrystalMesh/DirectedEdgeRing.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/Vertex.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/Manifold.cpp</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/DelaunayTriangulation3D.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/AdjacentDirectedEdgeRings.cpp</file>
+            <file>file:/home/christoph/CrystalMesh/CrystalMesh/Subdiv3ForwardDecs.h</file>
+            <file>file:/home/christoph/CrystalMesh/CrystalMesh/EdgeRing.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/DelaunayTest/TestDelaunayVertex.cpp</file>
+            <file>file:/home/christoph/CrystalMesh/CrystalMesh/ComplexConstruction.cpp</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/ComplexTypes.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/Domain.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/AdjacentDirectedEdgeRings.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/Fan.cpp</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/DelaunayTriangulation3D.cpp</file>
+            <file>file:/home/christoph/CrystalMesh/CrystalMesh/ComplexTest/TestManifold.cpp</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/DelaunayTest/TestComplexConstruction.cpp</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/Primitives.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/Tet.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/MaintenerTemplate.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/Corner.h</file>
             <file>file:/home/christoph/CrystalMesh/CrystalMesh/Triangle.h</file>
+            <file>file:/home/christoph/CrystalMesh/CrystalMesh/Crater.h</file>
         </group>
     </open-files>
 </project-private>
