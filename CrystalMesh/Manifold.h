@@ -66,13 +66,13 @@ namespace CrystalMesh{
                          * @param aVertex
                          * @param aRingRep
                          */
-			void linkVertexDirectedEdgeRings(Vertex& aVertex, DirectedEdgeRing& aRingRep);
+			void linkVertexFacetEdge(Vertex& aVertex, FacetEdge& aFedge);
 
 			/**
 			 * aVertex's DirectedEdgeRing is set to nullptr,
 			 * all vertex-adjacent DirectedEdgeRing's vertex pointer set to nullptr
 			 */
-			void dislinkVertexDirectedEdgeRings(Vertex & aVertex);
+			void dislinkVertexFacetEdges(Vertex & aVertex);
 
 			bool const isMyPrimalVertex(Vertex const & aVert) const;
 

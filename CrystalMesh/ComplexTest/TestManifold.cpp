@@ -57,7 +57,6 @@ namespace{
 		for (FieldIndex i = 0; i<2; i++){
 			auto const & currentDirectedRing = aRing.mRings[i];
 			EXPECT_EQ(currentDirectedRing.mIndex, i);
-			EXPECT_EQ(currentDirectedRing.mpOrg, nullptr);
 			EXPECT_EQ(currentDirectedRing.mpRingMember, nullptr);
 		}
 	}

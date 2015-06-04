@@ -195,8 +195,7 @@ namespace CrystalMesh{
                     for (Index i = 0; i< 3; i++){
                         Vertex * vertex = verts[i];
                         FacetEdge* facetEdge = edges[i];
-                        DirectedEdgeRing * dring0 = facetEdge->getDirectedEdgeRing();
-                        mpManifold->linkVertexDirectedEdgeRings(*vertex, *dring0);
+                        mpManifold->linkVertexFacetEdge(*vertex, *facetEdge);
                     }
                     
                      //dual edge ring linking
@@ -299,14 +298,14 @@ namespace CrystalMesh{
                  
                     mpManifold->linkEdgeRingAndFacetEdges(*newRing, *commonCorner);
       
-                    mpManifold->linkVertexDirectedEdgeRings(*newOrg, *commonCorner->getDirectedEdgeRing());
-                    mpManifold->linkVertexDirectedEdgeRings(*newDest, *commonCorner->getClock()->getDirectedEdgeRing());
+                    mpManifold->linkVertexFacetEdge(*newOrg, *commonCorner);
+                    mpManifold->linkVertexFacetEdge(*newDest, *commonCorner->getClock());
                 
                     //rearrange domains:
                     auto domains = collectOrgsOf(tris[0].mpDualEdgeRing->getRingMember());
                    
                     VertexPtr newDomain = unifyDomains(domains);
-                    mpManifold->linkVertexDirectedEdgeRings(*newDomain, *tris[0].mpDualEdgeRing);
+                    mpManifold->linkVertexFacetEdge(*newDomain, *tris[0].mpDualEdgeRing->getRingMember());
                     return fanFrom(&newRing->getItem(0));
                 }
                 
@@ -343,8 +342,8 @@ namespace CrystalMesh{
                         SHOULD_BE(b1!=nullptr);
                         mpManifold->spliceFacets(*b0, *b1);
                         
-                        EdgeRingPtr newRing = unifyEdgeRings(rings);
-                        mpManifold->linkEdgeRingAndFacetEdges(*newRing, *bndToCenter);
+                        //EdgeRingPtr newRing = unifyEdgeRings(rings);
+                        //mpManifold->linkEdgeRingAndFacetEdges(*newRing, *bndToCenter);
                     }
                     
                     //track inner vertex for rearrange
@@ -377,19 +376,19 @@ namespace CrystalMesh{
 
                     
                     //rearrange domains:
-                    auto dualEdgeRing = centerToBnd->getDual()->getDirectedEdgeRing();
-                    auto oldDomains = collectOrgsOf(dualEdgeRing->getRingMember());
-                    VertexPtr newDomain = unifyDomains(oldDomains);
-                    mpManifold->linkVertexDirectedEdgeRings(*newDomain, *dualEdgeRing);
-                    
-                    return craterOf(newInnerVertex);
+//                    auto dualEdgeRing = centerToBnd->getDual()->getDirectedEdgeRing();
+//                    auto oldDomains = collectOrgsOf(dualEdgeRing->getRingMember());
+//                    VertexPtr newDomain = unifyDomains(oldDomains);
+//                    mpManifold->linkVertexDirectedEdgeRings(*newDomain, *dualEdgeRing);
+//                    
+//                    return craterOf(newInnerVertex);
                 }
                 
-                
+               
                 Subdiv3::VertexPtr DelaunayTriangulation3D::unifyVertices(VertexUnifyList& aList){
                     VertexPtr vp = aList.front();
                     
-                    AdjacentRings adjr = getAdjacentRingsOf(*vp->getDirectedEdgeRing());
+                    AdjacentFacetEdges adjFedges = getAdjacentFacetEdges(*vp);
                     VertexData  data = vertexDataFrom(vertexDataOf(vp));
                     
                     for (auto current : aList){
@@ -398,7 +397,7 @@ namespace CrystalMesh{
                         deleteVertexData(toData);
                     }
                     
-                    for (DirectedEdgeRing* current: adjr){
+                    for (FacetEdge* current: adjFedges){
                         current->mpOrg = nullptr;
                     }
                     
@@ -408,13 +407,13 @@ namespace CrystalMesh{
                 
                 Subdiv3::VertexPtr  DelaunayTriangulation3D::unifyDomains(VertexUnifyList& aList){
                     VertexPtr vp = aList.front();
-                    AdjacentRings adjr = getAdjacentRingsOf(*vp->getDirectedEdgeRing());
+                    AdjacentFacetEdges adjFedges = getAdjacentFacetEdges(*vp);
 
                     for (auto current: aList){
                         mpManifold->deleteDualVertex(*current);
                     }
                     
-                    for (DirectedEdgeRing* current: adjr){
+                    for (FacetEdge* current: adjFedges){
                         current->mpOrg = nullptr;
                     }
                    
@@ -423,6 +422,7 @@ namespace CrystalMesh{
                     return result;
                
                 }
+         
                 
                 Subdiv3::EdgeRingPtr DelaunayTriangulation3D::unifyEdgeRings(EdgeRingUnifyList& aList){
                     FacetEdge* ringMember = aList.front()->getItem(0).getRingMember();
@@ -922,7 +922,7 @@ namespace CrystalMesh{
                 Domain const  DelaunayTriangulation3D::makeDomainUnder(Triangle& aTri){
                     Domain result;
                     result.mpDual = mpManifold->makeDualVertex();
-                    mpManifold->linkVertexDirectedEdgeRings(*result.mpDual, *aTri.mpDualEdgeRing);
+                    mpManifold->linkVertexFacetEdge(*result.mpDual, *aTri.mpDualEdgeRing->getRingMember());
                     return result;
                 }
                 

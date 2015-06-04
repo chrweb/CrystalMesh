@@ -49,11 +49,11 @@ namespace CrystalMesh{
 		}
 
 		const Vertex* DirectedEdgeRing::getOrg() const {
-			return mpOrg;
+			return mpRingMember->getOrg();
 		}
 
 		Vertex* DirectedEdgeRing::getOrg() {
-			return mpOrg;
+			return mpRingMember->getOrg();
 		}
 
 		namespace{

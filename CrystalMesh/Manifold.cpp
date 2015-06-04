@@ -146,7 +146,6 @@ namespace CrystalMesh{
 
 	    		for (FieldIndex i = 0; i<2; i++){
 	    			aRing.mRings[i].mpRingMember = nullptr;
-	    			aRing.mRings[i].mpOrg = nullptr;
 	    			aRing.mRings[i].mIndex = i;
 	    		}
 
@@ -311,50 +310,52 @@ namespace CrystalMesh{
 	    }
 
 	    namespace{
-	    	void linkVertexToDirectedEdgeRing(Vertex * apVert, DirectedEdgeRing & aDring){
+                
+	    	void linkVertexToFacetEdge(Vertex * apVert, FacetEdge & aFedge){
 	    	
                     SHOULD_BE(apVert!=nullptr);
-                    aDring.mpOrg = apVert;
+                    aFedge.mpOrg = apVert;
 
 	    	}
 
-	    	void linkDirectedEdgeRingToVertex(DirectedEdgeRing * apDring, Vertex& aVert){
-                    SHOULD_BE(apDring!=nullptr);
-                    aVert.mpOut = apDring->getRingMember();
+	    	void linkFacetEdgeToVertex(FacetEdge * aFedge, Vertex& aVert){
+                    SHOULD_BE(aFedge!=nullptr);
+                    aVert.mpOut = aFedge;
 	    	}
+                
 	    }
 
-	    void Manifold::linkVertexDirectedEdgeRings(Vertex & aVert, DirectedEdgeRing & aDring){
+	    void Manifold::linkVertexFacetEdge(Vertex & aVert, FacetEdge& aFedge){
 
 	    	// Edge rings is instance of this
 	    	// Directed edge ring is dual?
-	    	if (aDring.isDual())
-	    	{
-	    		// must be a part of my dual edge ring...
-	    		MUST_BE(isMyDualEdgeRing(*aDring.getEdgeRing()));
-	    		// vertex must be my part of my duals either..
-	    		MUST_BE(isMyDualVertex(aVert));
-	    	}
-	    	// primals analogous
-	    	else{
-	    		MUST_BE(isMyPrimalEdgeRing(*aDring.getEdgeRing()));
-	    		MUST_BE(isMyPrimalVertex(aVert));
-	    	}
+//	    	if (aFedge.isDual())
+//	    	{
+//	    		// must be a part of my dual edge ring...
+//	    		SHOULD_BE(isMyDualEdgeRing(*aDring.getEdgeRing()));
+//	    		// vertex must be my part of my duals either..
+//	    		SHOULD_BE(isMyDualVertex(aVert));
+//	    	}
+//	    	// primals analogous
+//	    	else{
+//	    		SHOULD_BE(isMyPrimalEdgeRing(*aDring.getEdgeRing()));
+//	    		SHOULD_BE(isMyPrimalVertex(aVert));
+//	    	}
 
 	    	// get every incident edge ring
-	    	auto incEdgeRings = getAdjacentRingsOf(aDring);
+	    	auto incFedges = getAdjacentFacetEdges(aFedge);
 
 	    	// vertex not associated
-	    	MUST_BE(isNullptr(aVert.mpOut));
+	    	SHOULD_BE(isNullptr(aVert.mpOut));
 
-	    	for (auto const item: incEdgeRings){
-	    		MUST_BE(isNullptr(item->getOrg()));
+	    	for (auto const item: incFedges){
+	    		SHOULD_BE(isNullptr(item->getOrg()));
 	    	}
 
-	    	linkDirectedEdgeRingToVertex(&aDring, aVert);
+	    	linkFacetEdgeToVertex(&aFedge, aVert);
 
-	    	for(auto const currentDring: incEdgeRings){
-	    		linkVertexToDirectedEdgeRing(&aVert, *currentDring);
+	    	for(auto const currentEdge: incFedges){
+	    		linkVertexToFacetEdge(&aVert, *currentEdge);
 	    	}
 
 	    	// done
@@ -382,16 +383,18 @@ namespace CrystalMesh{
 			return mpDualVertexMaintener->isMyEntity(aVert);
 		}
 
-		void Manifold::dislinkVertexDirectedEdgeRings(Vertex & aVertex){
+                
+		void Manifold::dislinkVertexFacetEdges(Vertex & aVertex){
 
-			auto const adjEdgeRings = getAdjacentRingsOf(aVertex);
+			AdjacentFacetEdges adjFedges = getAdjacentFacetEdges(aVertex);
 			aVertex.mpOut = nullptr;
-			for (auto pCurrent: adjEdgeRings){
+			for (auto pCurrent: adjFedges){
 				pCurrent->mpOrg = nullptr;
 			}
 
 			return;
 		}
+                
                 
           
 

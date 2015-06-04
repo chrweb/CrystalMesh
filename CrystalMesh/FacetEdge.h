@@ -78,6 +78,7 @@ namespace CrystalMesh{
 
                     DirectedEdgeRing* mpDirectedEdgeRing;
                     FacetEdge *mpNext;
+                    Vertex * mpOrg;
 
                     FieldIndex mIndex;
                     FieldIndex  mDualIt;

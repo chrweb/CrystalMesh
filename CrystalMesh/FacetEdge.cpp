@@ -19,7 +19,7 @@ namespace CrystalMesh{
 
 			template<typename T>
 			void checkValidPtr(T const * ptr){
-				MUST_BE(notNullptr(ptr));
+				SHOULD_BE(notNullptr(ptr));
 			}
 
 			bool checkClockIteration(FacetEdge const & aFe){
@@ -51,13 +51,13 @@ namespace CrystalMesh{
 		}
 
 		Vertex const * FacetEdge::getOrg() const{
-			checkValidPtr(mpDirectedEdgeRing);
-			return getDirectedEdgeRing()->getOrg();
+			checkValidPtr(mpOrg);
+			return mpOrg;
 		}
 
 		Vertex * FacetEdge::getOrg(){
-			checkValidPtr(mpDirectedEdgeRing);
-			return getDirectedEdgeRing()->getOrg();
+			checkValidPtr(mpOrg);
+			return mpOrg;
 		};
 
 		Vertex const * FacetEdge::getDest() const{

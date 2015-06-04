@@ -7,6 +7,7 @@
 #pragma once
 
 #include "Subdiv3ForwardDecs.h"
+#include "FacetEdge.h"
 
 namespace CrystalMesh{
 
@@ -21,6 +22,10 @@ namespace CrystalMesh{
 			DirectedEdgeRing * getDirectedEdgeRing();
 
 			DirectedEdgeRing const * getDirectedEdgeRing() const;
+                        
+                        FacetEdge * getFacetEdge();
+                        
+                        FacetEdge const * getFacetEdge() const;
 
 			FacetEdge * mpOut;
 			void * mpData;

@@ -18,7 +18,6 @@ namespace CrystalMesh{
 		struct DirectedEdgeRing{
 
 			FacetEdge * mpRingMember;
-			Vertex * mpOrg;
 			FieldIndex mIndex;
 
 			bool const isDual() const;
