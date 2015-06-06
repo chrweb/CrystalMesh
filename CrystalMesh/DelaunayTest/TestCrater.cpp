@@ -22,7 +22,7 @@ TEST(CraterTest, crater0){
     DelaunayTriangulation3D dt;
     dt.makeCrater(center, CraterPoints(bnd0.begin(), bnd0.end()));
     
-    EXPECT_EQ(dt.getCornerCount(), 9);
+    EXPECT_EQ(dt.getCornerCount(), 6);
     EXPECT_EQ(dt.getDomainCount(), 1);
     EXPECT_EQ(dt.getFaceCount(), 3);
     EXPECT_EQ(dt.getVertexCount(), 4);

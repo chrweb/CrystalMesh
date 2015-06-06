@@ -89,6 +89,7 @@ namespace CrystalMesh{
 	    			ref->mpNext = ref;
 
 	    			ref->mpDirectedEdgeRing = nullptr;
+                                ref->mpOrg = nullptr;
 	    		}
 	    	}
 
@@ -349,7 +350,7 @@ namespace CrystalMesh{
 	    	SHOULD_BE(isNullptr(aVert.mpOut));
 
 	    	for (auto const item: incFedges){
-	    		SHOULD_BE(isNullptr(item->getOrg()));
+	    		SHOULD_BE(isNullptr(item->mpOrg));
 	    	}
 
 	    	linkFacetEdgeToVertex(&aFedge, aVert);

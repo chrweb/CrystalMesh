@@ -34,6 +34,16 @@ namespace CrystalMesh {
             SHOULD_BE(notNullptr(mpOut));
             SHOULD_BE(notNullptr(mpOut->mpDirectedEdgeRing));
             return mpOut->mpDirectedEdgeRing;        }
+        
+        FacetEdge * Vertex::getFacetEdge(){
+            SHOULD_BE(notNullptr(mpOut))
+            return mpOut;
+        }
+                        
+        FacetEdge const * Vertex::getFacetEdge() const{
+            SHOULD_BE(notNullptr(mpOut))
+            return mpOut;        
+        }
     }  // namespace Subdiv3
 
 }  // namespace CrystalMesh

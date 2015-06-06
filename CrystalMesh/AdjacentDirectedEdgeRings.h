@@ -47,6 +47,8 @@ namespace CrystalMesh {
 
 		RingMembers const getEnextRingMembersOf(FacetEdge const & aRef);
                 
+                RingMembers const getOnextRingMembersOf(FacetEdge const & aRef);
+                
 
 
 	}  // namespace Subdiv3

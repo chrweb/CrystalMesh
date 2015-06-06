@@ -1,3 +1,5 @@
+#include <functional>
+
 #include "TestModel.h"
 #include "../../CrystalMesh/DelaunayTriangulation3D.h"
 #include "../../Mathbox/Mathbox.h"
@@ -23,7 +25,10 @@ namespace CrystalMesh{
     
     namespace UI{
         
-        namespace{
+        
+        void triangleTestFan(){
+            
+             
             Point3D const uPoint = pointFromXYZ( 0.0,  0.0,  1.0);
             Point3D const dPoint = pointFromXYZ( 0.0,  0.0,  -1.0);
 
@@ -34,18 +39,37 @@ namespace CrystalMesh{
                 pointFromXYZ(-1.0, 0.0, 0.0),
                 pointFromXYZ(0.0, -1.0, 0.0)};
 
-        }
-        
-        void triangleTest_launch(){
-            dt = new DelaunayTriangulation3D();
-            
             
             auto fan = dt->makeFan(uPoint, dPoint, std::vector<Mathbox::Geometry::Point3D>(sample.begin(), sample.end()));
             selectedTri = fan.getTriangles().at(0);
             
             
             selectedEdge = cornerOf(selectedTri.getBoundaryEdges()[0]);
+        
+        }
+        
+        void triangleTestCrater(){
             
+            Point3D center = pointFromXYZ(0.0, 0.0, -1.0);
+            std::array<Point3D,3> bnd0= {
+                pointFromXY0(1.0, -0.5),
+                pointFromXY0(0.0, 0.5),
+                pointFromXY0(-1.0, -0.5)
+                };
+            Crater const crater = dt->makeCrater(center, DelaunayTriangulation3D::CraterPoints(bnd0.begin(), bnd0.end()));
+            auto triangle = crater.getTriangles().front();
+            
+            selectedTri = triangle;
+            selectedEdge = cornerOf(triangle.getBoundaryEdges()[0]);
+
+            return;
+        }
+        
+        void triangleTest_launch(){
+            dt = new DelaunayTriangulation3D();
+            
+            triangleTestCrater();
+
             model = new DelaunayOpenGLExporter;
             
             dt->addVertices(*model);
@@ -55,6 +79,8 @@ namespace CrystalMesh{
             dtView->registerModel(model);
             
         }
+        
+        
         
         DelaunayOpenGLExporter const * currentModel(){
             return model;

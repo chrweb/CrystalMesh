@@ -153,6 +153,21 @@ namespace CrystalMesh {
 				forEachElementInFnextRing(*dual, collector);
 				return result;
 			}
+                        
+                        
+                        RingMembers const getOnextRingMembersOf(FacetEdge const & aRef){
+                            RingMembers result;
+			
+                            auto  run = const_cast<FacetEdge*>(&aRef);
+                            auto const  stop = &aRef;
+                            
+                            do{
+                                result.push_back(run);
+                                run=run->getOnext();
+                            } while(run!=stop);
+
+                            return result;
+                        }
 
 
 

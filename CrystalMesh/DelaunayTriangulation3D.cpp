@@ -346,42 +346,42 @@ namespace CrystalMesh{
                         //mpManifold->linkEdgeRingAndFacetEdges(*newRing, *bndToCenter);
                     }
                     
-                    //track inner vertex for rearrange
-//                    FacetEdge* centerToBnd = triangles[0].boundaryWith(aMidPoint, bndPointsCpy[0]);
-//                    SHOULD_BE(centerToBnd != nullptr);
-//                    auto orgsOfCenter = collectOrgsOf(centerToBnd);
-//                    VertexPtr newInnerVertex = unifyVertices(orgsOfCenter);
-//                    mpManifold->linkVertexDirectedEdgeRings(*newInnerVertex, *centerToBnd->getDirectedEdgeRing());
-                    
-                    
-//                    for (Index i = 0; i<bndPointsCpy.size()-1; i++){
-//                        
-//                        FacetEdge *bndToCenter = triangles[i].boundaryWith(bndPointsCpy[i], aMidPoint);
-//                        SHOULD_BE(bndToCenter!=nullptr);
-//                        //track bndVertex for rearrange
-//                        auto orgsOfBnd = collectOrgsOf(bndToCenter);
-//                        //track edge ring for rearrange
-//                        auto rings = collectRingsFnext(bndToCenter);
-//                        
-//                        //rearrange edge rings:
-//                        EdgeRingPtr newRing = unifyEdgeRings(rings);
-//                        mpManifold->linkEdgeRingAndFacetEdges(*newRing, *bndToCenter);
-//                        
-//                        //rearrage bnd vertex:
-//                        VertexPtr newVertex = unifyVertices(orgsOfBnd);
-//                        mpManifold->linkVertexDirectedEdgeRings(*newVertex, *bndToCenter->getDirectedEdgeRing());
-//                    }
-                    
                     //rearrange inner vertex:
+                    FacetEdge* centerToBnd = triangles[0].boundaryWith(aMidPoint, bndPointsCpy[0]);
+                    SHOULD_BE(centerToBnd != nullptr);
+                    auto orgsOfCenter = collectOrgsOf(centerToBnd);
+                    VertexPtr newInnerVertex = unifyVertices(orgsOfCenter);
+                    mpManifold->linkVertexFacetEdge(*newInnerVertex, *centerToBnd);
+                    
+                    
+                    for (Index i = 0; i<bndPointsCpy.size()-1; i++){
+                        
+                        FacetEdge *bndToCenter = triangles[i].boundaryWith(bndPointsCpy[i], aMidPoint);
+                        SHOULD_BE(bndToCenter!=nullptr);
+                        //track bndVertex for rearrange
+                        auto orgsOfBnd = collectOrgsOf(bndToCenter);
+                        //track edge ring for rearrange
+                        auto rings = collectRingsFnext(bndToCenter);
+                        
+                        //rearrange edge rings:
+                        EdgeRingPtr newRing = unifyEdgeRings(rings);
+                        mpManifold->linkEdgeRingAndFacetEdges(*newRing, *bndToCenter);
+                        
+                        //rearrage bnd vertex:
+                        VertexPtr newVertex = unifyVertices(orgsOfBnd);
+                        mpManifold->linkVertexFacetEdge(*newVertex, *bndToCenter);
+                    }
+                    
+                    
 
                     
                     //rearrange domains:
-//                    auto dualEdgeRing = centerToBnd->getDual()->getDirectedEdgeRing();
-//                    auto oldDomains = collectOrgsOf(dualEdgeRing->getRingMember());
-//                    VertexPtr newDomain = unifyDomains(oldDomains);
-//                    mpManifold->linkVertexDirectedEdgeRings(*newDomain, *dualEdgeRing);
-//                    
-//                    return craterOf(newInnerVertex);
+                    FacetEdge * dual = centerToBnd->getDual();
+                    auto oldDomains = collectOrgsOf(dual);
+                    VertexPtr newDomain = unifyDomains(oldDomains);
+                    mpManifold->linkVertexFacetEdge(*newDomain, *dual);
+                    
+                    return craterOf(newInnerVertex);
                 }
                 
                

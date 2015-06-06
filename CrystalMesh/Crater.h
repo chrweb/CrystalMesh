@@ -9,7 +9,8 @@
 #define	CRATER_H
 
 #include "ComplexTypes.h"
-
+#include "Triangle.h"
+#include <vector>
 namespace CrystalMesh{
     
     namespace Delaunay3{
@@ -17,6 +18,10 @@ namespace CrystalMesh{
         struct Crater{
             
             Subdiv3::VertexPtr  mVertex;
+            
+            typedef std::vector<Triangle> Triangles;
+            
+            Triangles getTriangles() const;
             
         };
         

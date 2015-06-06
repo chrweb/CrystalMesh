@@ -165,16 +165,17 @@ TEST_F(TopOps, VertexLinking0){
 	// now 4 directed edge ring are expected to be adjacent to the vertex:
 	auto const adjRings = getAdjacentRingsOf(vertexRef);
 	EXPECT_EQ(adjRings.size(), 4u);
+        AdjacentFacetEdges adjFedges = getAdjacentFacetEdges(vertexRef);
+        for (FacetEdge* current: adjFedges){
+            EXPECT_TRUE(current->getOrg() == &vertexRef);
+        }
 
-	// try dislinking:xsa
+	// try dislinking
 	mf.dislinkVertexFacetEdges(vertexRef);
 
-	for(EdgeRing const* ring: corner){
-		EdgeRing const & ref = *ring;
-		for (int i = 0; i<2; i++){
-			EXPECT_TRUE(isNullptr(ref[i].getRingMember()->getOrg()));
-		}
-	}
+	for (FacetEdge* current: adjFedges){
+            EXPECT_TRUE(current->mpOrg == nullptr);
+        }
 
 	EXPECT_TRUE(isNullptr(vertexRef.mpOut));
 }
@@ -257,14 +258,13 @@ TEST_F(TopOps, VertexLinking1){
 	auto const adjRings = getAdjacentRingsOf(vertexRef);
 	EXPECT_EQ(adjRings.size(), 5u);
 
-	// try dislinking:
-	mf.dislinkVertexFacetEdges(vertexRef);
+        AdjacentFacetEdges adjFedges = getAdjacentFacetEdges(vertexRef);
 
-	for(EdgeRing const* ring: corner){
-		EdgeRing const & ref = *ring;
-		for (int i = 0; i<2; i++){
-			EXPECT_TRUE(isNullptr(ref[i].getRingMember()->getOrg()));
-		}
+        // try dislinking:
+	mf.dislinkVertexFacetEdges(vertexRef);
+	for(FacetEdge const* current: adjFedges){
+            EXPECT_TRUE(isNullptr(current->mpOrg));
+            
 	}
 
 	EXPECT_TRUE(isNullptr(vertexRef.mpOut));
