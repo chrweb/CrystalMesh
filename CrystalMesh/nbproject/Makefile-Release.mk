@@ -47,6 +47,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Fan.o \
 	${OBJECTDIR}/Manifold.o \
 	${OBJECTDIR}/Primitives.o \
+	${OBJECTDIR}/TetInteriour.o \
 	${OBJECTDIR}/Triangle.o \
 	${OBJECTDIR}/Vertex.o
 
@@ -144,6 +145,11 @@ ${OBJECTDIR}/Primitives.o: Primitives.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Primitives.o Primitives.cpp
 
+${OBJECTDIR}/TetInteriour.o: TetInteriour.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TetInteriour.o TetInteriour.cpp
+
 ${OBJECTDIR}/Triangle.o: Triangle.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -163,7 +169,7 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/ComplexTest/TestEdgeRings.o ${TESTDIR}/Compl
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} 
 
-${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o ${TESTDIR}/DelaunayTest/TestCrater.o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestFan.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o ${TESTDIR}/DelaunayTest/TestCrater.o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestFan.o ${TESTDIR}/DelaunayTest/TestTetInteriour.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} 
 
@@ -214,6 +220,12 @@ ${TESTDIR}/DelaunayTest/TestFan.o: DelaunayTest/TestFan.cpp
 	${MKDIR} -p ${TESTDIR}/DelaunayTest
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestFan.o DelaunayTest/TestFan.cpp
+
+
+${TESTDIR}/DelaunayTest/TestTetInteriour.o: DelaunayTest/TestTetInteriour.cpp 
+	${MKDIR} -p ${TESTDIR}/DelaunayTest
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestTetInteriour.o DelaunayTest/TestTetInteriour.cpp
 
 
 ${TESTDIR}/DelaunayTest/TestTriangle.o: DelaunayTest/TestTriangle.cpp 
@@ -376,6 +388,19 @@ ${OBJECTDIR}/Primitives_nomain.o: ${OBJECTDIR}/Primitives.o Primitives.cpp
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Primitives_nomain.o Primitives.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Primitives.o ${OBJECTDIR}/Primitives_nomain.o;\
+	fi
+
+${OBJECTDIR}/TetInteriour_nomain.o: ${OBJECTDIR}/TetInteriour.o TetInteriour.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/TetInteriour.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TetInteriour_nomain.o TetInteriour.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/TetInteriour.o ${OBJECTDIR}/TetInteriour_nomain.o;\
 	fi
 
 ${OBJECTDIR}/Triangle_nomain.o: ${OBJECTDIR}/Triangle.o Triangle.cpp 

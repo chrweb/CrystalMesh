@@ -20,6 +20,7 @@
 
 
 
+
 namespace CrystalMesh{
 
 
@@ -59,69 +60,128 @@ namespace CrystalMesh{
 	}
 
 
-	namespace {
-
-		typedef uint32_t Counter;
-
-		struct EdgeArray{
-			Subdiv3::FacetEdge * mArray[3];
-
-			Subdiv3::FacetEdge * operator[](Counter i){
-				return mArray[i];
-			}
-		};
-
-		EdgeArray const edgeArrayOf(Triangle const & aTri){
-			using namespace Subdiv3;
-			EdgeArray result;
-			int counter = 0;
-
-			auto collector = [&result, &counter](FacetEdge  & aInst){
-				MUST_BE(counter < 3);
-				result.mArray[counter] = aInst.getDual();
-				counter++;
-			};
-
-			forEachElementInFnextRing(*aTri.mpDualEdgeRing->mpRingMember, collector);
-
-			return result;
-		}
-
-		Triangle const clockedTriangle(Triangle const & aTri){
-			Triangle result;
-			result.mpDualEdgeRing = aTri.mpDualEdgeRing->mpRingMember->getClock()->getDirectedEdgeRing();
-			return result;
-		}
-
-	}
+//	namespace {
+//
+//            typedef uint32_t Counter;
+//
+//            struct EdgeArray{
+//                    Subdiv3::FacetEdge * mArray[3];
+//
+//                    Subdiv3::FacetEdge * operator[](Counter i){
+//                            return mArray[i];
+//                    }
+//            };
+//
+//            EdgeArray const edgeArrayOf(Triangle const & aTri){
+//                    using namespace Subdiv3;
+//                    EdgeArray result;
+//                    int counter = 0;
+//
+//                    auto collector = [&result, &counter](FacetEdge  & aInst){
+//                            MUST_BE(counter < 3);
+//                            result.mArray[counter] = aInst.getDual();
+//                            counter++;
+//                    };
+//
+//                    forEachElementInFnextRing(*aTri.mpDualEdgeRing->mpRingMember, collector);
+//
+//                    return result;
+//            }
+//
+//            Triangle const clockedTriangle(Triangle const & aTri){
+//                    Triangle result;
+//                    result.mpDualEdgeRing = aTri.mpDualEdgeRing->mpRingMember->getClock()->getDirectedEdgeRing();
+//                    return result;
+//            }
+//
+//	}
 
 		
 
-/*
-		TetInteriour const DelaunayTriangulation3D::makeTetInterior( TetIntPoints const & aTetIntPoints)
-		{
-                    // construct interior, given five Points: [0]...[3] tetBounds
-                    // [4] in-tet-point
 
-                    // construct the topological structure
-                    TetInteriour tetInterior = constructTetInteriourInComplex(*this->mpManifold);
-                    
-                    TetInteriour::Vertices itsVerts = tetInterior.getVertices();
+	
+            
+            
+//
+//	auto fanArray = fromThreeTuble(fan.getBlossomAdapter());
+//	auto blosArray = fromThreeTuble(blos.getFanAdapter());
+//
+//	for (Index i = 0; i<3; i++){
+//		aComplex.spliceFacets(*fanArray.array[i], *blosArray.array[i]);
+//	}
+//
+//		/**
+//		 * to make flipping easier, construct well-linked entities..
+//		 */
+//		//construct and link interior corners (edge ring size 3)
+//		Subdiv3::EdgeRing * innerRing[3];
+//
+//		for(Index i = 0; i<3; i++){
+//			innerRing[i] = aComplex.makePrimalEdgeRing();
+//			aComplex.linkEdgeRingAndFacetEdges(*innerRing[i], *fanArray.array[i]);
+//		}
+//
+//
+//		TetInteriour result;
+//
+//		//construct and link corners with edge ring size 1 (outer ones)
+//		// these can be reached by fan tuple
+//		Subdiv3::FacetEdge * outerEdges[6];
+//		auto & outerRing = result.mpOuterEdgeRing;
+//0
+//		// get linking pairs
+//		for (Index i = 0; i<3; i++){
+//			outerEdges[i] =   fanArray.array[i]->getEnext();
+//			outerEdges[i+3] =   fanArray.array[i]->getFnext()->getEnext();
+//		}
+//
+//		// construct and link
+//		for (Index i = 0; i<6; i++){
+//			outerRing[i] = aComplex.makePrimalEdgeRing();
+//			aComplex.linkEdgeRingAndFacetEdges(*outerRing[i], *outerEdges[i]);
+//		}
+//
+//		//construct vertices
+//		auto &  vert = result.mpVertex;
+//		for(Index i = 0; i<5; i++){
+//			vert[i] = aComplex.makePrimalVertex();
+//		}
+//
+//		// link interiour vertex:
+//		aComplex.linkVertexDirectedEdgeRings(*vert[0], *fanArray.array[0]->getDirectedEdgeRing());
+//
+//		// collect all adjacent edge rings:
+//		auto const adjRings = getAdjacentRingsOf(*vert[0]);
+//
+//		// link their syms with vertex 1 to 4
+//		for (Index i = 1; i<5; i++){
+//			aComplex.linkVertexDirectedEdgeRings(*vert[i], *adjRings[i-1]->getSym());
+//		}
+//
+//		// prepare result:
+//		return result;
+//             // construct interior, given five Points: [0]...[3] tetBounds
+//             // [4] in-tet-point
+//
+//             // construct the topological structure
+//             TetInteriour tetInterior = constructTetInteriourInComplex(*this->mpManifold);
+//             
+//             TetInteriour::Vertices itsVerts = tetInterior.getVertices();
+//
+//             // for tet bounds...
+//             for (Index i = 0; i < 4; i++)
+//             {
+//                     auto vertexData= makeVertexData(aTetIntPoints[i], nullptr);
+//                     linkVertexDataVertex(vertexData, itsVerts.mAtCorners[i]);
+//             }
+//
+//             // in-tet-vertex
+//             auto inTetData = makeVertexData(aTetIntPoints[4], nullptr);
+//             linkVertexDataVertex(inTetData, itsVerts.mInTet);
+//
+//             return tetInterior;
+//	}
 
-                    // for tet bounds...
-                    for (Index i = 0; i < 4; i++)
-                    {
-                            auto vertexData= makeVertexData(aTetIntPoints[i], nullptr);
-                            linkVertexDataVertex(vertexData, itsVerts.mAtCorners[i]);
-                    }
-
-                    // in-tet-vertex
-                    auto inTetData = makeVertexData(aTetIntPoints[4], nullptr);
-                    linkVertexDataVertex(inTetData, itsVerts.mInTet);
-
-                    return tetInterior;
-		}
-*/
                 
                 namespace{
 
@@ -383,6 +443,60 @@ namespace CrystalMesh{
                     
                     return craterOf(newInnerVertex);
                 }
+                
+        TetInteriour const DelaunayTriangulation3D::makeTetInterior( TetIntPoints const & aTetIntPoints)
+	{
+            // see https://github.com/chrweb/CrystalMesh/wiki/Cell-complexes-in-Delaunay3#tetrahedron-interior
+            // for a sketch..
+            Point3D const& topPoint = aTetIntPoints[0];
+            Point3D const& botPoint = aTetIntPoints[4];
+            FanPoints const fanPoints = FanPoints(aTetIntPoints.begin()+1, aTetIntPoints.begin()+3);
+             
+            Fan fan = makeFan(topPoint, botPoint, fanPoints);
+             
+            Point3D const & centerPoint = aTetIntPoints[4];
+            CraterPoints const craterPoints = CraterPoints(aTetIntPoints.begin()+1, aTetIntPoints.begin()+3);
+             
+            Crater crater = makeCrater(centerPoint, craterPoints);
+            
+            RingMembers onextRing = crater.getOnextRingOfCenter();
+            
+            for (FacetEdge * current : onextRing){
+                Point3D const& oPoint = originPointOf(current);
+                Point3D const& dPoint = destinationPointOf(current);
+                FacetEdge * adapter = fan.getAdapterOf(oPoint, dPoint);
+                SHOULD_BE(notNullptr(adapter));
+                mpManifold->spliceFacets(*current, *adapter);
+                auto oldRings = collectRingsFnext(current);
+                
+                //rearrange edge rings
+                EdgeRing* newRing = unifyEdgeRings(oldRings);
+                mpManifold->linkEdgeRingAndFacetEdges(*newRing, *current);
+
+                //rearrange destination vertex:
+                auto oldVerts = collectOrgsOf(current->getClock());
+                VertexPtr newVertex = unifyVertices(oldVerts);
+                mpManifold->linkVertexFacetEdge(*newVertex, *current->getClock());
+            }
+            
+            //rearrange in center/ in tet vertex:
+            FacetEdge * centerToTop = fan.centerToTop()->getRingMember();
+            
+            auto oldVerts = collectOrgsOf(centerToTop);
+            VertexPtr newVertex = unifyVertices(oldVerts);
+            mpManifold->linkVertexFacetEdge(*newVertex, *centerToTop);
+            
+            //rearrange domains:
+            Domain fanDomain = fan.getDomain();
+            Domain craterDomain = crater.getDomain();
+            
+            auto oldDomains = collectOrgsOf(fanDomain.mpDual->getFacetEdge());
+            VertexPtr newDomain = unifyDomains(oldDomains);
+            mpManifold->linkVertexFacetEdge(*newDomain, *fanDomain.mpDual->getFacetEdge());
+            
+            
+            
+        }
                 
                
                 Subdiv3::VertexPtr DelaunayTriangulation3D::unifyVertices(VertexUnifyList& aList){

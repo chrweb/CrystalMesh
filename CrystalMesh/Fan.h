@@ -9,6 +9,7 @@
 #define	FAN_H
 #include "ComplexTypes.h"
 #include "Triangle.h"
+#include "Domain.h"
 
 namespace CrystalMesh{
 
@@ -21,9 +22,15 @@ namespace CrystalMesh{
             
             Triangles getTriangles() const;
             
+            Subdiv3::DirectedEdgeRing* centerToTop() const;
+            
             Mathbox::Geometry::Point3D const getTopPoint() const;
             
             Mathbox::Geometry::Point3D const getBotPoint() const;
+            
+            Subdiv3::FacetEdge* getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const;
+            
+            Domain const getDomain() const;
 
 	};
         

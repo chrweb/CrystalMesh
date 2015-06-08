@@ -23,6 +23,10 @@ namespace CrystalMesh{
             
             Triangles getTriangles() const;
             
+            Subdiv3::RingMembers getOnextRingOfCenter() const;
+            
+            Domain const getDomain() const;
+            
         };
         
         Crater const craterOf(Subdiv3::VertexPtr aVertex);

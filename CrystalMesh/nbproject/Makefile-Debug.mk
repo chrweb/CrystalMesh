@@ -45,6 +45,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/FacetEdge.o \
 	${OBJECTDIR}/Fan.o \
 	${OBJECTDIR}/Manifold.o \
+	${OBJECTDIR}/TetInteriour.o \
 	${OBJECTDIR}/Triangle.o \
 	${OBJECTDIR}/Vertex.o
 
@@ -132,6 +133,11 @@ ${OBJECTDIR}/Manifold.o: Manifold.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Manifold.o Manifold.cpp
 
+${OBJECTDIR}/TetInteriour.o: TetInteriour.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TetInteriour.o TetInteriour.cpp
+
 ${OBJECTDIR}/Triangle.o: Triangle.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -151,7 +157,7 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/ComplexTest/TestEdgeRings.o ${TESTDIR}/Compl
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} ../googletest/dist/Debug/GNU-Linux-x86/libgoogletest.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a 
 
-${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/TestCrater.o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestFan.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/TestCrater.o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestFan.o ${TESTDIR}/DelaunayTest/TestTetInteriour.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} ../googletest/dist/Debug/GNU-Linux-x86/libgoogletest.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a 
 
@@ -190,6 +196,12 @@ ${TESTDIR}/DelaunayTest/TestFan.o: DelaunayTest/TestFan.cpp
 	${MKDIR} -p ${TESTDIR}/DelaunayTest
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestFan.o DelaunayTest/TestFan.cpp
+
+
+${TESTDIR}/DelaunayTest/TestTetInteriour.o: DelaunayTest/TestTetInteriour.cpp 
+	${MKDIR} -p ${TESTDIR}/DelaunayTest
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestTetInteriour.o DelaunayTest/TestTetInteriour.cpp
 
 
 ${TESTDIR}/DelaunayTest/TestTriangle.o: DelaunayTest/TestTriangle.cpp 
@@ -326,6 +338,19 @@ ${OBJECTDIR}/Manifold_nomain.o: ${OBJECTDIR}/Manifold.o Manifold.cpp
 	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Manifold_nomain.o Manifold.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Manifold.o ${OBJECTDIR}/Manifold_nomain.o;\
+	fi
+
+${OBJECTDIR}/TetInteriour_nomain.o: ${OBJECTDIR}/TetInteriour.o TetInteriour.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/TetInteriour.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/TetInteriour_nomain.o TetInteriour.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/TetInteriour.o ${OBJECTDIR}/TetInteriour_nomain.o;\
 	fi
 
 ${OBJECTDIR}/Triangle_nomain.o: ${OBJECTDIR}/Triangle.o Triangle.cpp 

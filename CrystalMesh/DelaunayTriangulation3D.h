@@ -17,6 +17,7 @@
 #include "Fan.h"
 #include "Domain.h"
 #include "Crater.h"
+#include "TetInteriour.h"
 
 namespace CrystalMesh{
 
@@ -88,11 +89,11 @@ namespace CrystalMesh{
 
             typedef std::array<Mathbox::Geometry::Point3D, 5> TetIntPoints;
             /**
-             * Creates the interior of execute a 1-4 Flip,
-             * Points [0-3]: tet bunds
+             * Creates the interior of a Tet,
+             * Points [0-3]: tet bounds
              * Point [4]: in-tet point
              */
-            //TetInteriour const makeTetInterior( TetIntPoints const & aTetIntPoints);
+            TetInteriour const makeTetInterior( TetIntPoints const & aTetIntPoints);
             
             typedef std::vector<Mathbox::Geometry::Point3D>  FanPoints;
             

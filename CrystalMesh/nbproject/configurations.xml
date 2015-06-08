@@ -51,6 +51,8 @@
         <itemPath>Primitives.cpp</itemPath>
         <itemPath>Primitives.h</itemPath>
         <itemPath>Tet.h</itemPath>
+        <itemPath>TetInteriour.cpp</itemPath>
+        <itemPath>TetInteriour.h</itemPath>
         <itemPath>Triangle.cpp</itemPath>
         <itemPath>Triangle.h</itemPath>
       </logicalFolder>
@@ -78,6 +80,7 @@
         <itemPath>DelaunayTest/TestDelaunayVertex.cpp</itemPath>
         <itemPath>DelaunayTest/TestFan.cpp</itemPath>
         <itemPath>DelaunayTest/TestInclude.h</itemPath>
+        <itemPath>DelaunayTest/TestTetInteriour.cpp</itemPath>
         <itemPath>DelaunayTest/TestTriangle.cpp</itemPath>
       </logicalFolder>
     </logicalFolder>
@@ -146,6 +149,8 @@
       </item>
       <item path="DelaunayTest/TestInclude.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="DelaunayTest/TestTetInteriour.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="DelaunayTest/TestTriangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTriangulation3D.cpp" ex="false" tool="1" flavor2="0">
@@ -196,6 +201,10 @@
       <item path="Subdiv3Prototypes.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Tet.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TetInteriour.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="TetInteriour.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Triangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -393,6 +402,8 @@
       </item>
       <item path="DelaunayTest/TestInclude.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="DelaunayTest/TestTetInteriour.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="DelaunayTest/TestTriangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTriangulation3D.cpp" ex="false" tool="1" flavor2="0">
@@ -445,6 +456,10 @@
       <item path="Subdiv3Prototypes.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Tet.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TetInteriour.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="TetInteriour.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Triangle.cpp" ex="false" tool="1" flavor2="0">
       </item>
