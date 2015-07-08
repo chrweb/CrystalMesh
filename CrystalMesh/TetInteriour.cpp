@@ -12,7 +12,12 @@ namespace CrystalMesh{
         
         using namespace Subdiv3;
         using namespace Mathbox;
-        using namespace Geometry;
+        using namespace Geometry;        
+        
+        Triangle const TetInteriour::getTriangleAt(Index aIndex) const{
+            SHOULD_BE(aIndex < 6);
+            return mTriangles[aIndex];
+        }
       /*  
         TetInteriour::Vertices const TetInteriour::getVertices() const{
             Vertices result; 
@@ -25,12 +30,7 @@ namespace CrystalMesh{
             return result;
 	}
                 
-        Triangle const TetInteriour::getTriangleAt(Index aIndex) const{
-            MUST_BE(aIndex < 6);
-            Triangle result;
-            result.mpDualEdgeRing = mpOuterEdgeRing[aIndex]->getItem(0).getRingMember()->getDual()->getDirectedEdgeRing();
-            return result;
-        }
+
                 
         Subdiv3::FacetEdge* TetInteriour::getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const{
                     

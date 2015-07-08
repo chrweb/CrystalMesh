@@ -364,16 +364,28 @@ namespace Delaunay3{
         
         //rearrange domains:
         Domain fanDomain = fan.getDomain();
-        Domain craterDomain = crater.getDomain();
         FacetEdge * dualFaetEdge = fanDomain.getDualFacetEdge();
         auto oldDomains = collectOrgsOf(fanDomain.getDualFacetEdge());
         VertexPtr newDomain = unifyDomains(oldDomains);
         mpManifold->linkVertexFacetEdge(*newDomain, *dualFaetEdge);
         
+        //prepare result
         TetInteriour result;
+        std::vector<Triangle> triangles;
+        auto triangleCollector = [&triangles](FacetEdge const& aFe)->void{
+            triangles.push_back(
+                triangleOf(const_cast<DirectedEdgeRing*>(aFe.getDual()->getDirectedEdgeRing()))
+            );
+            
+            triangles.push_back(
+                triangleOf(const_cast<DirectedEdgeRing*>(aFe.getInvEnext()->getInvFnext()->getDual()->getDirectedEdgeRing()))
+            );
+        };
+        
+        forEachElementInFnextRing(*centerToTop,triangleCollector);
+        SHOULD_BE(triangles.size() == 6);
+        result.mTriangles = {triangles[0], triangles[1], triangles[2], triangles[3], triangles[4], triangles[5]}; 
         return result;
-        
-        
     }
             
            

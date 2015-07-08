@@ -2,6 +2,7 @@
 #include "ComplexTypes.h"
 #include "Triangle.h"
 #include "DelaunayVertex.h"
+#include "../Toolbox/Checks.h"
 
 using namespace CrystalMesh;
 using namespace Delaunay3;
@@ -91,7 +92,8 @@ namespace CrystalMesh{
 
     namespace Delaunay3{
         
-        Triangle const triangleOf(Subdiv3::DirectedEdgeRing* apDring){
+        Triangle const triangleOf(Subdiv3::DirectedEdgeRing * apDring){
+            SHOULD_BE(apDring->computeEdgeRingSize()  == 3);
             Triangle result = {apDring};
             return result;
         }

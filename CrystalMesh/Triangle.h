@@ -49,7 +49,7 @@ namespace CrystalMesh{
 
 	};
         
-        Triangle const triangleOf(Subdiv3::DirectedEdgeRing* apDring);
+        Triangle const triangleOf(Subdiv3::DirectedEdgeRing * apDring);
 
     }
 }
