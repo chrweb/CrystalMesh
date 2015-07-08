@@ -65,10 +65,29 @@ namespace CrystalMesh{
             return;
         }
         
+        void triangleTestTetInteriour(){
+        
+            DelaunayTriangulation3D::TetIntPoints const points = {
+                pointFromXY0(1.0, -0.5),
+                pointFromXY0(0.0, 0.5),
+                pointFromXY0(-1.0, -0.5),
+                pointFromXYZ( 0.0,  0.0,  3.0),
+                pointFromXYZ( 0.0,  0.0,  1.0)};
+            
+            TetInteriour ti = dt->makeTetInterior(points);
+            
+            auto triangle = ti.getTriangleAt(0);
+            
+            selectedTri = triangle;
+            selectedEdge = cornerOf(triangle.getBoundaryEdges()[0]);
+
+            return;    
+        }
+        
         void triangleTest_launch(){
             dt = new DelaunayTriangulation3D();
             
-            triangleTestCrater();
+            triangleTestTetInteriour();
 
             model = new DelaunayOpenGLExporter;
             
