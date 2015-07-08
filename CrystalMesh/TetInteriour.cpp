@@ -13,7 +13,7 @@ namespace CrystalMesh{
         using namespace Subdiv3;
         using namespace Mathbox;
         using namespace Geometry;
-        
+      /*  
         TetInteriour::Vertices const TetInteriour::getVertices() const{
             Vertices result; 
             result.mInTet = mpVertex[0];
@@ -42,6 +42,7 @@ namespace CrystalMesh{
                             originPointOf(aCorner.mRef),
                             destinationPointOf(aCorner.mRef));
         }
+       * */
     
     
     }
