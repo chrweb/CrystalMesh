@@ -85,7 +85,7 @@ namespace CrystalMesh{
                         
                         Subdiv3::FacetEdge* getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const;
 		};
-                
+                /*
                 //ToDo: implement for flip 
                 struct TetInteriourFan{
                     typedef std::array<Subdiv3::Vertex*, 5> Vertices;
@@ -101,9 +101,9 @@ namespace CrystalMesh{
                     
                     Vertices const getVertices() const;
                     
-                    typedef std::vector<Triangle> Triangles;
+                    typedef std::vector<Delaunay3::Triangle> Triangles;
                 };
-                
+                */
                 
                 
 		struct Tet{

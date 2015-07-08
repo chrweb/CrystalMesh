@@ -28,7 +28,7 @@ namespace CrystalMesh{
              */
             bool representsSegment(Mathbox::Geometry::Point3D const& p0, Mathbox::Geometry::Point3D const & p1) const;
             
-            Triangle const adjancentTriangle() const;
+            Delaunay3::Triangle const adjancentTriangle() const;
             
             static Corner const invalid;
 	};

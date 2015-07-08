@@ -6,10 +6,11 @@
  */
 
 #include <stddef.h>
-#include "Fan.h"
+
 #include "Triangle.h"
 #include "DelaunayVertex.h"
-
+#include "Corner.h"
+#include "Fan.h"
 
 namespace CrystalMesh{
 
@@ -41,6 +42,33 @@ namespace CrystalMesh{
             Fan result = {apDring};
             return result;
         }
+        
+        Subdiv3::DirectedEdgeRing* Fan::centerToTop() const{
+            return mpDring;
+                   
+        }
+        
+        
+        Subdiv3::FacetEdge* Fan::getAdapterOf(Mathbox::Geometry::Point3D const &  aOrg, Mathbox::Geometry::Point3D const & aDest) const{
+            auto triangles = getTriangles();
+            
+            for (Triangle const& triangle : triangles){
+                FacetEdge * bnd = triangle.boundaryWith(aOrg, aDest);
+                
+                if (bnd != nullptr){
+                    return bnd;
+                }
+            }
+            
+            return nullptr;
+        
+        }
+        
+        Domain const Fan::getDomain() const{
+            auto domain = domainFrom( mpDring->getRingMember()->getDual()->getOrg());
+            return domain;
+        }
+           
     
     }
 }

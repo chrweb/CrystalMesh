@@ -45,6 +45,7 @@
         <itemPath>DelaunayTriangulation3DPrototypes.h</itemPath>
         <itemPath>DelaunayVertex.cpp</itemPath>
         <itemPath>DelaunayVertex.h</itemPath>
+        <itemPath>Domain.cpp</itemPath>
         <itemPath>Domain.h</itemPath>
         <itemPath>Fan.cpp</itemPath>
         <itemPath>Fan.h</itemPath>
@@ -169,6 +170,8 @@
       <item path="DirectedEdgeRing.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DirectedEdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Domain.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Domain.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -422,6 +425,8 @@
       <item path="DirectedEdgeRing.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DirectedEdgeRing.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Domain.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Domain.h" ex="false" tool="3" flavor2="0">
       </item>

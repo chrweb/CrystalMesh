@@ -42,6 +42,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/DelaunayTriangulation3D.o \
 	${OBJECTDIR}/DelaunayVertex.o \
 	${OBJECTDIR}/DirectedEdgeRing.o \
+	${OBJECTDIR}/Domain.o \
 	${OBJECTDIR}/EdgeRing.o \
 	${OBJECTDIR}/FacetEdge.o \
 	${OBJECTDIR}/Fan.o \
@@ -119,6 +120,11 @@ ${OBJECTDIR}/DirectedEdgeRing.o: DirectedEdgeRing.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DirectedEdgeRing.o DirectedEdgeRing.cpp
+
+${OBJECTDIR}/Domain.o: Domain.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Domain.o Domain.cpp
 
 ${OBJECTDIR}/EdgeRing.o: EdgeRing.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -323,6 +329,19 @@ ${OBJECTDIR}/DirectedEdgeRing_nomain.o: ${OBJECTDIR}/DirectedEdgeRing.o Directed
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DirectedEdgeRing_nomain.o DirectedEdgeRing.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/DirectedEdgeRing.o ${OBJECTDIR}/DirectedEdgeRing_nomain.o;\
+	fi
+
+${OBJECTDIR}/Domain_nomain.o: ${OBJECTDIR}/Domain.o Domain.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Domain.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Domain_nomain.o Domain.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Domain.o ${OBJECTDIR}/Domain_nomain.o;\
 	fi
 
 ${OBJECTDIR}/EdgeRing_nomain.o: ${OBJECTDIR}/EdgeRing.o EdgeRing.cpp 

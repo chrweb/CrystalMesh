@@ -450,12 +450,12 @@ namespace CrystalMesh{
             // for a sketch..
             Point3D const& topPoint = aTetIntPoints[0];
             Point3D const& botPoint = aTetIntPoints[4];
-            FanPoints const fanPoints = FanPoints(aTetIntPoints.begin()+1, aTetIntPoints.begin()+3);
+            FanPoints const fanPoints = FanPoints(aTetIntPoints.begin()+1,  aTetIntPoints.begin()+4);
              
             Fan fan = makeFan(topPoint, botPoint, fanPoints);
              
-            Point3D const & centerPoint = aTetIntPoints[4];
-            CraterPoints const craterPoints = CraterPoints(aTetIntPoints.begin()+1, aTetIntPoints.begin()+3);
+            Point3D const & centerPoint = botPoint;
+            CraterPoints const craterPoints = CraterPoints(aTetIntPoints.begin()+1, aTetIntPoints.begin()+4);
              
             Crater crater = makeCrater(centerPoint, craterPoints);
             
@@ -489,11 +489,13 @@ namespace CrystalMesh{
             //rearrange domains:
             Domain fanDomain = fan.getDomain();
             Domain craterDomain = crater.getDomain();
-            
-            auto oldDomains = collectOrgsOf(fanDomain.mpDual->getFacetEdge());
+            FacetEdge * dualFaetEdge = fanDomain.getDualFacetEdge();
+            auto oldDomains = collectOrgsOf(fanDomain.getDualFacetEdge());
             VertexPtr newDomain = unifyDomains(oldDomains);
-            mpManifold->linkVertexFacetEdge(*newDomain, *fanDomain.mpDual->getFacetEdge());
+            mpManifold->linkVertexFacetEdge(*newDomain, *dualFaetEdge);
             
+            TetInteriour result;
+            return result;
             
             
         }
@@ -1035,8 +1037,8 @@ namespace CrystalMesh{
                 
                 Domain const  DelaunayTriangulation3D::makeDomainUnder(Triangle& aTri){
                     Domain result;
-                    result.mpDual = mpManifold->makeDualVertex();
-                    mpManifold->linkVertexFacetEdge(*result.mpDual, *aTri.mpDualEdgeRing->getRingMember());
+                    result.mDual = mpManifold->makeDualVertex();
+                    mpManifold->linkVertexFacetEdge(*result.mDual, *aTri.mpDualEdgeRing->getRingMember());
                     return result;
                 }
                 

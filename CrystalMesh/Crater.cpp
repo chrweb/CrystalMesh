@@ -5,7 +5,13 @@
  * Created on 25. Mai 2015, 22:55
  */
 #include <stddef.h>
+#include <vector>
+#include "Corner.h"
+#include "Triangle.h"
+#include "Domain.h"
 #include "Crater.h"
+#include "AdjacentDirectedEdgeRings.h"
+
 
 
 namespace CrystalMesh{
@@ -28,6 +34,17 @@ namespace CrystalMesh{
             }
             
             return result;
+        }
+        
+        Subdiv3::RingMembers Crater::getOnextRingOfCenter() const{
+            
+            auto facetEdge = mVertex->getFacetEdge();
+            auto ringMembers = getOnextRingMembersOf(*facetEdge);
+            return ringMembers;
+        }
+        
+        Domain const Crater::getDomain() const{
+            auto domain = domainFrom(mVertex->getFacetEdge()->getDual()->getOrg());
         }
     
     }

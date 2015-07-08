@@ -9,16 +9,17 @@
 #define	DOMAIN_H
 #include "DelaunayForwardDecs.h"
 
+
 namespace CrystalMesh{
     
     namespace Delaunay3{
 
         /*A general domain with triangles as boundary faces*/
         struct Domain{
-            typedef std::vector<Corner> Corners;
+            typedef std::vector<Delaunay3::Corner*> Corners;
             typedef std::vector<Subdiv3::Vertex*> Vertices;
             typedef std::vector<Triangle> Triangles;
-            Subdiv3::Vertex* mpDual;
+            Subdiv3::VertexPtr mDual;
             
             bool const operator == (Domain const & rhs) const;
                 
@@ -29,7 +30,14 @@ namespace CrystalMesh{
             Vertices const getVertices() const;
             
             Triangles const getTriangles() const;
+            
+            /**
+             * Returns a (random )dual facet edge
+             */
+            Subdiv3::FacetEdge* getDualFacetEdge() const;
         };
+        
+        Domain const domainFrom(Subdiv3::VertexPtr const & aVertex);
     
     }
 }
