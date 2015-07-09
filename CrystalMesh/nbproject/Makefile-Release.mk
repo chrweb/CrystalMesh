@@ -48,6 +48,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Fan.o \
 	${OBJECTDIR}/Manifold.o \
 	${OBJECTDIR}/Primitives.o \
+	${OBJECTDIR}/Tet.o \
 	${OBJECTDIR}/TetInteriour.o \
 	${OBJECTDIR}/Triangle.o \
 	${OBJECTDIR}/Vertex.o
@@ -150,6 +151,11 @@ ${OBJECTDIR}/Primitives.o: Primitives.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Primitives.o Primitives.cpp
+
+${OBJECTDIR}/Tet.o: Tet.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Tet.o Tet.cpp
 
 ${OBJECTDIR}/TetInteriour.o: TetInteriour.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -413,6 +419,19 @@ ${OBJECTDIR}/Primitives_nomain.o: ${OBJECTDIR}/Primitives.o Primitives.cpp
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Primitives_nomain.o Primitives.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Primitives.o ${OBJECTDIR}/Primitives_nomain.o;\
+	fi
+
+${OBJECTDIR}/Tet_nomain.o: ${OBJECTDIR}/Tet.o Tet.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Tet.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Tet_nomain.o Tet.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Tet.o ${OBJECTDIR}/Tet_nomain.o;\
 	fi
 
 ${OBJECTDIR}/TetInteriour_nomain.o: ${OBJECTDIR}/TetInteriour.o TetInteriour.cpp 

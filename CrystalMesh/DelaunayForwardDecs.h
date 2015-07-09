@@ -31,7 +31,7 @@ namespace CrystalMesh {
 
 		struct Vertex;
                 
-                struct Tet;
+                
                
 	}
 
@@ -50,6 +50,8 @@ namespace CrystalMesh {
             class DelaunayTriangulation3D;
             
             struct Domain;
+            
+            struct Tet;
                 
 	}
 

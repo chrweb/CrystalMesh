@@ -341,7 +341,43 @@ namespace Delaunay3{
         return craterOf(newInnerVertex);
     }
     
+    namespace{
+                
+        DelaunayTriangulation3D::TetPoints  permutate(DelaunayTriangulation3D::TetPoints const & aPoints){
+            
+            using namespace Mathbox;
+            using namespace Geometry;
+            
+            auto const plane = planeFromThreePoints(aPoints[0], aPoints[1], aPoints[2]);
+            
+            auto permutation = aPoints;
+            
+            PointToPlaneProjection projection = pointPlaneProjection(plane, aPoints[3]);
+            
+            switch (projection){
+                case PointToPlaneProjection::overPlane:
+                    // swap
+                    std::swap(permutation[0], permutation[1]);
+                    return permutation;
+
+                case PointToPlaneProjection::underPlane:
+                    return permutation;
+
+            default:
+		// very bad
+		UNREACHABLE;
+            }    
+        }
+                            
+    }
+    
     Tet const DelaunayTriangulation3D::makeTet(TetPoints const & aTetPoints){
+        
+        //Bring points into correct order:
+        TetPoints permutation = permutate(aTetPoints);
+                    
+        //permutation holds in [0] to [2] a points forming a plane,
+        //[3] appears below this face.
     
         std::array<Triangle,4> triangles = {
             makeTriangle(aTetPoints[0], aTetPoints[1], aTetPoints[2]),
@@ -587,40 +623,9 @@ namespace Delaunay3{
     size_t DelaunayTriangulation3D::getVertexCount() const{
         return mpManifold->primalVertexSize();
     }
-/*
-            namespace{
-                
-                DelaunayTriangulation3D::TetPoints  permutate(DelaunayTriangulation3D::TetPoints const & aPoints){
-                    
-                    using namespace Mathbox;
-		using namespace Geometry;
-                    
-                    auto const plane = planeFromThreePoints(aPoints[0], aPoints[1], aPoints[2]);
-                    
-                    auto permutation = aPoints;
-                    
-                    //FIXME: eps issue in Point projection
-		//auto const eps = 1e-6;
-                    
-                    PointToPlaneProjection projection = pointPlaneProjection(plane, aPoints[3]);
-                    
-                    switch (projection){
-                        case PointToPlaneProjection::overPlane:
-                            // swap
-                            std::swap(permutation[0], permutation[1]);
-                            return permutation;
 
-                        case PointToPlaneProjection::underPlane:
-                            return permutation;
-
-		default:
-			// very bad
-			UNREACHABLE;
-		}    
-                }
-                            
-            }
-   */ 
+    
+   
 /*
 	Tet const DelaunayTriangulation3D::makeTetrahedron(TetPoints const & aTetPoints){
 		using namespace CrystalMesh;

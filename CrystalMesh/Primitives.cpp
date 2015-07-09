@@ -370,13 +370,7 @@ namespace CrystalMesh {
                     return result;
                 }
                 
-                bool const Domain::operator == (Domain const & rhs) const{
-                    return rhs.mpDual == mpDual;
-                }
-                        
-                bool const Domain::operator != (Domain const & rhs) const{
-                    return !operator ==(rhs);
-                }
+
                 
                
                 Domain::Corners const Domain::getCorners() const{

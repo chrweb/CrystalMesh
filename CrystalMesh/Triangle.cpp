@@ -64,6 +64,15 @@ bool const Triangle::operator != (const Triangle& other) const{
     return ! operator ==(other);
 }
 
+Delaunay3::Domain const Triangle::getDomainUnder() const{
+    return domainFrom(mpDualEdgeRing->getOrg());
+}
+           
+Delaunay3::Domain const Triangle::getDomainOver() const{
+    Triangle other = getCounterOriented();
+    return other.getDomainUnder();
+}
+
 /*
 Tet const Triangle::lowerTet() const{
     Triangle other = getCounterOrientedOf(*this);

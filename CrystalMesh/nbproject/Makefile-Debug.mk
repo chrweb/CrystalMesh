@@ -46,6 +46,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/FacetEdge.o \
 	${OBJECTDIR}/Fan.o \
 	${OBJECTDIR}/Manifold.o \
+	${OBJECTDIR}/Tet.o \
 	${OBJECTDIR}/TetInteriour.o \
 	${OBJECTDIR}/Triangle.o \
 	${OBJECTDIR}/Vertex.o
@@ -138,6 +139,11 @@ ${OBJECTDIR}/Manifold.o: Manifold.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Manifold.o Manifold.cpp
+
+${OBJECTDIR}/Tet.o: Tet.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DDEBUG -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Tet.o Tet.cpp
 
 ${OBJECTDIR}/TetInteriour.o: TetInteriour.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -363,6 +369,19 @@ ${OBJECTDIR}/Manifold_nomain.o: ${OBJECTDIR}/Manifold.o Manifold.cpp
 	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Manifold_nomain.o Manifold.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Manifold.o ${OBJECTDIR}/Manifold_nomain.o;\
+	fi
+
+${OBJECTDIR}/Tet_nomain.o: ${OBJECTDIR}/Tet.o Tet.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Tet.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -g -DDEBUG -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Tet_nomain.o Tet.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Tet.o ${OBJECTDIR}/Tet_nomain.o;\
 	fi
 
 ${OBJECTDIR}/TetInteriour_nomain.o: ${OBJECTDIR}/TetInteriour.o TetInteriour.cpp 

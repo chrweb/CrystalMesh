@@ -38,7 +38,9 @@ namespace CrystalMesh{
             bool const operator != (const Triangle& other) const;
             
             Delaunay3::Domain const getDomainUnder() const;
-           // Tet const upperTet() const;
+           
+            Delaunay3::Domain const getDomainOver() const;
+            // Tet const upperTet() const;
             
            // Tet const lowerTet() const;
 

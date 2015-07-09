@@ -51,6 +51,7 @@
         <itemPath>Fan.h</itemPath>
         <itemPath>Primitives.cpp</itemPath>
         <itemPath>Primitives.h</itemPath>
+        <itemPath>Tet.cpp</itemPath>
         <itemPath>Tet.h</itemPath>
         <itemPath>TetInteriour.cpp</itemPath>
         <itemPath>TetInteriour.h</itemPath>
@@ -205,6 +206,8 @@
       <item path="Subdiv3ForwardDecs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Subdiv3Prototypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Tet.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Tet.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -464,6 +467,8 @@
       <item path="Subdiv3ForwardDecs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Subdiv3Prototypes.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Tet.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Tet.h" ex="false" tool="3" flavor2="0">
       </item>
