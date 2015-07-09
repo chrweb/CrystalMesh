@@ -594,11 +594,6 @@ namespace Delaunay3{
         }
         
         return result;
-        
-        
-        
-        
-    
     }
             
            

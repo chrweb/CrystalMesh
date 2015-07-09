@@ -52,6 +52,8 @@ namespace CrystalMesh {
             struct Domain;
             
             struct Tet;
+            
+            struct Corner;
                 
 	}
 

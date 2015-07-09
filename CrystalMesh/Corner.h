@@ -10,6 +10,7 @@
 #include "ComplexTypes.h"
 #include "DelaunayForwardDecs.h"
 #include "Triangle.h"
+#include "Domain.h"
 namespace CrystalMesh{
 
     namespace Delaunay3{
@@ -36,8 +37,15 @@ namespace CrystalMesh{
             
             static Corner const invalid;
 	};
+       
         
-        Corner const cornerOf(Subdiv3::FacetEdge* pFe);
+        /**
+         * Constructs a corner
+         * @param aDring: The Edge Ring representation
+         * @param aDomainAbove the Domain appearing above mRef of result Corner
+         * @return  a Corner
+         */
+        Corner const cornerFrom(Subdiv3::EdgeRing* aDring, Delaunay3::Domain const& aDomainAbove);
     }
 }
 

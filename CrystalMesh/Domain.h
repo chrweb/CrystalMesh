@@ -16,7 +16,7 @@ namespace CrystalMesh{
 
         /*A general domain with triangles as boundary faces*/
         struct Domain{
-            typedef std::vector<Delaunay3::Corner*> Corners;
+            typedef std::vector<Delaunay3::Corner> Corners;
             typedef std::vector<Subdiv3::Vertex*> Vertices;
             typedef std::vector<Triangle> Triangles;
             Subdiv3::VertexPtr mDual;
