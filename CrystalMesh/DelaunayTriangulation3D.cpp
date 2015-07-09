@@ -104,9 +104,23 @@ namespace Delaunay3{
         return;
     }
   
+    Triangle const DelaunayTriangulation3D::makeTriangle(
+                Mathbox::Geometry::Point3D const& aP0, 
+                Mathbox::Geometry::Point3D const& aP1,
+                Mathbox::Geometry::Point3D const& aP2)
+    {
+        auto vd0 = vertexDataFrom(aP0);
+        auto vd1 = vertexDataFrom(aP1);
+        auto vd2 = vertexDataFrom(aP2);
+        return makeTriangle(vd0, vd1, vd2);    
+    }
+                  
             
-            
-    Triangle DelaunayTriangulation3D::makeTriangle(VertexData const& aData0, VertexData const& aData1, VertexData const& aData2 ){
+    Triangle const DelaunayTriangulation3D::makeTriangle(
+        VertexData const& aData0, 
+        VertexData const& aData1, 
+        VertexData const& aData2 )
+    {
         
         //basic structure
         FacetEdge* edges[3] ={ mpManifold->makeFacetEdge(), mpManifold->makeFacetEdge(),  mpManifold->makeFacetEdge()};
@@ -143,7 +157,8 @@ namespace Delaunay3{
         result.mpDualEdgeRing = edges[0]->getDual()->getDirectedEdgeRing();
         
         //domain construction
-        makeDomainUnder(result);
+        Domain domain = makeDomain();
+        linkDomainUnderTriangle(domain, result);
         
         return result;
     }
@@ -165,8 +180,19 @@ namespace Delaunay3{
             std::vector<Subdiv3::Vertex*> result(collectedVerts.begin(), uniqueEnd);
             
             return result;
-            
         }
+        
+        std::vector<Subdiv3::Vertex*> const collectDualOrgsUnder(Triangle const& aTri){
+            return collectOrgsOf(aTri.mpDualEdgeRing->getRingMember());
+        }
+        
+        std::vector<Subdiv3::Vertex*> const collectDualOrgsOver(Triangle const& aTri){
+            return collectOrgsOf(aTri.mpDualEdgeRing->getRingMember()->getClock());
+        }
+        
+        
+        
+        
         
         std::vector<Subdiv3::EdgeRing*> const collectRingsFnext(Subdiv3::FacetEdge* aFedge){
             std::vector<Subdiv3::EdgeRing*> result;
@@ -206,7 +232,6 @@ namespace Delaunay3{
                     ,vertexDataFrom(point)
                     ));
         }
-        
         
         for (Index i = 0 ; i<aFanPoints.size()-1; i++){
             Triangle const& tri0 = tris[i];
@@ -268,8 +293,7 @@ namespace Delaunay3{
         triangles.push_back(triangles.front());
         
         for (Index i = 0; i<bndPointsCpy.size()-1; i++){
-            //auto points0 = triangles[i].getBoundaryPoints();
-            //auto points1 = triangles[i+1].getBoundaryPoints();
+
             auto const &p0 = aMidPoint;
             auto const &p1 = bndPointsCpy[i+1];
             FacetEdge* b0 = triangles[i].boundaryWith(p0, p1);
@@ -277,9 +301,6 @@ namespace Delaunay3{
             SHOULD_BE(b0!=nullptr);
             SHOULD_BE(b1!=nullptr);
             mpManifold->spliceFacets(*b0, *b1);
-            
-            //EdgeRingPtr newRing = unifyEdgeRings(rings);
-            //mpManifold->linkEdgeRingAndFacetEdges(*newRing, *bndToCenter);
         }
         
         //rearrange inner vertex:
@@ -319,9 +340,92 @@ namespace Delaunay3{
         
         return craterOf(newInnerVertex);
     }
+    
+    Tet const DelaunayTriangulation3D::makeTet(TetPoints const & aTetPoints){
+    
+        std::array<Triangle,4> triangles = {
+            makeTriangle(aTetPoints[0], aTetPoints[1], aTetPoints[2]),
+            makeTriangle(aTetPoints[3], aTetPoints[0], aTetPoints[1]),
+            makeTriangle(aTetPoints[2], aTetPoints[3], aTetPoints[0]),
+            makeTriangle(aTetPoints[1], aTetPoints[2], aTetPoints[3]),
+        };
+        
+        auto & tBottom = triangles[0];
+        auto const& t1 = triangles[1];
+        auto const& t2 = triangles[2];
+        auto const& t3 = triangles[3];
+        
+        std::array<FacetEdge*, 12> facetEdges= {
+            //0-1
+            tBottom.boundaryWith(aTetPoints[0], aTetPoints[1]),
+            t1.boundaryWith(aTetPoints[0], aTetPoints[1]),
+        
+            //1-2
+            tBottom.boundaryWith(aTetPoints[1], aTetPoints[2]),
+            t3.boundaryWith(aTetPoints[1], aTetPoints[2]),
+        
+            //2-0
+            tBottom.boundaryWith(aTetPoints[0], aTetPoints[2]),
+            t2.boundaryWith(aTetPoints[0], aTetPoints[2]),
+        
+            //3-0
+            t1.boundaryWith(aTetPoints[3], aTetPoints[0]),
+            t2.boundaryWith(aTetPoints[3], aTetPoints[0]),
+        
+            //3-1
+            t1.boundaryWith(aTetPoints[3], aTetPoints[1]),
+            t3.boundaryWith(aTetPoints[3], aTetPoints[1]),
+        
+            //3-2
+            t2.boundaryWith(aTetPoints[3], aTetPoints[2]),
+            t3.boundaryWith(aTetPoints[3], aTetPoints[2]),
+        };
+        
+        for (Index i = 0; i< 11; i+=2){
+            auto f0 = facetEdges[i];
+            auto f1 = facetEdges[i+1];
+            
+            mpManifold->spliceFacets(*f0, *f1);
+            
+            //rearrange edge rings
+            auto oldRings = collectRingsFnext(f0);
+            auto newRing = unifyEdgeRings(oldRings);
+            mpManifold->linkEdgeRingAndFacetEdges(*newRing, *f0);
+        }
+        
+        //rearrange vertices
+        auto bottomBounds = tBottom.getBoundaryEdges();
+        
+        for (Index i = 0; i<3; i++){
+            auto f = bottomBounds[i];
+            auto oldVertsBottom = collectOrgsOf(f);
+            auto newVertex = unifyVertices(oldVertsBottom);
+            mpManifold->linkVertexFacetEdge(*newVertex, *f);
+        }
+        
+        auto topToBottom = t1.boundaryWith(aTetPoints[3], aTetPoints[0]);
+        auto oldVertsTop = collectOrgsOf(topToBottom);
+        auto newVertex = unifyVertices(oldVertsTop);
+        mpManifold->linkVertexFacetEdge(*newVertex, *topToBottom);
+        
+        //rearrange domains
+        auto oldDomainsInner = collectDualOrgsUnder(tBottom);
+        auto oldDomainsOuter =  collectDualOrgsOver(tBottom);
+        
+        auto newInnerDomain = domainFrom(unifyDomains(oldDomainsInner));
+        auto newOuterDomain = makeDomain();
+        
+        linkDomainOverTriangle(newOuterDomain, tBottom);
+        linkDomainUnderTriangle(newInnerDomain, tBottom);
+        
+        Tet result;
+        result.mTri = triangles;
+        return result;
+    }
             
     TetInteriour const DelaunayTriangulation3D::makeTetInterior( TetIntPoints const & aTetIntPoints)
     {
+        
         // see https://github.com/chrweb/CrystalMesh/wiki/Cell-complexes-in-Delaunay3#tetrahedron-interior
         // for a sketch..
         Point3D const& topPoint = aTetIntPoints[0];
@@ -427,6 +531,29 @@ namespace Delaunay3{
     
     }
     
+    Domain const DelaunayTriangulation3D::makeDomain(){
+        return domainFrom(mpManifold->makeDualVertex());
+    }
+            
+    void DelaunayTriangulation3D::linkDomainUnderTriangle(Delaunay3::Domain& aDomain,  Delaunay3::Triangle& aTri){
+        auto facetEdge = aTri.mpDualEdgeRing->getRingMember();
+        auto vertex = aDomain.mDual;
+        
+        //uncouple old links:
+        auto incident = getAdjacentFacetEdges(*facetEdge);
+        for (FacetEdge* current: incident){
+            current->mpOrg = nullptr;
+        }
+        
+        mpManifold->linkVertexFacetEdge(*vertex, *facetEdge);
+    }
+            
+    void DelaunayTriangulation3D::linkDomainOverTriangle(Delaunay3::Domain& aDomain,  Delaunay3::Triangle& aTri){
+        Triangle other = aTri.getCounterOriented();
+        linkDomainUnderTriangle(aDomain, other);
+        return;
+    }
+    
     
     Subdiv3::EdgeRingPtr DelaunayTriangulation3D::unifyEdgeRings(EdgeRingUnifyList& aList){
         FacetEdge* ringMember = aList.front()->getItem(0).getRingMember();
@@ -460,7 +587,7 @@ namespace Delaunay3{
     size_t DelaunayTriangulation3D::getVertexCount() const{
         return mpManifold->primalVertexSize();
     }
-
+/*
             namespace{
                 
                 DelaunayTriangulation3D::TetPoints  permutate(DelaunayTriangulation3D::TetPoints const & aPoints){
@@ -493,7 +620,7 @@ namespace Delaunay3{
                 }
                             
             }
-    
+   */ 
 /*
 	Tet const DelaunayTriangulation3D::makeTetrahedron(TetPoints const & aTetPoints){
 		using namespace CrystalMesh;
@@ -888,14 +1015,14 @@ namespace Delaunay3{
                 }
        */            
                 
-                
+            /*    
                 Domain const  DelaunayTriangulation3D::makeDomainUnder(Triangle& aTri){
                     Domain result;
                     result.mDual = mpManifold->makeDualVertex();
                     mpManifold->linkVertexFacetEdge(*result.mDual, *aTri.mpDualEdgeRing->getRingMember());
                     return result;
                 }
-                
+              */  
                 void DelaunayTriangulation3D::addCorners(Exporter& aExporter) const{
                     Subdiv3::EdgeRingBuffer buffer;
                     mpManifold->exportPrimalEdgeRings(buffer);

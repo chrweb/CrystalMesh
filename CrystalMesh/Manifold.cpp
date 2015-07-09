@@ -328,21 +328,6 @@ namespace CrystalMesh{
 
 	    void Manifold::linkVertexFacetEdge(Vertex & aVert, FacetEdge& aFedge){
 
-	    	// Edge rings is instance of this
-	    	// Directed edge ring is dual?
-//	    	if (aFedge.isDual())
-//	    	{
-//	    		// must be a part of my dual edge ring...
-//	    		SHOULD_BE(isMyDualEdgeRing(*aDring.getEdgeRing()));
-//	    		// vertex must be my part of my duals either..
-//	    		SHOULD_BE(isMyDualVertex(aVert));
-//	    	}
-//	    	// primals analogous
-//	    	else{
-//	    		SHOULD_BE(isMyPrimalEdgeRing(*aDring.getEdgeRing()));
-//	    		SHOULD_BE(isMyPrimalVertex(aVert));
-//	    	}
-
 	    	// get every incident edge ring
 	    	auto incFedges = getAdjacentFacetEdges(aFedge);
 
@@ -363,96 +348,96 @@ namespace CrystalMesh{
 	    	return;
 	    }
 
-		bool const Manifold::isMyFacetEdge(FacetEdge const & aFe) const{
-			auto const qn = aFe.getQuaterNode();
-			return mpQuaterNodeMaintener->isMyEntity(*qn);
-		}
+            bool const Manifold::isMyFacetEdge(FacetEdge const & aFe) const{
+                auto const qn = aFe.getQuaterNode();
+                return mpQuaterNodeMaintener->isMyEntity(*qn);
+            }
 
-		bool const Manifold::isMyPrimalEdgeRing(EdgeRing const & aRing) const{
-			return mpPrimalEdgeRingMaintener->isMyEntity(aRing);
-		}
+            bool const Manifold::isMyPrimalEdgeRing(EdgeRing const & aRing) const{
+                return mpPrimalEdgeRingMaintener->isMyEntity(aRing);
+            }
 
-		bool const Manifold::isMyDualEdgeRing(EdgeRing const & aRing) const{
-			return mpDualEdgeRingMaintener->isMyEntity(aRing);
-		}
+            bool const Manifold::isMyDualEdgeRing(EdgeRing const & aRing) const{
+                return mpDualEdgeRingMaintener->isMyEntity(aRing);
+            }
 
-		bool const Manifold::isMyPrimalVertex(Vertex const & aVert) const{
-			return mpPrimalVertexMaintener->isMyEntity(aVert);
-		}
+            bool const Manifold::isMyPrimalVertex(Vertex const & aVert) const{
+                return mpPrimalVertexMaintener->isMyEntity(aVert);
+            }
 
-		bool const Manifold::isMyDualVertex(Vertex const & aVert) const{
-			return mpDualVertexMaintener->isMyEntity(aVert);
-		}
+            bool const Manifold::isMyDualVertex(Vertex const & aVert) const{
+                return mpDualVertexMaintener->isMyEntity(aVert);
+            }
 
-                
-		void Manifold::dislinkVertexFacetEdges(Vertex & aVertex){
 
-			AdjacentFacetEdges adjFedges = getAdjacentFacetEdges(aVertex);
-			aVertex.mpOut = nullptr;
-			for (auto pCurrent: adjFedges){
-				pCurrent->mpOrg = nullptr;
-			}
+            void Manifold::dislinkVertexFacetEdges(Vertex & aVertex){
 
-			return;
-		}
-                
-                
-          
+                AdjacentFacetEdges adjFedges = getAdjacentFacetEdges(aVertex);
+                aVertex.mpOut = nullptr;
+                for (auto pCurrent: adjFedges){
+                        pCurrent->mpOrg = nullptr;
+                }
+
+                return;
+            }
+
+
+
 
 
 
 
 
                 void Manifold::exportPrimalVerts(VertexBuffer& aBuffer) const{
-                
+
                     auto const& container = mpPrimalVertexMaintener->getContainer();
-                    
+
                     aBuffer.reserve(container.size());
                     for (auto item: container){
                         aBuffer.push_back(item);
                     }
-                    
+
                 }
-                        
+
                 void Manifold::exportDualVerts(VertexBuffer& aBuffer) const{
                     auto const& container = mpDualVertexMaintener->getContainer();
-                    
+
                     aBuffer.reserve(container.size());
                     for (auto item: container){
                         aBuffer.push_back(item);
                     }
                 }
-                        
+
                 void Manifold::exportPrimalEdgeRings(EdgeRingBuffer& aBuffer) const{
                     auto const& container = mpPrimalEdgeRingMaintener->getContainer();
-                    
+
                     aBuffer.reserve(container.size());
                     for (auto item: container){
                         aBuffer.push_back(item);
                     }
                 }
-                        
+
                 void Manifold::exportDualEdgeRings(EdgeRingBuffer& aBuffer) const{
                     auto const& container = mpDualEdgeRingMaintener->getContainer();
-                    
+
                     aBuffer.reserve(container.size());
                     for (auto item: container){
                         aBuffer.push_back(item);
                     }
                 }
-                
+
                 size_t Manifold::primalVertexSize() const{
                     return mpPrimalVertexMaintener->size();
                 }
-                        
+
                 size_t Manifold::dualVertexSize() const{
                     return mpDualVertexMaintener->size();
                 }
-                        
+
                 size_t Manifold::primalEdgeRingSize() const{
                     return mpPrimalEdgeRingMaintener->size();
                 }
-                        
+
                 size_t Manifold::dualEdgeRingSize() const{
                     return mpDualEdgeRingMaintener->size();
                 }

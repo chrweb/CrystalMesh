@@ -85,7 +85,7 @@ namespace CrystalMesh{
             typedef std::array<Mathbox::Geometry::Point3D,4 > TetPoints;
 
             // constructs a tet of the given 4 points
-            Tet const makeTetrahedron(TetPoints const & aTetPoints);
+            Tet const makeTet(TetPoints const & aTetPoints);
 
             typedef std::array<Mathbox::Geometry::Point3D, 5> TetIntPoints;
             /**
@@ -108,7 +108,16 @@ namespace CrystalMesh{
             
             Subdiv3::Vertex* makeVertexWith(VertexData const & aData);
             
-            Triangle makeTriangle(VertexData const& aData0, VertexData const& aData1, VertexData const& aData2 );
+            
+            Triangle const makeTriangle(
+                Mathbox::Geometry::Point3D const& aP0, 
+                Mathbox::Geometry::Point3D const& aP1,
+                Mathbox::Geometry::Point3D const& aP2);
+            
+            Triangle const makeTriangle(
+                VertexData const& aData0, 
+                VertexData const& aData1, 
+                VertexData const& aData2);
             
             typedef std::vector<Mathbox::Geometry::Point3D> CraterPoints;
             Crater makeCrater(Mathbox::Geometry::Point3D const & aMidPoint, CraterPoints const& aCraterPoints );
@@ -139,20 +148,24 @@ namespace CrystalMesh{
             
             Subdiv3::EdgeRingPtr unifyEdgeRings(EdgeRingUnifyList& aList);
             
-            void unifyVertices(Subdiv3::Vertex * apVert0, Subdiv3::Vertex * apVert1);
+            //void unifyVertices(Subdiv3::Vertex * apVert0, Subdiv3::Vertex * apVert1);
             
-            void unifyEdgeRings(Subdiv3::EdgeRing* apRing0 ,Subdiv3::EdgeRing* apRing1);
+            //void unifyEdgeRings(Subdiv3::EdgeRing* apRing0 ,Subdiv3::EdgeRing* apRing1);
             
             //void unifyEdgeRingsF(RingMembers const& aFnextRing);
             
-            void destroyTet(Tet & aTet);
+            //void destroyTet(Tet & aTet);
             
+           
+            Domain const makeDomain();
             
-            Domain const makeDomainUnder(Triangle& aTri);
+            void linkDomainUnderTriangle(Delaunay3::Domain& aDomain,  Delaunay3::Triangle& aTri);
             
-            void destroyDomain(Domain & aVert);
+            void linkDomainOverTriangle(Delaunay3::Domain& aDomain,  Delaunay3::Triangle& aTri);
+            
+            //void destroyDomain(Domain & aVert);
                    
-            Subdiv3::Vertex * makeBody();
+            //Subdiv3::Vertex * makeBody();
             
             Subdiv3::Manifold * mpManifold;
 

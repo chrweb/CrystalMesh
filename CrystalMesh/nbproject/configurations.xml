@@ -81,6 +81,7 @@
         <itemPath>DelaunayTest/TestDelaunayVertex.cpp</itemPath>
         <itemPath>DelaunayTest/TestFan.cpp</itemPath>
         <itemPath>DelaunayTest/TestInclude.h</itemPath>
+        <itemPath>DelaunayTest/TestTet.cpp</itemPath>
         <itemPath>DelaunayTest/TestTetInteriour.cpp</itemPath>
         <itemPath>DelaunayTest/TestTriangle.cpp</itemPath>
       </logicalFolder>
@@ -149,6 +150,8 @@
       <item path="DelaunayTest/TestFan.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTest/TestInclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTest/TestTet.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTest/TestTetInteriour.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -404,6 +407,8 @@
       <item path="DelaunayTest/TestFan.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTest/TestInclude.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="DelaunayTest/TestTet.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="DelaunayTest/TestTetInteriour.cpp" ex="false" tool="1" flavor2="0">
       </item>

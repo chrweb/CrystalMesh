@@ -1,5 +1,7 @@
 #include <algorithm>
 #include "ComplexTypes.h"
+#include "Corner.h"
+#include "Domain.h"
 #include "Triangle.h"
 #include "DelaunayVertex.h"
 #include "../Toolbox/Checks.h"

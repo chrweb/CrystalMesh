@@ -82,7 +82,6 @@ TEST_F(TriangleTester, construction){
     SCOPED_TRACE("construction");
     validSingletonTrianlge(trig0);
     validSingletonTrianlge(trig0.getCounterOriented());
-    
 }
 
 TEST_F(TriangleTester, findBnd){
@@ -111,6 +110,16 @@ TEST_F(TriangleTester, findBnd){
     EXPECT_EQ(mDT.getDomainCount(), 1);
     EXPECT_EQ(mDT.getVertexCount(), 3);
     EXPECT_EQ(mDT.getFaceCount(), 1);
+}
+
+TEST_F(TriangleTester, domain){
+
+    
+    Triangle trig0 = mDT.makeTriangle(vertexDataFrom(p0), vertexDataFrom(p1), vertexDataFrom(p2));
+    EXPECT_EQ(3, mDT.getCornerCount());
+    EXPECT_EQ(3, mDT.getVertexCount());
+    EXPECT_EQ(1, mDT.getFaceCount());
+    EXPECT_EQ(1, mDT.getDomainCount());
 }
 
 

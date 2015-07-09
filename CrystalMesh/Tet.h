@@ -28,7 +28,7 @@ namespace CrystalMesh{
             typedef std::array<Subdiv3::Vertex*, 4> Vertices;
             typedef std::array<Corner, 6> Corners;
 		
-            Subdiv3::Vertex* mpDualVertex;
+            //Subdiv3::Vertex* mpDualVertex;
             Triangles mTri;
         
             bool const operator == (Tet const & rhs) const;

@@ -48,6 +48,8 @@ namespace CrystalMesh {
             };
             
             class DelaunayTriangulation3D;
+            
+            struct Domain;
                 
 	}
 

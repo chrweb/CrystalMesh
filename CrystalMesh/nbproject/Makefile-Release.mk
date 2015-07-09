@@ -175,7 +175,7 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/ComplexTest/TestEdgeRings.o ${TESTDIR}/Compl
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} 
 
-${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o ${TESTDIR}/DelaunayTest/TestCrater.o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestFan.o ${TESTDIR}/DelaunayTest/TestTetInteriour.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/DelaunayTriangulation3Test.o ${TESTDIR}/DelaunayTest/TestComplexConstruction.o ${TESTDIR}/DelaunayTest/TestCrater.o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestFan.o ${TESTDIR}/DelaunayTest/TestTet.o ${TESTDIR}/DelaunayTest/TestTetInteriour.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} 
 
@@ -226,6 +226,12 @@ ${TESTDIR}/DelaunayTest/TestFan.o: DelaunayTest/TestFan.cpp
 	${MKDIR} -p ${TESTDIR}/DelaunayTest
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestFan.o DelaunayTest/TestFan.cpp
+
+
+${TESTDIR}/DelaunayTest/TestTet.o: DelaunayTest/TestTet.cpp 
+	${MKDIR} -p ${TESTDIR}/DelaunayTest
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I. -I../gTest -I../gTest/include -pthread -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestTet.o DelaunayTest/TestTet.cpp
 
 
 ${TESTDIR}/DelaunayTest/TestTetInteriour.o: DelaunayTest/TestTetInteriour.cpp 
