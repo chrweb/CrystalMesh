@@ -447,7 +447,6 @@ namespace Delaunay3{
         
         //rearrange domains
         auto oldDomainsInner = collectDualOrgsUnder(tBottom);
-        auto oldDomainsOuter =  collectDualOrgsOver(tBottom);
         
         auto newInnerDomain = domainFrom(unifyDomains(oldDomainsInner));
         auto newOuterDomain = makeDomain();
@@ -461,7 +460,7 @@ namespace Delaunay3{
         auto boundEdges = tBottom.getBoundaryEdges();
         for (Index i = 0; i < 3; i++){
             FacetEdge* currentBoundary = boundEdges[i];
-            result.mTri[i+1] = triangleLeftOf(currentBoundary);
+            result.mTri[i+1] = triangleLeftOf(currentBoundary->getSym());
         }
         return result;
     }

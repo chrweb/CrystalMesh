@@ -27,6 +27,7 @@ namespace{
     
 }
 
+
 TEST(Flip_1_4, executeFlip){
     DelaunayTriangulation3D dt;
     Tet tet = dt.makeTet(tetPoints());
@@ -35,3 +36,4 @@ TEST(Flip_1_4, executeFlip){
     return;
 
 }
+

@@ -29,6 +29,18 @@ TEST(Tet, constuction){
     EXPECT_EQ(4, dt.getFaceCount());
 }
 
+TEST(Tet, vertices){
+    DelaunayTriangulation3D dt;
+    Tet const tet = dt.makeTet(points());
+
+    auto vertices = tet.getVertices();
+    
+    std::sort(vertices.begin(), vertices.end());
+    auto uniqueEnd = std::unique(vertices.begin(), vertices.end());
+    
+    EXPECT_TRUE(uniqueEnd == vertices.end());
+}
+
 TEST(Tet, domains){
     DelaunayTriangulation3D dt;
     Tet const tet = dt.makeTet(points());
