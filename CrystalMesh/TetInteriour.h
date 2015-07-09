@@ -19,11 +19,15 @@ namespace CrystalMesh{
     namespace Delaunay3{
     
         struct TetInteriour{
+            
+            typedef std::array<Delaunay3::Triangle,6> Triangles;
 
-            std::array<Delaunay3::Triangle,6> mTriangles;
+            Triangles mTriangles;
             
             
             Triangle const getTriangleAt(Index aIndex) const;
+            
+            Triangles const getTriangles() const;
             
             Subdiv3::FacetEdge* getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const;
 	};

@@ -108,6 +108,10 @@ namespace CrystalMesh{
             Triangle result = {apDring};
             return result;
         }
+        
+        Triangle const triangleLeftOf(Subdiv3::FacetEdge* aFacetEdge){
+            return triangleOf(aFacetEdge->getDual()->getDirectedEdgeRing());
+        }
     }
 }
 

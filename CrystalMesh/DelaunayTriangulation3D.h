@@ -53,13 +53,6 @@ namespace CrystalMesh{
                 Triangles tris;
 	};
 
-            struct PointInsertion{
-                Mathbox::Geometry::Point3D mPoint;
-            };
-            
-            PointInsertion pointInsertionOf(Mathbox::Geometry::Point3D const & aPoint);
-
-	
 
 	class VertexDataContainer;
 
@@ -76,7 +69,7 @@ namespace CrystalMesh{
 
             ~DelaunayTriangulation3D();
 
-            Flip1To4 const flip1to4(Tet& aTetToFlip, PointInsertion const aIns);
+            Flip1To4 const flip1to4(Tet& aTetToFlip, Mathbox::Geometry::Point3D const & aPoint);
 
             Flip2To3 flip2to3(Triangle& aTriangleToFlip);
 

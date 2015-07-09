@@ -14,16 +14,16 @@ namespace CrystalMesh{
 
 		struct FacetEdge{
 
-			bool isPrimal() const;
+                    bool isPrimal() const;
 
-			bool isDual() const;
-			/**
-			 * Access to origin/ destination
-			 */
-			Vertex const * getOrg() const;
-			Vertex * getOrg();
+                    bool isDual() const;
+                    /**
+                     * Access to origin/ destination
+                     */
+                    Vertex const * getOrg() const;
+                    Vertex * getOrg();
 
-			Vertex const * getDest() const;
+                    Vertex const * getDest() const;
 		    Vertex * getDest();
 
 		    DirectedEdgeRing const * getDirectedEdgeRing() const;
@@ -74,6 +74,9 @@ namespace CrystalMesh{
 
 		    FacetEdge const * getInvOnext() const;
 		    FacetEdge * getInvOnext();
+                    
+                    FacetEdge const * getSym() const;
+                    FacetEdge * getSym();
 
 
                     DirectedEdgeRing* mpDirectedEdgeRing;

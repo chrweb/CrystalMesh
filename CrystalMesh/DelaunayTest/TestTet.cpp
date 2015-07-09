@@ -55,16 +55,5 @@ TEST(Tet, domains){
         Domain const currentOuter = tCurrent.getDomainOver();
         EXPECT_TRUE(innerRef == currenInner);
         EXPECT_TRUE(outerRef == currentOuter);
-    }
-    
-    
-    
-    
-    
-    
-    
-}
-
-TEST(Tet, orientation){
-
+    } 
 }

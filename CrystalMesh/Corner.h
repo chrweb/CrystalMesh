@@ -30,6 +30,10 @@ namespace CrystalMesh{
             
             Delaunay3::Triangle const adjancentTriangle() const;
             
+            Mathbox::Geometry::Point3D const getOriginPoint() const;
+            
+            Mathbox::Geometry::Point3D const getDestinationPoint() const;
+            
             static Corner const invalid;
 	};
         

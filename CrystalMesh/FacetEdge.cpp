@@ -17,37 +17,37 @@ namespace CrystalMesh{
 
 		namespace{
 
-			template<typename T>
-			void checkValidPtr(T const * ptr){
-				SHOULD_BE(notNullptr(ptr));
-			}
+                    template<typename T>
+                    void checkValidPtr(T const * ptr){
+                            SHOULD_BE(notNullptr(ptr));
+                    }
 
-			bool checkClockIteration(FacetEdge const & aFe){
-				return aFe.mClckIt == 2  || aFe.mClckIt== -2;
-			}
+                    bool checkClockIteration(FacetEdge const & aFe){
+                            return aFe.mClckIt == 2  || aFe.mClckIt== -2;
+                    }
 
-			bool checkDualIteration(FacetEdge const & aFe){
-				return aFe.mDualIt == 1  || aFe.mDualIt == -1;
-			}
+                    bool checkDualIteration(FacetEdge const & aFe){
+                            return aFe.mDualIt == 1  || aFe.mDualIt == -1;
+                    }
 
-			FieldIndex const computeJump(FieldIndex const aFi, FieldIndex const aJmp){
-				   if (aFi + aJmp > 3) return aJmp-4;
-				   if (aFi + aJmp < 0) return 4+aJmp;
-				   else return aJmp;
-			}
+                    FieldIndex const computeJump(FieldIndex const aFi, FieldIndex const aJmp){
+                               if (aFi + aJmp > 3) return aJmp-4;
+                               if (aFi + aJmp < 0) return 4+aJmp;
+                               else return aJmp;
+                    }
 
-			FacetEdge const * jumpTo(FacetEdge const & aInstance, FieldIndex const aJump){
-				auto const jump = computeJump(aInstance.mIndex, aJump);
-				auto const * pDest = & aInstance;
-				return  (pDest + jump);
-			}
+                    FacetEdge const * jumpTo(FacetEdge const & aInstance, FieldIndex const aJump){
+                            auto const jump = computeJump(aInstance.mIndex, aJump);
+                            auto const * pDest = & aInstance;
+                            return  (pDest + jump);
+                    }
 
-			FacetEdge * jumpTo(FacetEdge & aInstance, FieldIndex const aJump){
-				//return const_cast<FacetEdge&>(jumpTo(aInstance, aJump));
-				 auto const jump = computeJump(aInstance.mIndex, aJump);
-				 auto  * pDest = & aInstance;
-				 return  (pDest + jump);
-			}
+                    FacetEdge * jumpTo(FacetEdge & aInstance, FieldIndex const aJump){
+                            //return const_cast<FacetEdge&>(jumpTo(aInstance, aJump));
+                             auto const jump = computeJump(aInstance.mIndex, aJump);
+                             auto  * pDest = & aInstance;
+                             return  (pDest + jump);
+                    }
 		}
 
 		Vertex const * FacetEdge::getOrg() const{
@@ -79,88 +79,97 @@ namespace CrystalMesh{
 		}
 
 
-		  FacetEdge const  *	FacetEdge::getDual() const{
+		FacetEdge const  *	FacetEdge::getDual() const{
 			  MUST_BE(checkClockIteration(*this));
 			  return jumpTo(*this, mDualIt);
-		  }
-		  FacetEdge *	FacetEdge::getDual(){
+		}
+		FacetEdge *	FacetEdge::getDual(){
 			  MUST_BE(checkClockIteration(*this));
 			  return jumpTo(*this, mDualIt);
-		  }
+		}
 
 
-		  FacetEdge const * FacetEdge::getClock() const{
-	    	  MUST_BE(checkClockIteration(*this));
-	    	  return jumpTo(*this, mClckIt);
-		  }
+		FacetEdge const * FacetEdge::getClock() const{
+                  MUST_BE(checkClockIteration(*this));
+                  return jumpTo(*this, mClckIt);
+		}
 
-		  FacetEdge * 	FacetEdge::getClock(){
+		FacetEdge * 	FacetEdge::getClock(){
 			  MUST_BE(checkClockIteration(*this));
 			 return jumpTo(*this, mClckIt);
-		  }
+		}
 
-		  FacetEdge const * FacetEdge::getFnext() const{
+		FacetEdge const * FacetEdge::getFnext() const{
 			  return mpNext;
-		  }
-		  FacetEdge * FacetEdge::getFnext(){
+		}
+		FacetEdge * FacetEdge::getFnext(){
 			  return mpNext;
-		  }
+		}
 
-		  FacetEdge const * FacetEdge::getInvFnext() const{
+		FacetEdge const * FacetEdge::getInvFnext() const{
 			  return getClock()->getFnext()->getClock();
-		  }
-		  FacetEdge * FacetEdge::getInvFnext(){
+		}
+		FacetEdge * FacetEdge::getInvFnext(){
 			  return getClock()->getFnext()->getClock();
-		  }
+		}
 
-		  FacetEdge const * FacetEdge::getEnext() const{
+		FacetEdge const * FacetEdge::getEnext() const{
 			  return getDual()->getFnext()->getDual();
-		  }
+		}
 
-		  FacetEdge * FacetEdge::getEnext() {
+		FacetEdge * FacetEdge::getEnext() {
 			  return getDual()->getFnext()->getDual();
-		  }
+		}
 
 
-		  FacetEdge const * FacetEdge::getInvEnext() const{
+		FacetEdge const * FacetEdge::getInvEnext() const{
 			  return getClock()->getEnext()->getClock();
-		  }
+		}
 
-		  FacetEdge * FacetEdge::getInvEnext(){
+		FacetEdge * FacetEdge::getInvEnext(){
 			  return getClock()->getEnext()->getClock();
-		  }
+		}
 
-		  QuaterNode const * FacetEdge::getQuaterNode() const{
+		QuaterNode const * FacetEdge::getQuaterNode() const{
 			  return reinterpret_cast<QuaterNode const *>( this-mIndex);
-		  }
+		}
 
-		  QuaterNode * FacetEdge::getQuaterNode(){
+		QuaterNode * FacetEdge::getQuaterNode(){
 			  return reinterpret_cast<QuaterNode *>( this-mIndex);
-		  }
+		}
 
-		  bool FacetEdge::isPrimal() const{
+		bool FacetEdge::isPrimal() const{
 			  return (mIndex == 0 || mIndex ==2);
-		  }
+		}
 
-		  bool FacetEdge::isDual() const{
+		bool FacetEdge::isDual() const{
 			  return !isPrimal();
-		  }
+		}
 
-		  const FacetEdge* FacetEdge::getOnext() const {
+		const FacetEdge* FacetEdge::getOnext() const {
 			  return getInvEnext()->getInvFnext()->getClock();
-		  }
+		}
 
-		  FacetEdge* FacetEdge::getOnext() {
+		FacetEdge* FacetEdge::getOnext() {
 			  return getInvEnext()->getInvFnext()->getClock();
-		  }
+		}
 
-		  const FacetEdge* FacetEdge::getInvOnext() const {
+		const FacetEdge* FacetEdge::getInvOnext() const {
 			  return getInvFnext()->getInvEnext()->getClock();
-		  }
+		}
 
-		  FacetEdge* FacetEdge::getInvOnext() {
+		FacetEdge* FacetEdge::getInvOnext() {
 			  return getInvFnext()->getInvEnext()->getClock();
-		  }
+		}
+                
+                FacetEdge const * FacetEdge::getSym() const{
+                    return getInvFnext()->getClock();
+                }
+                
+                FacetEdge * FacetEdge::getSym(){
+                    return getInvFnext()->getClock();
+                }
+
 
 
 

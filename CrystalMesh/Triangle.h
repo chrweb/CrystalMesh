@@ -53,6 +53,8 @@ namespace CrystalMesh{
 	};
         
         Triangle const triangleOf(Subdiv3::DirectedEdgeRing * apDring);
+        
+        Triangle const triangleLeftOf(Subdiv3::FacetEdge* aFacetEdge);
 
     }
 }

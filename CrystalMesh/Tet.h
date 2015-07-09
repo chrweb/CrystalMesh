@@ -27,6 +27,7 @@ namespace CrystalMesh{
             typedef std::array<Triangle,4> Triangles;   
             typedef std::array<Subdiv3::Vertex*, 4> Vertices;
             typedef std::array<Corner, 6> Corners;
+            typedef std::array<Mathbox::Geometry::Point3D,4> Points;
 		
             //Subdiv3::Vertex* mpDualVertex;
             Triangles mTri;
@@ -53,6 +54,8 @@ namespace CrystalMesh{
             Triangles const getTriangles() const;
 
             Corners const getCorners() const;   
+            
+            Points const getPoints() const;
         };
     }
 }

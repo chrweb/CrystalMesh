@@ -30,12 +30,7 @@ namespace Delaunay3{
     using namespace Geometry;
     using namespace Subdiv3;
     
-    
-    PointInsertion pointInsertionOf(Mathbox::Geometry::Point3D const & aPoint){
-        PointInsertion result;
-        result.mPoint = aPoint;
-        return result;
-    }
+
 
     
     using namespace Toolbox;
@@ -378,12 +373,17 @@ namespace Delaunay3{
                     
         //permutation holds in [0] to [2] a points forming a plane,
         //[3] appears below this face.
+        Point3D const & p0 = permutation[0];
+        Point3D const & p1 = permutation[1];
+        Point3D const & p2 = permutation[2];
+        Point3D const & p3 = permutation[3];
+ 
     
         std::array<Triangle,4> triangles = {
-            makeTriangle(aTetPoints[0], aTetPoints[1], aTetPoints[2]),
-            makeTriangle(aTetPoints[3], aTetPoints[0], aTetPoints[1]),
-            makeTriangle(aTetPoints[2], aTetPoints[3], aTetPoints[0]),
-            makeTriangle(aTetPoints[1], aTetPoints[2], aTetPoints[3]),
+            makeTriangle(p0, p1, p2),
+            makeTriangle(p3, p0, p1),
+            makeTriangle(p2, p3, p0),
+            makeTriangle(p1, p2, p3),
         };
         
         auto & tBottom = triangles[0];
@@ -391,30 +391,31 @@ namespace Delaunay3{
         auto const& t2 = triangles[2];
         auto const& t3 = triangles[3];
         
+        
         std::array<FacetEdge*, 12> facetEdges= {
             //0-1
-            tBottom.boundaryWith(aTetPoints[0], aTetPoints[1]),
-            t1.boundaryWith(aTetPoints[0], aTetPoints[1]),
+            tBottom.boundaryWith(p0, p1),
+            t1.boundaryWith(p0, p1),
         
             //1-2
-            tBottom.boundaryWith(aTetPoints[1], aTetPoints[2]),
-            t3.boundaryWith(aTetPoints[1], aTetPoints[2]),
+            tBottom.boundaryWith(p1, p2),
+            t3.boundaryWith(p1, p2),
         
             //2-0
-            tBottom.boundaryWith(aTetPoints[0], aTetPoints[2]),
-            t2.boundaryWith(aTetPoints[0], aTetPoints[2]),
+            tBottom.boundaryWith(p0, p2),
+            t2.boundaryWith(p0, p2),
         
             //3-0
-            t1.boundaryWith(aTetPoints[3], aTetPoints[0]),
-            t2.boundaryWith(aTetPoints[3], aTetPoints[0]),
+            t1.boundaryWith(p3, p0),
+            t2.boundaryWith(p3, p0),
         
             //3-1
-            t1.boundaryWith(aTetPoints[3], aTetPoints[1]),
-            t3.boundaryWith(aTetPoints[3], aTetPoints[1]),
+            t1.boundaryWith(p3, p1),
+            t3.boundaryWith(p3, p1),
         
             //3-2
-            t2.boundaryWith(aTetPoints[3], aTetPoints[2]),
-            t3.boundaryWith(aTetPoints[3], aTetPoints[2]),
+            t2.boundaryWith(p3, p2),
+            t3.boundaryWith(p3, p2),
         };
         
         for (Index i = 0; i< 11; i+=2){
@@ -439,7 +440,7 @@ namespace Delaunay3{
             mpManifold->linkVertexFacetEdge(*newVertex, *f);
         }
         
-        auto topToBottom = t1.boundaryWith(aTetPoints[3], aTetPoints[0]);
+        auto topToBottom = t1.boundaryWith(p3, p0);
         auto oldVertsTop = collectOrgsOf(topToBottom);
         auto newVertex = unifyVertices(oldVertsTop);
         mpManifold->linkVertexFacetEdge(*newVertex, *topToBottom);
@@ -454,8 +455,14 @@ namespace Delaunay3{
         linkDomainOverTriangle(newOuterDomain, tBottom);
         linkDomainUnderTriangle(newInnerDomain, tBottom);
         
+        //prepare result
         Tet result;
-        result.mTri = triangles;
+        result.mTri[0] = tBottom;
+        auto boundEdges = tBottom.getBoundaryEdges();
+        for (Index i = 0; i < 3; i++){
+            FacetEdge* currentBoundary = boundEdges[i];
+            result.mTri[i+1] = triangleLeftOf(currentBoundary);
+        }
         return result;
     }
             
@@ -526,6 +533,72 @@ namespace Delaunay3{
         SHOULD_BE(triangles.size() == 6);
         result.mTriangles = {triangles[0], triangles[1], triangles[2], triangles[3], triangles[4], triangles[5]}; 
         return result;
+    }
+    
+    Flip1To4 const DelaunayTriangulation3D::flip1to4(Tet& aTetToFlip, Geometry::Point3D const & aPoint){
+        Tet::Points tetPoints = aTetToFlip.getPoints();
+        TetIntPoints interiourPoints = {
+            tetPoints[0],
+            tetPoints[1],
+            tetPoints[2],
+            tetPoints[3],
+            aPoint
+        };
+        
+        TetInteriour const tetInteriour = makeTetInterior(interiourPoints);
+        Tet::Corners const corners = aTetToFlip.getCorners();
+        Tet::Vertices const vertices = aTetToFlip.getVertices();
+        Tet::Triangles  tetTriangles = aTetToFlip.getTriangles();
+        TetInteriour::Triangles interiourTriangles = tetInteriour.getTriangles();
+        
+        //edge splicing
+        for (Corner const & currentCorner : corners){
+            auto const orgPoint = currentCorner.getOriginPoint();
+            auto const destPoint = currentCorner.getDestinationPoint();
+            
+            FacetEdge* inner = tetInteriour.getAdapterOf(orgPoint, destPoint);
+            mpManifold->spliceFacets(*inner, *currentCorner.mRef);
+            
+            //rearrange edge rings
+            auto oldRings = collectRingsFnext(inner);
+            auto newRing = unifyEdgeRings(oldRings);
+            mpManifold->linkEdgeRingAndFacetEdges(*newRing, *inner);
+        }
+        
+        //rearrange vertices:
+        for (VertexPtr const current: vertices){
+            FacetEdge *  incident = current->getFacetEdge();
+            auto oldVerts = collectOrgsOf(incident);
+            auto newVertex = unifyVertices(oldVerts);
+            mpManifold->linkVertexFacetEdge(*newVertex, *incident);
+        }
+        
+        //rearrange domains:
+        for (Triangle & triangle: tetTriangles){
+            auto oldDomains = collectDualOrgsUnder(triangle);
+            auto newDomain = domainFrom(unifyDomains(oldDomains));
+            linkDomainUnderTriangle(newDomain, triangle);
+        }
+        
+        
+        //prepare result
+        Flip1To4 result;
+        result.result = Flip1To4::Result::success;
+        auto& resultTris = result.tris;
+        
+        for (Index i = 0; i<4; i++){
+            resultTris[i] = tetTriangles[i];
+        }
+        for (Index i = 0; i<6; i++){
+            resultTris[i+4] = interiourTriangles[i];
+        }
+        
+        return result;
+        
+        
+        
+        
+    
     }
             
            
