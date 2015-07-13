@@ -8,12 +8,16 @@
 #ifndef GEOMETRY_VECTOR3D_H_
 #define GEOMETRY_VECTOR3D_H_
 
+#include "Geometry.h"
+
+
 namespace Mathbox{
 
 	namespace Geometry{
 
 		struct Vector3D;
-		struct Vector3D;	struct Point3D;
+		struct Vector3D;	
+                struct Point3D;
 		struct Vector2D;
 		struct Matrix4x3;
 
@@ -26,24 +30,24 @@ namespace Mathbox{
 		 * Vector my differ by delta componentwise
 		 */
 		bool const almostEqual(Vector3D const & a0, Vector3D const & a1, uint64_t aDiffInUlp);
+                
+                bool isValidDirection(Vector3D const & aVector);
 
 		double const absoluteOf(Vector3D const & aVec);
 
 		double const squaredOf(Vector3D const & aVec);
-
+                
+                double const dotProductOf(Vector3D const & a0, Vector3D const & a1);
+                
 		Vector3D const operator+ (Vector3D const & aLeftOp, Vector3D const & aRightOp);
 
 		Vector3D const operator- (Vector3D const & aLeftOp, Vector3D const & aRightOp);
+                
+                Vector3D const operator- (Vector3D const & aRhs);
 
 		Vector3D const operator* (double const aScalar, Vector3D const & aVec);
 
 		Vector3D const operator* (Vector3D const & aVec, double const aScalar);
-
-
-		/**
-		 * length may differ by length DeltaL
-		 */
-		//bool const almostEqual(Vector3D const & a0, Vector3D const & a1, double const aDeltaL);
 
 		Vector3D const normalized(Vector3D const & aVec);
 
@@ -59,10 +63,16 @@ namespace Mathbox{
 		Vector3D const VectorFromXY0(Vector2D const & aVec);
 
 		Vector3D const crossProductOf(Vector3D const & a0, Vector3D const & a1);
+                
+                Vector3D const normalizedCrossProductOf(Vector3D const & a0, Vector3D const & a1);
 
-		double const dotProductOf(Vector3D const & a0, Vector3D const & a1);
+		
 
 		Vector3D const transformed(Matrix4x3 const & aTrafo, Vector3D const & aVec);
+                
+
+                
+                double const tripleProductOf(Vector3D const & aV0, Vector3D const & aV1, Vector3D const & aV2);
 
 	}
 }

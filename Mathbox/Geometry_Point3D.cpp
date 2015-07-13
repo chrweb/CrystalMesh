@@ -25,7 +25,10 @@ namespace Mathbox {
 		}
 
 		bool const almostEqual(Point3D const & a0, Point3D const & a1, uint64_t aDiffFromZeroInULP){
-			return Mathbox::almostEqual(distanceBetween(a0, a1), 0.0, aDiffFromZeroInULP);
+                 
+			return Mathbox::almostEqual(a0.mX, a1.mX, aDiffFromZeroInULP)
+                                && Mathbox::almostEqual(a0.mY, a1.mY, aDiffFromZeroInULP) 
+                                && Mathbox::almostEqual(a0.mZ, a1.mZ, aDiffFromZeroInULP);
 		}
                 
                 bool const inLexicographicalOrder(Point3D const & aPoint0, Point3D const & aPoint1){

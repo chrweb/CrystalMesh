@@ -572,12 +572,19 @@ namespace Delaunay3{
             mpManifold->linkVertexFacetEdge(*newVertex, *incident);
         }
         
+        auto oldDomains = collectDualOrgsUnder(tetTriangles[0]);
+        
         //rearrange domains:
         for (Triangle & triangle: tetTriangles){
-            auto oldDomains = collectDualOrgsUnder(triangle);
-            auto newDomain = domainFrom(unifyDomains(oldDomains));
+            auto newDomain = makeDomain();
             linkDomainUnderTriangle(newDomain, triangle);
         }
+        
+        for (VertexPtr domain : oldDomains)
+        {
+            mpManifold->deleteDualVertex(*domain);
+        }
+        
         
         
         //prepare result
@@ -636,6 +643,10 @@ namespace Delaunay3{
     
     Domain const DelaunayTriangulation3D::makeDomain(){
         return domainFrom(mpManifold->makeDualVertex());
+    }
+    
+    void DelaunayTriangulation3D::destroyDomain(Domain& aDomain){
+        mpManifold->deleteDualVertex(*aDomain.mDual);
     }
             
     void DelaunayTriangulation3D::linkDomainUnderTriangle(Delaunay3::Domain& aDomain,  Delaunay3::Triangle& aTri){

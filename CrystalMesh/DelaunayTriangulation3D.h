@@ -152,6 +152,8 @@ namespace CrystalMesh{
            
             Domain const makeDomain();
             
+            void destroyDomain(Domain& aDomain);
+            
             void linkDomainUnderTriangle(Delaunay3::Domain& aDomain,  Delaunay3::Triangle& aTri);
             
             void linkDomainOverTriangle(Delaunay3::Domain& aDomain,  Delaunay3::Triangle& aTri);

@@ -1,3 +1,6 @@
+
+#include "Geometry.h"
+
 /*
  * Geometry Plane3D.h
  *
@@ -14,12 +17,19 @@ namespace Mathbox{
 		struct Plane3D;
 		struct Point3D;
 		struct Vector3D;
+                struct OrientedPlane3D;
 
 		enum struct PointToPlaneProjection{
 						onPlane,
 						overPlane,
 						underPlane
 					};
+                                        
+                Plane3D const planeFromPointAndNormal(Point3D const & aPoint, Vector3D const & aNormal);
+
+		Plane3D const planeFromThreePoints(Point3D const & a0, Point3D const & a1, Point3D const a2);
+                
+                Plane3D const planeFromOrientedPlane(OrientedPlane3D const& aPlane);
 
 		// Determines, if Point above, under or on plane. 
 		PointToPlaneProjection const pointPlaneProjection(Plane3D const & aPlane, Point3D const & aPoint);
@@ -27,10 +37,6 @@ namespace Mathbox{
 		double const signedDistanceBetween(Plane3D const & aPlane, Point3D const & aPoint);
 
 		double const distanceBetween(Plane3D const & aPlane, Point3D const & aPoint);
-
-		Plane3D const planeFromPointAndNormal(Point3D const & aPoint, Vector3D const & aNormal);
-
-		Plane3D const planeFromThreePoints(Point3D const & a0, Point3D const & a1, Point3D const a2);
 
 		// Returns closed (i.e projected) point on plane.
 		Point3D const closestPoint(Plane3D const & aPlane, Point3D const & aPoint);

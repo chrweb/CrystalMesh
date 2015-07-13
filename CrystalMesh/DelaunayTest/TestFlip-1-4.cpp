@@ -33,7 +33,24 @@ TEST(Flip_1_4, executeFlip){
     Tet tet = dt.makeTet(tetPoints());
     Flip1To4 result = dt.flip1to4(tet, insertionPoint());
     
+    EXPECT_EQ(5, dt.getDomainCount());
+    EXPECT_EQ(5, dt.getVertexCount());
+    EXPECT_EQ(10, dt.getFaceCount());
+    EXPECT_EQ(10, dt.getCornerCount());
     return;
+}
+
+TEST(Flip_1_4, orientation){
+
+    DelaunayTriangulation3D dt;
+    Tet tet = dt.makeTet(tetPoints());
+    Tet::Triangles outerTris = tet.getTriangles();
+    auto const innerPoint = TetPoints()[3];
+    Flip1To4 result = dt.flip1to4(tet, insertionPoint());
+    
+    for (Triangle const& triangle: outerTris){
+        triangle.pointBehind(innerPoint);
+    }
 
 }
 

@@ -6,8 +6,10 @@
 #include "DelaunayVertex.h"
 #include "../Toolbox/Checks.h"
 
+
 using namespace CrystalMesh;
 using namespace Delaunay3;
+using namespace Mathbox::Geometry;
 
 Triangle::BoundaryEdges const Triangle::getBoundaryEdges() const{
 	auto pBnd = mpDualEdgeRing->getRingMember()->getDual();
@@ -54,7 +56,17 @@ Triangle const Triangle::getCounterOriented() const{
     result.mpDualEdgeRing = this->mpDualEdgeRing->getSym();
     return result;
 }
-       
+
+bool const Triangle::pointBehind(Mathbox::Geometry::Point3D const& aPoint) const{
+    auto orientedPlane = getOrientedPlane();
+    auto result = pointPlaneProjection(orientedPlane, aPoint);
+    return result == PointToPlaneProjection::underPlane;
+}
+
+Mathbox::Geometry::OrientedPlane3D const Triangle::getOrientedPlane() const{
+    auto points = getBoundaryPoints();
+    return orientedPlaneFrom(points[0], points[1], points[2]);
+}     
 
 bool const Triangle::operator == (const Triangle& other) const{
     return (other.mpDualEdgeRing == mpDualEdgeRing);

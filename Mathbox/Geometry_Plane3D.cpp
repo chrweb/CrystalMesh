@@ -7,6 +7,8 @@
 
 #include "Mathbox.h"
 #include "Geometry.h"
+#include "Geometry_Matrix4x3.h"
+#include "Geometry_OrientedPlane3D.h"
 namespace Mathbox{
 
 	namespace Geometry{
@@ -24,6 +26,14 @@ namespace Mathbox{
 			auto const v1 = vectorBetween(a2, a1);
 			return planeFromPointAndNormal(a0, crossProductOf(v0, v1));
 		}
+                
+                Plane3D const planeFromOrientedPlane(OrientedPlane3D const& aPlane){
+                
+                    auto const point = originOf(aPlane);
+                    auto const normal = normalOf(aPlane);
+                    return planeFromPointAndNormal(point, normal);
+                    
+                }
 
 		Point3D const pointOnPlaneOf(Plane3D const & aPlane){
 			return aPlane.mPoint;

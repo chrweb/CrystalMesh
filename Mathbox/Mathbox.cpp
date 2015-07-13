@@ -11,7 +11,7 @@
 #include <stdint.h>
 #include "../Toolbox/Checks.h"
 #include <stdlib.h>
-
+#include <algorithm>
 namespace Mathbox{
 
 	 double const NaN =  NAN;
@@ -20,7 +20,7 @@ namespace Mathbox{
 
 
 	 double const squareRootOf( double const aScalar){
-		 SHOULD_BE(aScalar>=0.0);
+		 MUST_BE(aScalar>=0.0);
 		 return sqrt(aScalar);
 	 }
 
@@ -53,22 +53,26 @@ namespace Mathbox{
              
              return false;
          }
-         
-         
-//          uint64_t const diffInUlps(double a0, double a1){
-//             MUST_BE(sizeof(double)== sizeof(uint64_t));
-//             
-//             auto  a0AsInt = *reinterpret_cast<int64_t const *>(&a0);
-//             
-//             auto a1AsInt = *reinterpret_cast<int64_t const *>(&a1);
-//             
-//             // determine absolute
-//	       auto const diffInInts = a1AsInt - a0AsInt;
-//             
-//             return diffInInts; 
-//         }
         
+        double const signumOf(double const aScalar){
         
+            if (aScalar > 0.0)
+                return 1.0;
+            
+            if (aScalar < 0.0)
+                return -1.0;
+            
+            return 0.0;
+        } 
+        
+        double const minimumOf(double const a0, double const a1){
+            return std::min(a0, a1);
+        }
+         
+        bool const isWithin(double const aLower, double const value,  double const aUpper){
+            return (aLower<= value) && (value<= aUpper);
+        }
+         
         
         namespace{
             

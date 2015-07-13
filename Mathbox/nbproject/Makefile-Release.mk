@@ -35,6 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Geometry_Matrix4x3.o \
+	${OBJECTDIR}/Geometry_OrientedPlane3D.o \
 	${OBJECTDIR}/Geometry_Plane3D.o \
 	${OBJECTDIR}/Geometry_Point3D.o \
 	${OBJECTDIR}/Geometry_Vector2D.o \
@@ -52,8 +54,8 @@ TESTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-std=c++11
+CXXFLAGS=-std=c++11
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -74,70 +76,112 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmathbox.a: ${OBJECTFILES}
 	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmathbox.a ${OBJECTFILES} 
 	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libmathbox.a
 
+${OBJECTDIR}/Geometry_Matrix4x3.o: Geometry_Matrix4x3.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Matrix4x3.o Geometry_Matrix4x3.cpp
+
+${OBJECTDIR}/Geometry_OrientedPlane3D.o: Geometry_OrientedPlane3D.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_OrientedPlane3D.o Geometry_OrientedPlane3D.cpp
+
 ${OBJECTDIR}/Geometry_Plane3D.o: Geometry_Plane3D.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Plane3D.o Geometry_Plane3D.cpp
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Plane3D.o Geometry_Plane3D.cpp
 
 ${OBJECTDIR}/Geometry_Point3D.o: Geometry_Point3D.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Point3D.o Geometry_Point3D.cpp
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Point3D.o Geometry_Point3D.cpp
 
 ${OBJECTDIR}/Geometry_Vector2D.o: Geometry_Vector2D.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Vector2D.o Geometry_Vector2D.cpp
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Vector2D.o Geometry_Vector2D.cpp
 
 ${OBJECTDIR}/Geometry_Vector3D.o: Geometry_Vector3D.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Vector3D.o Geometry_Vector3D.cpp
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Vector3D.o Geometry_Vector3D.cpp
 
 ${OBJECTDIR}/Mathbox.o: Mathbox.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mathbox.o Mathbox.cpp
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mathbox.o Mathbox.cpp
 
 # Subprojects
 .build-subprojects:
 
 # Build Test Targets
 .build-tests-conf: .build-conf ${TESTFILES}
-${TESTDIR}/TestFiles/f1: ${TESTDIR}/Tests/TestMath.o ${TESTDIR}/Tests/TestPlane3D.o ${TESTDIR}/Tests/TestPoint3D.o ${TESTDIR}/Tests/TestUPL.o ${TESTDIR}/Tests/TestVector3D.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f1: ${TESTDIR}/Tests/TestMath.o ${TESTDIR}/Tests/TestMatrix4x3.o ${TESTDIR}/Tests/TestPlane3D.o ${TESTDIR}/Tests/TestPoint3D.o ${TESTDIR}/Tests/TestUPL.o ${TESTDIR}/Tests/TestVector3D.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
-	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} ../googletest/dist/Release/GNU-Linux-x86/libgoogletest.a 
+	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} ../googletest/dist/Release/GNU-Linux-x86/libgoogletest.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a 
 
 
 ${TESTDIR}/Tests/TestMath.o: Tests/TestMath.cpp 
 	${MKDIR} -p ${TESTDIR}/Tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestMath.o Tests/TestMath.cpp
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestMath.o Tests/TestMath.cpp
+
+
+${TESTDIR}/Tests/TestMatrix4x3.o: Tests/TestMatrix4x3.cpp 
+	${MKDIR} -p ${TESTDIR}/Tests
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestMatrix4x3.o Tests/TestMatrix4x3.cpp
 
 
 ${TESTDIR}/Tests/TestPlane3D.o: Tests/TestPlane3D.cpp 
 	${MKDIR} -p ${TESTDIR}/Tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestPlane3D.o Tests/TestPlane3D.cpp
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestPlane3D.o Tests/TestPlane3D.cpp
 
 
 ${TESTDIR}/Tests/TestPoint3D.o: Tests/TestPoint3D.cpp 
 	${MKDIR} -p ${TESTDIR}/Tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestPoint3D.o Tests/TestPoint3D.cpp
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestPoint3D.o Tests/TestPoint3D.cpp
 
 
 ${TESTDIR}/Tests/TestUPL.o: Tests/TestUPL.cpp 
 	${MKDIR} -p ${TESTDIR}/Tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestUPL.o Tests/TestUPL.cpp
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestUPL.o Tests/TestUPL.cpp
 
 
 ${TESTDIR}/Tests/TestVector3D.o: Tests/TestVector3D.cpp 
 	${MKDIR} -p ${TESTDIR}/Tests
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestVector3D.o Tests/TestVector3D.cpp
+	$(COMPILE.cc) -O2 -I../gTest/include -I../gTest -I. -I. -I. -MMD -MP -MF "$@.d" -o ${TESTDIR}/Tests/TestVector3D.o Tests/TestVector3D.cpp
 
+
+${OBJECTDIR}/Geometry_Matrix4x3_nomain.o: ${OBJECTDIR}/Geometry_Matrix4x3.o Geometry_Matrix4x3.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Geometry_Matrix4x3.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -I../gTest/include -I../gTest -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Matrix4x3_nomain.o Geometry_Matrix4x3.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Geometry_Matrix4x3.o ${OBJECTDIR}/Geometry_Matrix4x3_nomain.o;\
+	fi
+
+${OBJECTDIR}/Geometry_OrientedPlane3D_nomain.o: ${OBJECTDIR}/Geometry_OrientedPlane3D.o Geometry_OrientedPlane3D.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/Geometry_OrientedPlane3D.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -I../gTest/include -I../gTest -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_OrientedPlane3D_nomain.o Geometry_OrientedPlane3D.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/Geometry_OrientedPlane3D.o ${OBJECTDIR}/Geometry_OrientedPlane3D_nomain.o;\
+	fi
 
 ${OBJECTDIR}/Geometry_Plane3D_nomain.o: ${OBJECTDIR}/Geometry_Plane3D.o Geometry_Plane3D.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -147,7 +191,7 @@ ${OBJECTDIR}/Geometry_Plane3D_nomain.o: ${OBJECTDIR}/Geometry_Plane3D.o Geometry
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Plane3D_nomain.o Geometry_Plane3D.cpp;\
+	    $(COMPILE.cc) -O2 -I../gTest/include -I../gTest -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Plane3D_nomain.o Geometry_Plane3D.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Geometry_Plane3D.o ${OBJECTDIR}/Geometry_Plane3D_nomain.o;\
 	fi
@@ -160,7 +204,7 @@ ${OBJECTDIR}/Geometry_Point3D_nomain.o: ${OBJECTDIR}/Geometry_Point3D.o Geometry
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Point3D_nomain.o Geometry_Point3D.cpp;\
+	    $(COMPILE.cc) -O2 -I../gTest/include -I../gTest -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Point3D_nomain.o Geometry_Point3D.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Geometry_Point3D.o ${OBJECTDIR}/Geometry_Point3D_nomain.o;\
 	fi
@@ -173,7 +217,7 @@ ${OBJECTDIR}/Geometry_Vector2D_nomain.o: ${OBJECTDIR}/Geometry_Vector2D.o Geomet
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Vector2D_nomain.o Geometry_Vector2D.cpp;\
+	    $(COMPILE.cc) -O2 -I../gTest/include -I../gTest -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Vector2D_nomain.o Geometry_Vector2D.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Geometry_Vector2D.o ${OBJECTDIR}/Geometry_Vector2D_nomain.o;\
 	fi
@@ -186,7 +230,7 @@ ${OBJECTDIR}/Geometry_Vector3D_nomain.o: ${OBJECTDIR}/Geometry_Vector3D.o Geomet
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Vector3D_nomain.o Geometry_Vector3D.cpp;\
+	    $(COMPILE.cc) -O2 -I../gTest/include -I../gTest -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Geometry_Vector3D_nomain.o Geometry_Vector3D.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Geometry_Vector3D.o ${OBJECTDIR}/Geometry_Vector3D_nomain.o;\
 	fi
@@ -199,7 +243,7 @@ ${OBJECTDIR}/Mathbox_nomain.o: ${OBJECTDIR}/Mathbox.o Mathbox.cpp
 	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
 	then  \
 	    ${RM} "$@.d";\
-	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mathbox_nomain.o Mathbox.cpp;\
+	    $(COMPILE.cc) -O2 -I../gTest/include -I../gTest -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Mathbox_nomain.o Mathbox.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/Mathbox.o ${OBJECTDIR}/Mathbox_nomain.o;\
 	fi

@@ -33,9 +33,9 @@ namespace Toolbox{
 #ifdef DEBUG
 	#define  SHOULD_BE_INTERNAL(Expression)\
 	if (!(Expression)) \
-	{ \
+            { \
 		Toolbox::throwOnViolation(__FILE__, __LINE__, #Expression); \
-	}
+            }
 
 #else
 	// empty
@@ -43,7 +43,11 @@ namespace Toolbox{
 #endif
 
 #ifdef DEBUG
-    #define MUST_BE_INTERNAL(EXPRESSION) SHOULD_BE_INTERNAL(#EXPRESSION);
+    #define MUST_BE_INTERNAL(Expression)\
+    if (!(Expression)) \
+	{ \
+            Toolbox::throwOnViolation(__FILE__, __LINE__, #Expression); \
+	}
 #else
     #define MUST_BE_INTERNAL(Expression)\
     if(!(Expression))\

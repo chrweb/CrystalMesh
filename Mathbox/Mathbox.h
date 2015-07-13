@@ -35,6 +35,17 @@ namespace Mathbox{
 	double const reciprocalOf(double const aScalar);
 
 	double const absoluteOf(double const aScalar);
+       
+        /**
+         * 
+         * @param aScalar: a nonzero number
+         * @return 0 if argument is 0, -1 if argument < 0, 1 if argument >0
+         */
+        double const signumOf(double const aScalar);
+        
+        bool const isWithin(double const aLower, double const value,  double const aUpper);
+        
+        double const minimumOf(double const a0, double const a1);
 }
 
 #include "Geometry.h"

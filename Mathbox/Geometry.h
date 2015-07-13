@@ -94,9 +94,7 @@ namespace Mathbox{
 		};
 
 		struct OrientedPlane3D{
-			Point3D mOrigin;
-			Vector3D mUdir;
-			Vector3D mVdir;
+                    Matrix4x3 mTrafo;
 		};
 
 
@@ -111,6 +109,8 @@ namespace Mathbox{
 #include "Geometry_Point3D.h"
 #include "Geometry_Vector3D.h"
 #include "Geometry_Plane3D.h"
+#include "Geometry_Matrix4x3.h"
+#include "Geometry_OrientedPlane3D.h"
 
 
 

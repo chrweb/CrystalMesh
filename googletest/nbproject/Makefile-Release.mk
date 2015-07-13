@@ -68,12 +68,12 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libgoogletest.a: ${OBJECTFILES}
 ${OBJECTDIR}/_ext/1668771551/gtest-all.o: ../gTest/src/gtest-all.cc 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1668771551
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1668771551/gtest-all.o ../gTest/src/gtest-all.cc
+	$(COMPILE.cc) -O2 -I../gTest -I../gTest/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1668771551/gtest-all.o ../gTest/src/gtest-all.cc
 
 ${OBJECTDIR}/_ext/1668771551/gtest_main.o: ../gTest/src/gtest_main.cc 
 	${MKDIR} -p ${OBJECTDIR}/_ext/1668771551
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1668771551/gtest_main.o ../gTest/src/gtest_main.cc
+	$(COMPILE.cc) -O2 -I../gTest -I../gTest/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/1668771551/gtest_main.o ../gTest/src/gtest_main.cc
 
 # Subprojects
 .build-subprojects:

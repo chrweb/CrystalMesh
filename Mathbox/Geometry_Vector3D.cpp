@@ -49,7 +49,12 @@ namespace Mathbox{
 
 			return result;
 		}
-
+                
+                Vector3D const operator- (Vector3D const & aRhs){
+                    Vector3D result = vectorFromXYZ(-aRhs.mX, -aRhs.mY, -aRhs.mZ);
+                    return result;
+                }
+                
 		Vector3D const vectorFromXYZ( double const & aX, double const & aY, double const & aZ){
 
 			Vector3D result = {
@@ -130,6 +135,27 @@ namespace Mathbox{
 					Mathbox::almostEqual(a0.mY, a1.mY, aDiffInUlp) &&
 					Mathbox::almostEqual(a0.mZ, a1.mZ, aDiffInUlp);
 		}
+                
+                double const tripleProductOf(Vector3D const & aV0, Vector3D const & aV1, Vector3D const & aV2){
+                    auto const cross = crossProductOf(aV0, aV1);
+                    auto const dotProd =  dotProductOf(cross, aV2);
+                    return dotProd;
+                }
+                
+                Vector3D const normalizedCrossProductOf(Vector3D const & a0, Vector3D const & a1){
+                    auto const cross = crossProductOf(a0, a1);
+                    return normalized(cross);
+                }
+                
+                bool isValidDirection(Vector3D const & aVector){
+                    return isWithin(
+				1.11875110968003096e-154 * 1.11875110968003096e-154,
+				squaredOf(aVector),
+				1.3407807929942598e154 * 1.3407807929942598e154
+			);
+                
+                }
+
 
 	}
 }

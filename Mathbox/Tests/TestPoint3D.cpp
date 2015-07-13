@@ -87,7 +87,7 @@ TEST(POINT, vectorBetween){
 
 // Test point - vector - addition and - substraction
 TEST(Point, addition){
-	double const eps = 1e-6;
+	uint64_t const eps = 10;
 	Point3D const p = pointFromXYZ(1.3, 1.2, 1.1);
 	Vector3D const v0 = vectorFromXYZ(0.3, 0.2, 0.1);
 

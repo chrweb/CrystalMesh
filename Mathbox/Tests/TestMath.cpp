@@ -22,8 +22,10 @@ TEST(Math, SquareRoot){
 	EXPECT_DOUBLE_EQ(1.4142135623730951, squareRootOf(2.0));
 
 	//<0
-	auto const img = squareRootOf(-4.0);
-	EXPECT_FALSE(isFiniteNumber(img));
+#ifdef DEBUG
+        EXPECT_ANY_THROW(squareRootOf(-4.0));
+#endif
+
 }
 
 
