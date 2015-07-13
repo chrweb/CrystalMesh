@@ -82,5 +82,11 @@ namespace CrystalMesh{
             return cornerFrom(apRing, aDomainAbove.mDual);
         }
 
+        Corner const cornerFrom(FacetEdge * aFedge){
+            Corner result;
+            result.mRef = aFedge;
+            result.mFnext = aFedge->getFnext();
+            return result;
+        }
     }
 }

@@ -46,6 +46,8 @@ namespace CrystalMesh{
          * @return  a Corner
          */
         Corner const cornerFrom(Subdiv3::EdgeRing* aDring, Delaunay3::Domain const& aDomainAbove);
+        
+        Corner const cornerFrom(Subdiv3::FacetEdge * aFedge);
     }
 }
 

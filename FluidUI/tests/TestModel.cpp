@@ -19,6 +19,11 @@ namespace{
     Triangle selectedTri = Triangle::invalid;
     Corner selectedEdge = Corner::invalid;
 
+    Corner const cornerFromTriangleAnDomainOver(Triangle const& aTri){
+        auto ring = aTri.getBoundaryEdges()[0]->getDirectedEdgeRing()->getEdgeRing();
+        auto domain = aTri.getDomainOver();
+        return cornerFrom(ring, domain);
+    }
 }
 
 namespace CrystalMesh{
@@ -41,10 +46,10 @@ namespace CrystalMesh{
 
             
             auto fan = dt->makeFan(uPoint, dPoint, std::vector<Mathbox::Geometry::Point3D>(sample.begin(), sample.end()));
-            selectedTri = fan.getTriangles().at(0);
+            auto selectedTri = fan.getTriangles().at(0);
             
             
-            selectedEdge = cornerOf(selectedTri.getBoundaryEdges()[0]);
+            selectedEdge = cornerFromTriangleAnDomainOver(selectedTri);
         
         }
         
@@ -60,7 +65,7 @@ namespace CrystalMesh{
             auto triangle = crater.getTriangles().front();
             
             selectedTri = triangle;
-            selectedEdge = cornerOf(triangle.getBoundaryEdges()[0]);
+            selectedEdge = cornerFromTriangleAnDomainOver(selectedTri);
 
             return;
         }
@@ -79,7 +84,7 @@ namespace CrystalMesh{
             auto triangle = ti.getTriangleAt(0);
             
             selectedTri = triangle;
-            selectedEdge = cornerOf(triangle.getBoundaryEdges()[0]);
+            selectedEdge = cornerFromTriangleAnDomainOver(triangle);
 
             return;    
         }
@@ -97,16 +102,37 @@ namespace CrystalMesh{
             auto triangle = tet.getTriangleAt(0);
             
             selectedTri = triangle;
-            selectedEdge = cornerOf(triangle.getBoundaryEdges()[0]);
+            selectedEdge = cornerFromTriangleAnDomainOver(triangle);
 
             return;
         
         }
         
+        void trianlgeTestFlip_1_4(){
+            auto const tetPoints = DelaunayTriangulation3D::TetPoints{
+                pointFromXY0(-1.0, -0.5),
+                pointFromXY0(1.0, -0.5),
+                pointFromXY0(0.0, 1.0),
+                pointFromXYZ(0.0, 0.0, 1.0)
+            };
+            
+            auto const insertionPoint = pointFromXYZ(0.0, 0.0, 0.5);
+            
+            auto  tet = dt->makeTet(tetPoints);
+            
+            dt->flip1to4(tet, insertionPoint);
+            auto triangle = tet.getTriangleAt(0);
+            
+            selectedTri = triangle;
+            selectedEdge = cornerFromTriangleAnDomainOver(triangle);
+
+            return;
+        }
+        
         void triangleTest_launch(){
             dt = new DelaunayTriangulation3D();
             
-            triangleTestTet();
+            trianlgeTestFlip_1_4();
 
             model = new DelaunayOpenGLExporter;
             
@@ -150,9 +176,9 @@ namespace CrystalMesh{
         GLTriangle const selectedTrigSetNext(){
             //move upwards in fnext ring und set the selected
             Subdiv3::FacetEdge* next = selectedEdge.mRef->getFnext();
-            selectedEdge = cornerOf(next);
+            selectedEdge = cornerFrom(next);
             // set the triangle
-            selectedTri = cornerOf(next).adjancentTriangle();
+            selectedTri = cornerFrom(next).adjancentTriangle();
             return currentSelectedTrig();
         }
         
@@ -160,9 +186,9 @@ namespace CrystalMesh{
             //move backwards in selected
             Subdiv3::FacetEdge* prev = selectedEdge.mRef->getInvFnext();
             ///set selected
-            selectedEdge = cornerOf(prev);
+            selectedEdge = cornerFrom(prev);
             //set the selected triangle
-            selectedTri = cornerOf(prev).adjancentTriangle();
+            selectedTri = cornerFrom(prev).adjancentTriangle();
             return currentSelectedTrig();
         }
         
@@ -173,13 +199,13 @@ namespace CrystalMesh{
         
         GLEdge const selectedEdgeSetNext(){
             auto next = selectedEdge.mRef->getEnext();
-            selectedEdge = cornerOf(next);
+            selectedEdge = cornerFrom(next);
             return currentSelectedEdge();
         }
         
         GLEdge const selectedEdgeSetPrev(){
             auto prev = selectedEdge.mRef->getInvEnext();
-            selectedEdge = cornerOf(prev);
+            selectedEdge = cornerFrom(prev);
             return currentSelectedEdge();
         }
         
