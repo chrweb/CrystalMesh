@@ -25,16 +25,22 @@ namespace CrystalMesh{
                 
             bool const operator != (Domain const & rhs) const;
             
-            Corners const getCorners() const;
+            //Corners const getCorners() const;
+            
+            Corner const cornerWith(Mathbox::Geometry::Point3D const & aOrg, Mathbox::Geometry::Point3D const & aDest) const;
         
-            Vertices const getVertices() const;
+            //Vertices const getVertices() const;
             
             Triangles const getTriangles() const;
+            
+            //size_t getTriangleCount() const;
             
             /**
              * Returns a (random )dual facet edge
              */
             Subdiv3::FacetEdge* getDualFacetEdge() const;
+            
+            
         };
         
         Domain const domainFrom(Subdiv3::VertexPtr const & aVertex);

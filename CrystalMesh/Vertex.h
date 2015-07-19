@@ -34,6 +34,8 @@ namespace CrystalMesh{
 		};
                 
                 typedef Vertex* VertexPtr;
+                
+                extern VertexPtr const invalidVertex;
 
 
 	}

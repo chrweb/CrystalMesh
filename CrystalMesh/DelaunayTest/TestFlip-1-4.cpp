@@ -46,11 +46,34 @@ TEST(Flip_1_4, orientation){
     Tet tet = dt.makeTet(tetPoints());
     Tet::Triangles outerTris = tet.getTriangles();
     auto const innerPoint = TetPoints()[3];
-    Flip1To4 result = dt.flip1to4(tet, insertionPoint());
+    dt.flip1to4(tet, insertionPoint());
     
     for (Triangle const& triangle: outerTris){
         triangle.pointBehind(innerPoint);
     }
+}
 
+TEST(Flip_1_4, tets){
+    DelaunayTriangulation3D dt;
+    Tet tet = dt.makeTet(tetPoints());
+    Tet::Triangles outerTris = tet.getTriangles();
+
+    dt.flip1to4(tet, insertionPoint());
+    
+    
+    
+    //inspect the tets
+    EXPECT_NO_THROW(outerTris[0].getTetUnder());
+    EXPECT_NO_THROW(outerTris[1].getTetUnder());
+    EXPECT_NO_THROW(outerTris[2].getTetUnder());
+    EXPECT_NO_THROW(outerTris[3].getTetUnder());
+    
+ 
+    auto domain0 = outerTris[0].getDomainUnder();
+    auto domain1 = outerTris[1].getDomainUnder();
+    auto domain2 = outerTris[2].getDomainUnder();
+    auto domain3 = outerTris[3].getDomainUnder();
+    
+    return;
 }
 

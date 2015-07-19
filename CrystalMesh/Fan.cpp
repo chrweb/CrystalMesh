@@ -8,9 +8,11 @@
 #include <stddef.h>
 
 #include "Triangle.h"
+#include "AdjacentDirectedEdgeRings.h"
 #include "DelaunayVertex.h"
 #include "Corner.h"
 #include "Fan.h"
+
 
 namespace CrystalMesh{
 
@@ -43,7 +45,7 @@ namespace CrystalMesh{
             return result;
         }
         
-        Subdiv3::DirectedEdgeRing* Fan::centerToTop() const{
+        Subdiv3::DirectedEdgeRing* Fan::BottomToTop() const{
             return mpDring;
                    
         }
@@ -62,6 +64,33 @@ namespace CrystalMesh{
             
             return nullptr;
         
+        }
+        
+        
+        namespace{
+            FacetEdge* nextEdgeOf(FacetEdge* aFedge){
+                return aFedge->getEnext();
+            }
+        
+        }
+        
+        Fan::FanBoundary const Fan::getTopToSideBoundary() const{
+      
+            auto fnextRing = getFnextRingMembersOf(*mpDring);
+            FanBoundary result(fnextRing.size(), nullptr);
+            
+            std::transform(fnextRing.begin(), fnextRing.end(), result.begin(), nextEdgeOf);
+            
+            return result;
+        }
+            
+        Fan::FanBoundary const Fan::getBottomToSideBoundary() const{
+            auto fnextRing = getFnextRingMembersOf(*mpDring->getSym());
+            FanBoundary result(fnextRing.size(), nullptr);
+            
+            std::transform(fnextRing.begin(), fnextRing.end(), result.begin(), nextEdgeOf);
+            
+            return result;
         }
         
         Domain const Fan::getDomain() const{

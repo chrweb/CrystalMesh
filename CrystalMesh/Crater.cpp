@@ -6,6 +6,7 @@
  */
 #include <stddef.h>
 #include <vector>
+#include <algorithm>
 #include "Corner.h"
 #include "Triangle.h"
 #include "Domain.h"
@@ -45,6 +46,16 @@ namespace CrystalMesh{
         
         Domain const Crater::getDomain() const{
             auto domain = domainFrom(mVertex->getFacetEdge()->getDual()->getOrg());
+        }
+        
+        Crater::CraterBound const Crater::getCraterBound() const{
+            auto onextRing = getOnextRingOfCenter();
+            CraterBound result(onextRing.size(), nullptr);
+            auto operation = [](FacetEdge* aFedge){
+                return aFedge->getEnext();
+            };
+            std::transform(onextRing.begin(), onextRing.end(), result.begin(), operation);
+            return result;
         }
     
     }

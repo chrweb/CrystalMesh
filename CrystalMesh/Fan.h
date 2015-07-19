@@ -18,11 +18,13 @@ namespace CrystalMesh{
         struct Fan{
             typedef std::vector<Triangle> Triangles;
 
+            typedef std::vector<Subdiv3::FacetEdge*> FanBoundary;
+            
             Subdiv3::DirectedEdgeRing * mpDring;
             
             Triangles getTriangles() const;
             
-            Subdiv3::DirectedEdgeRing* centerToTop() const;
+            Subdiv3::DirectedEdgeRing* BottomToTop() const;
             
             Mathbox::Geometry::Point3D const getTopPoint() const;
             
@@ -30,6 +32,10 @@ namespace CrystalMesh{
             
             Subdiv3::FacetEdge* getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const;
             
+            FanBoundary const getTopToSideBoundary() const;
+            
+            FanBoundary const getBottomToSideBoundary() const;
+
             Domain const getDomain() const;
 
 	};

@@ -169,7 +169,7 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/ComplexTest/TestEdgeRings.o ${TESTDIR}/Compl
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} ../googletest/dist/Debug/GNU-Linux-x86/libgoogletest.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a 
 
-${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/TestCrater.o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestFan.o ${TESTDIR}/DelaunayTest/TestFlip-1-4.o ${TESTDIR}/DelaunayTest/TestTet.o ${TESTDIR}/DelaunayTest/TestTetInteriour.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f2: ${TESTDIR}/DelaunayTest/TestCrater.o ${TESTDIR}/DelaunayTest/TestDelaunayVertex.o ${TESTDIR}/DelaunayTest/TestFan.o ${TESTDIR}/DelaunayTest/TestFlip-1-4.o ${TESTDIR}/DelaunayTest/TestSplitTriangle.o ${TESTDIR}/DelaunayTest/TestTet.o ${TESTDIR}/DelaunayTest/TestTetInteriour.o ${TESTDIR}/DelaunayTest/TestTriangle.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
 	${LINK.cc}  -pthread -o ${TESTDIR}/TestFiles/f2 $^ ${LDLIBSOPTIONS} ../googletest/dist/Debug/GNU-Linux-x86/libgoogletest.a ../Toolbox/dist/Debug/GNU-Linux-x86/libtoolbox.a ../Mathbox/dist/Debug/GNU-Linux-x86/libmathbox.a 
 
@@ -214,6 +214,12 @@ ${TESTDIR}/DelaunayTest/TestFlip-1-4.o: DelaunayTest/TestFlip-1-4.cpp
 	${MKDIR} -p ${TESTDIR}/DelaunayTest
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestFlip-1-4.o DelaunayTest/TestFlip-1-4.cpp
+
+
+${TESTDIR}/DelaunayTest/TestSplitTriangle.o: DelaunayTest/TestSplitTriangle.cpp 
+	${MKDIR} -p ${TESTDIR}/DelaunayTest
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -DDEBUG -I. -I../gTest -I../gTest/include -MMD -MP -MF "$@.d" -o ${TESTDIR}/DelaunayTest/TestSplitTriangle.o DelaunayTest/TestSplitTriangle.cpp
 
 
 ${TESTDIR}/DelaunayTest/TestTet.o: DelaunayTest/TestTet.cpp 

@@ -41,7 +41,7 @@ namespace CrystalMesh{
              * @param apVert
              * @return 
              */
-            bool const isPartOf(Subdiv3::Vertex const *apVert) const;
+            //bool const isPartOf(Subdiv3::Vertex const *apVert) const;
 
             Triangle const getTriangleAt(Index aIndex) const;
 
@@ -56,6 +56,10 @@ namespace CrystalMesh{
             Corners const getCorners() const;   
             
             Points const getPoints() const;
+            
+            Mathbox::Geometry::Point3D const getPointUnderTriangle(Index aIndex) const;
+            
+            Index const getIndexOfTriangle(Triangle const& aTri) const;
         };
     }
 }

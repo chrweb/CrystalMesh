@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Geometry.h</itemPath>
+      <itemPath>Geometry_LineSegment3D.h</itemPath>
       <itemPath>Geometry_Matrix4x3.h</itemPath>
       <itemPath>Geometry_OrientedPlane3D.h</itemPath>
       <itemPath>Geometry_Plane3D.h</itemPath>
@@ -73,6 +74,8 @@
         </archiverTool>
       </compileType>
       <item path="Geometry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_LineSegment3D.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Geometry_Matrix4x3.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -193,6 +196,8 @@
         </archiverTool>
       </compileType>
       <item path="Geometry.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Geometry_LineSegment3D.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Geometry_Matrix4x3.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -77,6 +77,13 @@ namespace CrystalMesh{
 			checkValidPtr(mpDirectedEdgeRing);
 			return mpDirectedEdgeRing;
 		}
+                
+                EdgeRing const * FacetEdge::getEdgeRing() const{
+                    return getDirectedEdgeRing()->getEdgeRing();
+                }
+		EdgeRing * FacetEdge::getEdgeRing(){
+                    return getDirectedEdgeRing()->getEdgeRing();
+                }
 
 
 		FacetEdge const  *	FacetEdge::getDual() const{

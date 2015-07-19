@@ -21,9 +21,15 @@ namespace CrystalMesh{
             
             typedef std::vector<Triangle> Triangles;
             
+            typedef std::vector<Subdiv3::FacetEdge*> CraterBound;
+            
             Triangles getTriangles() const;
             
             Subdiv3::RingMembers getOnextRingOfCenter() const;
+            
+            CraterBound const getCraterBound() const;
+            
+            Subdiv3::FacetEdge* getAdapterOf(Mathbox::Geometry::Point3D const &  org, Mathbox::Geometry::Point3D const & dest) const;
             
             Domain const getDomain() const;
             

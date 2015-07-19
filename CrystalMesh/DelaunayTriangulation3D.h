@@ -21,37 +21,48 @@
 
 namespace CrystalMesh{
 
-	namespace Subdiv3{
-		class Manifold;
+    namespace Subdiv3{
+            class Manifold;
 
-	}
+    }
 
 
-	namespace Delaunay3{
+    namespace Delaunay3{
 
-            struct Flip1To4{
-                enum struct Result{
-                    success,
-                    failure
-                };
+        struct Flip1To4{
+            enum struct Result{
+                success,
+                failure
+            };
+   
+            typedef std::array<Triangle,10> Triangles;
+   
+            Result result;
+            Triangles tris;
+        };
 
-                typedef std::array<Triangle,10> Triangles;
-                
-                Result result;
-                Triangles tris;
+        struct Flip2To3{
+            enum struct Result{
+                success,
+                failure
+            };
+
+            typedef std::array<Triangle, 9> Triangles;
+
+            Result result;
+            Triangles tris;
+        };
+        
+        struct SplitTriangle{
+            enum struct Result{
+                success,
+                failue
             };
             
-            struct Flip2To3{
-                enum struct Result{
-                    success,
-                    failure
-                };
-                
-                typedef std::array<Triangle, 9> Triangles;
-                
-                Result result;
-                Triangles tris;
-	};
+            Domain mUpperDomain;
+            Domain mLowerDomain;
+            
+        };
 
 
 	class VertexDataContainer;
@@ -70,8 +81,12 @@ namespace CrystalMesh{
             ~DelaunayTriangulation3D();
 
             Flip1To4 const flip1to4(Tet& aTetToFlip, Mathbox::Geometry::Point3D const & aPoint);
+            
+            SplitTriangle const splitTriangle(Triangle& aTriangleToSplit, Mathbox::Geometry::Point3D const & aPoint);
 
             Flip2To3 flip2to3(Triangle& aTriangleToFlip);
+            
+            
 
             void insertPoint(Mathbox::Geometry::Point3D const & aPoint);
 
@@ -130,37 +145,46 @@ namespace CrystalMesh{
             
             size_t getVertexCount() const;
             
-            private:
-                
+          
+            public:
+            
             typedef std::vector<Subdiv3::VertexPtr> VertexUnifyList;
-            Subdiv3::VertexPtr unifyVertices(VertexUnifyList & aList);
-            
-            Subdiv3::VertexPtr unifyDomains(VertexUnifyList & aList);
-            
             typedef std::vector<Subdiv3::EdgeRingPtr> EdgeRingUnifyList;
             
+            private:
+            
+            Subdiv3::VertexPtr unifyVertices(VertexUnifyList & aList);
+
+            Subdiv3::VertexPtr unifyDomains(VertexUnifyList & aList);
+
             Subdiv3::EdgeRingPtr unifyEdgeRings(EdgeRingUnifyList& aList);
-            
-            //void unifyVertices(Subdiv3::Vertex * apVert0, Subdiv3::Vertex * apVert1);
-            
-            //void unifyEdgeRings(Subdiv3::EdgeRing* apRing0 ,Subdiv3::EdgeRing* apRing1);
-            
-            //void unifyEdgeRingsF(RingMembers const& aFnextRing);
-            
-            //void destroyTet(Tet & aTet);
-            
            
             Domain const makeDomain();
             
             void destroyDomain(Domain& aDomain);
             
-            void linkDomainUnderTriangle(Delaunay3::Domain& aDomain,  Delaunay3::Triangle& aTri);
+            Domain const destroyTriangle(Triangle& aTriangle);
             
-            void linkDomainOverTriangle(Delaunay3::Domain& aDomain,  Delaunay3::Triangle& aTri);
+            void linkDomainUnderTriangle(Domain& aDomain, Triangle& aTri);
             
-            //void destroyDomain(Domain & aVert);
-                   
-            //Subdiv3::Vertex * makeBody();
+            void linkDomainOverTriangle(Domain& aDomain, Triangle& aTri);
+            
+            
+            
+            //Domain const separateTriangle(Triangle& aTri);
+            
+            struct SplitDomain{
+                Domain upperDomain;
+                Domain lowerDomain;
+            };
+            
+            /**
+             * Creates and links two domains:
+             * one before, one behind the given triangle
+             */
+            SplitDomain splitDomain(Triangle& aTri);
+            
+            void spliceFacetEdgeIntoCorner(Subdiv3::FacetEdge* aFedge, Corner& aCorner);
             
             Subdiv3::Manifold * mpManifold;
 

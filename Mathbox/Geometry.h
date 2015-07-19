@@ -18,90 +18,90 @@ namespace Mathbox{
 
 	namespace Geometry{
 
-		struct Vector3D{
-			double mX, mY, mZ;
+            struct Vector3D{
+                    double mX, mY, mZ;
 
-			static Vector3D  const NaN;
+                    static Vector3D  const NaN;
 
-			static Vector3D const zero;
+                    static Vector3D const zero;
 
-			static Vector3D const xAxis;
+                    static Vector3D const xAxis;
 
-			static Vector3D const yAxis;
+                    static Vector3D const yAxis;
 
-			static Vector3D const zAxis;
-		};
+                    static Vector3D const zAxis;
+            };
 
-		struct Point3D{
-			double mX, mY, mZ;
+            struct Point3D{
+                    double mX, mY, mZ;
 
-			 static Point3D const NaN;
+                     static Point3D const NaN;
 
-			 static Point3D const zero;
-		};
-
-
-		struct Vector2D{
-			double mX, mY;
-
-			static Vector2D const NaN;
-
-			static Vector2D const zero;
-
-			static Vector2D const xAxis;
-
-			static Vector2D const yAxis;
-		};
-
-		struct Point2D{
-			double mX, mY;
-
-			static Point2D const NaN;
-
-			static Point2D const zero;
-		};
-
-		// Column major matrix for homogenous coords.
-		struct Matrix4x3{
-			Vector3D mX;
-			Vector3D mY;
-			Vector3D mZ;
-			Vector3D mT;
-		};
+                     static Point3D const zero;
+            };
 
 
-		struct LineSegment3D{
-			Point3D mStartpoint;
-			Point3D mEndpoint;
-		};
+            struct Vector2D{
+                    double mX, mY;
 
-		struct Line3D{
-			Point3D mAnyPointOnLine;
-			Point3D mDirection;
-		};
+                    static Vector2D const NaN;
+
+                    static Vector2D const zero;
+
+                    static Vector2D const xAxis;
+
+                    static Vector2D const yAxis;
+            };
+
+            struct Point2D{
+                    double mX, mY;
+
+                    static Point2D const NaN;
+
+                    static Point2D const zero;
+            };
+
+            // Column major matrix for homogenous coords.
+            struct Matrix4x3{
+                    Vector3D mX;
+                    Vector3D mY;
+                    Vector3D mZ;
+                    Vector3D mT;
+            };
 
 
-		struct Plane3D{
-			/**
-			 * Distance from (0,0,0) to point on plane
-			 */
-			Point3D mPoint;
+            struct LineSegment3D{
+                Point3D mStartpoint;
+                Point3D mEndpoint;
+            };
 
-			/**
-			 * Direction to move
-			 */
-			Vector3D mNormal;
-		};
+            struct Line3D{
+                    Point3D mAnyPointOnLine;
+                    Point3D mDirection;
+            };
 
-		struct OrientedPlane3D{
+
+            struct Plane3D{
+                    /**
+                     * Distance from (0,0,0) to point on plane
+                     */
+                    Point3D mPoint;
+
+                    /**
+                     * Direction to move
+                     */
+                    Vector3D mNormal;
+            };
+
+            struct OrientedPlane3D{
                     Matrix4x3 mTrafo;
-		};
+            };
 
 
-		struct UvCoords{
-			double mU;
-			double mV;
-		};
+            struct UvCoords{
+                    double mU;
+                    double mV;
+            };
 
 	}
 }

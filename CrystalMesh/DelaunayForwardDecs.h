@@ -39,6 +39,9 @@ namespace CrystalMesh {
 
             typedef uint32_t Index;
             
+            extern Index const invalidIndex;
+            
+            
             class Exporter{
                 
             public:

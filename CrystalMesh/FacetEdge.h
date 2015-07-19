@@ -28,6 +28,9 @@ namespace CrystalMesh{
 
 		    DirectedEdgeRing const * getDirectedEdgeRing() const;
 		    DirectedEdgeRing * getDirectedEdgeRing();
+                    
+                    EdgeRing const * getEdgeRing() const;
+		    EdgeRing * getEdgeRing();
 
 		    /**
 		     * Other members in current QuaterNode

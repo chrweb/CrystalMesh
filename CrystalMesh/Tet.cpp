@@ -2,6 +2,7 @@
 #include "Corner.h"
 #include "../Toolbox/Checks.h"
 #include "Tet.h"
+#include <algorithm>
 #include "DelaunayVertex.h"
 
 namespace CrystalMesh{
@@ -95,6 +96,29 @@ namespace CrystalMesh{
             }
 
             return result;
+        }
+        
+        Index const Tet::getIndexOfTriangle(Triangle const& aTri) const{
+        
+            auto result = std::find(mTri.begin(), mTri.end(), aTri);
+            
+            if (result == mTri.end()){
+                return invalidIndex;
+            }
+            
+            return result-mTri.begin();
+                
+        }
+        
+        Mathbox::Geometry::Point3D const Tet::getPointUnderTriangle(Index aIndex) const{
+            auto trianglePoints = getTriangleAt(aIndex).getBoundaryPoints();
+            auto tetPoints = getPoints();
+            Points diff = {Point3D::NaN, Point3D::NaN, Point3D::NaN, Point3D::NaN}; 
+            std::sort(trianglePoints.begin(), trianglePoints.end(), inLexicographicalOrder);
+            std::sort(tetPoints.begin(), tetPoints.end(), inLexicographicalOrder);
+            auto diffEnd = std::set_difference(trianglePoints.begin(), trianglePoints.end(), tetPoints.begin(), tetPoints.end(), diff.begin(), inLexicographicalOrder);
+            MUST_BE(diffEnd == diff.begin()+1);
+            return *diff.begin();        
         }
 
     }

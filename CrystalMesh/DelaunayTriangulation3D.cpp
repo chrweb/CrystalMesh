@@ -21,6 +21,7 @@
 
 
 
+
 namespace CrystalMesh{
 
 
@@ -35,6 +36,8 @@ namespace Delaunay3{
     
     using namespace Toolbox;
     using namespace Subdiv3;
+    
+    Index const invalidIndex = -1;
     
 
     class VertexDataContainer
@@ -160,6 +163,8 @@ namespace Delaunay3{
             
     namespace {
         
+        
+        
         std::vector<Subdiv3::Vertex*> const collectOrgsOf(Subdiv3::FacetEdge* aFedge){
             AdjacentFacetEdges adj = getAdjacentFacetEdges(*aFedge);
             std::vector<Subdiv3::Vertex*>  collectedVerts; 
@@ -175,6 +180,10 @@ namespace Delaunay3{
             std::vector<Subdiv3::Vertex*> result(collectedVerts.begin(), uniqueEnd);
             
             return result;
+        }
+        
+        std::vector<Subdiv3::Vertex*> const collectOrgsOf(Subdiv3::DirectedEdgeRing* aDring){
+            return collectOrgsOf(aDring->getRingMember());
         }
         
         std::vector<Subdiv3::Vertex*> const collectDualOrgsUnder(Triangle const& aTri){
@@ -502,7 +511,7 @@ namespace Delaunay3{
         }
         
         //rearrange in center/ in tet vertex:
-        FacetEdge * centerToTop = fan.centerToTop()->getRingMember();
+        FacetEdge * centerToTop = fan.BottomToTop()->getRingMember();
         
         auto oldVerts = collectOrgsOf(centerToTop);
         VertexPtr newVertex = unifyVertices(oldVerts);
@@ -600,6 +609,159 @@ namespace Delaunay3{
         }
         
         return result;
+    }
+    
+    namespace{
+        
+        DelaunayTriangulation3D::FanPoints const fanPointsFromTriangle(Triangle const& aTri){
+            auto trianglePoints = aTri.getBoundaryPoints();
+            DelaunayTriangulation3D::FanPoints result(trianglePoints.begin(), trianglePoints.end());
+            return result;
+        }
+        
+        DelaunayTriangulation3D::CraterPoints const craterPointsFromTriangle(Triangle const & aTri){
+            auto trianglePoints = aTri.getBoundaryPoints();
+            DelaunayTriangulation3D::CraterPoints result(trianglePoints.begin(), trianglePoints.end());
+            return result;
+        }
+        
+        std::vector<Corner> const domainCornersForFanBoundary(Domain const& aDomain, Fan::FanBoundary const & aFanBoundary){
+        
+        }
+        
+
+    
+    }
+    
+    DelaunayTriangulation3D::SplitDomain DelaunayTriangulation3D::splitDomain(Triangle& aTri){
+        auto domainsOver = collectDualOrgsOver(aTri);
+        auto domainsUnder = collectDualOrgsUnder(aTri);
+        SHOULD_BE(domainsOver.size() == 1);
+        SHOULD_BE(domainsUnder.size() == 1);
+        SHOULD_BE(domainsOver[0]==domainsUnder[1]);
+        auto oldDomain = domainFrom(domainsOver[0]);
+        destroyDomain(oldDomain);
+        
+        Domain newDomainOver = makeDomain();
+        Domain newDomainUnder = makeDomain();
+        
+        linkDomainOverTriangle(newDomainOver, aTri);
+        linkDomainOverTriangle(newDomainUnder, aTri);
+        
+        SplitDomain result;
+        result.lowerDomain = newDomainUnder;
+        result.upperDomain = newDomainOver;
+        return result;
+    }
+    
+    SplitTriangle const DelaunayTriangulation3D::splitTriangle(Triangle& aTriangleToSpilt, Mathbox::Geometry::Point3D const & aPoint){
+        auto const upperTet = aTriangleToSpilt.getTetOver();
+        auto const upperTriangle = aTriangleToSpilt.getCounterOriented();
+        auto const upperTopPoint = upperTet.getPointUnderTriangle(upperTet.getIndexOfTriangle(upperTriangle));
+        auto const upperFanPoints = fanPointsFromTriangle(upperTriangle);
+        auto const upperFan = makeFan(upperTopPoint, aPoint, upperFanPoints);
+        
+        auto const lowerTet = aTriangleToSpilt.getTetUnder();
+        auto const lowerTriangle = aTriangleToSpilt;
+        auto const lowerTopPoint = lowerTet.getPointUnderTriangle(lowerTet.getIndexOfTriangle(lowerTriangle));
+        auto const lowerFanPoins = fanPointsFromTriangle(lowerTriangle);
+        auto const lowerFan = makeFan(lowerTopPoint, aPoint, lowerFanPoins);
+        
+        
+        auto const craterPoints = craterPointsFromTriangle(aTriangleToSpilt);
+        auto const crater = makeCrater(aPoint, craterPoints);
+        
+        //auto const domain = separateTriangle(aTriangleToSpilt);
+        Domain domain = destroyTriangle(aTriangleToSpilt);
+        Crater::CraterBound craterBound = crater.getCraterBound();
+        
+        Crater::Triangles craterTriangles = crater.getTriangles();
+        
+        for (FacetEdge * current : craterBound){
+            Point3D const& org = originPointOf(current);
+            Point3D const& dest = destinationPointOf(current);
+            Corner corner = domain.cornerWith(org, dest);
+            
+            mpManifold->spliceFacets(*current, *(corner.mRef));
+            auto oldRings = collectRingsFnext(current);
+            
+            //rearrange edge rings
+            EdgeRing* newRing = unifyEdgeRings(oldRings);
+            mpManifold->linkEdgeRingAndFacetEdges(*newRing, *current);
+
+            //rearrange destination vertex:
+            auto oldVerts = collectOrgsOf(current->getClock());
+            VertexPtr newVertex = unifyVertices(oldVerts);
+            mpManifold->linkVertexFacetEdge(*newVertex, *current->getClock());
+        }
+        
+        SplitDomain domains = splitDomain(craterTriangles[0]);
+        Fan::FanBoundary upperFanBottomBoundary =  upperFan.getBottomToSideBoundary();
+        Fan::FanBoundary upperFanTopBoundary = upperFan.getTopToSideBoundary();
+        
+        auto upperDomainBottomCorners = domainCornersForFanBoundary(domains.upperDomain, upperFanBottomBoundary);
+        auto upperDomainSideCorners = domainCornersForFanBoundary(domains.upperDomain, upperFanTopBoundary);
+        
+        Fan::FanBoundary lowerFanBottomBoundary = lowerFan.getBottomToSideBoundary();
+        Fan::FanBoundary lowerFanTopBoundary = lowerFan.getTopToSideBoundary();
+        auto lowerDomainBottomCorners = domainCornersForFanBoundary(domains.lowerDomain, lowerFanBottomBoundary);
+        auto lowerDomainSideCorners = domainCornersForFanBoundary(domains.lowerDomain, lowerFanTopBoundary);
+        
+        
+        for (Index i = 0; i<3; i++){
+            //bottom
+            mpManifold->spliceFacets(*upperDomainBottomCorners[i].mRef, *upperFanBottomBoundary[i]);
+            mpManifold->spliceFacets(*lowerDomainBottomCorners[i].mRef, *lowerFanBottomBoundary[i]);
+            auto oldBottomEdgeRings = collectRingsFnext(upperFanBottomBoundary[i]);
+            unifyEdgeRings(oldBottomEdgeRings);
+            
+            //upper domain side
+            mpManifold->spliceFacets(*upperDomainSideCorners[i].mRef, *upperFanTopBoundary[i]);
+            auto oldUpperDomainEdgeRings = collectRingsFnext(upperFanTopBoundary[i]);
+            unifyEdgeRings(oldUpperDomainEdgeRings);
+            
+            //lower domain side
+            spliceFacetEdgeIntoCorner(lowerFanTopBoundary[i], lowerDomainSideCorners[i]);
+            auto oldLowerDomainEdgeRings = collectRingsFnext(lowerFanTopBoundary[i]);
+            unifyEdgeRings(oldLowerDomainEdgeRings);  
+        }
+        
+        //rearrange vertices
+        
+        //splitted vertex:
+        auto oldSplittedVertex = collectOrgsOf(upperFan.BottomToTop());
+        unifyVertices(oldSplittedVertex);
+        
+        //crater boundary
+        for (FacetEdge* currentBound : craterBound){
+            auto oldVertices = collectOrgsOf(currentBound); 
+            unifyVertices(oldVertices);
+        }
+        
+        //upper fan top
+        auto upperTopVertices = collectOrgsOf(upperFan.BottomToTop()->getSym()); 
+        unifyVertices(upperTopVertices);
+        
+        //lower fan top
+        auto lowerTopVertices = collectOrgsOf(lowerFan.BottomToTop()->getSym());
+        unifyVertices(lowerTopVertices);
+        
+        //rearrange domains
+        destroyDomain(domains.lowerDomain);
+        destroyDomain(domains.upperDomain);
+        
+        for (auto& triangle: craterTriangles){
+            Domain currentUpperDomain = makeDomain();
+            Domain currentLowerDomain = makeDomain();
+            
+            linkDomainUnderTriangle(currentLowerDomain, triangle);
+            linkDomainOverTriangle(currentUpperDomain, triangle);
+        }
+        
+        SplitTriangle result;
+        return result;
+        
+    
     }
             
            
@@ -700,6 +862,86 @@ namespace Delaunay3{
     
     size_t DelaunayTriangulation3D::getVertexCount() const{
         return mpManifold->primalVertexSize();
+    }
+    
+    namespace{
+        Triangle::BoundaryEdges invFnextOf(Triangle::BoundaryEdges const& aInp){
+            Triangle::BoundaryEdges result;
+            
+            for (int i = 0; i<3; i++){
+                result[i] = aInp[i]->getFnext();
+            }
+            
+            return result;
+        }
+        
+        void linkEdgeRingToInvFnextOf(FacetEdge *aFedge){
+            auto edgeRing = aFedge->getEdgeRing();
+            auto thisDirectedRing = aFedge->getDirectedEdgeRing();
+            auto otherDirectedRing = aFedge->getClock()->getDirectedEdgeRing();
+            
+            auto invFnext = aFedge->getInvFnext();
+            auto clocked = invFnext->getClock();
+            
+            thisDirectedRing->mpRingMember = invFnext;
+            otherDirectedRing->mpRingMember = clocked;
+            return;
+        }
+        
+        void linkVertexToInFnextOf(FacetEdge* aFedge){
+            auto org = aFedge->getOrg();
+            auto invFext = aFedge->getInvEnext();
+            org->mpOut = invFext;
+            return;
+        }
+        
+        DelaunayTriangulation3D::EdgeRingUnifyList const edgeRingUnifyListFromEdgeRing(EdgeRingPtr const& aRing){
+            return DelaunayTriangulation3D::EdgeRingUnifyList(1, aRing);
+        }
+        
+        DelaunayTriangulation3D::VertexUnifyList const vertexUnifyListFromVertex(VertexPtr const & aVertex){
+            return DelaunayTriangulation3D::VertexUnifyList(1, aVertex);
+        }
+    }
+    
+    Domain const DelaunayTriangulation3D::destroyTriangle(Triangle& aTriangle){
+        auto const bounds = aTriangle.getBoundaryEdges();
+        //predecessors
+        auto const preds = invFnextOf(bounds);
+        
+        SHOULD_BE(aTriangle.getDomainOver() != aTriangle.getDomainUnder());
+        
+        for (int i = 0; i<3; i++){
+            
+            FacetEdge* currentTriangleEdge = bounds[i];
+            FacetEdge* currenPred = preds[i];
+            //fnext ring size >1 at each bound
+            SHOULD_BE(currenPred != currentTriangleEdge);
+            mpManifold->spliceFacets(*currenPred, *currentTriangleEdge);
+            
+            //rearrange vert, edge rings:
+            linkEdgeRingToInvFnextOf(currentTriangleEdge);
+            linkVertexToInFnextOf(currentTriangleEdge);
+        }
+        
+        //rearrange domains:
+        Triangle triangleOfNewDomain = triangleLeftOf(preds[0]);
+        auto oldsDomains = collectDualOrgsOver(triangleOfNewDomain);
+        auto newDomain = domainFrom(unifyDomains(oldsDomains));
+        linkDomainOverTriangle(newDomain, triangleOfNewDomain);
+        
+        //destroy entities:
+        mpManifold->deleteDualEdgeRing(*aTriangle.mpDualEdgeRing->getEdgeRing());
+        for (int i = 0; i<3; i++){
+            mpManifold->deleteQuaterNodeOf(*bounds[i]);
+        }
+        
+        return newDomain;
+    }
+    
+    void DelaunayTriangulation3D::spliceFacetEdgeIntoCorner(Subdiv3::FacetEdge* aFedge, Corner& aCorner){
+        mpManifold->spliceFacets(*aCorner.mRef, *aFedge);
+        return;
     }
 
     

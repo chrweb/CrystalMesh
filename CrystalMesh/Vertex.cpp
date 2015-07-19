@@ -44,6 +44,8 @@ namespace CrystalMesh {
             SHOULD_BE(notNullptr(mpOut))
             return mpOut;        
         }
+        
+        VertexPtr const invalidVertex = nullptr;
     }  // namespace Subdiv3
 
 }  // namespace CrystalMesh

@@ -31,26 +31,47 @@ namespace CrystalMesh{
 
             Mathbox::Geometry::OrientedPlane3D const getOrientedPlane() const;
             
+            /**
+             * true, if test point lies behind the plane, this triangle represents.
+             * @param aPoint    A test point
+             */
             bool const pointBehind(Mathbox::Geometry::Point3D const& aPoint) const;
             
-            Subdiv3::FacetEdge* boundaryWith(Mathbox::Geometry::Point3D const & aOrg, Mathbox::Geometry::Point3D const & aDest) const;
+            /**
+             * True, if point compares exact equal to one boundary vertey
+             * @param aPoint
+             */
+            bool const isVertexPoint(Mathbox::Geometry::Point3D const& aPoint) const;
             
             bool const operator == (const Triangle& other) const;
             
             bool const operator != (const Triangle& other) const;
             
-            Delaunay3::Domain const getDomainUnder() const;
+            Domain const getDomainUnder() const;
            
-            Delaunay3::Domain const getDomainOver() const;
-            // Tet const upperTet() const;
+            Domain const getDomainOver() const;
             
-           // Tet const lowerTet() const;
-
+            Tet const getTetOver() const;
+            
+            Tet const getTetUnder() const;
+            
+            Subdiv3::FacetEdge* boundaryWith(Mathbox::Geometry::Point3D const & aOrg, Mathbox::Geometry::Point3D const & aDest) const;
+            
+            /**
+             * Returns the vertex within this triangle, holding the point exact equal to query point or invalid vertex
+             * @param aPoint    Query points
+             */
+            Subdiv3::VertexPtr const vertexWithPoint(Mathbox::Geometry::Point3D const & aPoint) const;
+            
             Subdiv3::DirectedEdgeRing* mpDualEdgeRing;
             
             static Triangle const invalid;
             
             Triangle const getCounterOriented() const;
+            
+            //Triangle const getTriangleOverForBoundary(Index aBoundaryIndex) const;
+            
+            //Triangle const getTriangleUnderForBoundary(Index aBoundaryIndex) const;
 
 	};
         

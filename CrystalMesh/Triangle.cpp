@@ -5,6 +5,8 @@
 #include "Triangle.h"
 #include "DelaunayVertex.h"
 #include "../Toolbox/Checks.h"
+#include "Tet.h"
+
 
 
 using namespace CrystalMesh;
@@ -76,6 +78,11 @@ bool const Triangle::operator != (const Triangle& other) const{
     return ! operator ==(other);
 }
 
+bool const Triangle::isVertexPoint(Mathbox::Geometry::Point3D const& aPoint) const{
+    auto resultvertex = vertexWithPoint(aPoint);
+    return resultvertex != Subdiv3::invalidVertex;
+}
+
 Delaunay3::Domain const Triangle::getDomainUnder() const{
     return domainFrom(mpDualEdgeRing->getOrg());
 }
@@ -85,6 +92,42 @@ Delaunay3::Domain const Triangle::getDomainOver() const{
     return other.getDomainUnder();
 }
 
+namespace{
+    Delaunay3::Tet const tetFromDomain(Domain const& domain){
+        Tet result;
+        auto triangles = domain.getTriangles();
+        //is a triangle?
+        MUST_BE(triangles.size() == 4);
+        std::copy(triangles.begin(), triangles.end(), result.mTri.begin());
+        return result;
+    }
+
+}
+
+Delaunay3::Tet const Triangle::getTetOver() const{
+    auto domain = getDomainOver();
+    return tetFromDomain(domain);
+    
+}
+            
+Delaunay3::Tet const Triangle::getTetUnder() const{
+    auto domain = getDomainUnder();
+    return tetFromDomain(domain);
+}
+
+Subdiv3::VertexPtr const Triangle::vertexWithPoint(Mathbox::Geometry::Point3D const & aPoint) const{
+    auto points = getBoundaryPoints();
+    auto const&pointToFind = aPoint;
+    auto finder = [&pointToFind](Point3D const& aCurrentPoint){
+        return exactEqual(pointToFind, aCurrentPoint);
+    };
+    auto found = std::find_if(points.begin(), points.end(), finder);
+    if (found == points.end())
+        return Subdiv3::invalidVertex;
+    
+    auto verts = getBoundaryVertices();
+    return verts[found-points.begin()];
+}
 /*
 Tet const Triangle::lowerTet() const{
     Triangle other = getCounterOrientedOf(*this);
